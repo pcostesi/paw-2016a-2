@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ar.edu.itba</groupId>
+  <artifactId>paw-2016-02</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>paw-2016-02 Maven Multi Project</name>
+  <url>http://maven.apache.org</url>
+  <modules>
+    <module>webapp</module>
+  </modules>
+  <properties>
+    <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
+    <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>${maven-eclipse-plugin.version}</version>
+      </plugin>
+    </plugins>
+  </build>
+
+ <dependencyManagement>
+   <dependencies>
+     <dependency>
+       <groupId>org.springframework</groupId>
+       <artifactId>spring-webmvc</artifactId>
+       <version>${org.springframework.version}</version>
+     </dependency>
+   </dependencies>
+ </dependencyManagement>
+</project>
