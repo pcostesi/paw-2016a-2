@@ -9,6 +9,9 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>webapp</module>
+    <module>models</module>
+    <module>interfaces</module>
+    <module>services</module>
   </modules>
 
   <properties>
@@ -16,6 +19,7 @@
     <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
     <servlet-api.version>2.5</servlet-api.version>
     <jstl.version>1.2</jstl.version>
+    <jdk.version>1.8</jdk.version>
   </properties>
 
 	<dependencyManagement>
@@ -41,6 +45,15 @@
 
   <build>
     <plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.3</version>
+			<configuration>
+				<source>${jdk.version}</source>
+				<target>${jdk.version}</target>
+			</configuration>
+		</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
