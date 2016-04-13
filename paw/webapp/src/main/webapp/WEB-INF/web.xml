@@ -14,7 +14,7 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-      webapp.config.WebConfig
+      ar.edu.itba.webapp.config.WebConfig
     </param-value>
   </context-param>
 
