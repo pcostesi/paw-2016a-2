@@ -23,9 +23,6 @@
 	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css" crossorigin="anonymous">
 	
-	<link rel="stylesheet" href="styles/main.css">
-	<link rel="stylesheet" href="styles/project.css">
-	
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 	crossorigin="anonymous"></script>
@@ -95,6 +92,7 @@
 	    	document.body.appendChild(s)}
 	    );
     </script>
+    <script src="/scripts/main.js"></script>
     
 </body>
 
