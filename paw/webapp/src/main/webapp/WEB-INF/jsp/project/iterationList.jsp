@@ -21,47 +21,9 @@
         
         
      <jsp:body>
-<div class="panel-group" aria-multiselectable="true">
-
-
-			<div class="panel panel-default">
-                <div class="panel-heading" role="tab">
-                    <h2 class="panel-title">
-                        Project Scrumlr Highlights
-                    </h2>
-                </div>
-                <div class="panel-collapse collapse in" role="tabpanel">
-
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                            No users currently owning this project.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- /panel -->
-            
-			<div class="panel panel-default">
-                <div class="panel-heading" role="tab">
-                    <h2 class="panel-title">
-                        Iterations
-                    </h2>
-                </div>
-                <div class="panel-collapse collapse in" role="tabpanel">
-
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                            	<ul>
-                            		<li><a href="/project/scrumlr/iteration/1">Iteration #1</a></li>
-                            	</ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- /panel -->
-
+		<div class="panel-group" aria-multiselectable="true">
+			<t:projectHighlights/>
+			<t:iterationsPanel/>
         </div>
 
     </jsp:body>    

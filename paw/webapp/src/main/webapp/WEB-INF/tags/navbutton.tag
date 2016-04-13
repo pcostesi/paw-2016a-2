@@ -3,8 +3,7 @@
 <%@attribute name="btnId" required="false"%>
 <%@attribute name="btnClass" required="false"%>
 
-<li>
-  <button type="button" class="btn navbar-btn btn-xs ${btnClass}" id="${btnId}">
-  	<jsp:doBody/>
-  </button>
-</li>
+
+<button type="button" class="btn navbar-btn btn-sm ${btnClass}" id="${btnId}">
+	<jsp:doBody/>
+</button>

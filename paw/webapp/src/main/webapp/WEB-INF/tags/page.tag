@@ -9,6 +9,9 @@
 <html>
 
 <head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
@@ -33,7 +36,7 @@
 
 <body>
 
-    <nav class="navbar navbar-default navbar-static-top">
+    <header class="navbar navbar-default navbar-static-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -47,7 +50,7 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="nav-1">
+            <nav class="collapse navbar-collapse" id="nav-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">Project view <span class="sr-only">(current)</span></a></li>
                     <li class="dropdown">
@@ -59,23 +62,39 @@
                 </ul>
                 
 
-				<ul class="nav navbar-nav navbar-right btn-group">
-			     	<jsp:invoke fragment="actions"/>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="btn-group">
+			     		<jsp:invoke fragment="actions"/>
+		     		</li>
 		        </ul>
 
-            </div>
+            </nav>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
-    </nav>
+    </header>
 
     <div class="container">
-        <div class="page-header clearfix">
+        <div class="page-header">
             <h1><jsp:invoke fragment="title"/></h1>
         </div>
         
         <jsp:doBody/>
     </div>
+    
+    <script>
+	    window.lint = (function() {
+	    	'use strict';
+	    	var s=document.createElement("script");
+	    	s.onload=function(){
+	    		bootlint.showLintReportForCurrentDocument([]);
+	    	};
+	    	
+	    	s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";
+	    	
+	    	document.body.appendChild(s)}
+	    );
+    </script>
     
 </body>
 

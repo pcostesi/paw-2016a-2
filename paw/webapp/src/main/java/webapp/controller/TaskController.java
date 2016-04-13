@@ -10,6 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/project/{project}/iteration/{iteration}/task")
 public class TaskController {
 	
+	@RequestMapping(value = "/new", method = RequestMethod.GET)
+	public ModelAndView getNewResource() {
+		final ModelAndView mav = new ModelAndView("task/newTask");
+		return mav;
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView getResource(@PathVariable String id) {
 		final ModelAndView mav = new ModelAndView("task");

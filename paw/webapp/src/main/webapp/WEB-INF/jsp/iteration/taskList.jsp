@@ -20,50 +20,14 @@
      </jsp:attribute>
         
         
-     <jsp:body>
+     <jsp:body>     	
         <div class="panel-group" id="tasks-list" role="tablist" aria-multiselectable="true">
-
-			<div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="task-heading-${idx}">
-                    <h2 class="panel-title clearfix">
-                        <a role="button" data-toggle="collapse" data-parent="#task-list" href="#task-collapse-${idx}" aria-expanded="true" aria-controls="task-collapse-${idx}">
-                            Task name
-                        </a>
-
-						<div class="btn-group pull-right">
-						  <button type="button" class="btn btn-xs btn-danger">
-						    Delete
-						  </button>
-						  <button type="button" class="btn btn-default btn-xs">
-						    Edit
-						  </button>
-						  <button type="button" class="btn btn-xs btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    Started <span class="caret"></span>
-						  </button>
-						  <ul class="dropdown-menu">
-						    <li><a href="#">Pending</a></li>
-						    <li><a href="#">Started</a></li>
-						    <li><a href="#">Done</a></li>
-						  </ul>
-						</div>
-                        
-                    </h2>
-                </div>
-                <div id="task-collapse-${idx}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="task-heading-${idx}">
-
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-8">
-                                ${description}
-                            </div>
-                            <div class="col-sm-4">
-                                ${status}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- /panel -->
-
-    	</div>
+	     	<t:taskPanel panelParent="#tasks-list" taskId="1">Download tools</t:taskPanel>
+		 	<t:taskPanel panelParent="#tasks-list" taskId="2">Clone repository</t:taskPanel>
+		 	<t:taskPanel panelParent="#tasks-list" taskId="3">Mock HTML views</t:taskPanel>
+		 	<t:taskPanel panelParent="#tasks-list" taskId="4">Spring tutorial</t:taskPanel>
+		 	<t:taskPanel panelParent="#tasks-list" taskId="5">Read emails</t:taskPanel>
+		 	<t:taskPanel panelParent="#tasks-list" taskId="6">Maven tutorial</t:taskPanel>
+		</div>
     </jsp:body>    
 </t:page>
