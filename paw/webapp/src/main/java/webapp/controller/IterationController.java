@@ -10,6 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/project/{project}/iteration")
 public class IterationController {
 	
+	@RequestMapping(value = "/new", method = RequestMethod.GET)
+	public ModelAndView getNewResource() {
+		final ModelAndView mav = new ModelAndView("iteration/newIteration");
+		return mav;
+	}
+	
 	@RequestMapping(value = "/{iteration}", method = RequestMethod.GET)
 	public ModelAndView getResource(@PathVariable String project,
 			@PathVariable String iteration) {
@@ -19,20 +25,17 @@ public class IterationController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView saveResource() {
-		final ModelAndView mav = new ModelAndView("helloworld");
-		return mav;
+		return null;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ModelAndView modifyResource(@PathVariable String id) {
-		final ModelAndView mav = new ModelAndView("helloworld");
-		return mav;
+		return null;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ModelAndView deleteResource(@PathVariable String id) {
-		final ModelAndView mav = new ModelAndView("helloworld");
-		return mav;
+		return null;
 	}
 
 }
