@@ -1,4 +1,4 @@
-package webapp.controller;
+package ar.edu.itba.webapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
