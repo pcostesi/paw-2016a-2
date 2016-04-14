@@ -20,12 +20,11 @@ import ar.edu.itba.models.User;
 @Repository
 public class UserJdbcDao implements UserDao {
 
-        private final JdbcTemplate jdbcTemplate;
-        private final SimpleJdbcInsert jdbcInsert;
-        
-        private final UserRowMapper userRowMapper;
+		private JdbcTemplate jdbcTemplate;
+        private SimpleJdbcInsert jdbcInsert;
+        private UserRowMapper userRowMapper;
 
-        @Autowired
+		@Autowired
         public UserJdbcDao(final DataSource ds) {
         		userRowMapper = new UserRowMapper();
                 jdbcTemplate = new JdbcTemplate(ds);
@@ -35,6 +34,7 @@ public class UserJdbcDao implements UserDao {
                                 + "username varchar(100),"
                                 + "password varchar(100)"
                         + ")");
+
         }
 
         @Override
@@ -64,7 +64,6 @@ public class UserJdbcDao implements UserDao {
                     return new User(rs.getString("username"), rs.getString("password"));
             }
         }
-
 }
 
 

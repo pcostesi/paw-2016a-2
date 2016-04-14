@@ -18,7 +18,6 @@ public class UserController {
 	
   @RequestMapping("/")
   public ModelAndView helloWorld() {
-	  service = new UserServicesImpl();
 	  User testUser = service.create("HOLA", "MUNDO");
       final ModelAndView mav = new ModelAndView("helloworld");      
       mav.addObject("greeting", testUser.getUsername()+":"+testUser.getPassword());

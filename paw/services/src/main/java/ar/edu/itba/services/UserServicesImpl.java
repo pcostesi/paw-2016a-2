@@ -13,7 +13,6 @@ public class UserServicesImpl implements UserServices{
 	@Autowired
 	private UserDao userDao;
 	
-	
 	@Override
 	public User create(String name, String password) {
 		return userDao.create(name, password);

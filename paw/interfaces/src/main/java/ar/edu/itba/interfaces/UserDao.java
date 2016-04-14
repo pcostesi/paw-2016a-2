@@ -11,13 +11,13 @@ public interface UserDao {
      * @param password The user's password.
      * @return The created user.
      */
-    User create(String username, String password);
+    public User create(String username, String password);
     
     /**
      * Fetch a user by username
      * @param username The user's name.
      * @return The matched user, or null if none matches.
      */
-    User getByUsername(String username);
-
+    public User getByUsername(String username);
+    
 }

@@ -16,13 +16,14 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan({ "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence"})
 @Configuration
 public class WebConfig {
-
+	
     @Bean
     public ViewResolver viewResolver() {
         final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/WEB-INF/jsp/");
         viewResolver.setSuffix(".jsp");
+       
         return viewResolver;
     }
     
@@ -33,7 +34,7 @@ public class WebConfig {
             ds.setUrl("jdbc:hsqldb:mem:paw");
             ds.setUsername("hq");
             ds.setPassword("");
-
+            
             return ds;
     }
 	
