@@ -7,9 +7,7 @@
     <artifactId>paw</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>ar.edu.itba</groupId>
   <artifactId>persistence</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>persistence</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -20,12 +18,6 @@
       <groupId>ar.edu.itba</groupId>
       <artifactId>interfaces</artifactId>
       <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

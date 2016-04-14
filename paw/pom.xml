@@ -22,16 +22,18 @@
     <jstl.version>1.2</jstl.version>
     <jdk.version>1.8</jdk.version>
     <org.hsqldb.version>2.3.1</org.hsqldb.version>
+    <junit.version>4.12</junit.version>
+    <mockito.version>1.10.19</mockito.version>
   </properties>
 
-	<dependencyManagement>
+  <dependencyManagement>
 	<dependencies>
 	  <dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-webmvc</artifactId>
 	    <version>${org.springframework.version}</version>
 	  </dependency>
-	        <dependency>
+	  <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
         <version>${servlet-api.version}</version>
@@ -57,20 +59,32 @@
         <artifactId>hsqldb</artifactId>
         <version>${org.hsqldb.version}</version>
       </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
 	</dependencies>
-	</dependencyManagement>
+  </dependencyManagement>
 
   <build>
     <plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.3</version>
-			<configuration>
-				<source>${jdk.version}</source>
-				<target>${jdk.version}</target>
-			</configuration>
-		</plugin>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>3.3</version>
+		<configuration>
+		  <source>${jdk.version}</source>
+		  <target>${jdk.version}</target>
+		</configuration>
+	  </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>

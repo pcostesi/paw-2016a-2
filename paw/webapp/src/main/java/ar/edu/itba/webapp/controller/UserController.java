@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.interfaces.UserServices;
 import ar.edu.itba.models.User;
-import ar.edu.itba.services.UserServicesImpl;
 
 @Controller
 public class UserController {

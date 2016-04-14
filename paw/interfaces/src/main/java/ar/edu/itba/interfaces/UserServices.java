@@ -10,5 +10,7 @@ public interface UserServices {
     * @param username The user's name.
     * @return The matched user, or null if none matches.
     */
-   User getByUsername(String username);
+   public User getByUsername(String username);
+   
+   public void setUserDao(UserDao userDao);
 }
