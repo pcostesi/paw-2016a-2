@@ -12,22 +12,9 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
-	
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-	crossorigin="anonymous">
-	
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css" crossorigin="anonymous">
-	
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-	crossorigin="anonymous"></script>
-	
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="/scripts/main.js"></script>    
+    
 </head>
 
 
@@ -78,22 +65,6 @@
         
         <jsp:doBody/>
     </div>
-    
-    <script>
-	    window.lint = (function() {
-	    	'use strict';
-	    	var s=document.createElement("script");
-	    	s.onload=function(){
-	    		bootlint.showLintReportForCurrentDocument([]);
-	    	};
-	    	
-	    	s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";
-	    	
-	    	document.body.appendChild(s)}
-	    );
-    </script>
-    <script src="/scripts/main.js"></script>
-    
 </body>
 
 </html>
