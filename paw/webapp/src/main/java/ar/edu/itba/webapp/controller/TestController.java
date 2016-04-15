@@ -7,25 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.interfaces.UserServices;
-import ar.edu.itba.models.User;
 
 @Controller
-public class UserController {
+public class TestController {
 
-	@Autowired
-	private UserServices service;
-	
-  @RequestMapping("/")
-  public ModelAndView helloWorld() {
-	  User testUser = service.create("HOLA", "MUNDO");
-      final ModelAndView mav = new ModelAndView("helloworld");      
-      mav.addObject("greeting", testUser.getUsername()+":"+testUser.getPassword());
-      return mav;
-  }
+  @Autowired
+  private UserServices service;
   
   @RequestMapping("/users/{username}")
   public ModelAndView getUser(@PathVariable final String username) {
           final ModelAndView mav = new ModelAndView("user");
+          service.create(username, "passwd");
           mav.addObject("user", service.getByUsername(username));
           return mav;
   }
