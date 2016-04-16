@@ -11,6 +11,5 @@ public interface UserServices {
     * @return The matched user, or null if none matches.
     */
    public User getByUsername(String username);
-   
-   public void setUserDao(UserDao userDao);
+  
 }
