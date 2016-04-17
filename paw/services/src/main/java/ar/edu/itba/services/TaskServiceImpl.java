@@ -1,6 +1,7 @@
 package ar.edu.itba.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
@@ -8,6 +9,7 @@ import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
+@Service
 public class TaskServiceImpl implements TaskService{
 
 	@Autowired

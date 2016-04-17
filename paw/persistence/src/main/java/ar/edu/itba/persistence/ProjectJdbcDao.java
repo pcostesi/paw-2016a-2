@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.models.IterationDetail;
@@ -19,6 +20,7 @@ import ar.edu.itba.models.ProjectStatus;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
 
+@Repository
 public class ProjectJdbcDao implements ProjectDao{
 	
 	private JdbcTemplate jdbcTemplate;
@@ -34,7 +36,7 @@ public class ProjectJdbcDao implements ProjectDao{
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("project").usingGeneratedKeyColumns("project_id");
 
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS project ("
-                            + "project_id INTEGER NOT NULL AUTO_INCREMENT,"
+                            + "project_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                             + "name varchar(100) NOT NULL,"
                             + "description varchar(500),"
                             + "date_start DATE,"

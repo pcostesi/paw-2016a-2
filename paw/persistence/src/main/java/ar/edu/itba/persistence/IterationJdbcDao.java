@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
@@ -18,6 +19,7 @@ import ar.edu.itba.models.Task;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
 
+@Repository
 public class IterationJdbcDao implements IterationDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -33,13 +35,13 @@ public class IterationJdbcDao implements IterationDao {
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("iteration").usingGeneratedKeyColumns("iteration_id");
 
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS iteration ("
-            				+ "iteration_id INTEGER NOT NULL AUTO_INCREMENT,"
-                            + "project_id INTEGER NOT NULL"
+            				+ "iteration_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
+                            + "project_id INTEGER NOT NULL,"
                             + "number INTEGER,"
                             + "date_start DATE,"
                             + "date_end DATE,"
                             + "PRIMARY KEY ( iteration_id ),"
-                            + "FOREIGN KEY ( project_id )"
+                            + "FOREIGN KEY ( project_id ) REFERENCES project ( project_id )"
                     + ")");
     }
     

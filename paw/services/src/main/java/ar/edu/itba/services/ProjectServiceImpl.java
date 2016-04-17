@@ -3,12 +3,14 @@ package ar.edu.itba.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.ProjectDetail;
 
+@Service
 public class ProjectServiceImpl implements ProjectService{
 
 	@Autowired
