@@ -2,9 +2,9 @@ package ar.edu.itba.interfaces;
 
 import ar.edu.itba.models.User;
 
-public interface UserServices {
+public interface UserService {
 	
-	public User create(String name, String password);
+	public User create(String name, String password, String mail);
 	
     /* Fetch a user by username
     * @param username The user's name.

@@ -1,8 +1,5 @@
 package ar.edu.itba.persistence;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,65 +9,93 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import ar.edu.itba.interfaces.ProjectDao;
+import ar.edu.itba.models.IterationDetail;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.ProjectDetail;
 import ar.edu.itba.models.ProjectStatus;
+import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
+import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
 
 public class ProjectJdbcDao implements ProjectDao{
 	
 	private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
-    private ProjectRowMapper projectRowMapper;
+    private ProjectDetailRowMapper projectDetailRowMapper;
+    private IterationDetailRowMapper iterationDetailRowMapper;
 
     @Autowired
     public ProjectJdbcDao(final DataSource ds) {
-    		projectRowMapper = new ProjectRowMapper();
+    		projectDetailRowMapper = new ProjectDetailRowMapper();
+    		iterationDetailRowMapper = new IterationDetailRowMapper();
             jdbcTemplate = new JdbcTemplate(ds);
-            jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("project");
+            jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("project").usingGeneratedKeyColumns("project_id");
 
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS project ("
                             + "project_id INTEGER NOT NULL AUTO_INCREMENT,"
-                            + "name varchar(100),"
+                            + "name varchar(100) NOT NULL,"
                             + "description varchar(500),"
                             + "date_start DATE,"
                             + "status INTEGER,"
                             + "PRIMARY KEY ( project_id )"
                     + ")");
-
     }
-    
+
 	@Override
-	public List<Project> getProjetcs() {
-		final List<Project> list = jdbcTemplate.query("SELECT * FROM project", projectRowMapper);
+	public ProjectDetail createProject(final String name, final String description) {
+		final Date curDate = new Date();
+		final Map<String, Object> args = new HashMap<String, Object>();
+        args.put("name", name);
+        args.put("description", description);
+        args.put("start_date", new java.sql.Date(curDate.getTime()));
+        args.put("status", ProjectStatus.OPEN.getValue());
+        int projectId = jdbcInsert.executeAndReturnKey(args).intValue();
+
+        return new ProjectDetail(projectId, name, description, curDate, ProjectStatus.OPEN);
+	}
+	
+	@Override
+	public boolean deleteProject(int projectId) {
+		List<IterationDetail> projectIterations = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
+		
+		for (IterationDetail iteration: projectIterations){
+			int itId = iteration.getIterationId();
+			jdbcTemplate.update("DELETE FROM task WHERE iteration_id = ?", itId);
+			jdbcTemplate.update("DELETE FROM log WHERE iteration_id = ?", itId);
+			jdbcTemplate.update("DELETE FROM iteration WHERE iteration_id = ?", itId);
+			// TODO falta updetear los numbers de las iteraciones en la tabla
+		}
+		
+		return jdbcTemplate.update("DELETE FROM project WHERE project_id = ?", projectId) > 0;
+	}
+	
+	@Override
+	public List<ProjectDetail> getProjectDetailList() {
+        final List<ProjectDetail> list = jdbcTemplate.query("SELECT * FROM project", projectDetailRowMapper);
         if (list.isEmpty()) {
                 return null;
         }
 
         return list;
 	}
-
-	@Override
-	public Project createProject(final String name, final String description, final Date startDate, final ProjectStatus status) {
-		final Map<String, Object> args = new HashMap<String, Object>();
-        args.put("name", name);
-        args.put("description", description);
-        args.put("start_date", new java.sql.Date(startDate.getTime()));
-        args.put("status", status.getValue());
-        jdbcInsert.execute(args);
-
-        return new Project(name, description, startDate, status);
-	}
 	
-	private static class ProjectRowMapper implements RowMapper<Project> {
+	@Override
+	public Project getProjectWithDetailsById(int projectId) {
+      final List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ? LIMIT 1", projectDetailRowMapper, projectId);
+      if (resultRows.isEmpty()) {
+              return null;
+      }
 
-        @Override
-        public Project mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-                return new Project(rs.getString("name"), rs.getString("description"),
-                		new Date(rs.getDate("start_date").getTime()), ProjectStatus.getByValue(rs.getInt("status")));
-        }
-    }
-
+      Project requestedProject = new Project(resultRows.get(0));
+      
+      final List<IterationDetail> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
+      
+      for (IterationDetail itDetail: iterationDetailRows){
+    	  requestedProject.addIteration(itDetail);
+      }
+      
+      return requestedProject;
+	}
 }

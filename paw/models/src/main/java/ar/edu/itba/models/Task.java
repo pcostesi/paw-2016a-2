@@ -2,12 +2,22 @@ package ar.edu.itba.models;
 
 public class Task {
 	
+	private final int taskId;
 	private String title;
 	private String description;
 	private TaskStatus status;
 	private User owner;
 	
-	public Task(String title, String description) {
+	public Task(int taskId, String title, String description, TaskStatus status, User owner) {
+		this.taskId = taskId;
+		this.title = title;
+		this.description = description;
+		this.status = status;
+		this.owner = owner;
+	}
+	
+	public Task(int taskId, String title, String description) {
+		this.taskId = taskId;
 		this.title = title;
 		this.description = description;
 		this.status = TaskStatus.NOT_STARTED;
@@ -44,6 +54,15 @@ public class Task {
 	
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	public String toString() {
+		return "Task [taskId=" + taskId + ", title=" + title + ", description=" + description + ", status=" + status
+				+ ", owner=" + owner + "]";
+	}
+
+	public int getTaskId() {
+		return taskId;
 	}
 	
 

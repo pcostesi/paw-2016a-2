@@ -4,8 +4,8 @@ import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
-public interface TaskDao {
-	
+public interface TaskService {
+
 	public Task createTask(int iterationId, String title, String description);
 	
 	public boolean deleteTask(int taskId);

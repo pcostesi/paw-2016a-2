@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.interfaces.UserServices;
+import ar.edu.itba.interfaces.UserService;
 
 @Controller
 public class TestController {
 
   @Autowired
-  private UserServices service;
+  private UserService service;
   
   @RequestMapping("/users/{username}")
   public ModelAndView getUser(@PathVariable final String username) {
           final ModelAndView mav = new ModelAndView("user");
-          service.create(username, "passwd");
+          service.create(username, "bar", "foo@bar.com");
           mav.addObject("user", service.getByUsername(username));
           return mav;
   }
