@@ -6,7 +6,7 @@ import ar.edu.itba.models.User;
 
 public interface TaskService {
 
-	public Task createTask(int iterationId, String title, String description);
+	public Task createTask(String projectName, int iterationNumber, String title, String description);
 	
 	public boolean deleteTask(int taskId);
 	

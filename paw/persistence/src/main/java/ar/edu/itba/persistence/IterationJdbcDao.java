@@ -40,14 +40,14 @@ public class IterationJdbcDao implements IterationDao {
                             + "number INTEGER,"
                             + "date_start DATE,"
                             + "date_end DATE,"
-                            + "PRIMARY KEY ( iteration_id ),"
-                            + "FOREIGN KEY ( project_id ) REFERENCES project ( project_id )"
+                            + "PRIMARY KEY ( iteration_id )"
                     + ")");
     }
     
 	@Override
-	public IterationDetail createIteration(int projectId, Date beginDate, Date endDate) {
-		final int itNumber = getCurIterationNumberForProject(projectId);
+	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
+		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE project_name = ?", Integer.class, projectName);
+		final int itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("project_id", projectId);
@@ -57,10 +57,6 @@ public class IterationJdbcDao implements IterationDao {
         jdbcInsert.execute(args);
 		
 		return new IterationDetail(projectId, itNumber+1, beginDate, endDate);
-	}
-
-	private int getCurIterationNumberForProject(int projectId){
-		return jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = "+ projectId, Integer.class);
 	}
 	
 	@Override
@@ -77,7 +73,10 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public Iteration getIterationById(int iterationId) {
+	public Iteration getIteration(String projectName, int iterationNumber) {
+		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE project_name = ?", Integer.class, projectName);
+		final int iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
+		
 		List<IterationDetail> detailList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
 		
 		if (detailList.isEmpty()) {

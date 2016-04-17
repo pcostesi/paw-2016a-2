@@ -32,8 +32,8 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public Project getProjectWithDetailsById(int projectId) {
-		return projectDao.getProjectWithDetailsById(projectId);
+	public Project getProjectWithDetails(String projectName) {
+		return projectDao.getProjectWithDetails(projectName);
 	}
 
 }

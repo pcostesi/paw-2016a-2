@@ -13,6 +13,6 @@ public interface ProjectDao {
 	
 	public List<ProjectDetail> getProjectDetailList();
 	
-	public Project getProjectWithDetailsById(int projectId);
+	public Project getProjectWithDetails(String projectName);
 
 }

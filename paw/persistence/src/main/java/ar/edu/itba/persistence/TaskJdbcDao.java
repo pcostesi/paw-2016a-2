@@ -33,13 +33,15 @@ public class TaskJdbcDao implements TaskDao{
                             + "description varchar(500) NOT NULL,"
                             + "owner varchar(100),"
                             + "status INTEGER NOT NULL,"
-                            + "PRIMARY KEY ( task_id ),"
-                            + "FOREIGN KEY ( iteration_id ) REFERENCES iteration ( iteration_id )"
+                            + "PRIMARY KEY ( task_id )"
                     + ")");
     }
 
 	@Override
-	public Task createTask(int iterationId, String title, String description) {		
+	public Task createTask(String projectName, int iterationNumber, String title, String description) {		
+		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE project_name = ?", Integer.class, projectName);
+		final int iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
+		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("iteration_id", iterationId);
 		args.put("title", title);

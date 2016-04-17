@@ -17,8 +17,8 @@ public class IterationServiceImpl implements IterationService{
 	IterationDao iterationDao;
 	
 	@Override
-	public IterationDetail createIteration(int projectId, Date beginDate, Date endDate) {
-		return iterationDao.createIteration(projectId, beginDate, endDate);
+	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
+		return iterationDao.createIteration(projectName, beginDate, endDate);
 	}
 
 	@Override
@@ -27,8 +27,8 @@ public class IterationServiceImpl implements IterationService{
 	}
 
 	@Override
-	public Iteration getIterationById(int iterationId) {
-		return iterationDao.getIterationById(iterationId);
+	public Iteration getIteration(String projectName, int iterationNumber) {
+		return iterationDao.getIteration(projectName, iterationNumber);
 	}
 
 }

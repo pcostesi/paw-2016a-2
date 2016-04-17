@@ -17,9 +17,9 @@ public class ProjectDetailController {
 	ProjectService ps;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getResource(@PathVariable int id) {
+	public ModelAndView getResource(@PathVariable String id) {
 		final ModelAndView mav = new ModelAndView("project/iterationList");
-		mav.addObject("project", ps.getProjectWithDetailsById(id));
+		mav.addObject("project", ps.getProjectWithDetails(id));
 		return mav;
 	}
 

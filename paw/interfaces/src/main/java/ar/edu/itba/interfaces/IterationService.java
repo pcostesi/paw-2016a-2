@@ -7,10 +7,10 @@ import ar.edu.itba.models.IterationDetail;
 
 public interface IterationService {
 
-	public IterationDetail createIteration(int projectId, Date beginDate, Date endDate);
+	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate);
 	
 	public boolean deleteIteration(int iterationId);
 	
-	public Iteration getIterationById(int iterationId);
+	public Iteration getIteration(String projectName, int iterationNumber);
 	
 }

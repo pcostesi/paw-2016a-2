@@ -16,8 +16,8 @@ public class TaskServiceImpl implements TaskService{
 	private TaskDao taskDao;
 	
 	@Override
-	public Task createTask(int iterationId, String title, String description) {
-		return taskDao.createTask(iterationId, title, description);
+	public Task createTask(String projectName, int iterationNumber, String title, String description) {
+		return taskDao.createTask(projectName, iterationNumber, title, description);
 	}
 
 	@Override

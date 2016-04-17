@@ -41,7 +41,7 @@ public class ProjectJdbcDao implements ProjectDao{
                             + "description varchar(500),"
                             + "date_start DATE,"
                             + "status INTEGER,"
-                            + "PRIMARY KEY ( project_id )"
+                            + "PRIMARY KEY ( project_id, name )"
                     + ")");
     }
 
@@ -84,15 +84,15 @@ public class ProjectJdbcDao implements ProjectDao{
 	}
 	
 	@Override
-	public Project getProjectWithDetailsById(int projectId) {
-      final List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ? LIMIT 1", projectDetailRowMapper, projectId);
+	public Project getProjectWithDetails(String projectName) {
+      final List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", projectDetailRowMapper, projectName);
       if (resultRows.isEmpty()) {
               return null;
       }
 
       Project requestedProject = new Project(resultRows.get(0));
       
-      final List<IterationDetail> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
+      final List<IterationDetail> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, requestedProject.getProjectDetails().getProjectId());
       
       for (IterationDetail itDetail: iterationDetailRows){
     	  requestedProject.addIteration(itDetail);
