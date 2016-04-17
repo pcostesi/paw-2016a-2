@@ -5,9 +5,9 @@ import java.util.List;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.ProjectDetail;
 
-public interface ProjectDao {
-	
-	public ProjectDetail createProject(String name, String description);
+public interface ProjectService {
+
+public ProjectDetail createProject(String name, String description);
 	
 	public boolean deleteProject(int projectId);
 	

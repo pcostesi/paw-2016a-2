@@ -11,7 +11,7 @@ public interface UserDao {
      * @param password The user's password.
      * @return The created user.
      */
-    public User create(String username, String password);
+    public User create(String username, String password, String mail);
     
     /**
      * Fetch a user by username

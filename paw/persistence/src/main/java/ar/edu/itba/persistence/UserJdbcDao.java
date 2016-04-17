@@ -28,28 +28,31 @@ public class UserJdbcDao implements UserDao {
         public UserJdbcDao(final DataSource ds) {
         		userRowMapper = new UserRowMapper();
                 jdbcTemplate = new JdbcTemplate(ds);
-                jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("users");
+                jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("user");
 
-                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users ("
+                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS user ("
                                 + "username varchar(100),"
-                                + "password varchar(100)"
+                                + "password varchar(100),"
+                                + "mail varchar(100),"
+                                + "PRIMARY KEY ( username )"
                         + ")");
 
         }
 
         @Override
-        public User create(final String username, final String password) {
+        public User create(final String username, final String password, final String mail) {
                 final Map<String, Object> args = new HashMap<String, Object>();
                 args.put("username", username);
                 args.put("password", password);
+                args.put("mail", mail);
                 jdbcInsert.execute(args);
 
-                return new User(username, password);
+                return new User(username, password, mail);
         }
         
         @Override
         public User getByUsername(final String username) {
-                final List<User> list = jdbcTemplate.query("SELECT * FROM users WHERE username = ? LIMIT 1", userRowMapper, username);
+                final List<User> list = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
                 if (list.isEmpty()) {
                         return null;
                 }
@@ -61,7 +64,7 @@ public class UserJdbcDao implements UserDao {
 
             @Override
             public User mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-                    return new User(rs.getString("username"), rs.getString("password"));
+                    return new User(rs.getString("username"), rs.getString("password"), rs.getString("mail"));
             }
         }
 }
