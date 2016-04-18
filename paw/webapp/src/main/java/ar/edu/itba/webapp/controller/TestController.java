@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.TaskService;
 
 @Controller
 public class TestController {
@@ -19,12 +20,16 @@ public class TestController {
   @Autowired
   private IterationService is;
   
+  @Autowired
+  private TaskService ts;
+  
   @RequestMapping("/test")
   public ModelAndView test() {
           final ModelAndView mav = new ModelAndView("user");
 
           ps.createProject("Test", "This is a test project");
           is.createIteration("Test", new Date(), new Date());
+          ts.createTask("Test", 1, "My first task", "Hello task!");
 
           return mav;
   }

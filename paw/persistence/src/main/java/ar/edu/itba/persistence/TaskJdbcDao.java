@@ -39,7 +39,8 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public Task createTask(String projectName, int iterationNumber, String title, String description) {		
-		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE project_name = ?", Integer.class, projectName);
+		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE name = ?", Integer.class, projectName);
+		System.out.println(projectId);
 		final int iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
 		
 		final Map<String, Object> args = new HashMap<String, Object>();

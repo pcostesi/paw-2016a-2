@@ -46,9 +46,14 @@ public class IterationJdbcDao implements IterationDao {
     
 	@Override
 	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
-		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE project_name = ?", Integer.class, projectName);
-		final int itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
+		Integer projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE name = ?", Integer.class, projectName);
+		Integer itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
 		
+		if (itNumber == null) {
+			itNumber = 0;
+		}
+		
+		System.out.println(itNumber);
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("project_id", projectId);
         args.put("number", itNumber+1);
