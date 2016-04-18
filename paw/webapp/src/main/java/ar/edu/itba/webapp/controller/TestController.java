@@ -1,24 +1,31 @@
 package ar.edu.itba.webapp.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.IterationService;
+import ar.edu.itba.interfaces.ProjectService;
 
 @Controller
 public class TestController {
-
-  @Autowired
-  private UserService service;
   
-  @RequestMapping("/users/{username}")
-  public ModelAndView getUser(@PathVariable final String username) {
+  @Autowired
+  private ProjectService ps;
+  
+  @Autowired
+  private IterationService is;
+  
+  @RequestMapping("/test")
+  public ModelAndView test() {
           final ModelAndView mav = new ModelAndView("user");
-          service.create(username, "bar", "foo@bar.com");
-          mav.addObject("user", service.getByUsername(username));
+
+          ps.createProject("Test", "This is a test project");
+          is.createIteration("Test", new Date(), new Date());
+
           return mav;
   }
 
