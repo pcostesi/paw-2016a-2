@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -11,9 +12,14 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
+import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.ProjectDetail;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
+import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
+import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
+import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
 
 @Repository
 public class TaskJdbcDao implements TaskDao{
@@ -39,9 +45,19 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public Task createTask(String projectName, int iterationNumber, String title, String description) {		
-		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE name = ?", Integer.class, projectName);
-		System.out.println(projectId);
-		final int iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
+		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", new ProjectDetailRowMapper(), projectName);
+		if (project.isEmpty()) {
+			return null;
+		}
+		
+		int projectId = project.get(0).getProjectId();
+		
+		List<IterationDetail> iteration = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id= ? AND number = ? LIMIT 1", new IterationDetailRowMapper(), projectId, iterationNumber);
+		if (iteration.isEmpty()) {
+			return null;
+		}
+		
+		int iterationId = iteration.get(0).getIterationId();
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("iteration_id", iterationId);
@@ -68,6 +84,17 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public boolean changeStatus(int taskId, TaskStatus status) {
 		return jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", status.getValue(), taskId) > 0;
+	}
+
+	@Override
+	public Task getTask(int taskId) {
+		List<Task> taskList = jdbcTemplate.query("SELECT * FROM task INNER JOIN iteration "
+				+ "ON task.iteration_id = iteration.iteration_id WHERE task_id = ?", new TaskUserRowMapper(), taskId);
+		if (taskList.isEmpty()) {
+			return null;
+		} else {
+			return taskList.get(0);
+		}
 	}
 
 }

@@ -15,8 +15,10 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.ProjectDetail;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
+import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
 
 @Repository
@@ -37,23 +39,27 @@ public class IterationJdbcDao implements IterationDao {
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS iteration ("
             				+ "iteration_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                             + "project_id INTEGER NOT NULL,"
-                            + "number INTEGER,"
-                            + "date_start DATE,"
-                            + "date_end DATE,"
+                            + "number INTEGER NOT NULL,"
+                            + "date_start DATE NOT NULL,"
+                            + "date_end DATE NOT NULL,"
                             + "PRIMARY KEY ( iteration_id )"
                     + ")");
     }
     
 	@Override
 	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
-		Integer projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE name = ?", Integer.class, projectName);
-		Integer itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
+		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", new ProjectDetailRowMapper(), projectName);
+		if (project.isEmpty()) {
+			return null;
+		}
 		
+		int projectId = project.get(0).getProjectId();
+		
+		Integer itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
 		if (itNumber == null) {
 			itNumber = 0;
 		}
 		
-		System.out.println(itNumber);
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("project_id", projectId);
         args.put("number", itNumber+1);
@@ -79,8 +85,15 @@ public class IterationJdbcDao implements IterationDao {
 
 	@Override
 	public Iteration getIteration(String projectName, int iterationNumber) {
-		final int projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE project_name = ?", Integer.class, projectName);
-		final int iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
+		Integer projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE project_name = ?", Integer.class, projectName);
+		if(projectId == null) {
+			return null;
+		}
+		
+		Integer iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
+		if (iterationId == null) {
+			return null;
+		}
 		
 		List<IterationDetail> detailList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
 		
