@@ -22,6 +22,7 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'styles', 'bootlint'], function($, _, bootlint) {
+requirejs(['jquery', 'styles', 'bootlint', 'swal'], function($, _, bootlint, swal) {
 	bootlint.lintCurrentDocument(console.error.bind(console), []);
+	window.swal = swal;
 });
