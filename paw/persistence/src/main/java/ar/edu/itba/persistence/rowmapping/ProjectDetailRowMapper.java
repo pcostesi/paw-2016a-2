@@ -13,6 +13,7 @@ public class ProjectDetailRowMapper implements RowMapper<ProjectDetail> {
 
     @Override
     public ProjectDetail mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+
             return new ProjectDetail(rs.getInt("project_id"), rs.getString("name"), rs.getString("description"),
             		new Date(rs.getDate("date_start").getTime()), ProjectStatus.getByValue(rs.getInt("status")));
     }
