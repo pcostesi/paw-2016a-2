@@ -11,7 +11,7 @@ import ar.edu.itba.interfaces.UserDao;
 public class UserServicesImplTest {
         private static final String USERNAME = "Juan";
 
-        private UserServicesImpl us;
+        private UserServiceImpl us;
 
         @Mock
         private UserDao userDao;
@@ -20,7 +20,7 @@ public class UserServicesImplTest {
         public void setUp() {
                 MockitoAnnotations.initMocks(this);
 
-                us = new UserServicesImpl();
+                us = new UserServiceImpl();
                 us.setUserDao(userDao);
         }
 

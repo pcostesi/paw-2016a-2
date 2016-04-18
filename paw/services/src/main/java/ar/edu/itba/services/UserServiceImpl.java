@@ -8,7 +8,7 @@ import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.models.User;
 
 @Service
-public class UserServicesImpl implements UserService{
+public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserDao userDao;

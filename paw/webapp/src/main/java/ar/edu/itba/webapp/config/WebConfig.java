@@ -37,7 +37,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             ds.setUrl("jdbc:hsqldb:mem:paw");
             ds.setUsername("hq");
             ds.setPassword("");
-            
             return ds;
     }
 	
