@@ -2,11 +2,15 @@ package ar.edu.itba.models;
 
 public class Task {
 	
-	private final int taskId;
+	private int taskId;
+	
 	private String title;
 	private String description;
 	private TaskStatus status;
 	private User owner;
+	
+	public Task() {
+	}
 	
 	public Task(int taskId, String title, String description, TaskStatus status, User owner) {
 		this.taskId = taskId;
