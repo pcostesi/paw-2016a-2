@@ -67,6 +67,10 @@ public class ProjectJdbcDao implements ProjectDao{
 	public boolean deleteProject(int projectId) {
 		List<IterationDetail> projectIterations = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
 		
+		if (projectIterations.isEmpty()) {
+			return false;
+		}
+		
 		for (IterationDetail iteration: projectIterations){
 			int itId = iteration.getIterationId();
 			jdbcTemplate.update("DELETE FROM task WHERE iteration_id = ?", itId);

@@ -44,7 +44,7 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public Task createTask(String projectName, int iterationNumber, String title, String description) {	
-		
+
 		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
 			return null;

@@ -51,7 +51,7 @@ public class IterationJdbcDao implements IterationDao {
 		if (project.isEmpty()) {
 			return null;
 		}
-		
+
 		int projectId = project.get(0).getProjectId();
 		
 		Integer itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
@@ -93,7 +93,7 @@ public class IterationJdbcDao implements IterationDao {
 			return null;
 		}		
 		Integer projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE name = ?", Integer.class, projectName);
-		
+
 		boolean iterationExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber) > 0;
 		if (!iterationExists) {
 			return null;
