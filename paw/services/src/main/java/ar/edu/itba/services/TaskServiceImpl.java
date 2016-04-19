@@ -35,4 +35,10 @@ public class TaskServiceImpl implements TaskService{
 		return taskDao.changeStatus(taskId, status);
 	}
 
+	@Override
+	public Task getTask(int taskId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
