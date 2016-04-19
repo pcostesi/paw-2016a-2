@@ -44,6 +44,14 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public Task createTask(String projectName, int iterationNumber, String title, String description) {	
+		
+		if (projectName == null || projectName.length() == 0 || iterationNumber < 1 ) {
+			return null;
+		}
+
+		if (title == null || title.length() == 0 || description == null || description.length() == 0) {
+			return null;
+		}
 
 		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
@@ -65,6 +73,11 @@ public class TaskJdbcDao implements TaskDao{
 	
 	@Override
 	public Task createTask(int iterationId, String title, String description) {
+		
+		if (title == null || title.length() == 0 || description == null || description.length() == 0) {
+			return null;
+		}
+		
 		boolean iterationExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE iteration_id = ?", Integer.class, iterationId) > 0;
 		if (!iterationExists) {
 			return null;
@@ -89,11 +102,17 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public boolean changeOwnership(int taskId, User user) {
+		if (user == null) {
+			return false;
+		}
 		return jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.getUsername(), taskId) > 0;
 	}
 
 	@Override
 	public boolean changeStatus(int taskId, TaskStatus status) {
+		if (status == null) {
+			return false;
+		}
 		return jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", status.getValue(), taskId) > 0;
 	}
 

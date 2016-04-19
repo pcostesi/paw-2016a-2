@@ -47,6 +47,10 @@ public class IterationJdbcDao implements IterationDao {
     
 	@Override
 	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
+		if (projectName == null || projectName.length() == 0 || beginDate == null || beginDate == null ) {
+			return null;
+		}
+		
 		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
 			return null;
@@ -88,6 +92,10 @@ public class IterationJdbcDao implements IterationDao {
 
 	@Override
 	public Iteration getIteration(String projectName, int iterationNumber) {
+		if (projectName == null || projectName.length() == 0 || iterationNumber < 1) {
+			return null;
+		}
+		
 		boolean projectExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, projectName) > 0;
 		if(!projectExists) {
 			return null;

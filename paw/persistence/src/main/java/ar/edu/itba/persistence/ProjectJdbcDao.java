@@ -47,6 +47,14 @@ public class ProjectJdbcDao implements ProjectDao{
 
 	@Override
 	public ProjectDetail createProject(final String name, final String description) {
+		if (name == null || name.length() == 0) {
+			return null;
+		}
+		
+		if (description == null || description.length() == 0) {
+			return null;
+		}
+		
 		Integer projectCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, name);
 		if (projectCount > 0) {
 			return null;
@@ -95,6 +103,10 @@ public class ProjectJdbcDao implements ProjectDao{
 	
 	@Override
 	public Project getProjectWithDetails(String projectName) {
+	  if (projectName == null || projectName.length() == 0) {
+		  return null;
+	  }
+
       List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", projectDetailRowMapper, projectName);
       
       if (resultRows.isEmpty()) {

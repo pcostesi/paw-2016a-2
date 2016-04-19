@@ -40,6 +40,11 @@ public class UserJdbcDao implements UserDao {
 
         @Override
         public User create(final String username, final String password, final String mail) {
+        	if (username == null || username.length() == 0 || password == null || password.length() == 0 ||
+        			mail == null || mail.length() == 0 ) {
+        		return null;
+        	}
+        	
         	boolean userExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE username = ?", Integer.class, username) > 0;
         	
         	if (userExists) {
@@ -57,12 +62,16 @@ public class UserJdbcDao implements UserDao {
         
         @Override
         public User getByUsername(final String username) {
-                final List<User> list = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
-                if (list.isEmpty()) {
-                        return null;
-                }
+        	if (username == null || username.length() == 0 ) {
+        		return null;
+        	}
+            
+        	final List<User> list = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
+            if (list.isEmpty()) {
+                    return null;
+            }
 
-                return list.get(0);
+            return list.get(0);
         }
         
         private static class UserRowMapper implements RowMapper<User> {
