@@ -1,8 +1,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@tag description="Page Template" pageEncoding="UTF-8"%>
 <%@attribute name="title" fragment="true" required="true" %>
 <%@attribute name="actions" fragment="true" required="false" %>
+<%@attribute name="user" required="false" type="ar.edu.itba.models.User" %>
 
 <!DOCTYPE html>
 
@@ -36,7 +38,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <nav class="collapse navbar-collapse" id="nav-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Project view <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="#"><spring:message code="nav.view.project"/></title></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -49,6 +51,9 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li class="btn-group">
 			     		<jsp:invoke fragment="actions"/>
+		     		</li>
+		     		<li>
+		     			${user.getUsername()}
 		     		</li>
 		        </ul>
 
