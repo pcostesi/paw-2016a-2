@@ -8,7 +8,7 @@ import org.mockito.MockitoAnnotations;
 
 import ar.edu.itba.interfaces.user.UserDao;
 
-public class UserServicesImplTest {
+public class UserServiceImplTest {
         private static final String USERNAME = "Juan";
 
         private UserServiceImpl us;
