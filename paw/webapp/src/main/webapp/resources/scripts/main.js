@@ -9,6 +9,7 @@ requirejs.config({
         'bootstrap-css': 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min',
        	'bootswatch-sandstone': 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min',
 		'bootlint': 'https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min',
+		'swal': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/0.4.5/sweet-alert.min'
     },
     
     shim: {
@@ -17,7 +18,10 @@ requirejs.config({
     		exports: 'bootlint'
     	},
     	'bootstrap-js': ['jquery'],
-    	'html-inspector': { exports: 'HTMLInspector' }
+    	'swal': {
+    		deps: ['jquery', 'bootstrap', 'css!swal'],
+    		exports: 'swal'
+    	}
     }
 });
 
