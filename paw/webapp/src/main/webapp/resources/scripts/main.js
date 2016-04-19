@@ -28,8 +28,5 @@ requirejs.config({
 // Start the main app logic.
 requirejs(['jquery', 'styles', 'bootlint', 'swal'], function($, _, bootlint, swal) {
 	bootlint.lintCurrentDocument(console.error.bind(console), []);
-<<<<<<< Updated upstream
 	window.swal = swal;
-=======
->>>>>>> Stashed changes
 });
