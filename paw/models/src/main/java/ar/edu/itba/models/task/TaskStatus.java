@@ -1,4 +1,4 @@
-package ar.edu.itba.models;
+package ar.edu.itba.models.task;
 
 public enum TaskStatus {
 	

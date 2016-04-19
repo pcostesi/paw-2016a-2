@@ -5,10 +5,10 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.itba.interfaces.IterationDao;
-import ar.edu.itba.interfaces.IterationService;
-import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.interfaces.iteration.IterationDao;
+import ar.edu.itba.interfaces.iteration.IterationService;
+import ar.edu.itba.models.iteration.Iteration;
+import ar.edu.itba.models.iteration.IterationDetail;
 
 @Service
 public class IterationServiceImpl implements IterationService{
@@ -29,6 +29,11 @@ public class IterationServiceImpl implements IterationService{
 	@Override
 	public Iteration getIteration(String projectName, int iterationNumber) {
 		return iterationDao.getIteration(projectName, iterationNumber);
+	}
+
+	@Override
+	public Iteration getIteration(int iterationId) {
+		return iterationDao.getIteration(iterationId);
 	}
 
 }

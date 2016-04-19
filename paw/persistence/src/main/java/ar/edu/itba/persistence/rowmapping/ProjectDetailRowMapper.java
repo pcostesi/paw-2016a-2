@@ -6,8 +6,8 @@ import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import ar.edu.itba.models.ProjectDetail;
-import ar.edu.itba.models.ProjectStatus;
+import ar.edu.itba.models.project.ProjectDetail;
+import ar.edu.itba.models.project.ProjectStatus;
 
 public class ProjectDetailRowMapper implements RowMapper<ProjectDetail> {
 
