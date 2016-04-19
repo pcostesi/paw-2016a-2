@@ -2,13 +2,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-
 <t:page user="${user}">
 	<jsp:attribute name="title">
-    	Task &mdash;
+    	${task.getTitle()} <small>Task #${task.getTaskId()}</small>
 	</jsp:attribute>
 	
 	<jsp:body>
-		
+		${task.getDescription()}
     </jsp:body>
 </t:page>
