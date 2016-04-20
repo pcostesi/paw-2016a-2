@@ -15,6 +15,10 @@ public class TaskServiceImpl implements TaskService{
 	@Autowired
 	private TaskDao taskDao;
 	
+	@Autowired TaskServiceImpl(TaskDao taskDao){
+		this.taskDao = taskDao;
+	}
+	
 	@Override
 	public Task createTask(String projectName, int iterationNumber, String title, String description) {
 		return taskDao.createTask(projectName, iterationNumber, title, description);
