@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.models.Task;
 import ar.edu.itba.webapp.form.TaskForm;
 
 @Controller
-@RequestMapping("/project/{project}/iteration/{iteration}/task")
+@RequestMapping(value = "/project/{project}/iteration/{iteration}/task")
 public class TaskController {
 	
 	@Autowired
@@ -28,19 +30,26 @@ public class TaskController {
 	}
 	
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
-	public ModelAndView createNewResource(@Valid @ModelAttribute("taskForm") TaskForm taskForm, BindingResult result) {
+	public ModelAndView createNewResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
+			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
+			@Valid @ModelAttribute("taskForm") final TaskForm taskForm,
+			BindingResult result) {
 		final ModelAndView mav;
 		if (result.hasErrors()) {
 			mav = new ModelAndView("task/newTask");
 		} else {
-			mav = new ModelAndView("redirect:/");
+			final Task task = ts.createTask(projectId, iterationId, taskForm.getTitle(), taskForm.getDescription());
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("task.getById")
+					.arg(0, task.getTaskId())
+					.buildAndExpand(projectId, iterationId);
+			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getResource(@PathVariable String id) {
-		final ModelAndView mav = new ModelAndView("task");
+	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET, name = "task.getById")
+	public ModelAndView getResource(@PathVariable("taskId") int taskId) {
+		final ModelAndView mav = new ModelAndView("task/task");
 		return mav;
 	}
 
@@ -51,15 +60,14 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ModelAndView modifyResource(@PathVariable String id) {
+	public ModelAndView modifyResource(@PathVariable int id) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ModelAndView deleteResource(@PathVariable String id) {
+	public ModelAndView deleteResource(@PathVariable int id) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}
-
 }
