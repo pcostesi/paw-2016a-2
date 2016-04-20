@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import ar.edu.itba.models.task.Task;
-import ar.edu.itba.models.task.TaskStatus;
-import ar.edu.itba.models.user.User;
+import ar.edu.itba.models.Task;
+import ar.edu.itba.models.TaskStatus;
+import ar.edu.itba.models.User;
 
 public class TaskUserRowMapper implements RowMapper<Task> {
 	

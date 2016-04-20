@@ -1,9 +1,9 @@
-package ar.edu.itba.interfaces.project;
+package ar.edu.itba.interfaces;
 
 import java.util.List;
 
-import ar.edu.itba.models.project.Project;
-import ar.edu.itba.models.project.ProjectDetail;
+import ar.edu.itba.models.Project;
+import ar.edu.itba.models.ProjectDetail;
 
 public interface ProjectService {
 

@@ -1,9 +1,9 @@
-package ar.edu.itba.interfaces.iteration;
+package ar.edu.itba.interfaces;
 
 import java.util.Date;
 
-import ar.edu.itba.models.iteration.Iteration;
-import ar.edu.itba.models.iteration.IterationDetail;
+import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.IterationDetail;
 
 public interface IterationDao {
 	

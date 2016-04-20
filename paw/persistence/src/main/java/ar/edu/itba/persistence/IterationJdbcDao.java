@@ -12,11 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.itba.interfaces.iteration.IterationDao;
-import ar.edu.itba.models.iteration.Iteration;
-import ar.edu.itba.models.iteration.IterationDetail;
-import ar.edu.itba.models.project.ProjectDetail;
-import ar.edu.itba.models.task.Task;
+import ar.edu.itba.interfaces.IterationDao;
+import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.ProjectDetail;
+import ar.edu.itba.models.Task;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;

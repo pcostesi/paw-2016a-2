@@ -1,6 +1,4 @@
-package ar.edu.itba.models.task;
-
-import ar.edu.itba.models.user.User;
+package ar.edu.itba.models;
 
 public class Task{
 	

@@ -1,10 +1,7 @@
-package ar.edu.itba.models.iteration;
+package ar.edu.itba.models;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import ar.edu.itba.models.log.Log;
-import ar.edu.itba.models.task.Task;
 
 public class Iteration {
 	

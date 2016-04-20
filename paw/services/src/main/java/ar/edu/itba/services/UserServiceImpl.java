@@ -3,9 +3,9 @@ package ar.edu.itba.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.itba.interfaces.user.UserDao;
-import ar.edu.itba.interfaces.user.UserService;
-import ar.edu.itba.models.user.User;
+import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.models.User;
 
 @Service
 public class UserServiceImpl implements UserService{

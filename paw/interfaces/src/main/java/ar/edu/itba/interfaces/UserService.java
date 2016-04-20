@@ -1,6 +1,6 @@
-package ar.edu.itba.interfaces.user;
+package ar.edu.itba.interfaces;
 
-import ar.edu.itba.models.user.User;
+import ar.edu.itba.models.User;
 
 public interface UserService {
 	

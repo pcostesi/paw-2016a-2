@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.itba.interfaces.user.UserDao;
-import ar.edu.itba.models.user.User;
+import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.models.User;
 
 @Repository
 public class UserJdbcDao implements UserDao {

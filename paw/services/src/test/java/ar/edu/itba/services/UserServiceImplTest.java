@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import ar.edu.itba.interfaces.user.UserDao;
+import ar.edu.itba.interfaces.UserDao;
 
 public class UserServiceImplTest {
         private static final String USERNAME = "Juan";

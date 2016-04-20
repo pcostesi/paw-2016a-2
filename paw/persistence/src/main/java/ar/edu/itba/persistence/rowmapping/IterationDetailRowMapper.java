@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import ar.edu.itba.models.iteration.IterationDetail;
+import ar.edu.itba.models.IterationDetail;
 
 public class IterationDetailRowMapper implements RowMapper<IterationDetail> {
 

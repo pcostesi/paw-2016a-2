@@ -1,4 +1,4 @@
-package ar.edu.itba.models.user;
+package ar.edu.itba.models;
 
 public class User {
 	

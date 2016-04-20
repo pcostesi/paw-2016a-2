@@ -1,8 +1,6 @@
-package ar.edu.itba.models.log;
+package ar.edu.itba.models;
 
 import java.util.Date;
-
-import ar.edu.itba.models.user.User;
 
 public class Log{
 

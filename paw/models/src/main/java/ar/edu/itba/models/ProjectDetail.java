@@ -1,4 +1,4 @@
-package ar.edu.itba.models.project;
+package ar.edu.itba.models;
 
 import java.util.Date;
 

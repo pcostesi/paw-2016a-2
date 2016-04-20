@@ -1,4 +1,4 @@
-package ar.edu.itba.models.iteration;
+package ar.edu.itba.models;
 
 import java.util.Date;
 
