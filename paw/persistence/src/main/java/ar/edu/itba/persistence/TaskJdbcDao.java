@@ -115,10 +115,10 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public boolean changeOwnership(int taskId, User user) {
 		if (user == null) {
-			throw new IllegalArgumentException("Invalid user");
+			return jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", null, taskId) > 0;
+		} else {
+			return jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.getUsername(), taskId) > 0;
 		}
-		
-		return jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.getUsername(), taskId) > 0;
 	}
 
 	@Override
