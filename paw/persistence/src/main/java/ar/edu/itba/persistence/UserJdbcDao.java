@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -39,16 +40,23 @@ public class UserJdbcDao implements UserDao {
         }
 
         @Override
-        public User create(final String username, final String password, final String mail) {
-        	if (username == null || username.length() == 0 || password == null || password.length() == 0 ||
-        			mail == null || mail.length() == 0 ) {
-        		return null;
+        public User create(final String username, final String password, final String mail){
+        	if ( username == null || username.length() == 0 ) {
+        		throw new IllegalArgumentException("Invalid username");
+        	}
+        	
+        	if ( password == null || password.length() == 0 ) {
+        		throw new IllegalArgumentException("Invalid password");
+        	}
+        	
+        	if ( mail == null || mail.length() == 0 ) {
+        		throw new IllegalArgumentException("Invalid mail");
         	}
         	
         	boolean userExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE username = ?", Integer.class, username) > 0;
         	
         	if (userExists) {
-        		return null;
+        		throw new IllegalStateException("User already exists");
         	}
         	
             final Map<String, Object> args = new HashMap<String, Object>();
@@ -63,7 +71,7 @@ public class UserJdbcDao implements UserDao {
         @Override
         public User getByUsername(final String username) {
         	if (username == null || username.length() == 0 ) {
-        		return null;
+        		throw new IllegalArgumentException("Invalid username");
         	}
             
         	final List<User> list = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
