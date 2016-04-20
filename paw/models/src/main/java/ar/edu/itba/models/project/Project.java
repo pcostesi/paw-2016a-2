@@ -1,7 +1,9 @@
-package ar.edu.itba.models;
+package ar.edu.itba.models.project;
 
 import java.util.Set;
 import java.util.TreeSet;
+
+import ar.edu.itba.models.iteration.IterationDetail;
 
 public class Project {
 
@@ -25,5 +27,8 @@ public class Project {
 		iterations.add(iterationDetail);
 	}
 
+	public String toString() {
+		return details.toString();
+	}
 	
 }

@@ -1,9 +1,9 @@
-package ar.edu.itba.interfaces;
+package ar.edu.itba.interfaces.iteration;
 
 import java.util.Date;
 
-import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.iteration.Iteration;
+import ar.edu.itba.models.iteration.IterationDetail;
 
 public interface IterationDao {
 	
@@ -12,5 +12,7 @@ public interface IterationDao {
 	public boolean deleteIteration(int iterationId);
 	
 	public Iteration getIteration(String projectName, int iterationNumber);
+	
+	public Iteration getIteration(int iterationId);
 
 }

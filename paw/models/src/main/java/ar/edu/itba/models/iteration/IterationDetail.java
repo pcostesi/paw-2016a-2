@@ -1,8 +1,8 @@
-package ar.edu.itba.models;
+package ar.edu.itba.models.iteration;
 
 import java.util.Date;
 
-public class IterationDetail {
+public class IterationDetail implements Comparable<IterationDetail>{
 	
 	private final int iterationId;
 	private int number;
@@ -30,6 +30,16 @@ public class IterationDetail {
 
 	public int getIterationId() {
 		return iterationId;
+	}
+
+	public String toString() {
+		return "IterationDetail [iterationId=" + iterationId + ", number=" + number + ", startDate=" + startDate
+				+ ", endDate=" + endDate + "]";
+	}
+
+	@Override
+	public int compareTo(IterationDetail o) {
+		return Integer.valueOf(number).compareTo(o.getNumber());
 	}
 
 }

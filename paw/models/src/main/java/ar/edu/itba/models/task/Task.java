@@ -1,6 +1,8 @@
-package ar.edu.itba.models;
+package ar.edu.itba.models.task;
 
-public class Task {
+import ar.edu.itba.models.user.User;
+
+public class Task{
 	
 	private final int taskId;
 	private String title;
@@ -56,14 +58,13 @@ public class Task {
 		this.owner = owner;
 	}
 
-	public String toString() {
-		return "Task [taskId=" + taskId + ", title=" + title + ", description=" + description + ", status=" + status
-				+ ", owner=" + owner + "]";
-	}
-
 	public int getTaskId() {
 		return taskId;
 	}
 	
+	public String toString() {
+		return "Task [taskId=" + taskId + ", title=" + title + ", description=" + description + ", status=" + status
+				+ ", owner=" + owner + "]";
+	}
 
 }

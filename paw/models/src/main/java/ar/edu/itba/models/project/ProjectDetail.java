@@ -1,4 +1,4 @@
-package ar.edu.itba.models;
+package ar.edu.itba.models.project;
 
 import java.util.Date;
 
@@ -50,4 +50,10 @@ public class ProjectDetail {
 		return projectId;
 	}
 
+	@Override
+	public String toString() {
+		return "ProjectDetail [projectId=" + projectId + ", name=" + name + ", description=" + description
+				+ ", startDate=" + startDate + ", status=" + status + "]";
+	}
+	
 }

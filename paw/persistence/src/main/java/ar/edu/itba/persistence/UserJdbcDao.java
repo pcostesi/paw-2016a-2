@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.itba.interfaces.UserDao;
-import ar.edu.itba.models.User;
+import ar.edu.itba.interfaces.user.UserDao;
+import ar.edu.itba.models.user.User;
 
 @Repository
 public class UserJdbcDao implements UserDao {
@@ -31,33 +31,47 @@ public class UserJdbcDao implements UserDao {
                 jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("user");
 
                 jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS user ("
-                                + "username varchar(100),"
-                                + "password varchar(100),"
-                                + "mail varchar(100),"
-                                + "PRIMARY KEY ( username )"
+                                + "username varchar(100) NOT NULL PRIMARY KEY,"
+                                + "password varchar(100) NOT NULL,"
+                                + "mail varchar(100) NOT NULL"
                         + ")");
 
         }
 
         @Override
         public User create(final String username, final String password, final String mail) {
-                final Map<String, Object> args = new HashMap<String, Object>();
-                args.put("username", username);
-                args.put("password", password);
-                args.put("mail", mail);
-                jdbcInsert.execute(args);
+        	if (username == null || username.length() == 0 || password == null || password.length() == 0 ||
+        			mail == null || mail.length() == 0 ) {
+        		return null;
+        	}
+        	
+        	boolean userExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE username = ?", Integer.class, username) > 0;
+        	
+        	if (userExists) {
+        		return null;
+        	}
+        	
+            final Map<String, Object> args = new HashMap<String, Object>();
+            args.put("username", username);
+            args.put("password", password);
+            args.put("mail", mail);
+            jdbcInsert.execute(args);
 
-                return new User(username, password, mail);
+            return new User(username, password, mail);
         }
         
         @Override
         public User getByUsername(final String username) {
-                final List<User> list = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
-                if (list.isEmpty()) {
-                        return null;
-                }
+        	if (username == null || username.length() == 0 ) {
+        		return null;
+        	}
+            
+        	final List<User> list = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
+            if (list.isEmpty()) {
+                    return null;
+            }
 
-                return list.get(0);
+            return list.get(0);
         }
         
         private static class UserRowMapper implements RowMapper<User> {

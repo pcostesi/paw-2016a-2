@@ -12,11 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.models.IterationDetail;
-import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectDetail;
-import ar.edu.itba.models.ProjectStatus;
+import ar.edu.itba.interfaces.project.ProjectDao;
+import ar.edu.itba.models.iteration.IterationDetail;
+import ar.edu.itba.models.project.Project;
+import ar.edu.itba.models.project.ProjectDetail;
+import ar.edu.itba.models.project.ProjectStatus;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
 
@@ -47,16 +47,24 @@ public class ProjectJdbcDao implements ProjectDao{
 
 	@Override
 	public ProjectDetail createProject(final String name, final String description) {
+		if (name == null || name.length() == 0) {
+			return null;
+		}
+		
+		if (description == null || description.length() == 0) {
+			return null;
+		}
+		
 		Integer projectCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, name);
 		if (projectCount > 0) {
 			return null;
 		}
 		
-		final Date curDate = new Date();
-		final Map<String, Object> args = new HashMap<String, Object>();
+		Date curDate = new Date();
+		Map<String, Object> args = new HashMap<String, Object>();
         args.put("name", name);
         args.put("description", description);
-        args.put("date_start", new java.sql.Date(curDate.getTime()));
+        args.put("date_start", new java.sql.Date(new Date().getTime()));
         args.put("status", ProjectStatus.OPEN.getValue());
         int projectId = jdbcInsert.executeAndReturnKey(args).intValue();
 
@@ -95,7 +103,11 @@ public class ProjectJdbcDao implements ProjectDao{
 	
 	@Override
 	public Project getProjectWithDetails(String projectName) {
-      List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", projectDetailRowMapper, projectName);
+	  if (projectName == null || projectName.length() == 0) {
+		  return null;
+	  }
+
+      List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", projectDetailRowMapper, projectName);
       
       if (resultRows.isEmpty()) {
               return null;
@@ -110,5 +122,24 @@ public class ProjectJdbcDao implements ProjectDao{
       }
       
       return requestedProject;
+	}
+
+	@Override
+	public Project getProjectWithDetails(int projectId) {
+		List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectDetailRowMapper, projectId);
+	      
+	      if (resultRows.isEmpty()) {
+	              return null;
+	      }
+
+	      Project requestedProject = new Project(resultRows.get(0));
+	      
+	      List<IterationDetail> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, requestedProject.getProjectDetails().getProjectId());
+	      
+	      for (IterationDetail itDetail: iterationDetailRows){
+	    	  requestedProject.addIteration(itDetail);
+	      }
+	      
+	      return requestedProject;
 	}
 }

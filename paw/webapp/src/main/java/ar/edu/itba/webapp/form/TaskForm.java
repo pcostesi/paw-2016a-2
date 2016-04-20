@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import ar.edu.itba.models.TaskStatus;
+import ar.edu.itba.models.task.TaskStatus;
 
 public class TaskForm {
 	public String getTitle() {
