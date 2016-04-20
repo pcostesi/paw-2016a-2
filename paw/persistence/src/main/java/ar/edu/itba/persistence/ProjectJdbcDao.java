@@ -48,16 +48,16 @@ public class ProjectJdbcDao implements ProjectDao{
 	@Override
 	public ProjectDetail createProject(final String name, final String description) {
 		if (name == null || name.length() == 0) {
-			return null;
+			throw new IllegalArgumentException("Invalid project name");
 		}
 		
 		if (description == null || description.length() == 0) {
-			return null;
+			throw new IllegalArgumentException("Invalid description");
 		}
 		
 		Integer projectCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, name);
 		if (projectCount > 0) {
-			return null;
+			throw new IllegalStateException("Project doesnt exist");
 		}
 		
 		Date curDate = new Date();
@@ -92,25 +92,19 @@ public class ProjectJdbcDao implements ProjectDao{
 	
 	@Override
 	public List<ProjectDetail> getProjectDetailList() {
-        final List<ProjectDetail> list = jdbcTemplate.query("SELECT * FROM project", projectDetailRowMapper);
-        
-        if (list.isEmpty()) {
-                return null;
-        }
-
-        return list;
+        return jdbcTemplate.query("SELECT * FROM project", projectDetailRowMapper);
 	}
 	
 	@Override
 	public Project getProjectWithDetails(String projectName) {
 	  if (projectName == null || projectName.length() == 0) {
-		  return null;
+		  throw new IllegalArgumentException("Illegal project name");
 	  }
 
       List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", projectDetailRowMapper, projectName);
       
       if (resultRows.isEmpty()) {
-              return null;
+              throw new IllegalStateException("Project doesnt exist");
       }
 
       Project requestedProject = new Project(resultRows.get(0));
@@ -129,7 +123,7 @@ public class ProjectJdbcDao implements ProjectDao{
 		List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectDetailRowMapper, projectId);
 	      
 	      if (resultRows.isEmpty()) {
-	              return null;
+	              throw new IllegalStateException("Project doesnt exist");
 	      }
 
 	      Project requestedProject = new Project(resultRows.get(0));

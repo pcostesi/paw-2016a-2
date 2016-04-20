@@ -47,13 +47,21 @@ public class IterationJdbcDao implements IterationDao {
     
 	@Override
 	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
-		if (projectName == null || projectName.length() == 0 || beginDate == null || beginDate == null ) {
-			return null;
+		if (projectName == null || projectName.length() == 0) {
+			throw new IllegalArgumentException("Illegal project name");
+		}
+		
+		if (beginDate == null) {
+			throw new IllegalArgumentException("Illegal begin date");
+		}
+		
+		if (endDate == null) {
+			throw new IllegalArgumentException("Illegal end date");
 		}
 		
 		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
-			return null;
+			throw new IllegalStateException("Project doesnt exist");
 		}
 
 		int projectId = project.get(0).getProjectId();
@@ -91,20 +99,24 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public Iteration getIteration(String projectName, int iterationNumber) {
-		if (projectName == null || projectName.length() == 0 || iterationNumber < 1) {
-			return null;
+	public Iteration getIteration(String projectName, int iterationNumber){
+		if ( projectName == null || projectName.length() == 0 ) {
+			throw new IllegalArgumentException("Illegal project name");
+		}
+		
+		if ( iterationNumber < 1 ) {
+			throw new IllegalArgumentException("Illegal iteration number");
 		}
 		
 		boolean projectExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, projectName) > 0;
 		if(!projectExists) {
-			return null;
+			throw new IllegalStateException("Project doesnt exist");
 		}		
 		Integer projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE name = ?", Integer.class, projectName);
 
 		boolean iterationExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber) > 0;
 		if (!iterationExists) {
-			return null;
+			throw new IllegalStateException("Iteration doesnt exist");
 		}
 		Integer iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
 		
@@ -112,12 +124,11 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public Iteration getIteration(int iterationId) {
-	
+	public Iteration getIteration(int iterationId){
 		List<IterationDetail> detailList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
 		
 		if (detailList.isEmpty()) {
-			return null;
+			throw new IllegalStateException("Iteration doesnt exist");
 		}
 		
 		Iteration requestedIteration = new Iteration(detailList.get(0));

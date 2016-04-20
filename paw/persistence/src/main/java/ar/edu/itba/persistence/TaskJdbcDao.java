@@ -45,24 +45,32 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public Task createTask(String projectName, int iterationNumber, String title, String description) {	
 		
-		if (projectName == null || projectName.length() == 0 || iterationNumber < 1 ) {
-			return null;
+		if ( projectName == null || projectName.length() == 0 ) {
+			throw new IllegalArgumentException("Illegal project name");
+		}
+		
+		if ( iterationNumber < 1 ) {
+			throw new IllegalArgumentException("Illegal iteration number, should be at least 1");
 		}
 
-		if (title == null || title.length() == 0 || description == null || description.length() == 0) {
-			return null;
+		if (title == null || title.length() == 0 ) {
+			throw new IllegalArgumentException("Illegal task title");
+		}
+		
+		if (description == null || description.length() == 0 ) {
+			throw new IllegalArgumentException("Illegal task description");
 		}
 
 		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
-			return null;
+			throw new IllegalStateException("Project doesnt exist");
 		}
 		
 		int projectId = project.get(0).getProjectId();
 		
 		List<IterationDetail> iteration = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id= ? AND number = ? LIMIT 1", new IterationDetailRowMapper(), projectId, iterationNumber);
 		if (iteration.isEmpty()) {
-			return null;
+			throw new IllegalStateException("Iteration doesnt exist");
 		}
 		
 		int iterationId = iteration.get(0).getIterationId();
@@ -74,13 +82,17 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public Task createTask(int iterationId, String title, String description) {
 		
-		if (title == null || title.length() == 0 || description == null || description.length() == 0) {
-			return null;
+		if (title == null || title.length() == 0 ) {
+			throw new IllegalArgumentException("Illegal task title");
+		}
+		
+		if ( description == null || description.length() == 0 ) {
+			throw new IllegalArgumentException("Illegal task description");
 		}
 		
 		boolean iterationExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE iteration_id = ?", Integer.class, iterationId) > 0;
 		if (!iterationExists) {
-			return null;
+			throw new IllegalStateException("Iteration doesnt exist");
 		}
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
@@ -103,16 +115,18 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public boolean changeOwnership(int taskId, User user) {
 		if (user == null) {
-			return false;
+			throw new IllegalArgumentException("Invalid user");
 		}
+		
 		return jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.getUsername(), taskId) > 0;
 	}
 
 	@Override
 	public boolean changeStatus(int taskId, TaskStatus status) {
 		if (status == null) {
-			return false;
+			throw new IllegalArgumentException("Illegal status");
 		}
+		
 		return jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", status.getValue(), taskId) > 0;
 	}
 
