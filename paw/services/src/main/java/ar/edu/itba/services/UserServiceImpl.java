@@ -57,17 +57,11 @@ public class UserServiceImpl implements UserService{
 			throw new IllegalArgumentException("User name can't be null");
 		}
     	
-    	if (userDao.userNameExists(username)) {
-			throw new IllegalStateException("This user doesn't exist");
-		}
-    	
-    	User user = userDao.getByUsername(username);
-    	
-    	if (user == null) {
-    		throw new IllegalStateException("User retrieval failed");
-    	} else {
-    		return user;
+    	if (!userDao.userNameExists(username)) {
+    		throw new IllegalStateException("User doesn't exist");
     	}
+    	
+    	return userDao.getByUsername(username);
     }
 
 }

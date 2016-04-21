@@ -65,13 +65,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		Task task = taskDao.getTaskById(taskId);
-		
-		if (task == null) {
-			throw new IllegalStateException("Task retrieval failed");
-		} else {
-			return task;
-		}
+		return taskDao.getTaskById(taskId);
 	}
 
 	@Override
@@ -84,9 +78,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		if (!taskDao.deleteTask(task.getTaskId())) {
-			throw new IllegalStateException("Task delete failed");
-		}
+		taskDao.deleteTask(task.getTaskId());
 	}
 
 	@Override
@@ -95,20 +87,19 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task can't be null");
 		}
 		
-		if (user == null) {
-			throw new IllegalArgumentException("User can't be null");
-		}
-		
 		if (!taskDao.taskExists(task.getTaskId())) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		if (taskDao.updateOwner(task.getTaskId(), user.getUsername())) {
-			task.setOwner(user);
-			return task;
+		if (user == null) {
+			taskDao.updateOwner(task.getTaskId(), null);
+			task.setOwner(null);
 		} else {
-			throw new IllegalStateException("Task ownership update failed");
+			taskDao.updateOwner(task.getTaskId(), user.getUsername());
+			task.setOwner(user);
 		}
+		
+		return task;
 	}
 
 	@Override
@@ -125,12 +116,10 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		if (taskDao.updateStatus(task.getTaskId(), status.getValue())) {
-			task.setStatus(status);
-			return task;
-		} else {
-			throw new IllegalStateException("Task status update failed");
-		}
+		taskDao.updateStatus(task.getTaskId(), status.getValue());
+		task.setStatus(status);
+		
+		return task;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package ar.edu.itba.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,7 @@ public class ProjectServiceImpl implements ProjectService{
 	IterationDao iterationDao;
 
 	@Override
-	public Project createProject(String name, String description, String code) {
+	public Project createProject(final String name, final String description, final String code) {
 		if (name == null) {
 			throw new IllegalArgumentException("Project name can't be null");
 		}
@@ -55,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public void deleteProject(Project project) {
+	public void deleteProject(final Project project) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -64,13 +66,11 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		if (!projectDao.deleteProject(project.getProjectId())) {
-			throw new IllegalStateException("Project delete failed");
-		}
+		projectDao.deleteProject(project.getProjectId());
 	}
 
 	@Override
-	public Project setName(Project project, String name) {
+	public Project setName(final Project project, final String name) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -87,16 +87,14 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		if (!projectDao.updateName(project.getProjectId(), name)) {
-			throw new IllegalStateException("Project name update failed");
-		} else {
-			project.setName(name);
-			return project;
-		}
+		projectDao.updateName(project.getProjectId(), name);
+		project.setName(name);
+		
+		return project;
 	}
 
 	@Override
-	public Project setDescription(Project project, String description) {
+	public Project setDescription(final Project project, final String description) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -113,16 +111,14 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		if (!projectDao.updateDescription(project.getProjectId(), description)) {
-			throw new IllegalStateException("Project description update failed");
-		} else {
-			project.setDescription(description);
-			return project;
-		}
+		projectDao.updateDescription(project.getProjectId(), description);
+		project.setDescription(description);
+		
+		return project;
 	}
 
 	@Override
-	public Project setCode(Project project, String code) {
+	public Project setCode(final Project project, final String code) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -139,12 +135,10 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		if (!projectDao.updateCode(project.getProjectId(), code)) {
-			throw new IllegalStateException("Project code name update failed");
-		} else {
-			project.setCode(code);
-			return project;
-		}
+		projectDao.updateCode(project.getProjectId(), code);
+		project.setCode(code);
+		
+		return project;
 	}
 
 	@Override
@@ -157,13 +151,12 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		Project project = projectDao.getProjectById(projectId);
-		
-		if (project == null) {
-			throw new IllegalStateException("Project retrieval failed");
-		} else {
-			return project;
-		}
+		return projectDao.getProjectById(projectId);
+	}
+
+	@Override
+	public List<Project> getProjects() {
+		return projectDao.getProjects();
 	}	
 
 }

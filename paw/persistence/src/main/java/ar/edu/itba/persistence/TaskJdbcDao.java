@@ -12,13 +12,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskStatus;
-import ar.edu.itba.models.User;
-import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
-import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
 
 @Repository
@@ -26,10 +21,12 @@ public class TaskJdbcDao implements TaskDao{
 	
 	private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
+    private TaskUserRowMapper taskUserRowMapper;
 
     @Autowired
     public TaskJdbcDao(final DataSource ds) {
             jdbcTemplate = new JdbcTemplate(ds);
+            taskUserRowMapper = new TaskUserRowMapper();
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("task").usingGeneratedKeyColumns("task_id");
 
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS task ("
@@ -42,58 +39,9 @@ public class TaskJdbcDao implements TaskDao{
                     + ")");
     }
 
-	@Override
-	public Task createTask(String projectName, int iterationNumber, String title, String description) {	
-		
-		if ( projectName == null || projectName.length() == 0 ) {
-			throw new IllegalArgumentException("Illegal project name");
-		}
-		
-		if ( iterationNumber < 1 ) {
-			throw new IllegalArgumentException("Illegal iteration number, should be at least 1");
-		}
-
-		if (title == null || title.length() == 0 ) {
-			throw new IllegalArgumentException("Illegal task title");
-		}
-		
-		if (description == null || description.length() == 0 ) {
-			throw new IllegalArgumentException("Illegal task description");
-		}
-
-		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", new ProjectDetailRowMapper(), projectName);
-		if (project.isEmpty()) {
-			throw new IllegalStateException("Project doesnt exist");
-		}
-		
-		int projectId = project.get(0).getProjectId();
-		
-		List<Iteration> iteration = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id= ? AND number = ? LIMIT 1", new IterationDetailRowMapper(), projectId, iterationNumber);
-		if (iteration.isEmpty()) {
-			throw new IllegalStateException("Iteration doesnt exist");
-		}
-		
-		int iterationId = iteration.get(0).getIterationId();
-		
-		return createTask(iterationId, title, description);		
-	}
-
 	
 	@Override
 	public Task createTask(int iterationId, String title, String description) {
-		
-		if (title == null || title.length() == 0 ) {
-			throw new IllegalArgumentException("Illegal task title");
-		}
-		
-		if ( description == null || description.length() == 0 ) {
-			throw new IllegalArgumentException("Illegal task description");
-		}
-		
-		boolean iterationExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE iteration_id = ?", Integer.class, iterationId) > 0;
-		if (!iterationExists) {
-			throw new IllegalStateException("Iteration doesnt exist");
-		}
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("iteration_id", iterationId);
@@ -108,38 +56,33 @@ public class TaskJdbcDao implements TaskDao{
 	}
 	
 	@Override
-	public boolean deleteTask(int taskId) {
-		return jdbcTemplate.update("DELETE FROM task WHERE task_id = ?", taskId) > 0;
+	public void deleteTask(final int taskId) {
+		jdbcTemplate.update("DELETE FROM task WHERE task_id = ?", taskId);
 	}
 
 	@Override
-	public boolean changeOwnership(int taskId, User user) {
-		if (user == null) {
-			return jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", null, taskId) > 0;
-		} else {
-			return jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.getUsername(), taskId) > 0;
-		}
+	public void updateOwner(final int taskId,final  String username) {
+		jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", username, taskId);
 	}
 
 	@Override
-	public boolean changeStatus(int taskId, TaskStatus status) {
-		if (status == null) {
-			throw new IllegalArgumentException("Illegal status");
-		}
-		
-		return jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", status.getValue(), taskId) > 0;
+	public void updateStatus(final int taskId,final  int statusValue) {
+		jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", statusValue, taskId);
 	}
 
 	@Override
-	public Task getTask(int taskId) {
-		List<Task> taskList = jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE task_id = ?", 
-				new TaskUserRowMapper(), taskId);
-		
-		if (taskList.isEmpty()) {
-			return null;
-		} else {
-			return taskList.get(0);
-		}
+	public Task getTaskById(int taskId) {
+		return jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE task_id = ?", taskUserRowMapper, taskId).get(0);
+	}
+
+	@Override
+	public List<Task> getTasksForStory(int storyId) {
+		return jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE story_id = ?", taskUserRowMapper, storyId);
+	}
+
+	@Override
+	public boolean taskExists(int taskId) {
+		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE task_id = ?", Integer.class, taskId) == 1;
 	}
 
 }

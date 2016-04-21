@@ -1,22 +1,18 @@
 package ar.edu.itba.persistence;
 
-import java.sql.ResultSet;
-
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.models.User;
+import ar.edu.itba.persistence.rowmapping.UserRowMapper;
 
 @Repository
 public class UserJdbcDao implements UserDao {
@@ -40,55 +36,33 @@ public class UserJdbcDao implements UserDao {
         }
 
         @Override
-        public User create(final String username, final String password, final String mail){
-        	if ( username == null || username.length() == 0 ) {
-        		throw new IllegalArgumentException("Invalid username");
-        	}
-        	
-        	if ( password == null || password.length() == 0 ) {
-        		throw new IllegalArgumentException("Invalid password");
-        	}
-        	
-        	if ( mail == null || mail.length() == 0 ) {
-        		throw new IllegalArgumentException("Invalid mail");
-        	}
-        	
-        	boolean userExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE username = ?", Integer.class, username) > 0;
-        	
-        	if (userExists) {
-        		throw new IllegalStateException("User already exists");
-        	}
+        public User createUser(final String username, final String password, final String mail){
         	
             final Map<String, Object> args = new HashMap<String, Object>();
             args.put("username", username);
             args.put("password", password);
             args.put("mail", mail);
             jdbcInsert.execute(args);
-
+            
             return new User(username, password, mail);
+            
         }
         
         @Override
         public User getByUsername(final String username) {
-        	if (username == null || username.length() == 0 ) {
-        		throw new IllegalArgumentException("Invalid username");
-        	}
-            
-        	final List<User> list = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
-            if (list.isEmpty()) {
-                    return null;
-            }
-
-            return list.get(0);
+            return jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username).get(0);            
         }
         
-        private static class UserRowMapper implements RowMapper<User> {
+		@Override
+		public boolean userNameExists(String name) {
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE username = ?", Integer.class, name) > 0;
+		}
 
-            @Override
-            public User mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-                    return new User(rs.getString("username"), rs.getString("password"), rs.getString("mail"));
-            }
-        }
+		@Override
+		public boolean userMailExists(String mail) {
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE mail = ?", Integer.class, mail) > 0;
+		}
+		
 }
 
 

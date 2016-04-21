@@ -1,5 +1,7 @@
 package ar.edu.itba.interfaces;
 
+import java.util.List;
+
 import ar.edu.itba.models.Project;
 
 public interface ProjectService {
@@ -15,4 +17,6 @@ public interface ProjectService {
 	public Project setDescription(final Project project, final String description);
 
 	public Project setCode(final Project project, final String code);
+	
+	public List<Project> getProjects();
 }

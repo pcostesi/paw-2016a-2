@@ -8,13 +8,13 @@ public interface TaskDao {
 
 	public List<Task> getTasksForStory(final int storyId);
 
-	public boolean updateStatus(final int taskId, final int value);
-
 	public boolean taskExists(final int taskId);
 
-	public boolean updateOwner(final int taskId, final String username);
+	public void updateStatus(final int taskId, final int value);
 
-	public boolean deleteTask(final int taskId);
+	public void updateOwner(final int taskId, final String username);
+
+	public void deleteTask(final int taskId);
 
 	public Task getTaskById(final int taskId);
 
