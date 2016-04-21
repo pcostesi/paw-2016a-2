@@ -35,7 +35,6 @@ public class IterationJdbcDao implements IterationDao {
                             + "number INTEGER NOT NULL,"
                             + "date_start DATE NOT NULL,"
                             + "date_end DATE NOT NULL,"
-                            + "PRIMARY KEY ( iteration_id ),"
                             + "FOREIGN KEY ( project_id ) REFERENCES project ( project_id ) ON DELETE CASCADE,"
                             + "UNIQUE ( project_id, number )"
                     + ")");

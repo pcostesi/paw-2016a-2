@@ -31,7 +31,7 @@ public class UserJdbcDao implements UserDao {
                                 + "username varchar(100) NOT NULL,"
                                 + "password varchar(100) NOT NULL,"
                                 + "mail varchar(100) NOT NULL,"
-                                + "PRIMARY KEY ( name ),"
+                                + "PRIMARY KEY ( username ),"
                                 + "UNIQUE ( mail )"
                         + ")");
 

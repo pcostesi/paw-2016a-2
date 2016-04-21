@@ -26,4 +26,6 @@ public interface ProjectDao {
 
 	public List<Project> getProjects();
 
+	public Project getProjectByCode(final String code);
+
 }

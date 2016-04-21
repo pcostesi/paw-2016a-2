@@ -19,7 +19,7 @@ public class ProjectDetailController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView getResource(@PathVariable String id) {
 		final ModelAndView mav = new ModelAndView("project/iterationList");
-		mav.addObject("project", ps.getProjectWithDetails(id));
+		mav.addObject("project", ps.getProjectByCode(id));
 		return mav;
 	}
 

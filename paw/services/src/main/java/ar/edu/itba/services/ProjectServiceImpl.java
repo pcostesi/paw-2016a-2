@@ -159,6 +159,25 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public List<Project> getProjects() {
 		return projectDao.getProjects();	
+	}
+
+	@Override
+	public Project getProjectByCode(String code) {
+		if (code == null) {
+			throw new IllegalArgumentException("Project code can't be null");
+		}
+		
+		if (code.length() == 0) {
+			throw new IllegalArgumentException("Project code needs at least 1 character");
+		}
+		
+		Project project = projectDao.getProjectByCode(code);
+		
+		if (project == null) {
+			throw new IllegalStateException("Project doesn't exist");
+		} else {
+			return project;
+		}
 	}	
 
 }

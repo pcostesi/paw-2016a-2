@@ -9,11 +9,13 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.persistence.rowmapping.StoryRowMapper;
 
+@Repository
 public class StoryJdbcDao implements StoryDao{
 
 	private JdbcTemplate jdbcTemplate;
@@ -30,7 +32,6 @@ public class StoryJdbcDao implements StoryDao{
             				+ "story_id INTEGER NOT NULL IDENTITY,"
             				+ "iteration_id INTEGER NOT NULL,"
                     		+ "title varchar(100) NOT NULL,"
-                            + "PRIMARY KEY ( story_id ),"
                             + "FOREIGN KEY ( iteration_id ) REFERENCES iteration ( iteration_id ) ON DELETE CASCADE,"
                             + "UNIQUE ( iteration_id, title )"
                     + ")");

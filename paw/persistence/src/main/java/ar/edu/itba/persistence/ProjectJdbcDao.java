@@ -22,11 +22,11 @@ public class ProjectJdbcDao implements ProjectDao{
 	
 	private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
-    private ProjectRowMapper projectDetailRowMapper;
+    private ProjectRowMapper projectRowMapper;
 
     @Autowired
     public ProjectJdbcDao(final DataSource ds) {
-    		projectDetailRowMapper = new ProjectRowMapper();
+    		projectRowMapper = new ProjectRowMapper();
             jdbcTemplate = new JdbcTemplate(ds);
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("project").usingGeneratedKeyColumns("project_id");
 
@@ -37,7 +37,7 @@ public class ProjectJdbcDao implements ProjectDao{
                             + "description varchar(500) NOT NULL,"
                             + "date_start DATE NOT NULL,"
                             + "status INTEGER NOT NULL,"
-                            + "PRIMARY KEY ( project_id, name ),"
+                            + "UNIQUE ( project_id, name ),"
                             + "UNIQUE ( name ),"
                             + "UNIQUE ( code )"
                     + ")");
@@ -51,6 +51,7 @@ public class ProjectJdbcDao implements ProjectDao{
 		
         args.put("name", name);
         args.put("description", description);
+        args.put("code", code);
         args.put("date_start", new java.sql.Date(new Date().getTime()));
         args.put("status", ProjectStatus.OPEN.getValue());
         
@@ -66,7 +67,7 @@ public class ProjectJdbcDao implements ProjectDao{
 	
 	@Override
 	public List<Project> getProjects() {
-        return jdbcTemplate.query("SELECT * FROM project", projectDetailRowMapper);
+        return jdbcTemplate.query("SELECT * FROM project", projectRowMapper);
 	}
 
 	@Override
@@ -101,7 +102,18 @@ public class ProjectJdbcDao implements ProjectDao{
 
 	@Override
 	public Project getProjectById(int projectId) {
-		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectDetailRowMapper, projectId);
+		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectRowMapper, projectId);
+		
+		if (project.isEmpty()) {
+			return null;
+		} else {
+			return project.get(0);
+		}
+	}
+
+	@Override
+	public Project getProjectByCode(String code) {
+		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE code = ?", projectRowMapper, code);
 		
 		if (project.isEmpty()) {
 			return null;

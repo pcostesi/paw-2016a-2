@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Project;
+import ar.edu.itba.models.Story;
+import ar.edu.itba.models.Task;
 
 
 @Component
@@ -22,6 +27,9 @@ public class DatabaseSetup {
 
 	@Autowired
 	private TaskService ts;
+	
+	@Autowired
+	private StoryService ss;
 
 	private boolean initialized = false;
 	
@@ -30,9 +38,10 @@ public class DatabaseSetup {
 		if (initialized) {
 			return;
 		}
-        ps.createProject("scrumlr", "This is a test project");
-        is.createIteration("scrumlr", new Date(), new Date());
-        ts.createTask("scrumlr", 1, "My first task", "Hello task!");
+        Project project = ps.createProject("Scrumlr", "This is a project", "scrumlr");
+        Iteration iteration = is.createIteration(project, new Date(), new Date());
+        Story story = ss.create(iteration, "This is a story title");
+        Task task = ts.createTask(story, "This is a task title", "This is a task description");
         initialized = true;
     }
 }

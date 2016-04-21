@@ -36,17 +36,16 @@ public class TaskJdbcDao implements TaskDao{
                             + "description varchar(500) NOT NULL,"
                             + "owner varchar(100),"
                             + "status INTEGER NOT NULL,"
-                            + "PRIMARY KEY ( task_id ),"
                             + "FOREIGN KEY ( story_id ) REFERENCES story ( story_id ) ON DELETE CASCADE,"
                             + "UNIQUE ( story_id, title )"
                     + ")");
     }
 	
 	@Override
-	public Task createTask(int iterationId, String title, String description) {
+	public Task createTask(int storyId, String title, String description) {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
-		args.put("iteration_id", iterationId);
+		args.put("story_id", storyId);
 		args.put("title", title);
 		args.put("description", description);
 		args.put("owner", null);

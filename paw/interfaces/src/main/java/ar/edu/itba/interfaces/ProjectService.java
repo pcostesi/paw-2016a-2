@@ -19,4 +19,6 @@ public interface ProjectService {
 	public Project setCode(final Project project, final String code);
 	
 	public List<Project> getProjects();
+
+	public Project getProjectByCode(String code);
 }
