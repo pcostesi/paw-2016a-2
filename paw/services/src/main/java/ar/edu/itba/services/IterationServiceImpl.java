@@ -46,7 +46,7 @@ public class IterationServiceImpl implements IterationService{
 		if (projectDao.projectExists(project.getProjectId())) {
 			return iterationDao.createIteration(project.getProjectId(), iterationDao.getNextIterationNumber(project.getProjectId()), beginDate, endDate);
 		} else {
-			throw new IllegalStateException("Project "+ project.getName()+" doesn't exist");
+			throw new IllegalStateException("Project "+ project.getName() +" doesn't exist");
 		}
 	}
 
@@ -60,9 +60,8 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		if (!iterationDao.deleteIteration(iteration.getIterationId())) {
-			throw new IllegalStateException("Iteration delete failed");
-		}
+		iterationDao.deleteIteration(iteration.getIterationId());
+		iterationDao.updateNumbersAfterDelete(iteration.getNumber());
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class IterationServiceImpl implements IterationService{
 		Iteration iteration = iterationDao.getIteration(project.getProjectId(), iterationNumber);
 		
 		if (iteration == null) {
-			throw new IllegalStateException("Iteration doesn't exist");
+			throw new IllegalStateException("Couldn't find iteration "+ iterationNumber +" in project "+ project.getName());
 		} else {
 			return iteration;
 		}
@@ -101,7 +100,7 @@ public class IterationServiceImpl implements IterationService{
 		Iteration iteration = iterationDao.getIterationById(iterationId);
 		
 		if (iteration == null) {
-			throw new IllegalStateException("Iteration retrieval failed");
+			throw new IllegalStateException("Couldn't find iteration with id "+ iterationId);
 		} else {
 			return iteration;
 		}
@@ -121,12 +120,10 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		if (iterationDao.updateBeginDate(iteration.getIterationId(), beginDate)) {
-			iteration.setBeginDate(beginDate);
-			return iteration;
-		} else {
-			throw new IllegalStateException("Iteration update failed");
-		}
+		iterationDao.updateBeginDate(iteration.getIterationId(), beginDate);
+		iteration.setBeginDate(beginDate);
+			
+		return iteration;
 	}
 
 	@Override
@@ -143,12 +140,10 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		if (iterationDao.updateEndDate(iteration.getIterationId(), endDate)) {
-			iteration.setEndDate(endDate);
-			return iteration;
-		} else {
-			throw new IllegalStateException("Iteration update failed");
-		}
+		iterationDao.updateEndDate(iteration.getIterationId(), endDate);
+		iteration.setEndDate(endDate);
+		
+		return iteration;
 	}
 
 	@Override

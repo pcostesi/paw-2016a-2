@@ -15,31 +15,31 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.ProjectStatus;
-import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
+import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
 
 @Repository
 public class ProjectJdbcDao implements ProjectDao{
 	
 	private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
-    private ProjectDetailRowMapper projectDetailRowMapper;
+    private ProjectRowMapper projectDetailRowMapper;
 
     @Autowired
     public ProjectJdbcDao(final DataSource ds) {
-    		projectDetailRowMapper = new ProjectDetailRowMapper();
+    		projectDetailRowMapper = new ProjectRowMapper();
             jdbcTemplate = new JdbcTemplate(ds);
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("project").usingGeneratedKeyColumns("project_id");
 
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS project ("
-                            + "project_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
+                            + "project_id INTEGER NOT NULL IDENTITY,"
                             + "name varchar(100) NOT NULL,"
                             + "code varchar(10) NOT NULL,"
                             + "description varchar(500) NOT NULL,"
                             + "date_start DATE NOT NULL,"
                             + "status INTEGER NOT NULL,"
                             + "PRIMARY KEY ( project_id, name ),"
-                            + "UNIQUE(name),"
-                            + "UNIQUE(code)"
+                            + "UNIQUE ( name ),"
+                            + "UNIQUE ( code )"
                     + ")");
     }
 
@@ -101,6 +101,12 @@ public class ProjectJdbcDao implements ProjectDao{
 
 	@Override
 	public Project getProjectById(int projectId) {
-		return jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectDetailRowMapper, projectId).get(0);
+		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectDetailRowMapper, projectId);
+		
+		if (project.isEmpty()) {
+			return null;
+		} else {
+			return project.get(0);
+		}
 	}
 }

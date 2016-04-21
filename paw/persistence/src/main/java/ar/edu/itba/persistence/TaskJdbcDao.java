@@ -31,14 +31,16 @@ public class TaskJdbcDao implements TaskDao{
 
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS task ("
             				+ "task_id INTEGER NOT NULL IDENTITY,"
-            				+ "iteration_id INTEGER NOT NULL,"
+            				+ "story_id INTEGER NOT NULL,"
                     		+ "title varchar(100) NOT NULL,"
                             + "description varchar(500) NOT NULL,"
                             + "owner varchar(100),"
-                            + "status INTEGER NOT NULL"
+                            + "status INTEGER NOT NULL,"
+                            + "PRIMARY KEY ( task_id ),"
+                            + "FOREIGN KEY ( story_id ) REFERENCES story ( story_id ) ON DELETE CASCADE,"
+                            + "UNIQUE ( story_id, title )"
                     + ")");
     }
-
 	
 	@Override
 	public Task createTask(int iterationId, String title, String description) {
@@ -72,7 +74,13 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public Task getTaskById(int taskId) {
-		return jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE task_id = ?", taskUserRowMapper, taskId).get(0);
+		List<Task> tasks = jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE task_id = ?", taskUserRowMapper, taskId);
+	
+		if (tasks.isEmpty()) {
+			return null;
+		} else {
+			return tasks.get(0);
+		}
 	}
 
 	@Override

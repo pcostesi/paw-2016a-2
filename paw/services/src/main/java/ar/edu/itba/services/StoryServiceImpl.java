@@ -36,13 +36,7 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		Story story = storyDao.createStory(iteration.getIterationId(), name);
-		
-		if (story == null) {
-			throw new IllegalStateException("Story creation failed");
-		} else {
-			return story;
-		}
+		return storyDao.createStory(iteration.getIterationId(), name);
 	}
 
 	@Override
@@ -51,14 +45,10 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Invalid story id");
 		}
 		
-		if (!storyDao.storyExists(storyId)) {
-			throw new IllegalStateException("Story doesn't exist");
-		}
-		
 		Story story = storyDao.getStoryById(storyId);
 		
 		if (story == null) {
-			throw new IllegalStateException("Story retrieval failed");
+			throw new IllegalStateException("Story doesn't exist");
 		} else {
 			return story;
 		}
@@ -78,29 +68,27 @@ public class StoryServiceImpl implements StoryService{
 	}
 
 	@Override
-	public Story setName(Story story, String name) {
+	public Story setName(Story story, String title) {
 		if (story == null) {
 			throw new IllegalArgumentException("Story can't be null");
 		}
 		
-		if (name == null) {
-			throw new IllegalArgumentException("Story name can't be null");
+		if (title == null) {
+			throw new IllegalArgumentException("Story title can't be null");
 		}
 		
-		if (name.length() == 0) {
-			throw new IllegalArgumentException("Story name needs at least 1 character");
+		if (title.length() == 0) {
+			throw new IllegalArgumentException("Story title needs at least 1 character");
 		}
 		
 		if (!storyDao.storyExists(story.getStoryId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		if (!storyDao.updateName(story.getStoryId(), name)) {
-			throw new IllegalStateException("Story name update failed");
-		} else {
-			story.setName(name);
-			return story;
-		}
+		storyDao.updateName(story.getStoryId(), title);
+		story.setTitle(title);
+			
+		return story;
 	}
 
 	@Override
@@ -113,9 +101,7 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		if (!storyDao.deleteStory(story.getStoryId())) {
-			throw new IllegalStateException("Story delete failed");
-		}
+		storyDao.deleteStory(story.getStoryId());
 	}
 
 }

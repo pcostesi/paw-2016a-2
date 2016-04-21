@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import ar.edu.itba.models.Iteration;
 
-public class IterationDetailRowMapper implements RowMapper<Iteration> {
+public class IterationRowMapper implements RowMapper<Iteration> {
 
     @Override
     public Iteration mapRow(final ResultSet rs, final int rowNum) throws SQLException {

@@ -48,8 +48,8 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		if (storyDao.hasTaskWithName(name)) {
-			throw new IllegalStateException("Task with name "+ name +" already exists");
+		if (storyDao.hasTaskWithName(story.getStoryId(), name)) {
+			throw new IllegalStateException("Task with name "+ name +" already exists in this story");
 		}
 		
 		return taskDao.createTask(story.getStoryId(), name, description);
@@ -61,11 +61,13 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Invalid task id");
 		}
 		
-		if (!taskDao.taskExists(taskId)) {
-			throw new IllegalStateException("Task doesn't exist");
-		}
+		Task task = taskDao.getTaskById(taskId);
 		
-		return taskDao.getTaskById(taskId);
+		if (task == null) {
+			throw new IllegalStateException("Task doesn't exist");
+		} else {
+			return task;
+		}
 	}
 
 	@Override

@@ -124,11 +124,11 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (code == null) {
-			throw new IllegalArgumentException("Project name can't be null");
+			throw new IllegalArgumentException("Project code can't be null");
 		}
 		
 		if (code.length() == 0) {
-			throw new IllegalArgumentException("Project name needs at least 1 character");
+			throw new IllegalArgumentException("Project code needs at least 1 character");
 		}
 		
 		if (!projectDao.projectExists(project.getProjectId())) {
@@ -147,16 +147,18 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Invalid project id");
 		}
 		
-		if (!projectDao.projectExists(projectId)) {
-			throw new IllegalStateException("Project doesn't exist");
-		}
+		Project project = projectDao.getProjectById(projectId);
 		
-		return projectDao.getProjectById(projectId);
+		if (project == null) {
+			throw new IllegalStateException("Project doesn't exist");
+		} else {
+			return project;
+		}
 	}
 
 	@Override
 	public List<Project> getProjects() {
-		return projectDao.getProjects();
+		return projectDao.getProjects();	
 	}	
 
 }

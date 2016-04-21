@@ -11,7 +11,7 @@ public interface IterationDao {
 
 	public Iteration createIteration(final int projectId, final int nextIterationNumber, final Date beginDate, final Date endDate);
 
-	public boolean deleteIteration(final int iterationId);
+	public void deleteIteration(final int iterationId);
 
 	public Iteration getIteration(final int projectId, final int iterationNumber);
 
@@ -19,10 +19,12 @@ public interface IterationDao {
 
 	public boolean iterationExists(final int iterationId);
 
-	public boolean updateBeginDate(final int iterationId, final Date beginDate);
+	public void updateBeginDate(final int iterationId, final Date beginDate);
 
-	public boolean updateEndDate(final int iterationId, final Date endDate);
+	public void updateEndDate(final int iterationId, final Date endDate);
 
 	public List<Iteration> getIterationsForProject(final int projectId);
+
+	public void updateNumbersAfterDelete(final int number);
 
 }

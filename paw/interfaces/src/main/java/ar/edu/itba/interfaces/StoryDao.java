@@ -10,14 +10,14 @@ public interface StoryDao {
 
 	public boolean storyExists(final int storyId);
 
-	public boolean hasTaskWithName(final String name);
+	public boolean hasTaskWithName(final int storyId, final String title);
 
-	public Story createStory(final int iterationId, final String name);
+	public Story createStory(final int iterationId, final String title);
 
 	public Story getStoryById(final int storyId);
 
-	public boolean updateName(final int storyId, final String name);
+	public void updateName(final int storyId, final String title);
 
-	public boolean deleteStory(final int storyId);
+	public void deleteStory(final int storyId);
 
 }

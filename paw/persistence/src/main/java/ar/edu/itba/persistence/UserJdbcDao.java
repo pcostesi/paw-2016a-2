@@ -28,9 +28,11 @@ public class UserJdbcDao implements UserDao {
                 jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("user");
 
                 jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS user ("
-                                + "username varchar(100) NOT NULL PRIMARY KEY,"
+                                + "username varchar(100) NOT NULL,"
                                 + "password varchar(100) NOT NULL,"
-                                + "mail varchar(100) NOT NULL"
+                                + "mail varchar(100) NOT NULL,"
+                                + "PRIMARY KEY ( name ),"
+                                + "UNIQUE ( mail )"
                         + ")");
 
         }

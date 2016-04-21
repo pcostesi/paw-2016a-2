@@ -3,19 +3,19 @@ package ar.edu.itba.models;
 public class Story {
 
 	private final int storyId;
-	private String name;
+	private String title;
 
-	public Story(final int storyId, final String name) {
+	public Story(final int storyId, final String title) {
 		this.storyId = storyId;
-		this.name = name;
+		this.title = title;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public int getStoryId() {
