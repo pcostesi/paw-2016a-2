@@ -2,17 +2,17 @@ package ar.edu.itba.models;
 
 import java.util.Date;
 
-public class Iteration implements Comparable<Iteration>{
+public class Iteration{
 	
 	private final int iterationId;
 	private int number;
-	private Date startDate;
+	private Date begintDate;
 	private Date endDate;
 	
-	public Iteration(int iterationId, int number, Date startDate, Date endDate){
+	public Iteration(int iterationId, int number, Date begintDate, Date endDate){
 		this.iterationId = iterationId;
 		this.number = number;
-		this.startDate = startDate;
+		this.begintDate = begintDate;
 		this.endDate = endDate;
 	}
 
@@ -20,8 +20,8 @@ public class Iteration implements Comparable<Iteration>{
 		return number;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public Date getBeginDate() {
+		return begintDate;
 	}
 
 	public Date getEndDate() {
@@ -31,15 +31,18 @@ public class Iteration implements Comparable<Iteration>{
 	public int getIterationId() {
 		return iterationId;
 	}
-
-	public String toString() {
-		return "Iteration [iterationId=" + iterationId + ", number=" + number + ", startDate=" + startDate
-				+ ", endDate=" + endDate + "]";
+	
+	public void setBeginDate(Date beginDate) {
+		this.begintDate = beginDate;
+	}
+	
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;		
 	}
 
-	@Override
-	public int compareTo(Iteration o) {
-		return Integer.valueOf(number).compareTo(o.getNumber());
+	public String toString() {
+		return "Iteration [iterationId=" + iterationId + ", number=" + number + ", startDate=" + begintDate
+				+ ", endDate=" + endDate + "]";
 	}
 
 }

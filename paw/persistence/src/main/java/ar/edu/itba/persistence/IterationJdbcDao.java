@@ -16,6 +16,7 @@ import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
@@ -47,17 +48,7 @@ public class IterationJdbcDao implements IterationDao {
     
 	@Override
 	public Iteration createIteration(String projectName, Date beginDate, Date endDate) {
-		if (projectName == null || projectName.length() == 0) {
-			throw new IllegalArgumentException("Illegal project name");
-		}
-		
-		if (beginDate == null) {
-			throw new IllegalArgumentException("Illegal begin date");
-		}
-		
-		if (endDate == null) {
-			throw new IllegalArgumentException("Illegal end date");
-		}
+
 		
 		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
@@ -142,5 +133,41 @@ public class IterationJdbcDao implements IterationDao {
 		// TODO Falta agregarle los logs
 		
 		return requestedIteration;
+	}
+
+	@Override
+	public Iteration createIteration(int projectId, Date beginDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteIteration(int iterationId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Iteration getIteration(int projectId, int iterationNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iteration setBeginDate(int iterationId, Date beginDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iteration setEndDate(int iterationId, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Story> getStoriesForIteration(int iterationId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -50,13 +50,7 @@ public class ProjectJdbcDao implements ProjectDao{
 
 	@Override
 	public Project createProject(final String name, final String description) {
-		if (name == null || name.length() == 0) {
-			throw new IllegalArgumentException("Invalid project name");
-		}
 		
-		if (description == null || description.length() == 0) {
-			throw new IllegalArgumentException("Invalid description");
-		}
 		
 		Integer projectCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, name);
 		if (projectCount > 0) {

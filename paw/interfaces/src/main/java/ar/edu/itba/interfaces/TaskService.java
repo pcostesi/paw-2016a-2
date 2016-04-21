@@ -17,7 +17,7 @@ public interface TaskService {
 	
 	public Task changeOwnership(final Task task, final User user);
 	
-	public boolean changeStatus(final int taskId, TaskStatus status);
+	public Task changeStatus(final Task task, TaskStatus status);
 	
 	public List<Task> getTasksForStory(final Story story);
 

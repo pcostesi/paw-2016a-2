@@ -1,20 +1,25 @@
 package ar.edu.itba.interfaces;
 
-import java.util.List;
-
-import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Project;
 
 public interface ProjectDao {
-	
-	public Project createProject(String name, String description);
-	
-	public boolean deleteProject(int projectId);
-	
-	public List<Project> getProjectDetailList();
-	
-	public Project getProjectWithDetails(String projectName);
-	
-	public Project getProjectWithDetails(int projectId);
+
+	boolean projectExists(int projectId);
+
+	boolean projectNameExists();
+
+	Project createProject(String name, String description, String code);
+
+	boolean projectCodeExists();
+
+	boolean deleteProject(int projectId);
+
+	boolean updateName(int projectId, String name);
+
+	boolean updateDescription(int projectId, String description);
+
+	boolean updateCode(int projectId, String code);
+
+	Project getProjectById(int projectId);
 
 }
