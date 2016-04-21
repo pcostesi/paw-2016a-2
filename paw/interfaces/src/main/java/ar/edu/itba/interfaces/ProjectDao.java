@@ -4,22 +4,22 @@ import ar.edu.itba.models.Project;
 
 public interface ProjectDao {
 
-	boolean projectExists(int projectId);
+	boolean projectExists(final int projectId);
 
-	boolean projectNameExists();
+	boolean projectNameExists(final String name);
 
-	Project createProject(String name, String description, String code);
+	Project createProject(final String name, final String description, final String code);
 
-	boolean projectCodeExists();
+	boolean projectCodeExists(String code);
 
-	boolean deleteProject(int projectId);
+	boolean deleteProject(final int projectId);
 
-	boolean updateName(int projectId, String name);
+	boolean updateName(final int projectId, final String name);
 
-	boolean updateDescription(int projectId, String description);
+	boolean updateDescription(final int projectId, final String description);
 
-	boolean updateCode(int projectId, String code);
+	boolean updateCode(final int projectId, final String code);
 
-	Project getProjectById(int projectId);
+	Project getProjectById(final int projectId);
 
 }

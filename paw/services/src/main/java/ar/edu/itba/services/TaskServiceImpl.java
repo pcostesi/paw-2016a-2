@@ -61,10 +61,14 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Invalid task id");
 		}
 		
+		if (!taskDao.taskExists(taskId)) {
+			throw new IllegalStateException("Task doesn't exist");
+		}
+		
 		Task task = taskDao.getTaskById(taskId);
 		
 		if (task == null) {
-			throw new IllegalStateException("Project doesn't exist");
+			throw new IllegalStateException("Task retrieval failed");
 		} else {
 			return task;
 		}

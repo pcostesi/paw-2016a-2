@@ -1,14 +1,11 @@
 package ar.edu.itba.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 
 @Service
@@ -46,12 +43,12 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project code needs at least 1 character");
 		}
 		
-		if (projectDao.projectNameExists()) {
-			throw new IllegalStateException("Project name has been used already");
+		if (projectDao.projectNameExists(name)) {
+			throw new IllegalStateException("This project name has been used already");
 		}
 		
-		if (projectDao.projectCodeExists()) {
-			throw new IllegalStateException("Project code has been used already");
+		if (projectDao.projectCodeExists(code)) {
+			throw new IllegalStateException("This project code has been used already");
 		}
 
 		return projectDao.createProject(name, description, code);
@@ -70,19 +67,6 @@ public class ProjectServiceImpl implements ProjectService{
 		if (!projectDao.deleteProject(project.getProjectId())) {
 			throw new IllegalStateException("Project delete failed");
 		}
-	}
-
-	@Override
-	public List<Iteration> getIterationsForProject(Project project) {
-		if (project == null) {
-			throw new IllegalArgumentException("Project can't be null");
-		}
-		
-		if (!projectDao.projectExists(project.getProjectId())) {
-			throw new IllegalStateException("Project doesn't exist");
-		}
-		
-		return iterationDao.getIterationsForProject(project.getProjectId());
 	}
 
 	@Override
@@ -169,10 +153,14 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Invalid project id");
 		}
 		
+		if (!projectDao.projectExists(projectId)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}
+		
 		Project project = projectDao.getProjectById(projectId);
 		
 		if (project == null) {
-			throw new IllegalStateException("Project doesn't exist");
+			throw new IllegalStateException("Project retrieval failed");
 		} else {
 			return project;
 		}

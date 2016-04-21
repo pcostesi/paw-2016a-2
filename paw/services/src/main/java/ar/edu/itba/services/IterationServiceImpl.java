@@ -12,7 +12,6 @@ import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.Story;
 
 @Service
 public class IterationServiceImpl implements IterationService{
@@ -95,10 +94,14 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Invalid iteration id");
 		}
 		
+		if (!iterationDao.iterationExists(iterationId)) {
+			throw new IllegalStateException("Iteration doesn't exist");
+		}
+		
 		Iteration iteration = iterationDao.getIterationById(iterationId);
 		
 		if (iteration == null) {
-			throw new IllegalStateException("Iteration doesn't exist");
+			throw new IllegalStateException("Iteration retrieval failed");
 		} else {
 			return iteration;
 		}
@@ -149,16 +152,16 @@ public class IterationServiceImpl implements IterationService{
 	}
 
 	@Override
-	public List<Story> getStoriesForIteration(Iteration iteration) {
-		if (iteration == null) {
-			throw new IllegalArgumentException("Iteration can't be null");
+	public List<Iteration> getIterationsForProject(Project project) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.getIterationId())) {
-			throw new IllegalStateException("Iteration doesn't exist");
+		if (!projectDao.projectExists(project.getProjectId())) {
+			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		return storyDao.getStoriesForIteration(iteration.getIterationId());
+		return iterationDao.getIterationsForProject(project.getProjectId());
 	}
 	
 

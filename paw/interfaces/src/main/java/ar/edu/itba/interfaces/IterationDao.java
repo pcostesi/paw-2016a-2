@@ -7,22 +7,22 @@ import ar.edu.itba.models.Iteration;
 
 public interface IterationDao {
 
-	int getNextIterationNumber(int projectId);
+	public int getNextIterationNumber(final int projectId);
 
-	Iteration createIteration(int projectId, Object nextIterationNumber, Date beginDate, Date endDate);
+	public Iteration createIteration(final int projectId, final int nextIterationNumber, final Date beginDate, final Date endDate);
 
-	boolean deleteIteration(int iterationId);
+	public boolean deleteIteration(final int iterationId);
 
-	Iteration getIteration(int projectId, int iterationNumber);
+	public Iteration getIteration(final int projectId, final int iterationNumber);
 
-	Iteration getIterationById(int iterationId);
+	public Iteration getIterationById(final int iterationId);
 
-	boolean iterationExists(int iterationId);
+	public boolean iterationExists(final int iterationId);
 
-	boolean updateBeginDate(int iterationId, Date beginDate);
+	public boolean updateBeginDate(final int iterationId, final Date beginDate);
 
-	boolean updateEndDate(int iterationId, Date endDate);
+	public boolean updateEndDate(final int iterationId, final Date endDate);
 
-	List<Iteration> getIterationsForProject(int projectId);
+	public List<Iteration> getIterationsForProject(final int projectId);
 
 }

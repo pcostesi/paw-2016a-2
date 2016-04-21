@@ -6,10 +6,18 @@ import ar.edu.itba.models.Story;
 
 public interface StoryDao {
 
-	List<Story> getStoriesForIteration(int iterationId);
+	public List<Story> getStoriesForIteration(final int iterationId);
 
-	boolean storyExists(int storyId);
+	public boolean storyExists(final int storyId);
 
-	boolean hasTaskWithName(String name);
+	public boolean hasTaskWithName(final String name);
+
+	public Story createStory(final int iterationId, final String name);
+
+	public Story getStoryById(final int storyId);
+
+	public boolean updateName(final int storyId, final String name);
+
+	public boolean deleteStory(final int storyId);
 
 }

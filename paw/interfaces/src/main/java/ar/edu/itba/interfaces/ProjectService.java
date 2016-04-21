@@ -1,8 +1,5 @@
 package ar.edu.itba.interfaces;
 
-import java.util.List;
-
-import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 
 public interface ProjectService {
@@ -12,8 +9,6 @@ public interface ProjectService {
 	public void deleteProject(final Project project);
 	
 	public Project getProjectById(final int projectId);
-	
-	public List<Iteration> getIterationsForProject(final Project project);
 	
 	public Project setName(final Project project, final String name);
 

@@ -6,18 +6,18 @@ import ar.edu.itba.models.Task;
 
 public interface TaskDao {
 
-	List<Task> getTasksForStory(int storyId);
+	public List<Task> getTasksForStory(final int storyId);
 
-	boolean updateStatus(int taskId, int value);
+	public boolean updateStatus(final int taskId, final int value);
 
-	boolean taskExists(int taskId);
+	public boolean taskExists(final int taskId);
 
-	boolean updateOwner(int taskId, String username);
+	public boolean updateOwner(final int taskId, final String username);
 
-	boolean deleteTask(int taskId);
+	public boolean deleteTask(final int taskId);
 
-	Task getTaskById(int taskId);
+	public Task getTaskById(final int taskId);
 
-	Task createTask(int storyId, String name, String description);
+	public Task createTask(final int storyId, final String name, final String description);
 	
 }

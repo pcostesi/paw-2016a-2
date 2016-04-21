@@ -10,9 +10,9 @@ public interface StoryService {
 	
 	public Story getById(int id);
 	
-	public List<Story> getStoriesForIteration(Iteration iteration);
-	
 	public Story setName(Story story, String name);
 	
 	public void deleteStory(Story story);
+
+	public List<Story> getStoriesForIteration(final Iteration iteration);
 }
