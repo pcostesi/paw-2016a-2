@@ -13,9 +13,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectDetail;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.ProjectStatus;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
@@ -38,15 +38,18 @@ public class ProjectJdbcDao implements ProjectDao{
             jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS project ("
                             + "project_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                             + "name varchar(100) NOT NULL,"
+                            + "code varchar(10) NOT NULL,"
                             + "description varchar(500) NOT NULL,"
                             + "date_start DATE NOT NULL,"
                             + "status INTEGER NOT NULL,"
-                            + "PRIMARY KEY ( project_id, name )"
+                            + "PRIMARY KEY ( project_id, name ),"
+                            + "UNIQUE(name),"
+                            + "UNIQUE(code)"
                     + ")");
     }
 
 	@Override
-	public ProjectDetail createProject(final String name, final String description) {
+	public Project createProject(final String name, final String description) {
 		if (name == null || name.length() == 0) {
 			throw new IllegalArgumentException("Invalid project name");
 		}
@@ -68,18 +71,18 @@ public class ProjectJdbcDao implements ProjectDao{
         args.put("status", ProjectStatus.OPEN.getValue());
         int projectId = jdbcInsert.executeAndReturnKey(args).intValue();
 
-        return new ProjectDetail(projectId, name, description, curDate, ProjectStatus.OPEN);
+        return new Project(projectId, name, description, curDate, ProjectStatus.OPEN);
 	}
 	
 	@Override
 	public boolean deleteProject(int projectId) {
-		List<IterationDetail> projectIterations = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
+		List<Iteration> projectIterations = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
 		
 		if (projectIterations.isEmpty()) {
 			return false;
 		}
 		
-		for (IterationDetail iteration: projectIterations){
+		for (Iteration iteration: projectIterations){
 			int itId = iteration.getIterationId();
 			jdbcTemplate.update("DELETE FROM task WHERE iteration_id = ?", itId);
 			jdbcTemplate.update("DELETE FROM log WHERE iteration_id = ?", itId);
@@ -91,7 +94,7 @@ public class ProjectJdbcDao implements ProjectDao{
 	}
 	
 	@Override
-	public List<ProjectDetail> getProjectDetailList() {
+	public List<Project> getProjectDetailList() {
         return jdbcTemplate.query("SELECT * FROM project", projectDetailRowMapper);
 	}
 	
@@ -101,7 +104,7 @@ public class ProjectJdbcDao implements ProjectDao{
 		  throw new IllegalArgumentException("Illegal project name");
 	  }
 
-      List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", projectDetailRowMapper, projectName);
+      List<Project> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", projectDetailRowMapper, projectName);
       
       if (resultRows.isEmpty()) {
               throw new IllegalStateException("Project doesnt exist");
@@ -109,9 +112,9 @@ public class ProjectJdbcDao implements ProjectDao{
 
       Project requestedProject = new Project(resultRows.get(0));
       
-      List<IterationDetail> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, requestedProject.getProjectDetails().getProjectId());
+      List<Iteration> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, requestedProject.getProjectDetails().getProjectId());
       
-      for (IterationDetail itDetail: iterationDetailRows){
+      for (Iteration itDetail: iterationDetailRows){
     	  requestedProject.addIteration(itDetail);
       }
       
@@ -120,7 +123,7 @@ public class ProjectJdbcDao implements ProjectDao{
 
 	@Override
 	public Project getProjectWithDetails(int projectId) {
-		List<ProjectDetail> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectDetailRowMapper, projectId);
+		List<Project> resultRows = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectDetailRowMapper, projectId);
 	      
 	      if (resultRows.isEmpty()) {
 	              throw new IllegalStateException("Project doesnt exist");
@@ -128,9 +131,9 @@ public class ProjectJdbcDao implements ProjectDao{
 
 	      Project requestedProject = new Project(resultRows.get(0));
 	      
-	      List<IterationDetail> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, requestedProject.getProjectDetails().getProjectId());
+	      List<Iteration> iterationDetailRows = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, requestedProject.getProjectDetails().getProjectId());
 	      
-	      for (IterationDetail itDetail: iterationDetailRows){
+	      for (Iteration itDetail: iterationDetailRows){
 	    	  requestedProject.addIteration(itDetail);
 	      }
 	      

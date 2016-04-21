@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.models.IterationDetail;
-import ar.edu.itba.models.ProjectDetail;
+import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
@@ -61,14 +61,14 @@ public class TaskJdbcDao implements TaskDao{
 			throw new IllegalArgumentException("Illegal task description");
 		}
 
-		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", new ProjectDetailRowMapper(), projectName);
+		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ? LIMIT 1", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
 			throw new IllegalStateException("Project doesnt exist");
 		}
 		
 		int projectId = project.get(0).getProjectId();
 		
-		List<IterationDetail> iteration = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id= ? AND number = ? LIMIT 1", new IterationDetailRowMapper(), projectId, iterationNumber);
+		List<Iteration> iteration = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id= ? AND number = ? LIMIT 1", new IterationDetailRowMapper(), projectId, iterationNumber);
 		if (iteration.isEmpty()) {
 			throw new IllegalStateException("Iteration doesnt exist");
 		}

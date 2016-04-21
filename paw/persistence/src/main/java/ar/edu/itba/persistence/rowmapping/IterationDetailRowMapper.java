@@ -6,13 +6,13 @@ import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.Iteration;
 
-public class IterationDetailRowMapper implements RowMapper<IterationDetail> {
+public class IterationDetailRowMapper implements RowMapper<Iteration> {
 
     @Override
-    public IterationDetail mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-            return new IterationDetail(rs.getInt("iteration_id"), rs.getInt("number"), 
+    public Iteration mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+            return new Iteration(rs.getInt("iteration_id"), rs.getInt("number"), 
             		new Date(rs.getDate("date_start").getTime()), new Date(rs.getDate("date_end").getTime()));
     }
 }

@@ -3,11 +3,11 @@ package ar.edu.itba.interfaces;
 import java.util.Date;
 
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.Iteration;
 
 public interface IterationDao {
 	
-	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate);
+	public Iteration createIteration(String projectName, Date beginDate, Date endDate);
 	
 	public boolean deleteIteration(int iterationId);
 	

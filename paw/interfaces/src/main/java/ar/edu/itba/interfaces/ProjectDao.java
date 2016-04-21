@@ -3,15 +3,15 @@ package ar.edu.itba.interfaces;
 import java.util.List;
 
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectDetail;
+import ar.edu.itba.models.Project;
 
 public interface ProjectDao {
 	
-	public ProjectDetail createProject(String name, String description);
+	public Project createProject(String name, String description);
 	
 	public boolean deleteProject(int projectId);
 	
-	public List<ProjectDetail> getProjectDetailList();
+	public List<Project> getProjectDetailList();
 	
 	public Project getProjectWithDetails(String projectName);
 	

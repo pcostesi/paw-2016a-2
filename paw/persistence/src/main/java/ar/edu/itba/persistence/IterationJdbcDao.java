@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.IterationDetail;
-import ar.edu.itba.models.ProjectDetail;
+import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
@@ -46,7 +46,7 @@ public class IterationJdbcDao implements IterationDao {
     }
     
 	@Override
-	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
+	public Iteration createIteration(String projectName, Date beginDate, Date endDate) {
 		if (projectName == null || projectName.length() == 0) {
 			throw new IllegalArgumentException("Illegal project name");
 		}
@@ -59,7 +59,7 @@ public class IterationJdbcDao implements IterationDao {
 			throw new IllegalArgumentException("Illegal end date");
 		}
 		
-		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", new ProjectDetailRowMapper(), projectName);
+		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", new ProjectDetailRowMapper(), projectName);
 		if (project.isEmpty()) {
 			throw new IllegalStateException("Project doesnt exist");
 		}
@@ -81,7 +81,7 @@ public class IterationJdbcDao implements IterationDao {
 		
         int iterationId = jdbcInsert.executeAndReturnKey(args).intValue();
         
-		return new IterationDetail(iterationId, itNumber, beginDate, endDate);
+		return new Iteration(iterationId, itNumber, beginDate, endDate);
 	}
 	
 	@Override
@@ -125,7 +125,7 @@ public class IterationJdbcDao implements IterationDao {
 
 	@Override
 	public Iteration getIteration(int iterationId){
-		List<IterationDetail> detailList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
+		List<Iteration> detailList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
 		
 		if (detailList.isEmpty()) {
 			throw new IllegalStateException("Iteration doesnt exist");

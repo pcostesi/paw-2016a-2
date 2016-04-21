@@ -1,18 +1,26 @@
 package ar.edu.itba.interfaces;
 
 import java.util.Date;
+import java.util.List;
 
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.Project;
+import ar.edu.itba.models.Story;
 
 public interface IterationService {
 
-	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate);
+	public Iteration createIteration(final Project project, Date beginDate, Date endDate);
 	
-	public boolean deleteIteration(int iterationId);
+	public void deleteIteration(final Iteration iteration);
 	
-	public Iteration getIteration(String projectName, int iterationNumber);
+	public Iteration getIteration(final Project project, int iterationNumber);
 	
-	public Iteration getIteration(int iterationId);
+	public Iteration getIterationById(int iterationId);
+	
+	public Iteration setBeginDate(final Iteration iteration, final Date beginDate);
+	
+	public Iteration setEndDate(final Iteration iteration, final Date endDate);
+	
+	public List<Story> getStoriesForIteration(final Iteration iteration);
 	
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.IterationDetail;
+import ar.edu.itba.models.Iteration;
 
 @Service
 public class IterationServiceImpl implements IterationService{
@@ -17,7 +17,7 @@ public class IterationServiceImpl implements IterationService{
 	IterationDao iterationDao;
 	
 	@Override
-	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
+	public Iteration createIteration(String projectName, Date beginDate, Date endDate) {
 		return iterationDao.createIteration(projectName, beginDate, endDate);
 	}
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectDetail;
+import ar.edu.itba.models.Project;
 
 @Service
 public class ProjectServiceImpl implements ProjectService{
@@ -17,7 +17,7 @@ public class ProjectServiceImpl implements ProjectService{
 	ProjectDao projectDao;
 	
 	@Override
-	public ProjectDetail createProject(String name, String description) {
+	public Project createProject(String name, String description) {
 		return projectDao.createProject(name, description);
 	}
 
@@ -27,7 +27,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public List<ProjectDetail> getProjectDetailList() {
+	public List<Project> getProjectDetailList() {
 		return projectDao.getProjectDetailList();
 	}
 

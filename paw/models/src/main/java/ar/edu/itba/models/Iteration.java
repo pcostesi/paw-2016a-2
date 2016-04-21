@@ -1,42 +1,45 @@
 package ar.edu.itba.models;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Date;
 
-public class Iteration {
+public class Iteration implements Comparable<Iteration>{
 	
-	private IterationDetail details;
-	private List<Task> tasks;
-	private List<Log> logs;
+	private final int iterationId;
+	private int number;
+	private Date startDate;
+	private Date endDate;
+	
+	public Iteration(int iterationId, int number, Date startDate, Date endDate){
+		this.iterationId = iterationId;
+		this.number = number;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
 
-	public Iteration(IterationDetail details) {
-		this.details = details;
-		this.tasks = new LinkedList<Task>();
-		this.logs = new LinkedList<Log>();
+	public int getNumber() {
+		return number;
 	}
-	
-	public IterationDetail getDetails() {
-		return details;
+
+	public Date getStartDate() {
+		return startDate;
 	}
-	
-	public List<Task> getTasks() {
-		return tasks;
+
+	public Date getEndDate() {
+		return endDate;
 	}
-	
-	public List<Log> getLogs() {
-		return logs;
-	}
-	
-	public void addTask(Task task) {
-		tasks.add(task);
-	}
-	
-	public void addLog(Log log) {
-		logs.add(log);
+
+	public int getIterationId() {
+		return iterationId;
 	}
 
 	public String toString() {
-		return details.toString();
+		return "Iteration [iterationId=" + iterationId + ", number=" + number + ", startDate=" + startDate
+				+ ", endDate=" + endDate + "]";
 	}
-	
+
+	@Override
+	public int compareTo(Iteration o) {
+		return Integer.valueOf(number).compareTo(o.getNumber());
+	}
+
 }
