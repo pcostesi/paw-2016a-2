@@ -1,42 +1,48 @@
 package ar.edu.itba.models;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Date;
 
-public class Iteration {
+public class Iteration{
 	
-	private IterationDetail details;
-	private List<Task> tasks;
-	private List<Log> logs;
+	private final int iterationId;
+	private int number;
+	private Date begintDate;
+	private Date endDate;
+	
+	public Iteration(int iterationId, int number, Date begintDate, Date endDate){
+		this.iterationId = iterationId;
+		this.number = number;
+		this.begintDate = begintDate;
+		this.endDate = endDate;
+	}
 
-	public Iteration(IterationDetail details) {
-		this.details = details;
-		this.tasks = new LinkedList<Task>();
-		this.logs = new LinkedList<Log>();
+	public int getNumber() {
+		return number;
+	}
+
+	public Date getBeginDate() {
+		return begintDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public int getIterationId() {
+		return iterationId;
 	}
 	
-	public IterationDetail getDetails() {
-		return details;
+	public void setBeginDate(Date beginDate) {
+		this.begintDate = beginDate;
 	}
 	
-	public List<Task> getTasks() {
-		return tasks;
-	}
-	
-	public List<Log> getLogs() {
-		return logs;
-	}
-	
-	public void addTask(Task task) {
-		tasks.add(task);
-	}
-	
-	public void addLog(Log log) {
-		logs.add(log);
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;		
 	}
 
 	public String toString() {
-		return details.toString();
+		return "Iteration [iterationId=" + iterationId + ", number=" + number + ", startDate=" + begintDate
+				+ ", endDate=" + endDate + "]";
 	}
-	
+
 }

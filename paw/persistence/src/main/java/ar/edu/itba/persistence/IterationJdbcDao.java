@@ -14,25 +14,18 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.IterationDetail;
-import ar.edu.itba.models.ProjectDetail;
-import ar.edu.itba.models.Task;
-import ar.edu.itba.persistence.rowmapping.IterationDetailRowMapper;
-import ar.edu.itba.persistence.rowmapping.ProjectDetailRowMapper;
-import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
+import ar.edu.itba.persistence.rowmapping.IterationRowMapper;
 
 @Repository
 public class IterationJdbcDao implements IterationDao {
 
 	private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
-    private IterationDetailRowMapper iterationDetailRowMapper;
-    private TaskUserRowMapper taskUserRowMapper;
+    private IterationRowMapper iterationDetailRowMapper;
     
     @Autowired
     public IterationJdbcDao(final DataSource ds) {
-    		iterationDetailRowMapper = new IterationDetailRowMapper();
-    		taskUserRowMapper = new TaskUserRowMapper();
+    		iterationDetailRowMapper = new IterationRowMapper();
             jdbcTemplate = new JdbcTemplate(ds);
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("iteration").usingGeneratedKeyColumns("iteration_id");
 
@@ -41,106 +34,87 @@ public class IterationJdbcDao implements IterationDao {
                             + "project_id INTEGER NOT NULL,"
                             + "number INTEGER NOT NULL,"
                             + "date_start DATE NOT NULL,"
-                            + "date_end DATE NOT NULL"
+                            + "date_end DATE NOT NULL,"
+                            + "FOREIGN KEY ( project_id ) REFERENCES project ( project_id ) ON DELETE CASCADE,"
+                            + "UNIQUE ( project_id, number )"
                     + ")");
     }
-    
+	
 	@Override
-	public IterationDetail createIteration(String projectName, Date beginDate, Date endDate) {
-		if (projectName == null || projectName.length() == 0) {
-			throw new IllegalArgumentException("Illegal project name");
-		}
-		
-		if (beginDate == null) {
-			throw new IllegalArgumentException("Illegal begin date");
-		}
-		
-		if (endDate == null) {
-			throw new IllegalArgumentException("Illegal end date");
-		}
-		
-		List<ProjectDetail> project = jdbcTemplate.query("SELECT * FROM project WHERE name = ?", new ProjectDetailRowMapper(), projectName);
-		if (project.isEmpty()) {
-			throw new IllegalStateException("Project doesnt exist");
-		}
+	public void deleteIteration(int iterationId) {
+		jdbcTemplate.update("DELETE FROM iteration WHERE iteration_id = ?", iterationId);
+	}
 
-		int projectId = project.get(0).getProjectId();
-		
+	@Override
+	public int getNextIterationNumber(int projectId) {
 		Integer itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
 		if (itNumber == null) {
-			itNumber = 1;
-		}else {
-			itNumber++;
+			return 1;
+		} else {
+			return itNumber+1;
 		}
+	}
+
+	@Override
+	public Iteration createIteration(int projectId, int nextIterationNumber, Date beginDate, Date endDate) {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("project_id", projectId);
-        args.put("number", itNumber);
+        args.put("number", nextIterationNumber);
         args.put("date_start", new java.sql.Date(beginDate.getTime()));
         args.put("date_end", new java.sql.Date(endDate.getTime()));
 		
         int iterationId = jdbcInsert.executeAndReturnKey(args).intValue();
         
-		return new IterationDetail(iterationId, itNumber, beginDate, endDate);
-	}
-	
-	@Override
-	public boolean deleteIteration(int iterationId) {
-		boolean hasEntriesToDelete = jdbcTemplate.update("DELETE FROM iteration WHERE iteration_id = ?", iterationId) > 0;
+		return new Iteration(iterationId, nextIterationNumber, beginDate, endDate);
 		
-		if (hasEntriesToDelete) {
-			jdbcTemplate.update("DELETE FROM task WHERE iteration_id = ?", iterationId);
-			
-			// TODO falta updetear los numbers de las iteraciones en la tabla y borrar log cuando haya
-			//jdbcTemplate.update("DELETE FROM log WHERE iteration_id = ?", iterationId);			
-		}		
-
-		return hasEntriesToDelete;
 	}
 
 	@Override
-	public Iteration getIteration(String projectName, int iterationNumber){
-		if ( projectName == null || projectName.length() == 0 ) {
-			throw new IllegalArgumentException("Illegal project name");
-		}
-		
-		if ( iterationNumber < 1 ) {
-			throw new IllegalArgumentException("Illegal iteration number");
-		}
-		
-		boolean projectExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, projectName) > 0;
-		if(!projectExists) {
-			throw new IllegalStateException("Project doesnt exist");
-		}		
-		Integer projectId = jdbcTemplate.queryForObject("SELECT project_id FROM project WHERE name = ?", Integer.class, projectName);
+	public Iteration getIteration(int projectId, int iterationNumber) {
+		List<Iteration> iterationList = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ? AND number = ?", iterationDetailRowMapper, projectId, iterationNumber);
 
-		boolean iterationExists = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber) > 0;
-		if (!iterationExists) {
-			throw new IllegalStateException("Iteration doesnt exist");
+		if (iterationList.isEmpty()) {
+			return null;
+		} else {
+			return iterationList.get(0);
 		}
-		Integer iterationId = jdbcTemplate.queryForObject("SELECT iteration_id FROM iteration WHERE project_id= ? AND number = ?", Integer.class, projectId, iterationNumber);
-		
-		return getIteration(iterationId);
 	}
 
 	@Override
-	public Iteration getIteration(int iterationId){
-		List<IterationDetail> detailList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
-		
-		if (detailList.isEmpty()) {
-			throw new IllegalStateException("Iteration doesnt exist");
-		}
-		
-		Iteration requestedIteration = new Iteration(detailList.get(0));
-		
-		List<Task> taskList = jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE iteration_id = ?", taskUserRowMapper, iterationId);
+	public Iteration getIterationById(int iterationId) {
+		List<Iteration> iterationList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
 
-		for (Task task: taskList) {
-			requestedIteration.addTask(task);
+		if (iterationList.isEmpty()) {
+			return null;
+		} else {
+			return iterationList.get(0);
 		}
-		
-		// TODO Falta agregarle los logs
-		
-		return requestedIteration;
 	}
+
+	@Override
+	public boolean iterationExists(int iterationId) {
+		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE iteration_id = ?", Integer.class, iterationId) == 1;
+	}
+
+	@Override
+	public void updateBeginDate(int iterationId, Date beginDate) {
+		jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", new java.sql.Date(beginDate.getTime()), iterationId);
+	}
+
+	@Override
+	public void updateEndDate(int iterationId, Date endDate) {
+		jdbcTemplate.update("UPDATE iteration SET date_end = ? WHERE iteration_id = ?", new java.sql.Date(endDate.getTime()), iterationId);
+	}
+
+	@Override
+	public List<Iteration> getIterationsForProject(int projectId) {
+		return jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
+	}
+
+	@Override
+	public void updateNumbersAfterDelete(int number) {
+		jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ?", number);
+	}
+
 }
