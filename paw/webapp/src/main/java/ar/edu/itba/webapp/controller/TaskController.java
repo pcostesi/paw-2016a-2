@@ -34,16 +34,16 @@ public class TaskController {
 			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
 			@Valid @ModelAttribute("taskForm") final TaskForm taskForm,
 			BindingResult result) {
-		final ModelAndView mav;
-		if (result.hasErrors()) {
-			mav = new ModelAndView("task/newTask");
-		} else {
-			final Task task = ts.createTask(projectId, iterationId, taskForm.getTitle(), taskForm.getDescription());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("task.getById")
-					.arg(0, task.getTaskId())
-					.buildAndExpand(projectId, iterationId);
-			mav = new ModelAndView("redirect:" + resourceUrl);
-		}
+		final ModelAndView mav = new ModelAndView("task/newTask");
+//		if (result.hasErrors()) {
+//			mav = new ModelAndView("task/newTask");
+//		} else {
+//			final Task task = ts.createTask(projectId, iterationId, taskForm.getTitle(), taskForm.getDescription());
+//			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("task.getById")
+//					.arg(0, task.getTaskId())
+//					.buildAndExpand(projectId, iterationId);
+//			mav = new ModelAndView("redirect:" + resourceUrl);
+//		}
 		return mav;
 	}
 	

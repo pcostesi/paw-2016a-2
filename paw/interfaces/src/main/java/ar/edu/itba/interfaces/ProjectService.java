@@ -3,18 +3,22 @@ package ar.edu.itba.interfaces;
 import java.util.List;
 
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectDetail;
 
 public interface ProjectService {
 
-public ProjectDetail createProject(String name, String description);
+	public Project createProject(final String name, final String description, final String code);
 	
-	public boolean deleteProject(int projectId);
+	public void deleteProject(final Project project);
 	
-	public List<ProjectDetail> getProjectDetailList();
+	public Project getProjectById(final int projectId);
 	
-	public Project getProjectWithDetails(String projectName);
-	
-	public Project getProjectWithDetails(int projectId);
+	public Project setName(final Project project, final String name);
 
+	public Project setDescription(final Project project, final String description);
+
+	public Project setCode(final Project project, final String code);
+	
+	public List<Project> getProjects();
+
+	public Project getProjectByCode(String code);
 }

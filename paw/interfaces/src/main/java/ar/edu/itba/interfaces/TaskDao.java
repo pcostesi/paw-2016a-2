@@ -1,21 +1,25 @@
 package ar.edu.itba.interfaces;
 
+import java.util.List;
+
 import ar.edu.itba.models.Task;
-import ar.edu.itba.models.TaskStatus;
-import ar.edu.itba.models.User;
 
 public interface TaskDao {
+
+	public List<Task> getTasksForStory(final int storyId);
+
+	public boolean taskExists(final int taskId);
 	
-	public Task createTask(String projectName, int iterationNumber, String title, String description);
-	
-	public Task createTask(int iterationId, String title, String description);
-	
-	public Task getTask(int taskId);
-	
-	public boolean deleteTask(int taskId);
-	
-	public boolean changeOwnership(int taskId, User user);
-	
-	public boolean changeStatus(int taskId, TaskStatus status);
+	public boolean taskExists(final int storyId, final String title);
+
+	public void updateStatus(final int taskId, final int value);
+
+	public void updateOwner(final int taskId, final String username);
+
+	public void deleteTask(final int taskId);
+
+	public Task getTaskById(final int taskId);
+
+	public Task createTask(final int storyId, final String name, final String description);
 	
 }
