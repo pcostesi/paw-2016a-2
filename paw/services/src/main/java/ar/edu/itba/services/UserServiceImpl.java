@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService{
 			throw new IllegalArgumentException("User password can't be null");
 		}
 		
-		if (password.length() < 6) {
-			throw new IllegalArgumentException("User password needs at least 6 characters");
+		if (password.length() < 5) {
+			throw new IllegalArgumentException("User password needs at least 5 characters");
 		}
 		
 		if (mail == null) {

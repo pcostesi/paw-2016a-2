@@ -99,12 +99,12 @@ public class IterationJdbcDao implements IterationDao {
 
 	@Override
 	public void updateBeginDate(int iterationId, Date beginDate) {
-		jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", new java.sql.Date(beginDate.getTime()));
+		jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", new java.sql.Date(beginDate.getTime()), iterationId);
 	}
 
 	@Override
 	public void updateEndDate(int iterationId, Date endDate) {
-		jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", new java.sql.Date(endDate.getTime()));
+		jdbcTemplate.update("UPDATE iteration SET date_end = ? WHERE iteration_id = ?", new java.sql.Date(endDate.getTime()), iterationId);
 	}
 
 	@Override
@@ -116,4 +116,5 @@ public class IterationJdbcDao implements IterationDao {
 	public void updateNumbersAfterDelete(int number) {
 		jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ?", number);
 	}
+
 }

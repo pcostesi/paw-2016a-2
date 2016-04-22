@@ -91,5 +91,10 @@ public class TaskJdbcDao implements TaskDao{
 	public boolean taskExists(int taskId) {
 		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE task_id = ?", Integer.class, taskId) == 1;
 	}
+	
+	@Override
+	public boolean taskExists(int storyId, String title) {
+		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE story_id = ? AND title = ?", Integer.class, storyId, title) == 1;
+	}
 
 }

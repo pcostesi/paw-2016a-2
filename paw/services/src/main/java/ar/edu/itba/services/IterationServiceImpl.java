@@ -133,7 +133,7 @@ public class IterationServiceImpl implements IterationService{
 		}
 		
 		if (iteration.getBeginDate().compareTo(endDate) > 0) {
-			throw new IllegalArgumentException("Iteration can't begin before it's ending date");
+			throw new IllegalArgumentException("Iteration can't begin after it's ending date");
 		}
 		
 		if (!iterationDao.iterationExists(iteration.getIterationId())) {

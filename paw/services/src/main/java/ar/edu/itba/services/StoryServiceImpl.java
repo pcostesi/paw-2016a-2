@@ -21,24 +21,28 @@ public class StoryServiceImpl implements StoryService{
 	IterationDao iterationDao;
 
 	@Override
-	public Story create(Iteration iteration, String name) {
+	public Story create(Iteration iteration, String title) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
 		
-		if (name == null) {
-			throw new IllegalArgumentException("Story name can't be null");
+		if (title == null) {
+			throw new IllegalArgumentException("Story title can't be null");
 		}
 		
-		if (name.length() == 0) {
-			throw new IllegalArgumentException("Story name needs at least 1 character");
+		if (title.length() == 0) {
+			throw new IllegalArgumentException("Story title can't be empty");
 		}
 		
 		if (!iterationDao.iterationExists(iteration.getIterationId())) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		return storyDao.createStory(iteration.getIterationId(), name);
+		if (storyDao.storyExists(iteration.getIterationId(), title)) {
+			throw new IllegalStateException("There is another story with this title in this iteration");
+		}
+		
+		return storyDao.createStory(iteration.getIterationId(), title);
 	}
 
 	@Override
@@ -80,7 +84,7 @@ public class StoryServiceImpl implements StoryService{
 		}
 		
 		if (title.length() == 0) {
-			throw new IllegalArgumentException("Story title needs at least 1 character");
+			throw new IllegalArgumentException("Story title can't be empty");
 		}
 		
 		if (!storyDao.storyExists(story.getStoryId())) {

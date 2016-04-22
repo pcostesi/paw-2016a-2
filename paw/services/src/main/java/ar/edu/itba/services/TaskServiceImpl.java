@@ -33,7 +33,7 @@ public class TaskServiceImpl implements TaskService{
 		}
 		
 		if (name.length() == 0) {
-			throw new IllegalArgumentException("Project name needs at least 1 character");
+			throw new IllegalArgumentException("Project name can't be empty");
 		}
 		
 		if (description == null) {
@@ -41,14 +41,14 @@ public class TaskServiceImpl implements TaskService{
 		}
 		
 		if (description.length() == 0) {
-			throw new IllegalArgumentException("Description needs at least 1 character");
+			throw new IllegalArgumentException("Description needs can't be empty");
 		}
 		
 		if (!storyDao.storyExists(story.getStoryId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		if (storyDao.hasTaskWithName(story.getStoryId(), name)) {
+		if (taskDao.taskExists(story.getStoryId(), name)) {
 			throw new IllegalStateException("Task with name "+ name +" already exists in this story");
 		}
 		
@@ -111,7 +111,7 @@ public class TaskServiceImpl implements TaskService{
 		}
 		
 		if (status == null) {
-			throw new IllegalArgumentException("tatus can't be null");
+			throw new IllegalArgumentException("Status can't be null");
 		}
 		
 		if (!taskDao.taskExists(task.getTaskId())) {

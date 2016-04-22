@@ -39,17 +39,12 @@ public class StoryJdbcDao implements StoryDao{
 	
 	@Override
 	public List<Story> getStoriesForIteration(int iterationId) {
-		return jdbcTemplate.query("SELECT * FROM story WHERE story_id = ?", storyRowMapper, iterationId);
+		return jdbcTemplate.query("SELECT * FROM story WHERE iteration_id = ?", storyRowMapper, iterationId);
 	}
 
 	@Override
 	public boolean storyExists(int storyId) {
 		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM story WHERE story_id = ?", Integer.class, storyId) == 1;
-	}
-
-	@Override
-	public boolean hasTaskWithName(int storyId, String title) {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE story_id = ? AND title = ?", Integer.class, storyId, title) == 1;
 	}
 
 	@Override
@@ -83,6 +78,11 @@ public class StoryJdbcDao implements StoryDao{
 	@Override
 	public void deleteStory(int storyId) {
 		jdbcTemplate.update("DELETE FROM story WHERE story_id = ?", storyId);
+	}
+	
+	@Override
+	public boolean storyExists(int iterationId, String title) {
+		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM story WHERE iteration_id = ? AND title = ?", Integer.class, iterationId, title) == 1;
 	}
 
 }

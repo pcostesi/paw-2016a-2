@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -52,7 +53,13 @@ public class UserJdbcDao implements UserDao {
         
         @Override
         public User getByUsername(final String username) {
-            return jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username).get(0);            
+            List<User> users = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
+            
+            if (users.isEmpty()) {
+            	return null;
+            } else {
+            	return users.get(0);
+            }
         }
         
 		@Override

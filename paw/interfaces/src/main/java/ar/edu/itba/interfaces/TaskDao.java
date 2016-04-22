@@ -9,6 +9,8 @@ public interface TaskDao {
 	public List<Task> getTasksForStory(final int storyId);
 
 	public boolean taskExists(final int taskId);
+	
+	public boolean taskExists(final int storyId, final String title);
 
 	public void updateStatus(final int taskId, final int value);
 

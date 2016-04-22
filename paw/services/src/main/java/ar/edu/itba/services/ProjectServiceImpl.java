@@ -26,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (name.length() == 0) {
-			throw new IllegalArgumentException("Project name needs at least 1 character");
+			throw new IllegalArgumentException("Project name can't be empty");
 		}
 		
 		if (description == null) {
@@ -34,7 +34,7 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (description.length() == 0) {
-			throw new IllegalArgumentException("Description needs at least 1 character");
+			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
 		if (code == null) {
@@ -42,7 +42,11 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (code.length() == 0) {
-			throw new IllegalArgumentException("Project code needs at least 1 character");
+			throw new IllegalArgumentException("Project code can't be empty");
+		}
+		
+		if (code.length() > 10) {
+			throw new IllegalArgumentException("Project code can't have more than 10 characters");
 		}
 		
 		if (projectDao.projectNameExists(name)) {
@@ -80,7 +84,7 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (name.length() == 0) {
-			throw new IllegalArgumentException("Project name needs at least 1 character");
+			throw new IllegalArgumentException("Project name can't be empty");
 		}
 		
 		if (!projectDao.projectExists(project.getProjectId())) {
@@ -104,7 +108,7 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (description.length() == 0) {
-			throw new IllegalArgumentException("Project description needs at least 1 character");
+			throw new IllegalArgumentException("Project description can't be empty");
 		}
 		
 		if (!projectDao.projectExists(project.getProjectId())) {
@@ -128,7 +132,7 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (code.length() == 0) {
-			throw new IllegalArgumentException("Project code needs at least 1 character");
+			throw new IllegalArgumentException("Project code can't be empty");
 		}
 		
 		if (!projectDao.projectExists(project.getProjectId())) {
@@ -168,7 +172,7 @@ public class ProjectServiceImpl implements ProjectService{
 		}
 		
 		if (code.length() == 0) {
-			throw new IllegalArgumentException("Project code needs at least 1 character");
+			throw new IllegalArgumentException("Project code can't be empty");
 		}
 		
 		Project project = projectDao.getProjectByCode(code);
