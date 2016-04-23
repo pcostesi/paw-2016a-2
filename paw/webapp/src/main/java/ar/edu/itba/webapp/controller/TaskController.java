@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import ar.edu.itba.interfaces.TaskService;
-import ar.edu.itba.models.Task;
 import ar.edu.itba.webapp.form.TaskForm;
 
 @Controller
-@RequestMapping(value = "/project/{project}/iteration/{iteration}/task")
+@RequestMapping(value = "/project/{project}/iteration/{iteration}/story/{story}/task")
 public class TaskController {
 	
 	@Autowired
@@ -32,6 +30,7 @@ public class TaskController {
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
 	public ModelAndView createNewResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
 			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
+			@ModelAttribute("storyId") @PathVariable("story") final int storyId,
 			@Valid @ModelAttribute("taskForm") final TaskForm taskForm,
 			BindingResult result) {
 		final ModelAndView mav = new ModelAndView("task/newTask");
@@ -47,26 +46,39 @@ public class TaskController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET, name = "task.getById")
-	public ModelAndView getResource(@PathVariable("taskId") int taskId) {
+	@RequestMapping(value = "/{task}", method = RequestMethod.GET, name = "task.getById")
+	public ModelAndView getResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
+			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
+			@ModelAttribute("storyId") @PathVariable("story") final int storyId,
+			@ModelAttribute("taskId") @PathVariable("task") int taskId,
+			@Valid @ModelAttribute("taskForm") final TaskForm taskForm,
+			BindingResult result) {
 		final ModelAndView mav = new ModelAndView("task/task");
 		return mav;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView saveResource() {
+	public ModelAndView saveResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
+			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
+			@ModelAttribute("storyId") @PathVariable("story") final int storyId) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ModelAndView modifyResource(@PathVariable int id) {
+	@RequestMapping(value = "/{task}", method = RequestMethod.PUT)
+	public ModelAndView modifyResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
+			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
+			@ModelAttribute("storyId") @PathVariable("story") final int storyId,
+			@ModelAttribute("taskId") @PathVariable("task") int taskId) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ModelAndView deleteResource(@PathVariable int id) {
+	@RequestMapping(value = "/{task}", method = RequestMethod.DELETE)
+	public ModelAndView deleteResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
+			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
+			@ModelAttribute("storyId") @PathVariable("story") final int storyId,
+			@ModelAttribute("taskId") @PathVariable("task") int taskId) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}
