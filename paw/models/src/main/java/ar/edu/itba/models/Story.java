@@ -4,6 +4,7 @@ public class Story {
 
 	private final int storyId;
 	private String title;
+	private Iteration iteration;
 
 	public Story(final int storyId, final String title) {
 		this.storyId = storyId;
@@ -20,6 +21,14 @@ public class Story {
 
 	public int getStoryId() {
 		return storyId;
+	}
+
+	public Iteration getIteration() {
+		return iteration;
+	}
+
+	public void setIteration(Iteration iteration) {
+		this.iteration = iteration;
 	}
 	
 }
