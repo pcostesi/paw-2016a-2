@@ -8,6 +8,7 @@ public class Iteration{
 	private int number;
 	private Date begintDate;
 	private Date endDate;
+	private Project project;
 	
 	public Iteration(int iterationId, int number, Date begintDate, Date endDate){
 		this.iterationId = iterationId;
@@ -43,6 +44,14 @@ public class Iteration{
 	public String toString() {
 		return "Iteration [iterationId=" + iterationId + ", number=" + number + ", startDate=" + begintDate
 				+ ", endDate=" + endDate + "]";
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 }

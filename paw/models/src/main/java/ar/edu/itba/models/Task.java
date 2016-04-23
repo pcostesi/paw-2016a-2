@@ -7,6 +7,7 @@ public class Task{
 	private String description;
 	private TaskStatus status;
 	private User owner;
+	private Story story;
 	
 	public Task(int taskId, String title, String description, TaskStatus status, User owner) {
 		this.taskId = taskId;
@@ -63,6 +64,14 @@ public class Task{
 	public String toString() {
 		return "Task [taskId=" + taskId + ", title=" + title + ", description=" + description + ", status=" + status
 				+ ", owner=" + owner + "]";
+	}
+
+	public Story getStory() {
+		return story;
+	}
+
+	public void setStory(Story story) {
+		this.story = story;
 	}
 
 }
