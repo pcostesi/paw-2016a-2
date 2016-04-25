@@ -34,6 +34,10 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story title can't be empty");
 		}
 		
+		if (title.length() > 100) {
+			throw new IllegalArgumentException("Story title can't be longer than 100 characters");
+		}
+		
 		if (!iterationDao.iterationExists(iteration.getIterationId())) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
@@ -85,6 +89,10 @@ public class StoryServiceImpl implements StoryService{
 		
 		if (title.length() == 0) {
 			throw new IllegalArgumentException("Story title can't be empty");
+		}
+		
+		if (title.length() > 100) {
+			throw new IllegalArgumentException("Story title can't be longer than 100 characters");
 		}
 		
 		if (!storyDao.storyExists(story.getStoryId())) {

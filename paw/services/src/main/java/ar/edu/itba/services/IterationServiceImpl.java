@@ -158,7 +158,5 @@ public class IterationServiceImpl implements IterationService{
 		
 		return iterationDao.getIterationsForProject(project.getProjectId());
 	}
-	
-
 
 }

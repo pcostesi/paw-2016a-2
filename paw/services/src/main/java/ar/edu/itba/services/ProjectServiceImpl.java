@@ -1,11 +1,12 @@
 package ar.edu.itba.services;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.models.Project;
@@ -14,10 +15,9 @@ import ar.edu.itba.models.Project;
 public class ProjectServiceImpl implements ProjectService{
 
 	@Autowired
-	ProjectDao projectDao;
+	private ProjectDao projectDao;
 	
-	@Autowired
-	IterationDao iterationDao;
+	private CodeValidator codeValidator = new CodeValidator();
 
 	@Override
 	public Project createProject(final String name, final String description, final String code) {
@@ -29,12 +29,20 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project name can't be empty");
 		}
 		
+		if (name.length() > 100) {
+			throw new IllegalArgumentException("Project name can't be longer than 100 characters");
+		}
+		
 		if (description == null) {
 			throw new IllegalArgumentException("Description can't be null");
 		}
 		
 		if (description.length() == 0) {
 			throw new IllegalArgumentException("Description can't be empty");
+		}
+		
+		if (description.length() > 500) {
+			throw new IllegalArgumentException("Project name can't be longer than 500 characters");
 		}
 		
 		if (code == null) {
@@ -47,6 +55,10 @@ public class ProjectServiceImpl implements ProjectService{
 		
 		if (code.length() > 10) {
 			throw new IllegalArgumentException("Project code can't have more than 10 characters");
+		}
+		
+		if (!codeValidator.validate(code)) {
+			throw new IllegalArgumentException("Project code can only have numbers and lower case characters");
 		}
 		
 		if (projectDao.projectNameExists(name)) {
@@ -87,6 +99,10 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project name can't be empty");
 		}
 		
+		if (name.length() > 100) {
+			throw new IllegalArgumentException("Project name can't be longer than 100 characters");
+		}
+		
 		if (!projectDao.projectExists(project.getProjectId())) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
@@ -111,6 +127,10 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project description can't be empty");
 		}
 		
+		if (description.length() > 500) {
+			throw new IllegalArgumentException("Project description can't be longer than 100 characters");
+		}
+		
 		if (!projectDao.projectExists(project.getProjectId())) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
@@ -133,6 +153,14 @@ public class ProjectServiceImpl implements ProjectService{
 		
 		if (code.length() == 0) {
 			throw new IllegalArgumentException("Project code can't be empty");
+		}
+		
+		if (code.length() > 10) {
+			throw new IllegalArgumentException("Project code can't be longer than 10 characters");
+		}
+		
+		if (!codeValidator.validate(code)) {
+			throw new IllegalArgumentException("Project code can only have numbers and lower case characters");
 		}
 		
 		if (!projectDao.projectExists(project.getProjectId())) {
@@ -175,6 +203,14 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project code can't be empty");
 		}
 		
+		if (code.length() > 10) {
+			throw new IllegalArgumentException("Project code can't be longer than 10 characters");
+		}
+		
+		if (!codeValidator.validate(code)) {
+			throw new IllegalArgumentException("Project code can only have numbers and lower case characters");
+		}
+		
 		Project project = projectDao.getProjectByCode(code);
 		
 		if (project == null) {
@@ -183,5 +219,23 @@ public class ProjectServiceImpl implements ProjectService{
 			return project;
 		}
 	}	
+	
+	private class CodeValidator {
+
+    	private Pattern pattern;
+    	private Matcher matcher;
+
+    	private static final String CODE_PATTERN = "[A-Za-z0-9]+";
+
+    	public CodeValidator() {
+    		pattern = Pattern.compile(CODE_PATTERN);
+    	}
+
+    	public boolean validate(final String hex) {
+    		matcher = pattern.matcher(hex);
+    		return matcher.matches();
+    	}
+    	
+    }
 
 }

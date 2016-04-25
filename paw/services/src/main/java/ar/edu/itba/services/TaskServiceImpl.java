@@ -23,17 +23,21 @@ public class TaskServiceImpl implements TaskService{
 	private StoryDao storyDao;
 
 	@Override
-	public Task createTask(Story story, String name, String description) {
+	public Task createTask(Story story, String title, String description) {
 		if (story == null) {
 			throw new IllegalArgumentException("Story can't be null");
 		}
 		
-		if (name == null) {
-			throw new IllegalArgumentException("Project name can't be null");
+		if (title == null) {
+			throw new IllegalArgumentException("Task title can't be null");
 		}
 		
-		if (name.length() == 0) {
-			throw new IllegalArgumentException("Project name can't be empty");
+		if (title.length() == 0) {
+			throw new IllegalArgumentException("Task title can't be empty");
+		}
+		
+		if (title.length() > 100) {
+			throw new IllegalArgumentException("Task title can't be longer than 100 characters");
 		}
 		
 		if (description == null) {
@@ -44,15 +48,19 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Description needs can't be empty");
 		}
 		
+		if (description.length() > 500) {
+			throw new IllegalArgumentException("Description can't be longer than 500 characters");
+		}
+		
 		if (!storyDao.storyExists(story.getStoryId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		if (taskDao.taskExists(story.getStoryId(), name)) {
-			throw new IllegalStateException("Task with name "+ name +" already exists in this story");
+		if (taskDao.taskExists(story.getStoryId(), title)) {
+			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
 		}
 		
-		return taskDao.createTask(story.getStoryId(), name, description);
+		return taskDao.createTask(story.getStoryId(), title, description);
 	}
 
 	@Override
