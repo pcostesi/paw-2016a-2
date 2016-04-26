@@ -1,15 +1,24 @@
 package ar.edu.itba.services;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
@@ -18,51 +27,188 @@ public class TaskServiceImplTest {
 	private static final int taskID = 0;
 
 	private TaskService ts;
-
 	@Mock
-	private TaskDao dao;
-	
+	private Task testTask;
+	@Mock
+	private StoryDao storyDao;
+	@Mock
+	private TaskDao taskDao;
+	@Mock
+	private Story testStory;
+	@Mock
+	private User testUser;
+
+	private String name = "Epic tests";
+	private String description = "The life of a tester is hard";
+	private String veryLongString = "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 ";
+
+	private TaskStatus status;
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		ts = new TaskServiceImpl(dao);
+		ts = new TaskServiceImpl(taskDao, storyDao);
 	}
 
 	@Test
-	public void testDeleteTask() {	
-		ts.deleteTask(taskID);
-		verify(dao, atLeastOnce()).deleteTask(taskID);
-	}
-	
-	@Test
-	public void testCreateTask(){
-		ts.createTask(10, "Epic tests", "Testing tester");
-		verify(dao, atLeastOnce()).createTask(10, "Epic tests", "Testing tester");
-	}
-	
-	@Test
-	public void createTaskInProject(String projectName, int iterationNumber, String title, String description){
-		
-	}
-	
-	@Test
-	public void getTaskTest(int taskId){
-		
-	}
-	
-	@Test
-	public void deleteTask(int taskId){
-		
-	}
-	
-	@Test
-	public void changeOwnership(int taskId, User user){
-		
-	}
-	
-	@Test
-	public void changeStatus(int taskId, TaskStatus status){
-		
+	public void testDeleteTask() {
+		Mockito.when(taskDao.taskExists(testTask.getTaskId())).thenReturn(true);
+		ts.deleteTask(testTask);
+		verify(taskDao, atLeastOnce()).deleteTask(testTask.getTaskId());
 	}
 
+	@Test
+	public void CreateTaskWithValidParameters() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(true);
+		Mockito.when(taskDao.createTask(testStory.getStoryId(), name, description)).thenReturn(testTask);
+		Task newTask = ts.createTask(testStory, name, description);
+		verify(taskDao, atLeastOnce()).createTask(testStory.getStoryId(), name, description);
+		assertNotNull(newTask);
+	}
+
+	@Test(expected = Exception.class)
+	public void createTaskWithInfiniteName() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(true);
+		Mockito.when(taskDao.createTask(testStory.getStoryId(), name, description)).thenReturn(testTask);
+		Task newTask = ts.createTask(testStory, veryLongString, description);
+		assertNull(newTask);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void createTaskWithInexistentStory() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(false);
+		Task newTask = ts.createTask(testStory, name, description);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void createTaskWithInexistenStringName() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(true);
+		Task newTask = ts.createTask(testStory, "", description);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void createTaskWithInexistenStringDescription() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(true);
+		Task newTask = ts.createTask(testStory, name, "");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void createTaskWithNullString() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(false);
+		Task newTask = ts.createTask(testStory, null, null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void createExistingTask() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(true);
+		Mockito.when(taskDao.createTask(testStory.getStoryId(), name, description)).thenReturn(testTask);
+		Mockito.when(taskDao.taskExists(testStory.getStoryId(), name)).thenReturn(true);
+		Task newTask = ts.createTask(testStory, name, description);
+		verify(taskDao, atLeastOnce()).createTask(testStory.getStoryId(), name, description);
+		assertNotNull(newTask);
+	}
+
+	@Test
+	public void getTaskByIdwithCorrect() {
+		Mockito.when(taskDao.getTaskById(1)).thenReturn(testTask);
+		Task newTask = ts.getTaskById(1);
+		verify(taskDao, atLeastOnce()).getTaskById(1);
+		assertNotNull(newTask);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void getTaskByIdwithIncorrect() {
+		Mockito.when(taskDao.getTaskById(1)).thenReturn(null);
+		ts.getTaskById(1);
+	}
+
+	@Test
+	public void deleteExistingTask() {
+		Mockito.when(taskDao.taskExists(testTask.getTaskId())).thenReturn(true);
+		ts.deleteTask(testTask);
+		verify(taskDao, atLeastOnce()).deleteTask(testTask.getTaskId());
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void deleteNonExistingTask() {
+		Mockito.when(taskDao.taskExists(testTask.getTaskId())).thenReturn(false);
+		ts.deleteTask(testTask);
+		verify(taskDao, never()).deleteTask(testTask.getTaskId());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void deleteNullTask() {
+		ts.deleteTask(null);
+		verify(taskDao, never()).deleteTask(testTask.getTaskId());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void changeStatusWithNullStatus() {
+		Mockito.when(taskDao.taskExists(testTask.getTaskId())).thenReturn(true);
+		ts.changeStatus(testTask, status);
+	}
+
+	@Test
+	public void changeStatusWithCorrectParameters() {
+		status = TaskStatus.NOT_STARTED;
+		Mockito.when(taskDao.taskExists(testTask.getTaskId())).thenReturn(true);
+		ts.changeStatus(testTask, status);
+		verify(taskDao, times(1)).updateStatus(testTask.getTaskId(), status.getValue());
+		verify(testTask, times(1)).setStatus(status);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void changeStatusWithNullTask() {
+		ts.changeStatus(null, status);
+	}
+
+	@Test
+	public void changeOwnerWithCorrectParameters() {
+		Mockito.when(taskDao.taskExists(testTask.getTaskId())).thenReturn(true);
+		ts.changeOwnership(testTask, testUser);
+		verify(taskDao, times(1)).updateOwner(testTask.getTaskId(), testUser.getUsername());
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void changeOwnerWithFakeTask() {
+		Mockito.when(taskDao.taskExists(testTask.getTaskId())).thenReturn(false);
+		ts.changeOwnership(testTask, testUser);
+		verify(taskDao, times(0)).updateOwner(testTask.getTaskId(), testUser.getUsername());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void changeOwnerWithNullTask() {
+		ts.changeOwnership(null, null);
+	}
+	
+	@Test
+	public void testGetTaskForStoryWithCorrectParams(){
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(true);
+		List<Task> list = ts.getTasksForStory(testStory);
+		assertNotNull(list);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testGetTaskForStoryWithFakeStory() {
+		Mockito.when(storyDao.storyExists(testStory.getStoryId())).thenReturn(false);
+		List<Task> list = ts.getTasksForStory(testStory);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetTaskForStoryWithNullStory() {;
+		List<Task> list = ts.getTasksForStory(null);
+	}
+	
 }
