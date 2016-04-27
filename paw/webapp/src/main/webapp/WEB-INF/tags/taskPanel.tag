@@ -8,21 +8,11 @@
 	<jsp:attribute name="title">Task: ${task.title}</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-		<button type="button" class="btn btn-xs btn-danger">
+	<form action="/project/scrumlr/iteration/0/story/0/task/${task.taskId}/delete" method="POST">
+		<button type="submit" class="btn btn-xs btn-danger">
 			Delete
 		  </button>
-		  <button type="button" class="btn btn-default btn-xs">
-		    Edit
-		  </button>
-		  <button type="button" class="btn btn-xs btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    Started <span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu">
-		    <li><a href="#">Pending</a></li>
-		    <li><a href="#">Started</a></li>
-		    <li><a href="#">Blocked</a></li>
-		    <li><a href="#">Done</a></li>
-		  </ul>
+		  </form>
 	</jsp:attribute>
 
 	<jsp:body>
@@ -32,7 +22,7 @@
                 <jsp:doBody/>
             </div>
             <div class="col-sm-4">
-                ${task.status}
+                ${task.status.label}
             </div>
         </div>
 	</jsp:body>

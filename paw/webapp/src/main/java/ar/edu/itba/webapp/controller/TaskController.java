@@ -51,14 +51,16 @@ public class TaskController {
 		} else {
 			final Task task = ts.createTask(story, taskForm.getTitle(), taskForm.getDescription());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("story.getById")
-					.arg(0, story.getStoryId())
-					.buildAndExpand(projectId, iterationId);
+					.arg(0, projectId)
+					.arg(1, iterationId)
+					.arg(2, storyId)
+					.build();
 			mav = new ModelAndView("redirect:" + resourceUrl + "?task=" + task.getTaskId());
 		}
 		return mav;
 	}
 	
-	@RequestMapping(value = "/{task}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{task}/edit", method = RequestMethod.POST)
 	public ModelAndView saveResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
 			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
 			@ModelAttribute("storyId") @PathVariable("story") final int storyId) {
@@ -66,12 +68,22 @@ public class TaskController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{task}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{task}/delete", method = RequestMethod.POST)
 	public ModelAndView deleteResource(@ModelAttribute("projectName") @PathVariable("project") final String projectId,
 			@ModelAttribute("iterationId") @PathVariable("iteration") final int iterationId,
 			@ModelAttribute("storyId") @PathVariable("story") final int storyId,
 			@ModelAttribute("taskId") @PathVariable("task") int taskId) {
-		final ModelAndView mav = new ModelAndView("helloworld");
-		return mav;
+		try {
+			final Task task = ts.getTaskById(taskId);
+			ts.deleteTask(task);
+		} catch (Exception e) {
+			
+		}
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("story.getById")
+				.arg(0, projectId)
+				.arg(1, iterationId)
+				.arg(2, storyId)
+				.build();
+		return new ModelAndView("redirect:" + resourceUrl + "?task=" + taskId);
 	}
 }
