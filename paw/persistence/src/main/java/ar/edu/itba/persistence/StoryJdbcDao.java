@@ -27,14 +27,6 @@ public class StoryJdbcDao implements StoryDao{
             jdbcTemplate = new JdbcTemplate(ds);
             storyRowMapper = new StoryRowMapper();
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("story").usingGeneratedKeyColumns("story_id");
-
-            jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS story ("
-            				+ "story_id INTEGER NOT NULL IDENTITY,"
-            				+ "iteration_id INTEGER NOT NULL,"
-                    		+ "title varchar(100) NOT NULL,"
-                            + "FOREIGN KEY ( iteration_id ) REFERENCES iteration ( iteration_id ) ON DELETE CASCADE,"
-                            + "UNIQUE ( iteration_id, title )"
-                    + ")");
     }
 	
 	@Override

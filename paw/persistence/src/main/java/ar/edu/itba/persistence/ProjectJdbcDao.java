@@ -29,18 +29,6 @@ public class ProjectJdbcDao implements ProjectDao{
     		projectRowMapper = new ProjectRowMapper();
             jdbcTemplate = new JdbcTemplate(ds);
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("project").usingGeneratedKeyColumns("project_id");
-
-            jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS project ("
-                            + "project_id INTEGER NOT NULL IDENTITY,"
-                            + "name varchar(100) NOT NULL,"
-                            + "code varchar(10) NOT NULL,"
-                            + "description varchar(500) NOT NULL,"
-                            + "date_start DATE NOT NULL,"
-                            + "status INTEGER NOT NULL,"
-                            + "UNIQUE ( project_id, name ),"
-                            + "UNIQUE ( name ),"
-                            + "UNIQUE ( code )"
-                    + ")");
     }
 
 	@Override

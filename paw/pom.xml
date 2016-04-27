@@ -26,6 +26,7 @@
     <mockito.version>1.10.19</mockito.version>
     <javax.validation.version>1.1.0.Final</javax.validation.version>
     <org.hibernate.version>5.0.1.Final</org.hibernate.version>
+    <org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>
   </properties>
 
   <dependencyManagement>
@@ -88,6 +89,11 @@
         <artifactId>spring-test</artifactId>
         <version>${org.springframework.version}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${org.postgresql.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

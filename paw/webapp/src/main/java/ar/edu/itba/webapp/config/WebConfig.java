@@ -5,13 +5,17 @@ import java.util.Locale;
 
 import javax.sql.DataSource;
 
-import org.hsqldb.jdbc.JDBCDriver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -29,6 +33,9 @@ import org.springframework.web.servlet.view.JstlView;
 
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+    @Value("classpath:schema.sql")
+    private Resource schemaSql;
+	
 	@Bean
 	public ViewResolver viewResolver() {
 		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -42,12 +49,26 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public DataSource dataSurce() {
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-		ds.setDriverClass(JDBCDriver.class);
-		ds.setUrl("jdbc:hsqldb:mem:paw");
-		ds.setUsername("hq");
-		ds.setPassword("");
+		ds.setDriverClass(org.postgresql.Driver.class);
+        ds.setUrl("jdbc:postgresql://localhost/paw");
+        ds.setUsername("test");
+        ds.setPassword("test");
 		return ds;
 	}
+	
+	@Bean
+    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
+        final DataSourceInitializer dsi = new DataSourceInitializer();
+        dsi.setDataSource(ds);
+        dsi.setDatabasePopulator(databasePopulator());
+        return dsi;
+    }
+
+    private DatabasePopulator databasePopulator() {
+        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
+        dbp.addScript(schemaSql);
+        return dbp;
+    }
 
 	@Bean
 	public MessageSource messageSource() {

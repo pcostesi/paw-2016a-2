@@ -28,16 +28,6 @@ public class IterationJdbcDao implements IterationDao {
     		iterationDetailRowMapper = new IterationRowMapper();
             jdbcTemplate = new JdbcTemplate(ds);
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("iteration").usingGeneratedKeyColumns("iteration_id");
-
-            jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS iteration ("
-            				+ "iteration_id INTEGER NOT NULL IDENTITY,"
-                            + "project_id INTEGER NOT NULL,"
-                            + "number INTEGER NOT NULL,"
-                            + "date_start DATE NOT NULL,"
-                            + "date_end DATE NOT NULL,"
-                            + "FOREIGN KEY ( project_id ) REFERENCES project ( project_id ) ON DELETE CASCADE,"
-                            + "UNIQUE ( project_id, number )"
-                    + ")");
     }
 	
 	@Override

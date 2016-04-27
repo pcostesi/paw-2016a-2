@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS story (
 );
 
 CREATE TABLE IF NOT EXISTS task (
-	task_id INTEGER SERIAL PRIMARY KEY,
+	task_id SERIAL PRIMARY KEY,
 	story_id INTEGER NOT NULL,
 	title varchar(100) NOT NULL,
 	description varchar(500) NOT NULL,
@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS task (
 	UNIQUE ( story_id, title )
 );
 
-CREATE TABLE IF NOT EXISTS user (
+CREATE TABLE IF NOT EXISTS account (
     username varchar(100) NOT NULL,
     password varchar(100) NOT NULL,
     mail varchar(100) NOT NULL,
-    PRIMARY KEY ( username ),
+    UNIQUE ( username ),
     UNIQUE ( mail )
 );
