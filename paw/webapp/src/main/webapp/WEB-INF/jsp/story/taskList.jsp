@@ -9,7 +9,7 @@
     
     <jsp:attribute name="actions">
 	  <t:navbutton btnClass="btn-primary">
-	    New Task
+	    <a href="/project/scrumlr/iteration/0/story/0/task/new">New Task</a>
 	  </t:navbutton>
      </jsp:attribute>
         
