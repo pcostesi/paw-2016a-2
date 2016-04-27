@@ -6,12 +6,16 @@ import java.util.Locale;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.hsqldb.jdbc.JDBCDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.Ordered;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
@@ -21,6 +25,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -32,6 +37,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 
 public class WebConfig extends WebMvcConfigurerAdapter {
+    static Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
     @Value("classpath:schema.sql")
     private Resource schemaSql;
@@ -45,7 +51,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		return viewResolver;
 	}
-
+	
 	@Bean
 	public DataSource dataSurce() {
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();

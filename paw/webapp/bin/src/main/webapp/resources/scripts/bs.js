@@ -13,5 +13,5 @@ define(['bootstrap-js'], function (bs) {
                 onload($);
             });
         }
-    }
+    };
 });

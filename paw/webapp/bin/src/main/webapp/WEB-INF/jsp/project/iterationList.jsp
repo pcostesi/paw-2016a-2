@@ -21,10 +21,10 @@
         
         
      <jsp:body>
-		<div class="panel-group" aria-multiselectable="true">
-			<t:projectHighlights/>
-			<t:iterationsPanel/>
-        </div>
+			<div class="panel-group" aria-multiselectable="true">
+				<t:projectHighlights/>
+				<t:iterationsPanel iterations="${iterations}"/>
+			</div>
 
     </jsp:body>    
 </t:page>

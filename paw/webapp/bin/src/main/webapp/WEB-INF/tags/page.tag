@@ -1,8 +1,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@tag description="Page Template" pageEncoding="UTF-8"%>
 <%@attribute name="title" fragment="true" required="true" %>
 <%@attribute name="actions" fragment="true" required="false" %>
+<%@attribute name="user" required="false" type="ar.edu.itba.models.User" %>
 
 <!DOCTYPE html>
 
@@ -12,22 +14,9 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
-	
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-	crossorigin="anonymous">
-	
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css" crossorigin="anonymous">
-	
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-	crossorigin="anonymous"></script>
-	
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="/scripts/main.js"></script>    
+    
 </head>
 
 
@@ -49,7 +38,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <nav class="collapse navbar-collapse" id="nav-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Project view <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="#"><spring:message code="nav.view.project"/></title></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -62,6 +51,9 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li class="btn-group">
 			     		<jsp:invoke fragment="actions"/>
+		     		</li>
+		     		<li>
+		     			${user.getUsername()}
 		     		</li>
 		        </ul>
 
@@ -78,22 +70,6 @@
         
         <jsp:doBody/>
     </div>
-    
-    <script>
-	    window.lint = (function() {
-	    	'use strict';
-	    	var s=document.createElement("script");
-	    	s.onload=function(){
-	    		bootlint.showLintReportForCurrentDocument([]);
-	    	};
-	    	
-	    	s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";
-	    	
-	    	document.body.appendChild(s)}
-	    );
-    </script>
-    <script src="/scripts/main.js"></script>
-    
 </body>
 
 </html>
