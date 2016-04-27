@@ -1,11 +1,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
-<%@attribute name="task" required="true" type="ar.edu.itba.models.Task" %>
+<%@attribute name="story" required="true" type="ar.edu.itba.models.Story"%>
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:collapsiblePanel panelId="task-${task.taskId}" panelParent="${panelParent}">
-	<jsp:attribute name="title">Task: ${task.title}</jsp:attribute>
+<t:collapsiblePanel panelId="story-${story.storyId}" panelParent="${panelParent}">
+	<jsp:attribute name="title">Story: ${story.title}</jsp:attribute>
 	
 	<jsp:attribute name="actions">
 		<button type="button" class="btn btn-xs btn-danger">
@@ -17,22 +17,15 @@
 		  <button type="button" class="btn btn-xs btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    Started <span class="caret"></span>
 		  </button>
-		  <ul class="dropdown-menu">
-		    <li><a href="#">Pending</a></li>
-		    <li><a href="#">Started</a></li>
-		    <li><a href="#">Blocked</a></li>
-		    <li><a href="#">Done</a></li>
-		  </ul>
 	</jsp:attribute>
 
 	<jsp:body>
 		<div class="row">
             <div class="col-sm-8">
-                ${task.description}
-                <jsp:doBody/>
+            	<a href="/project/scrumlr/iteration/0/story/${story.storyId}">Go to story</a>
             </div>
             <div class="col-sm-4">
-                ${task.status}
+            	We might add some details here...	
             </div>
         </div>
 	</jsp:body>
