@@ -28,17 +28,6 @@ public class TaskJdbcDao implements TaskDao{
             jdbcTemplate = new JdbcTemplate(ds);
             taskUserRowMapper = new TaskUserRowMapper();
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("task").usingGeneratedKeyColumns("task_id");
-
-            jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS task ("
-            				+ "task_id INTEGER NOT NULL IDENTITY,"
-            				+ "story_id INTEGER NOT NULL,"
-                    		+ "title varchar(100) NOT NULL,"
-                            + "description varchar(500) NOT NULL,"
-                            + "owner varchar(100),"
-                            + "status INTEGER NOT NULL,"
-                            + "FOREIGN KEY ( story_id ) REFERENCES story ( story_id ) ON DELETE CASCADE,"
-                            + "UNIQUE ( story_id, title )"
-                    + ")");
     }
 	
 	@Override
@@ -73,7 +62,7 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public Task getTaskById(int taskId) {
-		List<Task> tasks = jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE task_id = ?", taskUserRowMapper, taskId);
+		List<Task> tasks = jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE task_id = ?", taskUserRowMapper, taskId);
 	
 		if (tasks.isEmpty()) {
 			return null;
@@ -84,7 +73,7 @@ public class TaskJdbcDao implements TaskDao{
 
 	@Override
 	public List<Task> getTasksForStory(int storyId) {
-		return jdbcTemplate.query("SELECT * FROM task LEFT JOIN user ON user.username = task.owner WHERE story_id = ?", taskUserRowMapper, storyId);
+		return jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE story_id = ?", taskUserRowMapper, storyId);
 	}
 
 	@Override

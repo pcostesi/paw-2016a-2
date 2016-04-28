@@ -4,31 +4,21 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Project Scrumlr
+    	Story <small>${story.title}</small>
     </jsp:attribute>
     
     <jsp:attribute name="actions">
-	  <t:navbutton btnClass="btn-danger">
-		Delete
-	  </t:navbutton>
-	  <t:navbutton btnClass="btn-default">
-	    Edit
-	  </t:navbutton>
 	  <t:navbutton btnClass="btn-primary">
-	    New Iteration
+	    <a href="/project/scrumlr/iteration/0/story/0/task/new">New Task</a>
 	  </t:navbutton>
      </jsp:attribute>
         
         
-     <jsp:body>
-			<div class="panel-group" aria-multiselectable="true">
-				<t:projectHighlights/>
-				<t:iterationsPanel iterations="${iterations}"/>
-			</div>
-
+     <jsp:body>     	
+        <div class="panel-group" id="task-list" role="tablist" aria-multiselectable="true">
+			<c:forEach items="${tasks}" var="task">
+					<t:taskPanel panelParent="#task-list" task="${task}" />
+			</c:forEach>
+		</div>
     </jsp:body>    
 </t:page>
-    
-</body>
-
-</html>

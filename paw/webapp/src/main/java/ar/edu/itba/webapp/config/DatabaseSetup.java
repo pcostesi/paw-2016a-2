@@ -1,7 +1,5 @@
 package ar.edu.itba.webapp.config;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -11,10 +9,6 @@ import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.interfaces.TaskService;
-import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.Project;
-import ar.edu.itba.models.Story;
-import ar.edu.itba.models.Task;
 
 
 @Component
@@ -38,10 +32,10 @@ public class DatabaseSetup {
 		if (initialized) {
 			return;
 		}
-        Project project = ps.createProject("Scrumlr", "This is a project", "scrumlr");
-        Iteration iteration = is.createIteration(project, new Date(), new Date());
-        Story story = ss.create(iteration, "This is a story title");
-        Task task = ts.createTask(story, "This is a task title", "This is a task description");
+//        Project project = ps.createProject("Scrumlr", "This is a project", "scrumlr");
+//        Iteration iteration = is.createIteration(project, new Date(), new Date());
+//        Story story = ss.create(iteration, "This is a story title");
+//        Task task = ts.createTask(story, "This is a task title", "This is a task description");
         initialized = true;
     }
 }

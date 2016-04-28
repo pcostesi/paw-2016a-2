@@ -6,11 +6,11 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Add a new task <small>to Project Scrumlr &mdash; iteration #0</small>
+    	Add a new task <small>to Project Scrumlr &mdash; iteration #1</small>
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="taskForm" action="/project/scrumlr/iteration/0/story/0/task/new" method="POST">
+		<form:form modelAttribute="taskForm" action="/project/scrumlr/iteration/1/task/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>

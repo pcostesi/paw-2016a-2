@@ -26,15 +26,7 @@ public class UserJdbcDao implements UserDao {
         public UserJdbcDao(final DataSource ds) {
         		userRowMapper = new UserRowMapper();
                 jdbcTemplate = new JdbcTemplate(ds);
-                jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("user");
-
-                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS user ("
-                                + "username varchar(100) NOT NULL,"
-                                + "password varchar(100) NOT NULL,"
-                                + "mail varchar(100) NOT NULL,"
-                                + "PRIMARY KEY ( username ),"
-                                + "UNIQUE ( mail )"
-                        + ")");
+                jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("account");
 
         }
 
@@ -53,7 +45,7 @@ public class UserJdbcDao implements UserDao {
         
         @Override
         public User getByUsername(final String username) {
-            List<User> users = jdbcTemplate.query("SELECT * FROM user WHERE username = ? LIMIT 1", userRowMapper, username);
+            List<User> users = jdbcTemplate.query("SELECT * FROM account WHERE username = ? LIMIT 1", userRowMapper, username);
             
             if (users.isEmpty()) {
             	return null;
@@ -64,12 +56,12 @@ public class UserJdbcDao implements UserDao {
         
 		@Override
 		public boolean userNameExists(String name) {
-			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE username = ?", Integer.class, name) > 0;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM account WHERE username = ?", Integer.class, name) > 0;
 		}
 
 		@Override
 		public boolean userMailExists(String mail) {
-			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user WHERE mail = ?", Integer.class, mail) > 0;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM account WHERE mail = ?", Integer.class, mail) > 0;
 		}
 		
 }
