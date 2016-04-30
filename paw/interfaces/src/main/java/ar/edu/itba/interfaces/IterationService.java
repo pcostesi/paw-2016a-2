@@ -22,4 +22,6 @@ public interface IterationService {
 
 	public List<Iteration> getIterationsForProject(final Project project);
 	
+	public Project getParent(final Iteration iteration);
+	
 }
