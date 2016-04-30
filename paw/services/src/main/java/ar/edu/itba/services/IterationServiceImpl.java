@@ -159,4 +159,19 @@ public class IterationServiceImpl implements IterationService{
 		return iterationDao.getIterationsForProject(project.getProjectId());
 	}
 
+	@Override
+	public Project getParent(Iteration iteration) {
+		if (iteration == null) {
+			throw new IllegalArgumentException("Iteration can't be null");
+		}
+		
+		if (!iterationDao.iterationExists(iteration.getIterationId())) {
+			throw new IllegalStateException("Iteration doesn't exist");
+		}
+		
+		int parentId = iterationDao.getParentId(iteration.getIterationId());
+		
+		return projectDao.getProjectById(parentId);
+	}
+
 }

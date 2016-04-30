@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.Task;
+import ar.edu.itba.models.TaskPriority;
+import ar.edu.itba.models.TaskScore;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
 
@@ -39,10 +41,12 @@ public class TaskJdbcDao implements TaskDao{
 		args.put("description", description);
 		args.put("owner", null);
 		args.put("status", TaskStatus.NOT_STARTED.getValue());
+		args.put("score", TaskScore.NORMAL.getValue());
+		args.put("priority", TaskPriority.NORMAL.getValue());
 
 		int taskId = jdbcInsert.executeAndReturnKey(args).intValue();
 		
-		return new Task(taskId, title, description, TaskStatus.NOT_STARTED, null);
+		return new Task(taskId, title, description, TaskStatus.NOT_STARTED, TaskScore.NORMAL, TaskPriority.NORMAL, null);
 	}
 	
 	@Override
@@ -84,6 +88,21 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public boolean taskExists(int storyId, String title) {
 		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE story_id = ? AND title = ?", Integer.class, storyId, title) == 1;
+	}
+
+	@Override
+	public void updatePriority(int taskId, int priorityValue) {
+		jdbcTemplate.update("UPDATE task SET priority = ? WHERE task_id = ?", priorityValue, taskId);
+	}
+
+	@Override
+	public void updateScore(int taskId, int scoreValue) {
+		jdbcTemplate.update("UPDATE task SET score = ? WHERE score_id = ?", scoreValue, taskId);
+	}
+
+	@Override
+	public int getParentId(int taskId) {
+		return jdbcTemplate.queryForObject("SELECT story_id FROM task WHERE task_id = ?", Integer.class, taskId);
 	}
 
 }

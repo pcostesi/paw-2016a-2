@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import ar.edu.itba.models.Task;
+import ar.edu.itba.models.TaskPriority;
+import ar.edu.itba.models.TaskScore;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
@@ -18,13 +20,15 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 		String title = rs.getString("title");
 		String description = rs.getString("description");
 		TaskStatus status = TaskStatus.getByValue(rs.getInt("status"));
+		TaskScore score = TaskScore.getByValue(rs.getInt("score"));
+		TaskPriority priority = TaskPriority.getByValue(rs.getInt("priority"));
 		
 		String username = rs.getString("username");
 		String password = rs.getString("password");
 		String mail = rs.getString("mail");
 		User user = (username == null)? null : new User(username, password, mail);
 	
-		return new Task(taskId, title, description, status, user);         
+		return new Task(taskId, title, description, status, score, priority, user);         
     }
 		
 }

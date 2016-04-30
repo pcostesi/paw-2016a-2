@@ -10,6 +10,8 @@ import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
+import ar.edu.itba.models.TaskPriority;
+import ar.edu.itba.models.TaskScore;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
@@ -143,6 +145,61 @@ public class TaskServiceImpl implements TaskService{
 		}
 		
 		return taskDao.getTasksForStory(story.getStoryId());
+	}
+	
+	@Override
+	public Story getParent(Task task) {
+		if (task == null) {
+			throw new IllegalArgumentException("Task can't be null");
+		}
+		
+		if (!taskDao.taskExists(task.getTaskId())) {
+			throw new IllegalStateException("Task doesn't exist");
+		}
+		
+		int parentId = taskDao.getParentId(task.getTaskId());
+		
+		return storyDao.getStoryById(parentId);
+	}
+
+	@Override
+	public Task changePriority(Task task, TaskPriority priority) {
+		if (task == null) {
+			throw new IllegalArgumentException("Task can't be null");
+		}
+		
+		if (priority == null) {
+			throw new IllegalArgumentException("Priority can't be null");
+		}
+		
+		if (!taskDao.taskExists(task.getTaskId())) {
+			throw new IllegalStateException("Task doesn't exist");
+		}
+		
+		taskDao.updatePriority(task.getTaskId(), priority.getValue());
+		task.setPriority(priority);
+		
+		return task;
+	}
+
+	@Override
+	public Task changeScore(Task task, TaskScore score) {
+		if (task == null) {
+			throw new IllegalArgumentException("Task can't be null");
+		}
+		
+		if (score == null) {
+			throw new IllegalArgumentException("Score can't be null");
+		}
+		
+		if (!taskDao.taskExists(task.getTaskId())) {
+			throw new IllegalStateException("Task doesn't exist");
+		}
+		
+		taskDao.updateScore(task.getTaskId(), score.getValue());
+		task.setScore(score);
+		
+		return task;
 	}
 
 }

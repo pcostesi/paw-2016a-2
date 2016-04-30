@@ -77,4 +77,9 @@ public class StoryJdbcDao implements StoryDao{
 		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM story WHERE iteration_id = ? AND title = ?", Integer.class, iterationId, title) == 1;
 	}
 
+	@Override
+	public int getParentId(int storyId) {
+		return jdbcTemplate.queryForObject("SELECT iteration_id FROM story WHERE story_id = ?", Integer.class, storyId);
+	}
+
 }

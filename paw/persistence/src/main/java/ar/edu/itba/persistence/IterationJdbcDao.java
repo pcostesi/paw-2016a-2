@@ -107,4 +107,9 @@ public class IterationJdbcDao implements IterationDao {
 		jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ?", number);
 	}
 
+	@Override
+	public int getParentId(int iterationId) {
+		return jdbcTemplate.queryForObject("SELECT project_id FROM iteration WHERE iteration_id = ?", Integer.class, iterationId);
+	}
+
 }

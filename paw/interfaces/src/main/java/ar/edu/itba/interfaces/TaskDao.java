@@ -21,5 +21,11 @@ public interface TaskDao {
 	public Task getTaskById(final int taskId);
 
 	public Task createTask(final int storyId, final String name, final String description);
+
+	public void updatePriority(final int taskId, final int value);
+
+	public void updateScore(final int taskId, final int value);
+
+	public int getParentId(final int taskId);
 	
 }

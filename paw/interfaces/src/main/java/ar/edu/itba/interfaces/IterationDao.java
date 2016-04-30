@@ -27,4 +27,6 @@ public interface IterationDao {
 
 	public void updateNumbersAfterDelete(final int number);
 
+	public int getParentId(final int iterationId);
+
 }

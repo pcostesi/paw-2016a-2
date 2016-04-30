@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS task (
 	description varchar(500) NOT NULL,
 	owner varchar(100),
 	status INTEGER NOT NULL,
+	priority INTEGER NOT NULL,
+	score INTEGER NOT NULL,
 	FOREIGN KEY ( story_id ) REFERENCES story ( story_id ) ON DELETE CASCADE,
 	UNIQUE ( story_id, title )
 );

@@ -20,4 +20,6 @@ public interface StoryDao {
 
 	public boolean storyExists(final int iterationId, final String title);
 
+	public int getParentId(final int storyId);
+
 }
