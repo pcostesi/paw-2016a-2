@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectStatus;
 import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
 
 @Repository
@@ -42,11 +41,10 @@ public class ProjectJdbcDao implements ProjectDao{
         args.put("description", description);
         args.put("code", code);
         args.put("date_start", new java.sql.Date(new Date().getTime()));
-        args.put("status", ProjectStatus.OPEN.getValue());
         
         try {
 	        int projectId = jdbcInsert.executeAndReturnKey(args).intValue();	
-	        return new Project(projectId, name, code, description, curDate, ProjectStatus.OPEN);
+	        return new Project(projectId, name, code, description, curDate);
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to create project");
 	    }

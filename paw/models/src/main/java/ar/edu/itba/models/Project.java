@@ -6,25 +6,22 @@ public class Project {
 	
 	private final int projectId;
 	private String name;
-	private String codeName;
+	private String code;
 	private String description;
 	private Date startDate;
-	private ProjectStatus status;
 	
-	public Project (int projectId, String name, String codeName, String description, Date startDate, ProjectStatus status) {
+	public Project (int projectId, String name, String codeName, String description, Date startDate) {
 		this.projectId = projectId;
-		this.codeName = codeName;
+		this.code = codeName;
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
-		this.status = status;
 	}
 	
 	public Project (int projectId, String name, String codeName, String description) {
 		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
-		this.status = ProjectStatus.OPEN;
 		this.startDate = new Date();
 	}
 
@@ -40,26 +37,18 @@ public class Project {
 		return startDate;
 	}
 
-	public ProjectStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(ProjectStatus status) {
-		this.status = status;
-	}
-
 	public int getProjectId() {
 		return projectId;
 	}
 	
-	public String getCodeName() {
-		return codeName;
+	public String getCode() {
+		return code;
 	}
 
 	@Override
 	public String toString() {
 		return "Project [projectId=" + projectId + ", name=" + name + ", description=" + description
-				+ ", startDate=" + startDate + ", status=" + status + "]";
+				+ ", startDate=" + startDate +"]";
 	}
 
 	public void setName(String name) {
@@ -71,7 +60,7 @@ public class Project {
 	}
 
 	public void setCode(String code) {
-		this.codeName = code;
+		this.code = code;
 	}
 	
 }
