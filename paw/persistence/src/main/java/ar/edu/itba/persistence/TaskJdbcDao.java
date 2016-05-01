@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -44,65 +45,108 @@ public class TaskJdbcDao implements TaskDao{
 		args.put("score", TaskScore.NORMAL.getValue());
 		args.put("priority", TaskPriority.NORMAL.getValue());
 
-		int taskId = jdbcInsert.executeAndReturnKey(args).intValue();
-		
-		return new Task(taskId, title, description, TaskStatus.NOT_STARTED, TaskScore.NORMAL, TaskPriority.NORMAL, null);
+		try {
+			int taskId = jdbcInsert.executeAndReturnKey(args).intValue();		
+			return new Task(taskId, title, description, TaskStatus.NOT_STARTED, TaskScore.NORMAL, TaskPriority.NORMAL, null);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to create task");
+        }
 	}
 	
 	@Override
 	public void deleteTask(final int taskId) {
-		jdbcTemplate.update("DELETE FROM task WHERE task_id = ?", taskId);
+		try {
+			jdbcTemplate.update("DELETE FROM task WHERE task_id = ?", taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to delete task");
+        }
 	}
 
 	@Override
 	public void updateOwner(final int taskId,final  String username) {
-		jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", username, taskId);
+		try {
+			jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", username, taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update owner");
+        }
 	}
 
 	@Override
 	public void updateStatus(final int taskId,final  int statusValue) {
-		jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", statusValue, taskId);
+		try {
+			jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", statusValue, taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update status");
+        }
 	}
 
 	@Override
 	public Task getTaskById(int taskId) {
-		List<Task> tasks = jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE task_id = ?", taskUserRowMapper, taskId);
-	
-		if (tasks.isEmpty()) {
-			return null;
-		} else {
-			return tasks.get(0);
-		}
+		try {
+			List<Task> tasks = jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE task_id = ?", taskUserRowMapper, taskId);
+		
+			if (tasks.isEmpty()) {
+				return null;
+			} else {
+				return tasks.get(0);
+			}
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get task by ID");
+        }
 	}
 
 	@Override
 	public List<Task> getTasksForStory(int storyId) {
-		return jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE story_id = ?", taskUserRowMapper, storyId);
+		try {
+			return jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE story_id = ?", taskUserRowMapper, storyId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get tasks for story");
+        }
 	}
 
 	@Override
 	public boolean taskExists(int taskId) {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE task_id = ?", Integer.class, taskId) == 1;
+		try {
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE task_id = ?", Integer.class, taskId) == 1;
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to check task exists");
+        }
 	}
 	
 	@Override
 	public boolean taskExists(int storyId, String title) {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE story_id = ? AND title = ?", Integer.class, storyId, title) == 1;
+		try {
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM task WHERE story_id = ? AND title = ?", Integer.class, storyId, title) == 1;
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to check task exists by story ID and title");
+        }
 	}
 
 	@Override
 	public void updatePriority(int taskId, int priorityValue) {
-		jdbcTemplate.update("UPDATE task SET priority = ? WHERE task_id = ?", priorityValue, taskId);
+		try {
+			jdbcTemplate.update("UPDATE task SET priority = ? WHERE task_id = ?", priorityValue, taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update task priority");
+        }
 	}
 
 	@Override
 	public void updateScore(int taskId, int scoreValue) {
-		jdbcTemplate.update("UPDATE task SET score = ? WHERE score_id = ?", scoreValue, taskId);
+		try {
+			jdbcTemplate.update("UPDATE task SET score = ? WHERE score_id = ?", scoreValue, taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update task score");
+        }
 	}
 
 	@Override
 	public int getParentId(int taskId) {
-		return jdbcTemplate.queryForObject("SELECT story_id FROM task WHERE task_id = ?", Integer.class, taskId);
+		try {
+			return jdbcTemplate.queryForObject("SELECT story_id FROM task WHERE task_id = ?", Integer.class, taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get task parent ID");
+        }
 	}
 
 }
