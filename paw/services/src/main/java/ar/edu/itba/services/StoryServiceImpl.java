@@ -117,5 +117,20 @@ public class StoryServiceImpl implements StoryService{
 		
 		storyDao.deleteStory(story.getStoryId());
 	}
+	
+	@Override
+	public Iteration getParent(Story story) {
+		if (story == null) {
+			throw new IllegalArgumentException("Story can't be null");
+		}
+		
+		if (!storyDao.storyExists(story.getStoryId())) {
+			throw new IllegalStateException("Story doesn't exist");
+		}
+		
+		int parentId = storyDao.getParentId(story.getStoryId());
+		
+		return iterationDao.getIterationById(parentId);	
+	}
 
 }

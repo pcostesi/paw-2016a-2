@@ -8,13 +8,13 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectStatus;
 import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
 
 @Repository
@@ -41,72 +41,114 @@ public class ProjectJdbcDao implements ProjectDao{
         args.put("description", description);
         args.put("code", code);
         args.put("date_start", new java.sql.Date(new Date().getTime()));
-        args.put("status", ProjectStatus.OPEN.getValue());
         
-        int projectId = jdbcInsert.executeAndReturnKey(args).intValue();
-
-        return new Project(projectId, name, code, description, curDate, ProjectStatus.OPEN);
+        try {
+	        int projectId = jdbcInsert.executeAndReturnKey(args).intValue();	
+	        return new Project(projectId, name, code, description, curDate);
+		} catch (DataAccessException exception) {
+	    	throw new IllegalStateException("Database failed to create project");
+	    }
 	}
 	
 	@Override
 	public void deleteProject(final int projectId) {
-		jdbcTemplate.update("DELETE FROM project WHERE project_id = ?", projectId);
+		try {
+			jdbcTemplate.update("DELETE FROM project WHERE project_id = ?", projectId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to delete project");
+        }
 	}
 	
 	@Override
 	public List<Project> getProjects() {
-        return jdbcTemplate.query("SELECT * FROM project", projectRowMapper);
+		try {
+			return jdbcTemplate.query("SELECT * FROM project", projectRowMapper);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get project list");
+        }
 	}
 
 	@Override
 	public boolean projectExists(int projectId) {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE project_id = ?", Integer.class, projectId) == 1;
+		try {
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE project_id = ?", Integer.class, projectId) == 1;
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to check project exists");
+        }
 	}
 
 	@Override
 	public boolean projectNameExists(String name) {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, name) == 1;
+		try {
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE name = ?", Integer.class, name) == 1;
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to check project name exists");
+        }
 	}
 
 	@Override
 	public boolean projectCodeExists(String code) {
-		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE code = ?", Integer.class, code) == 1;
+		try {
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE code = ?", Integer.class, code) == 1;
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to check project code exists");
+        }
 	}
 
 	@Override
 	public void updateName(int projectId, String name) {
-		jdbcTemplate.update("UPDATE project SET name = ? WHERE project_id = ?", name, projectId);
+		try {
+			jdbcTemplate.update("UPDATE project SET name = ? WHERE project_id = ?", name, projectId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update project name");
+        }
 	}
 
 	@Override
 	public void updateDescription(int projectId, String description) {
-		jdbcTemplate.update("UPDATE project SET description = ? WHERE project_id = ?", description, projectId);
+		try {
+			jdbcTemplate.update("UPDATE project SET description = ? WHERE project_id = ?", description, projectId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update project description");
+        }
 	}
 
 	@Override
 	public void updateCode(int projectId, String code) {
-		jdbcTemplate.update("UPDATE project SET code = ? WHERE project_id = ?", code, projectId);
+		try {
+			jdbcTemplate.update("UPDATE project SET code = ? WHERE project_id = ?", code, projectId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update project code");
+        }
 	}
 
 	@Override
 	public Project getProjectById(int projectId) {
-		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectRowMapper, projectId);
-		
-		if (project.isEmpty()) {
-			return null;
-		} else {
-			return project.get(0);
-		}
+		try {
+			List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE project_id = ?", projectRowMapper, projectId);
+			
+			if (project.isEmpty()) {
+				return null;
+			} else {
+				return project.get(0);
+			}
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get project by id");
+        }
 	}
 
 	@Override
 	public Project getProjectByCode(String code) {
-		List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE code = ?", projectRowMapper, code);
-		
-		if (project.isEmpty()) {
-			return null;
-		} else {
-			return project.get(0);
-		}
+		try {
+			List<Project> project = jdbcTemplate.query("SELECT * FROM project WHERE code = ?", projectRowMapper, code);
+			
+			if (project.isEmpty()) {
+				return null;
+			} else {
+				return project.get(0);
+			}
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get project by code");
+        }
 	}
 }

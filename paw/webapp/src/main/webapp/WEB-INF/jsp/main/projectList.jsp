@@ -16,7 +16,9 @@
         
      <jsp:body>
 		<div class="panel-group" id="project-list" role="tablist" aria-multiselectable="true">
-			<t:projectPanel project="scrumlr" panelParent="#project-list"/>
+			<c:forEach items="${projects}" var="project">
+					<t:projectPanel panelParent="#project-list-${project.code}"  project="${project}" />
+			</c:forEach>
         </div>
 
     </jsp:body>    

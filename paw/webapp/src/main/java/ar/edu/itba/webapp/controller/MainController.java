@@ -18,7 +18,7 @@ public class MainController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView getResource() {
 		final ModelAndView mav = new ModelAndView("main/projectList");
-		mav.addObject("projectsList", ps.getProjects());
+		mav.addObject("projects", ps.getProjects());
 		return mav;
 	}
 	

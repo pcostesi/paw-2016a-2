@@ -4,6 +4,8 @@ import java.util.List;
 
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
+import ar.edu.itba.models.TaskPriority;
+import ar.edu.itba.models.TaskScore;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
@@ -17,8 +19,14 @@ public interface TaskService {
 	
 	public Task changeOwnership(final Task task, final User user);
 	
-	public Task changeStatus(final Task task, TaskStatus status);
+	public Task changeStatus(final Task task, final TaskStatus status);
+	
+	public Task changePriority(final Task task, final TaskPriority priority);
+	
+	public Task changeScore(final Task task, final TaskScore score);
 	
 	public List<Task> getTasksForStory(final Story story);
+	
+	public Story getParent(final Task task);
 
 }

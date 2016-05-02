@@ -6,13 +6,17 @@ public class Task{
 	private String title;
 	private String description;
 	private TaskStatus status;
+	private TaskScore score;
+	private TaskPriority priority;
 	private User owner;
 	private Story story;
 	
-	public Task(int taskId, String title, String description, TaskStatus status, User owner) {
+	public Task(int taskId, String title, String description, TaskStatus status, TaskScore score, TaskPriority priority, User owner) {
 		this.taskId = taskId;
 		this.title = title;
 		this.description = description;
+		this.score = score;
+		this.priority = priority;
 		this.status = status;
 		this.owner = owner;
 	}
@@ -22,6 +26,8 @@ public class Task{
 		this.title = title;
 		this.description = description;
 		this.status = TaskStatus.NOT_STARTED;
+		this.score = TaskScore.NORMAL;
+		this.priority = TaskPriority.NORMAL;
 		this.owner = null;
 	}
 	
@@ -60,14 +66,30 @@ public class Task{
 	public int getTaskId() {
 		return taskId;
 	}
-	
-	public String toString() {
-		return "Task [taskId=" + taskId + ", title=" + title + ", description=" + description + ", status=" + status
-				+ ", owner=" + owner + "]";
-	}
 
 	public Story getStory() {
 		return story;
+	}
+	
+	public TaskPriority getPriority() {
+		return priority;
+	}
+	
+	public void setPriority(TaskPriority priority) {
+		this.priority = priority;
+	}
+	
+	public TaskScore getScore() {
+		return score;
+	}
+	
+	public String toString() {
+		return "Task [taskId=" + taskId + ", title=" + title + ", status=" + status.getLabel() 
+			+ ", score=" + score.getLabel() + ", priority=" + priority.getLabel() + ", owner=" + owner + "]";
+	}
+
+	public void setScore(TaskScore score) {
+		this.score = score;
 	}
 
 	public void setStory(Story story) {
