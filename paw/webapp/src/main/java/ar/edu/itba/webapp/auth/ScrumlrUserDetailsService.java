@@ -26,18 +26,18 @@ public class ScrumlrUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = us.getByUsername(username);
-		
-		logger.debug("Fetching user " + username);
-		if (user != null) {
+		try {
+			logger.debug("Fetching user {}", username);
+			final User user = us.getByUsername(username);
 			final Collection<GrantedAuthority> authorities = new HashSet<>();
+			
 			authorities.add(new SimpleGrantedAuthority("USER"));
 			return new org.springframework.security.core.userdetails.User(user.getUsername(),
-					user.getPassword(), authorities);
+						user.getPassword(), true, true, true, true, authorities);
+		} catch (IllegalStateException e) {
+			logger.debug("No user found for {}", username);
+			throw new UsernameNotFoundException("No user found by the name " + username);
 		}
-
-		logger.debug("No user " + username);
-		return null;
 	}
 
 }

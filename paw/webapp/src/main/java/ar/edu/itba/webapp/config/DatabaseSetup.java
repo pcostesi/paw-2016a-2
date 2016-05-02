@@ -48,7 +48,7 @@ public class DatabaseSetup {
         Iteration iteration = is.createIteration(project, new Date(), new Date());
         Story story = ss.create(iteration, "This is a story title");
         Task task = ts.createTask(story, "This is a task title", "This is a task description");
-        User user = us.create("paul", "133tPwd", "pcostesi@itba.edu.ar");
+        User user = us.create("paul", "passwd", "pcostesi@itba.edu.ar");
         User user2 = us.create("braulius", "asdf", "bsespede@itba.edu.ar");
         User user3 = us.create("maio", "ayeztagrazanozequita", "smaio@itba.edu.ar");
         initialized = true;

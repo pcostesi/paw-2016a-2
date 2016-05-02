@@ -25,10 +25,15 @@ public class UserController {
 	public User loggedUser() {
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null) {
-			logger.debug("No user logged in :(");
+			logger.debug("Authentication not supported");
 			return null;
 		}
-		return us.getByUsername((String) auth.getPrincipal());
+		try {
+			return us.getByUsername((String) auth.getPrincipal());
+		} catch (IllegalStateException e) {
+			logger.debug("No username {}", (String) auth.getPrincipal());
+			return null;
+		}
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)

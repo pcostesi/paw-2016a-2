@@ -9,7 +9,9 @@ requirejs.config({
         'bootstrap-css': 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min',
        	'bootswatch-sandstone': 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min',
 		'bootlint': 'https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min',
-		'swal': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/0.4.5/sweet-alert.min'
+		'swal': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/0.4.5/sweet-alert.min',
+		'bootstrap-toggle': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.1/js/bootstrap-toggle.min',
+		'bootstrap-toggle-css': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.1/css/bootstrap-toggle.min'
     },
     
     shim: {
@@ -19,9 +21,10 @@ requirejs.config({
     	},
     	'bootstrap-js': ['jquery'],
     	'swal': {
-    		deps: ['jquery', 'bootstrap', 'css!swal'],
+    		deps: ['jquery', 'bs', 'css!swal'],
     		exports: 'swal'
-    	}
+    	},
+    	'bootstrap-toggle': ['bs', 'css!bootstrap-toggle-css']
     }
 });
 

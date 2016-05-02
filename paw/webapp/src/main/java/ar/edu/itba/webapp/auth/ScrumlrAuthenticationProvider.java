@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.interfaces.UserService;
@@ -29,23 +29,26 @@ public class ScrumlrAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		final String username = (String) authentication.getPrincipal();
 		final String password = (String) authentication.getCredentials();
-		final User user = us.getByUsername(username);
 		
-		logger.debug("Performing authentication");
-		if (user != null && user.getPassword().equals(password)) {
-			final Collection<GrantedAuthority> authorities = new HashSet<>();
-			authorities.add(new SimpleGrantedAuthority("USER"));
-
-			logger.debug("User authenticated as " + user.getUsername());
-			return new UsernamePasswordAuthenticationToken(username, password, authorities);
-		}
-		return null;
+		try {
+			final User user = us.getByUsername(username);
+			
+			logger.debug("Performing authentication for user {}", username);
+			if (user.getPassword().equals(password)) {
+				final Collection<GrantedAuthority> authorities = new HashSet<>();
+				authorities.add(new SimpleGrantedAuthority("USER"));
+	
+				logger.debug("User authenticated as " + user.getUsername());
+				return new UsernamePasswordAuthenticationToken(username, password, authorities);
+			}
+		
+		} catch (IllegalStateException e) {}
+		throw new UsernameNotFoundException("No user found by the name " + username);
 	}
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		logger.debug(authentication.getCanonicalName());
-		return UsernamePasswordAuthenticationFilter.class.equals(authentication);
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
 
 }
