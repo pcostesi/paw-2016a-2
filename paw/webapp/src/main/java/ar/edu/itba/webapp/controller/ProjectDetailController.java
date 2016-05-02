@@ -24,10 +24,10 @@ public class ProjectDetailController {
 	@Autowired
 	IterationService is;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getResource(@PathVariable String id) {
+	@RequestMapping(value = "/{projectCode}", method = RequestMethod.GET)
+	public ModelAndView getResource(@PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("project/iterationList");
-		final Project project = ps.getProjectByCode(id);
+		final Project project = ps.getProjectByCode(projectCode);
 		final List<Iteration> iterations = is.getIterationsForProject(project);
 		mav.addObject("iterations", iterations);
 		mav.addObject("project", project);
@@ -40,14 +40,14 @@ public class ProjectDetailController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ModelAndView modifyResource(@PathVariable String id) {
+	@RequestMapping(value = "/{projectCode}", method = RequestMethod.PUT)
+	public ModelAndView modifyResource(@PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ModelAndView deleteResource(@PathVariable String id) {
+	@RequestMapping(value = "/{projectCode}", method = RequestMethod.DELETE)
+	public ModelAndView deleteResource(@PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}

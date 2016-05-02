@@ -11,13 +11,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.interfaces.IterationService;
+import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
 
 @Controller
-@RequestMapping("/project/{project}/iteration")
+@RequestMapping("/project/{projectCode}/iteration")
 public class IterationController {
+	
+	@Autowired
+	private ProjectService ps;
 	
 	@Autowired
 	private StoryService ss;
@@ -31,12 +36,15 @@ public class IterationController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/{iteration}", method = RequestMethod.GET)
-	public ModelAndView getResource(@PathVariable String project,
-			@PathVariable("iteration") @ModelAttribute("iterationId") int iterationId) {
+	@RequestMapping(value = "/{iterationNumber}", method = RequestMethod.GET)
+	public ModelAndView getResource(@PathVariable String projectCode,
+			@PathVariable("iterationNumber") @ModelAttribute("number") int iterationNumber) {
 		final ModelAndView mav = new ModelAndView("iteration/storyList");
-		final Iteration iteration = is.getIterationById(iterationId);
+		final Project project = ps.getProjectByCode(projectCode);
+		final Iteration iteration = is.getIteration(project, iterationNumber);
 		final List<Story> stories = ss.getStoriesForIteration(iteration);
+		mav.addObject("project", project);
+		mav.addObject("iteration", iteration);
 		mav.addObject("stories", stories);
 		return mav;
 	}

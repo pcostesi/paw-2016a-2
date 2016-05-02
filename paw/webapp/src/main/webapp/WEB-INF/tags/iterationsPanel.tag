@@ -1,22 +1,29 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="iterations" required="true" type="java.util.List" %>
+<%@attribute name="projectCode" required="true" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab">
-        <h2 class="panel-title">
-            Iterations
-        </h2>
-    </div>
-    <div class="panel-collapse collapse in" role="tabpanel">	
-		<ul class="list-group">
-			<c:forEach items="${iterations}" var="iteration">
-				<li class="list-group-item">
-					<a href="/project/scrumlr/iteration/${iteration.iterationId}">Iteration #${iteration.iterationId}</a>
-				</li>
-			</c:forEach>
-		</ul>
-    </div>
-</div> <!-- /panel -->
+<c:forEach items="${iterations}" var="iteration">
+	<t:collapsiblePanel panelId="iteration-${iteration.number}">
+		<jsp:attribute name="title">Iteration #${iteration.number}</jsp:attribute>	
+			<jsp:attribute name="actions">
+				<a href="/project/${projectCode}/iteration/${iteration.number}" class="btn btn-default btn-xs">
+					<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
+				</a>
+				<a href="#" class="btn btn-default btn-xs">
+				  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+				</a>
+				<a href="#" class="btn btn-danger btn-xs">
+				  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+				</a>		  
+			</jsp:attribute>
+			<jsp:body>
+				<div class="row">
+			        <div class="col-sm-12">
+			            Here goes the iteration general goal
+			        </div>
+			    </div>
+			</jsp:body>
+	</t:collapsiblePanel>
+</c:forEach>

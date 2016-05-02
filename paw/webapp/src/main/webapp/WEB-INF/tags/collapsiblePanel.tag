@@ -12,15 +12,12 @@
             <a role="button" data-toggle="collapse" data-parent="${panelParent}" href="#panel-collapse-${panelId}" aria-expanded="true" aria-controls="panel-collapse-${panelId}">
                 <jsp:invoke fragment="title"/>
             </a>
-
-			<div class="btn-group pull-right">
+			<div class="pull-right">
 			  	<jsp:invoke fragment="actions"/>
-			</div>
-            
+			</div>            
         </h2>
     </div>
     <div id="panel-collapse-${panelId}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-${panelId}">
-
         <div class="panel-body">
             <jsp:doBody/>
         </div>
