@@ -31,8 +31,10 @@ public class IterationController {
 	private IterationService is;
 	
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
-	public ModelAndView getNewResource() {
+	public ModelAndView getNewResource(@PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("iteration/newIteration");
+		final Project project = ps.getProjectByCode(projectCode);
+		mav.addObject("project", project);
 		return mav;
 	}
 	

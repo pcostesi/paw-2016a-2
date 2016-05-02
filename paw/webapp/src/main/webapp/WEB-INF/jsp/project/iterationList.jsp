@@ -7,7 +7,7 @@
     	Project ${project.name}
     </jsp:attribute>    
     <jsp:attribute name="actions">
-	    <a href="#" class="btn btn-primary btn-sm">
+	    <a href="/project/${project.code}/iteration/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New iteration
 		</a>
 		<a href="#" class="btn btn-default btn-sm">

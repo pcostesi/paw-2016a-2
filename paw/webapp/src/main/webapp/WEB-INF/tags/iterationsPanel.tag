@@ -21,7 +21,8 @@
 			<jsp:body>
 				<div class="row">
 			        <div class="col-sm-12">
-			            Here goes the iteration general goal
+			            <b>Start date</b> ${iteration.beginDate}<br>
+			            <b>End date</b> ${iteration.endDate}<br>
 			        </div>
 			    </div>
 			</jsp:body>
