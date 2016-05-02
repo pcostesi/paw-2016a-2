@@ -4,25 +4,24 @@
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:collapsiblePanel panelId="project-${project.code}" panelParent="${panelParent}">
-	<jsp:attribute name="title">Project ${project.name}</jsp:attribute>
-	
+<t:collapsiblePanel panelId="project-${project.code}">
+	<jsp:attribute name="title">${project.name}</jsp:attribute>	
 	<jsp:attribute name="actions">
-		<button type="button" class="btn btn-xs btn-danger">
-			Delete
-		  </button>
-		  <button type="button" class="btn btn-default btn-xs">
-		    Edit
-		  </button>
-		  <a href="/project/${project.code}" class="btn btn-primary btn-xs">
-		    Go to project
-		  </a>
+		<a href="/project/${project.code}" class="btn btn-default btn-xs">
+			<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to project
+		</a>
+		<a href="#" class="btn btn-default btn-xs">
+		  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+		</a>
+		<a href="#" class="btn btn-danger btn-xs">
+		  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+		</a>		  
 	</jsp:attribute>
-
 	<jsp:body>
 		<div class="row">
 	        <div class="col-sm-12">
-	            ${project.description}
+	        	<b>Start date</b> ${project.startDate}<br>
+	            <b>Description</b> ${project.description}
 	        </div>
 	    </div>
 	</jsp:body>

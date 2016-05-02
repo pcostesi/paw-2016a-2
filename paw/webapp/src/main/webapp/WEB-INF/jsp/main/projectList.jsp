@@ -8,16 +8,16 @@
     </jsp:attribute>
     
     <jsp:attribute name="actions">
-	  <t:navbutton btnClass="btn-primary">
-	    New Project
-	  </t:navbutton>
+		<a href="/project/new" class="btn btn-primary btn-sm">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New project
+	 	</a>
      </jsp:attribute>
         
         
      <jsp:body>
-		<div class="panel-group" id="project-list" role="tablist" aria-multiselectable="true">
+		<div class="panel-group" id="project-list">
 			<c:forEach items="${projects}" var="project">
-					<t:projectPanel panelParent="#project-list-${project.code}"  project="${project}" />
+					<t:projectPanel project="${project}" />
 			</c:forEach>
         </div>
 

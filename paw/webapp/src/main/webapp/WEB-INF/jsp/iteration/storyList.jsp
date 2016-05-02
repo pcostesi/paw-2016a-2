@@ -4,7 +4,7 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Iteration #${iteration} <small>for Project Scrumlr</small>
+    	Iteration #${iteration.number} <small>for Project Scrumlr</small>
     </jsp:attribute>
     
     <jsp:attribute name="actions">
