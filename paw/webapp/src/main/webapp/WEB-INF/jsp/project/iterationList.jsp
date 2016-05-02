@@ -5,8 +5,7 @@
 <t:page>
 	<jsp:attribute name="title">
     	Project ${project.name}
-    </jsp:attribute>
-    
+    </jsp:attribute>    
     <jsp:attribute name="actions">
 	    <a href="#" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New iteration
@@ -18,15 +17,12 @@
 			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete project
 		</a>
      </jsp:attribute>
-
      <jsp:body>
 			<div class="panel-group" aria-multiselectable="true">
 				<t:descriptionPanel project="${project}"/>
-				<t:iterationsPanel projectCode="${project.code}" iterations="${iterations}"/>
+				<t:iterationsPanel project="${project}" iterations="${iterations}"/>
 			</div>
     </jsp:body>    
-</t:page>
-    
+</t:page>    
 </body>
-
 </html>

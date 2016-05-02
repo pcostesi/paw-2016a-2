@@ -1,14 +1,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
+<%@attribute name="project" required="true" type="ar.edu.itba.models.Project" %>
 <%@attribute name="iterations" required="true" type="java.util.List" %>
-<%@attribute name="projectCode" required="true" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <c:forEach items="${iterations}" var="iteration">
 	<t:collapsiblePanel panelId="iteration-${iteration.number}">
 		<jsp:attribute name="title">Iteration #${iteration.number}</jsp:attribute>	
 			<jsp:attribute name="actions">
-				<a href="/project/${projectCode}/iteration/${iteration.number}" class="btn btn-default btn-xs">
+				<a href="/project/${project.code}/iteration/${iteration.number}" class="btn btn-default btn-xs">
 					<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
 				</a>
 				<a href="#" class="btn btn-default btn-xs">
