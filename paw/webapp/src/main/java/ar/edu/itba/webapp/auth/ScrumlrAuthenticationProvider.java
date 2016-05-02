@@ -31,9 +31,12 @@ public class ScrumlrAuthenticationProvider implements AuthenticationProvider {
 		final String password = (String) authentication.getCredentials();
 		final User user = us.getByUsername(username);
 		
+		logger.debug("Performing authentication");
 		if (user != null && user.getPassword().equals(password)) {
 			final Collection<GrantedAuthority> authorities = new HashSet<>();
 			authorities.add(new SimpleGrantedAuthority("USER"));
+
+			logger.debug("User authenticated as " + user.getUsername());
 			return new UsernamePasswordAuthenticationToken(username, password, authorities);
 		}
 		return null;
@@ -41,7 +44,7 @@ public class ScrumlrAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		// TODO Auto-generated method stub
+		logger.debug(authentication.getCanonicalName());
 		return UsernamePasswordAuthenticationFilter.class.equals(authentication);
 	}
 

@@ -15,13 +15,13 @@
 				<div class="col-sm-6">
 					<fieldset>
                         <div>
-                        <label for="username">Username: <label>
-						<input type="text" id="username" />
+                        <label for="j_username">Username: <label>
+						<input type="text" id="j_username" />
 						</div>
                         
                         <div>
-                        <label for="password">Password: <label>
-						<input type="password" id="password" />
+                        <label for="j_password">Password: <label>
+						<input type="password" id="j_password" />
 						</div>
 					</fieldset>
 				</div>
