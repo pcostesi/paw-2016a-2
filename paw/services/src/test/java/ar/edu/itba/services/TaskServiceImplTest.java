@@ -59,7 +59,7 @@ public class TaskServiceImplTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		ts = new TaskServiceImpl(taskDao, storyDao);
+	//	ts = new TaskServiceImpl(taskDao, storyDao);
 	}
 
 	@Test
