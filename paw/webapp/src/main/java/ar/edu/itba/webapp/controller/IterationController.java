@@ -39,7 +39,6 @@ public class IterationController {
 	public ModelAndView getNewResource(@ModelAttribute("iterationForm") IterationForm iterationForm, @PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("iteration/newIteration");
 		final Project project = ps.getProjectByCode(projectCode);
-		System.out.println(projectCode);
 		mav.addObject("project", project);
 		return mav;
 	}
@@ -84,9 +83,14 @@ public class IterationController {
 		return null;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ModelAndView deleteResource(@PathVariable String id) {
-		return null;
+	@RequestMapping(value = "/{itNumber}/delete", method = RequestMethod.POST)
+	public ModelAndView deleteResource(@PathVariable String projectCode, @PathVariable int itNumber) {
+		final Project project = ps.getProjectByCode(projectCode);
+		final Iteration iteration = is.getIteration(project, itNumber);
+		is.deleteIteration(iteration);
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
+				.arg(0, projectCode).build();
+		return new ModelAndView("redirect:" + resourceUrl);
 	}
 
 }

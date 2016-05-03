@@ -139,10 +139,11 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public void updateNumbersAfterDelete(int number) {
+	public void updateNumbersAfterDelete(int projectId, int number) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ?", number);
+			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ? AND project_id = ?", number, projectId);
 		} catch (DataAccessException exception) {
+			
 	    	throw new IllegalStateException("Database failed to update iterations number");
 	    }
 	}
@@ -152,7 +153,8 @@ public class IterationJdbcDao implements IterationDao {
 		try {
 			return jdbcTemplate.queryForObject("SELECT project_id FROM iteration WHERE iteration_id = ?", Integer.class, iterationId);
 		} catch (DataAccessException exception) {
-			throw new IllegalStateException("Database failed to get iteration parent ID");
+			
+			throw new IllegalStateException(exception.getMessage());
 		}
 	}
 

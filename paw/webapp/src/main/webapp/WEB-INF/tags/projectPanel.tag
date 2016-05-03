@@ -13,9 +13,11 @@
 		<a href="#" class="btn btn-default btn-xs">
 		  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
 		</a>
-		<a href="#" class="btn btn-danger btn-xs">
-		  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-		</a>		  
+		<form action="/project/${project.code}/delete" method="POST">
+			<button type="submit" class="btn btn-xs btn-danger">
+				Delete
+			</button>
+		</form>		  
 	</jsp:attribute>
 	<jsp:body>
 		<div class="row">

@@ -25,7 +25,7 @@ public interface IterationDao {
 
 	public List<Iteration> getIterationsForProject(final int projectId);
 
-	public void updateNumbersAfterDelete(final int number);
+	public void updateNumbersAfterDelete(final int projectId, final int number);
 
 	public int getParentId(final int iterationId);
 

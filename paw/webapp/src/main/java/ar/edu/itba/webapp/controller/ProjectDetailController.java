@@ -60,16 +60,18 @@ public class ProjectDetailController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{projectCode}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{projectCode}/edit", method = RequestMethod.GET)
 	public ModelAndView modifyResource(@PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("helloworld");
 		return mav;
 	}
 
-	@RequestMapping(value = "/{projectCode}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{projectCode}/delete", method = RequestMethod.POST)
 	public ModelAndView deleteResource(@PathVariable String projectCode) {
-		final ModelAndView mav = new ModelAndView("helloworld");
-		return mav;
+		Project project = ps.getProjectByCode(projectCode);
+		ps.deleteProject(project);
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build();
+		return new ModelAndView("redirect:" + resourceUrl);
 	}
 
 }

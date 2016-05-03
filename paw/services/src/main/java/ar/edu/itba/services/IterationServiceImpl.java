@@ -60,8 +60,10 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		iterationDao.deleteIteration(iteration.getIterationId());
-		iterationDao.updateNumbersAfterDelete(iteration.getNumber());
+		int iterationId = iteration.getIterationId();
+		int projectId = iterationDao.getParentId(iterationId);
+		iterationDao.deleteIteration(iterationId);		
+		iterationDao.updateNumbersAfterDelete(projectId, iteration.getNumber());
 	}
 
 	@Override
