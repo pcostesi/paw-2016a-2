@@ -21,7 +21,6 @@ import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.webapp.form.IterationForm;
-import ar.edu.itba.webapp.form.ProjectForm;
 
 @Controller
 @RequestMapping("/project/{projectCode}/iteration")
@@ -49,10 +48,11 @@ public class IterationController {
 	public ModelAndView postNewResource(@PathVariable("projectCode") final String projectCode,
 			@Valid @ModelAttribute("iterationForm") IterationForm iterationForm, BindingResult result) {
 		final ModelAndView mav;
+		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
 			mav = new ModelAndView("iteration/newIteration");
-		} else {
-			final Project project = ps.getProjectByCode(projectCode);
+			mav.addObject(project);
+		} else {			
 			final Iteration iteration = is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
 					.arg(0, projectCode).build();
