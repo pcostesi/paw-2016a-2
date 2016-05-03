@@ -7,15 +7,19 @@
 <t:collapsiblePanel panelId="project-${project.code}">
 	<jsp:attribute name="title">${project.name}</jsp:attribute>	
 	<jsp:attribute name="actions">
-		<a href="/project/${project.code}" class="btn btn-default btn-xs">
+		<form action="/project/${project.code}" method="GET">
+		<button type="submit" class="btn btn-default btn-xs">
 			<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to project
-		</a>
-		<a href="#" class="btn btn-default btn-xs">
-		  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
-		</a>
+		</button>
+		</form>
+		<form action="/project/${project.code}/edit" method="GET">
+			<button type="submit" class="btn btn-xs btn-default">
+				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+			</button>
+		</form>	
 		<form action="/project/${project.code}/delete" method="POST">
 			<button type="submit" class="btn btn-xs btn-danger">
-				Delete
+				<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
 			</button>
 		</form>		  
 	</jsp:attribute>

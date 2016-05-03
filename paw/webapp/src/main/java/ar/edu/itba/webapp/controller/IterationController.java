@@ -96,7 +96,6 @@ public class IterationController {
 			mav = new ModelAndView("iteration/editIteration");
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
-			return mav;
 		} else {
 			is.setBeginDate(iteration, iterationForm.getBeginDate());
 			is.setEndDate(iteration, iterationForm.getEndDate());
