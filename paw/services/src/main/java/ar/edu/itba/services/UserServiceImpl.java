@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.interfaces.UserService;
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService{
 	private MailValidator mailValidator = new MailValidator();
 	
 	@Override
+	@Transactional
 	public User create(String name, String password, String mail) {
 		if (name == null) {
 			throw new IllegalArgumentException("User name can't be null");
@@ -71,6 +73,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
     @Override
+    @Transactional
     public User getByUsername(final String username) {
     	if (username == null) {
 			throw new IllegalArgumentException("User name can't be null");
