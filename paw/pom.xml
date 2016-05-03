@@ -28,11 +28,18 @@
     <org.hibernate.version>5.0.1.Final</org.hibernate.version>
     <org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>
     <spring-security.version>4.0.4.RELEASE</spring-security.version>
-	  <logback.version>1.1.7</logback.version>
-	  <org.slf4j.version>1.7.21</org.slf4j.version>
+	<logback.version>1.1.7</logback.version>
+	<org.slf4j.version>1.7.21</org.slf4j.version>
+	<apache-beanutils.version>1.9.2</apache-beanutils.version>
   </properties>
+  
   <dependencyManagement>
 	<dependencies>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${apache-beanutils.version}</version>
+		</dependency>
    <dependency>
      <groupId>ch.qos.logback</groupId>
      <artifactId>logback-classic</artifactId>

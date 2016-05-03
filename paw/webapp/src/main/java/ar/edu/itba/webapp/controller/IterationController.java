@@ -2,13 +2,17 @@ package ar.edu.itba.webapp.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
@@ -16,6 +20,8 @@ import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
+import ar.edu.itba.webapp.form.IterationForm;
+import ar.edu.itba.webapp.form.ProjectForm;
 
 @Controller
 @RequestMapping("/project/{projectCode}/iteration")
@@ -31,10 +37,27 @@ public class IterationController {
 	private IterationService is;
 	
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
-	public ModelAndView getNewResource(@PathVariable String projectCode) {
+	public ModelAndView getNewResource(@ModelAttribute("iterationForm") IterationForm iterationForm, @PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("iteration/newIteration");
 		final Project project = ps.getProjectByCode(projectCode);
+		System.out.println(projectCode);
 		mav.addObject("project", project);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/new", method = RequestMethod.POST)
+	public ModelAndView postNewResource(@PathVariable("projectCode") final String projectCode,
+			@Valid @ModelAttribute("iterationForm") IterationForm iterationForm, BindingResult result) {
+		final ModelAndView mav;
+		if (result.hasErrors()) {
+			mav = new ModelAndView("iteration/newIteration");
+		} else {
+			final Project project = ps.getProjectByCode(projectCode);
+			final Iteration iteration = is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
+					.arg(0, projectCode).build();
+			mav = new ModelAndView("redirect:" + resourceUrl);
+		}
 		return mav;
 	}
 	
