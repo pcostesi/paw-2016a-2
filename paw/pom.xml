@@ -31,9 +31,17 @@
 	  <logback.version>1.1.7</logback.version>
 	  <org.slf4j.version>1.7.21</org.slf4j.version>
 	  <maven-war-plugin.version>2.6</maven-war-plugin.version>
+	  <org.immutables.version>2.1.18</org.immutables.version>
+	  <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
   </properties>
   <dependencyManagement>
 	<dependencies>
+	<dependency>
+	  <groupId>org.immutables</groupId>
+	  <artifactId>value</artifactId>
+	  <version>${org.immutables.version}</version>
+	  <scope>provided</scope>
+	</dependency>
    <dependency>
      <groupId>ch.qos.logback</groupId>
      <artifactId>logback-classic</artifactId>
@@ -149,10 +157,13 @@
 	  <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-compiler-plugin</artifactId>
-		<version>3.3</version>
-		<configuration>
+	  <version>${maven-compiler-plugin.version}</version>
+		<configuration>	
+		<compilerVersion>${jdk.version}</compilerVersion>
 		  <source>${jdk.version}</source>
 		  <target>${jdk.version}</target>
+	    <!-- Prevents an endPosTable exception during compilation -->
+	    <useIncrementalCompilation>false</useIncrementalCompilation>
 		</configuration>
 	  </plugin>
       <plugin>

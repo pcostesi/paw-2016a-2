@@ -32,8 +32,8 @@ public class ScrumlrUserDetailsService implements UserDetailsService {
 			final Collection<GrantedAuthority> authorities = new HashSet<>();
 			
 			authorities.add(new SimpleGrantedAuthority("USER"));
-			return new org.springframework.security.core.userdetails.User(user.getUsername(),
-						user.getPassword(), true, true, true, true, authorities);
+			return new org.springframework.security.core.userdetails.User(user.username(),
+						user.password(), true, true, true, true, authorities);
 		} catch (IllegalStateException e) {
 			logger.debug("No user found for {}", username);
 			throw new UsernameNotFoundException("No user found by the name " + username);

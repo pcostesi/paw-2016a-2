@@ -34,11 +34,11 @@ public class ScrumlrAuthenticationProvider implements AuthenticationProvider {
 			final User user = us.getByUsername(username);
 			
 			logger.debug("Performing authentication for user {}", username);
-			if (user.getPassword().equals(password)) {
+			if (user.password().equals(password)) {
 				final Collection<GrantedAuthority> authorities = new HashSet<>();
 				authorities.add(new SimpleGrantedAuthority("USER"));
 	
-				logger.debug("User authenticated as " + user.getUsername());
+				logger.debug("User authenticated as " + user.username());
 				return new UsernamePasswordAuthenticationToken(username, password, authorities);
 			}
 		

@@ -107,7 +107,7 @@ public class TaskServiceImpl implements TaskService{
 			taskDao.updateOwner(task.getTaskId(), null);
 			task.setOwner(null);
 		} else {
-			taskDao.updateOwner(task.getTaskId(), user.getUsername());
+			taskDao.updateOwner(task.getTaskId(), user.username());
 			task.setOwner(user);
 		}
 		
