@@ -8,15 +8,21 @@
 	<t:collapsiblePanel panelId="iteration-${iteration.number}">
 		<jsp:attribute name="title">Iteration #${iteration.number}</jsp:attribute>	
 			<jsp:attribute name="actions">
-				<a href="/project/${project.code}/iteration/${iteration.number}" class="btn btn-default btn-xs">
-					<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
-				</a>
-				<a href="#" class="btn btn-default btn-xs">
-				  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
-				</a>
-				<a href="#" class="btn btn-danger btn-xs">
-				  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-				</a>		  
+				<form action="/project/${project.code}/iteration/${iteration.number}" method="GET" >
+					<button type="submit" class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
+					</button>
+				</form>
+				<form action="/project/${project.code}/iteration/${iteration.number}/edit" method="GET" >
+					<button type="submit" class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+					</button>
+				</form>
+				<form action="/project/${project.code}/iteration/${iteration.number}/delete" method="POST" >
+					<button type="submit" class="btn btn-xs btn-danger">
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+					</button>
+				</form>
 			</jsp:attribute>
 			<jsp:body>
 				<div class="row">

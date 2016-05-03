@@ -60,16 +60,42 @@ public class ProjectDetailController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{projectCode}", method = RequestMethod.PUT)
-	public ModelAndView modifyResource(@PathVariable String projectCode) {
-		final ModelAndView mav = new ModelAndView("helloworld");
+	@RequestMapping(value = "/{projectCode}/edit", method = RequestMethod.GET)
+	public ModelAndView getModifyResource(@ModelAttribute("projectForm") ProjectForm projectForm, @PathVariable String projectCode) {
+		final ModelAndView mav = new ModelAndView("project/editProject");
+		final Project project = ps.getProjectByCode(projectCode);
+		projectForm.setCode(project.getCode());
+		projectForm.setName(project.getName());
+		projectForm.setDescription(project.getName());
+		mav.addObject("project", project);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/{projectCode}/edit", method = RequestMethod.POST)
+	public ModelAndView modifyResource(@Valid @ModelAttribute("projectForm") ProjectForm projectForm,
+			@PathVariable String projectCode, BindingResult result) {
+		final ModelAndView mav;
+		final Project project = ps.getProjectByCode(projectCode);
+		if (result.hasErrors()) {
+			mav = new ModelAndView("project/editProject");
+			mav.addObject("project", project);
+		} else {
+			ps.setCode(project, projectForm.getCode());
+			ps.setDescription(project, projectForm.getDescription());
+			ps.setName(project, projectForm.getName());
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
+					.arg(0, projectForm.getCode()).build();
+			mav = new ModelAndView("redirect:" + resourceUrl);
+		}
 		return mav;
 	}
 
-	@RequestMapping(value = "/{projectCode}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{projectCode}/delete", method = RequestMethod.POST)
 	public ModelAndView deleteResource(@PathVariable String projectCode) {
-		final ModelAndView mav = new ModelAndView("helloworld");
-		return mav;
+		Project project = ps.getProjectByCode(projectCode);
+		ps.deleteProject(project);
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build();
+		return new ModelAndView("redirect:" + resourceUrl);
 	}
 
 }
