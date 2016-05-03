@@ -6,7 +6,6 @@ import java.util.Locale;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.hsqldb.jdbc.JDBCDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -15,17 +14,18 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.Ordered;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -35,9 +35,9 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence" })
 @Configuration
-
+@EnableTransactionManagement
 public class WebConfig extends WebMvcConfigurerAdapter {
-    static Logger logger = LoggerFactory.getLogger(WebConfig.class);
+    private final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
     @Value("classpath:schema.sql")
     private Resource schemaSql;
@@ -60,6 +60,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         ds.setUsername("test");
         ds.setPassword("test");
 		return ds;
+	}
+	
+	@Bean
+	public PlatformTransactionManager transactionManager(final DataSource ds) {
+		return new DataSourceTransactionManager(ds);
 	}
 	
 	@Bean

@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.models.ImmutableUser;
 import ar.edu.itba.models.User;
 import ar.edu.itba.persistence.rowmapping.UserRowMapper;
 
@@ -40,7 +41,11 @@ public class UserJdbcDao implements UserDao {
             
             try {
 	            jdbcInsert.execute(args);            
-	            return new User(username, password, mail);
+	            return ImmutableUser.builder()
+	            		.username(username)
+	            		.password(password)
+	            		.mail(mail)
+	            		.build();
             } catch (DataAccessException exception) {
             	throw new IllegalStateException("Database failed to create user");
             }

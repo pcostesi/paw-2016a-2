@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import ar.edu.itba.models.ImmutableUser;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskPriority;
 import ar.edu.itba.models.TaskScore;
@@ -26,7 +27,11 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 		String username = rs.getString("username");
 		String password = rs.getString("password");
 		String mail = rs.getString("mail");
-		User user = (username == null)? null : new User(username, password, mail);
+		User user = (username == null)? null : ImmutableUser.builder()
+				.username(username)
+				.password(password)
+				.mail(mail)
+				.build();
 	
 		return new Task(taskId, title, description, status, score, priority, user);         
     }
