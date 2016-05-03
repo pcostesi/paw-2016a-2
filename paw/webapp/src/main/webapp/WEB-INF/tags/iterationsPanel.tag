@@ -8,19 +8,20 @@
 	<t:collapsiblePanel panelId="iteration-${iteration.number}">
 		<jsp:attribute name="title">Iteration #${iteration.number}</jsp:attribute>	
 			<jsp:attribute name="actions">
-				<form class="form-inline" action="/project/${project.code}/iteration/${iteration.number}" method="GET" >
-					<div class="form-group">
-						<button type="submit" class="btn btn-default btn-xs">
+				<form action="/project/${project.code}/iteration/${iteration.number}" method="GET" >
+					<button type="submit" class="btn btn-default btn-xs">
 						<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
-						</button>
-					</div>
+					</button>
 				</form>
-				<form class="form-inline" action="/project/${project.code}/iteration/${iteration.number}/delete" method="POST" >
-					<div class="form-group">
+				<form action="/project/${project.code}/iteration/${iteration.number}/edit" method="GET" >
+					<button type="submit" class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+					</button>
+				</form>
+				<form action="/project/${project.code}/iteration/${iteration.number}/delete" method="POST" >
 					<button type="submit" class="btn btn-xs btn-danger">
 						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
 					</button>
-					</div>
 				</form>
 			</jsp:attribute>
 			<jsp:body>
