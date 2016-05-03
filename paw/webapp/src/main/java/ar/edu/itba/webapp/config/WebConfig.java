@@ -37,7 +37,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 
 public class WebConfig extends WebMvcConfigurerAdapter {
-    static Logger logger = LoggerFactory.getLogger(WebConfig.class);
+    private final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
     @Value("classpath:schema.sql")
     private Resource schemaSql;

@@ -3,6 +3,8 @@ package ar.edu.itba.webapp.auth;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,18 +22,22 @@ public class ScrumlrUserDetailsService implements UserDetailsService {
 	@Autowired
 	UserService us;
 	
+	static private final Logger logger = LoggerFactory.getLogger(ScrumlrUserDetailsService.class);
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = us.getByUsername(username);
-		
-		if (user != null) {
+		try {
+			logger.debug("Fetching user {}", username);
+			final User user = us.getByUsername(username);
 			final Collection<GrantedAuthority> authorities = new HashSet<>();
+			
 			authorities.add(new SimpleGrantedAuthority("USER"));
 			return new org.springframework.security.core.userdetails.User(user.getUsername(),
-					user.getPassword(), authorities);
+						user.getPassword(), true, true, true, true, authorities);
+		} catch (IllegalStateException e) {
+			logger.debug("No user found for {}", username);
+			throw new UsernameNotFoundException("No user found by the name " + username);
 		}
-		
-		return null;
 	}
 
 }

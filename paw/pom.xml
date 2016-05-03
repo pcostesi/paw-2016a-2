@@ -30,6 +30,7 @@
     <spring-security.version>4.0.4.RELEASE</spring-security.version>
 	  <logback.version>1.1.7</logback.version>
 	  <org.slf4j.version>1.7.21</org.slf4j.version>
+	  <maven-war-plugin.version>2.6</maven-war-plugin.version>
   </properties>
   <dependencyManagement>
 	<dependencies>
@@ -132,6 +133,14 @@
 
   <build>
     <plugins>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-war-plugin</artifactId>
+      	<version>${maven-war-plugin.version}</version>
+      	<configuration>
+      		<packageExcludes>**/logback-test.xml</packageExcludes>
+      	</configuration>
+      </plugin>
 	  <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-compiler-plugin</artifactId>
