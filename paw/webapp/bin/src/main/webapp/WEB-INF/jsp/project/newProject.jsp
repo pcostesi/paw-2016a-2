@@ -6,16 +6,17 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	New Iteration <small>Project ${project.name}</small>
+    	New project
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="iterationForm" action="/project/${project.code}/iteration/new" method="POST">
+		<form:form modelAttribute="projectForm" action="/project/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<bs:input path="beginDate" label="Begin date" />
-						<bs:input path="endDate" label="End date" />
+						<bs:input path="name" label="Name" />
+						<bs:input path="code" label="Code" />
+						<bs:input path="description" label="Description" />
 					</fieldset>
 				</div>
 			</div>

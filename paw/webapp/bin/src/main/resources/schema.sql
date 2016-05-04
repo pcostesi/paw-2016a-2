@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS project (
 	code varchar(10) NOT NULL,
 	description varchar(500) NOT NULL,
 	date_start DATE NOT NULL,
-	status INTEGER NOT NULL,
 	UNIQUE ( project_id, name ),
 	UNIQUE ( name ),
 	UNIQUE ( code )
@@ -35,6 +34,8 @@ CREATE TABLE IF NOT EXISTS task (
 	description varchar(500) NOT NULL,
 	owner varchar(100),
 	status INTEGER NOT NULL,
+	priority INTEGER NOT NULL,
+	score INTEGER NOT NULL,
 	FOREIGN KEY ( story_id ) REFERENCES story ( story_id ) ON DELETE CASCADE,
 	UNIQUE ( story_id, title )
 );

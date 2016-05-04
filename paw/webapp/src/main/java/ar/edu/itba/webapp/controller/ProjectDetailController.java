@@ -66,7 +66,7 @@ public class ProjectDetailController {
 		final Project project = ps.getProjectByCode(projectCode);
 		projectForm.setCode(project.getCode());
 		projectForm.setName(project.getName());
-		projectForm.setDescription(project.getName());
+		projectForm.setDescription(project.getDescription());
 		mav.addObject("project", project);
 		return mav;
 	}

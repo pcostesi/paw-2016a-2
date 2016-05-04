@@ -4,16 +4,21 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Iteration #${iteration.number} <small>for Project Scrumlr</small>
+    	Iteration #${iteration.number} <small>Project ${project.name}</small>
     </jsp:attribute>
     
     <jsp:attribute name="actions">
-	  <t:navbutton btnClass="btn-primary">
-	    New Story
-	  </t:navbutton>
+		<a href="#" class="btn btn-primary btn-sm">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New story
+	 	</a>
+	 	<a href="#" class="btn btn-primary btn-sm">
+			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit iteration
+	 	</a>
+	 	<a href="#" class="btn btn-danger btn-sm">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete Iteration
+	 	</a>
      </jsp:attribute>
-        
-        
+
      <jsp:body>     	
         <div class="panel-group" id="story-list" role="tablist" aria-multiselectable="true">
 			<c:forEach items="${stories}" var="story">

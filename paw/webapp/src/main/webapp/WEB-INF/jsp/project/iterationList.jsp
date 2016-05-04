@@ -10,12 +10,14 @@
 	    <a href="/project/${project.code}/iteration/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New iteration
 		</a>
-		<a href="#" class="btn btn-default btn-sm">
+		<a href="/project/${project.code}/edit" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit project
 		</a>
-		<a href="#" class="btn btn-danger btn-sm">
-			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete project
-		</a>
+		<form style="display:inline;" action="/project/${project.code}/delete" method="POST" >
+			<button type="submit" class="btn btn-sm btn-danger">
+				<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete project
+			</button>
+		</form>
      </jsp:attribute>
      <jsp:body>
 			<div class="panel-group" aria-multiselectable="true">

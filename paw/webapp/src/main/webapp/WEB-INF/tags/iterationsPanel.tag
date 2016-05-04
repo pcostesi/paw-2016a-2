@@ -13,7 +13,7 @@
 						<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
 					</button>
 				</form>
-				<form action="/project/${project.code}/iteration/${iteration.number}/edit" method="GET" >
+				<!-- <form action="/project/${project.code}/iteration/${iteration.number}/edit" method="GET" >
 					<button type="submit" class="btn btn-default btn-xs">
 						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
 					</button>
@@ -22,7 +22,7 @@
 					<button type="submit" class="btn btn-xs btn-danger">
 						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
 					</button>
-				</form>
+				</form>-->
 			</jsp:attribute>
 			<jsp:body>
 				<div class="row">

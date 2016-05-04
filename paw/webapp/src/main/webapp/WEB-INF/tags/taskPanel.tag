@@ -5,24 +5,29 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:collapsiblePanel panelId="task-${task.taskId}" panelParent="${panelParent}">
-	<jsp:attribute name="title">Task: ${task.title}</jsp:attribute>
+	<jsp:attribute name="title">
+		<span class="badge label-success">${task.status.label}</span> <span class="badge label-primary">${task.score.value}</span> 
+		${task.title} (owned by ${task.owner})
+	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-	<form action="/project/scrumlr/iteration/0/story/0/task/${task.taskId}/delete" method="POST">
+		<a href="#" class="btn btn-xs btn-default">
+			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+		</a>
+		<a href="#" class="btn btn-xs btn-danger">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+		</a>
+	<!-- <form action="/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}/delete" method="POST">
 		<button type="submit" class="btn btn-xs btn-danger">
 			Delete
 		  </button>
-		  </form>
+		  </form> -->
 	</jsp:attribute>
 
 	<jsp:body>
 		<div class="row">
-            <div class="col-sm-8">
-                ${task.description}
-                <jsp:doBody/>
-            </div>
-            <div class="col-sm-4">
-                ${task.status.label}
+            <div class="col-sm-12">
+            	<b>Description</b> ${task.description}<br>
             </div>
         </div>
 	</jsp:body>
