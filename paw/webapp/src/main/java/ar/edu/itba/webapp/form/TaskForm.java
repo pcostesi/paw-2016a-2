@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import ar.edu.itba.models.TaskScore;
 import ar.edu.itba.models.TaskStatus;
-import ar.edu.itba.models.User;
 
 public class TaskForm {
 	

@@ -28,7 +28,7 @@
 				        <b>Owner</b> Task doesn't have an owner<br>
 				    </c:when>    
 				    <c:otherwise>
-				        <b>Owner</b> ${task.owner.username}<br>
+				        <b>Owner</b> ${task.owner.username()}<br>
 				    </c:otherwise>
 				</c:choose>            	
             	<b>Description</b> ${task.description}<br>
