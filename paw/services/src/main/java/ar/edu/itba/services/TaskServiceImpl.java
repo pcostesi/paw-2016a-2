@@ -116,7 +116,7 @@ public class TaskServiceImpl implements TaskService{
 		
 		taskDao.updateOwner(task.taskId(), user != null ? user.username() : null);
 		return ImmutableTask.copyOf(task)
-				.withOwner(Optional.of(user));
+				.withOwner(Optional.ofNullable(user));
 	}
 
 	@Override
