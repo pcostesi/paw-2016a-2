@@ -67,7 +67,7 @@ public class StoryController {
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
-					.build();
+					.build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -103,7 +103,7 @@ public class StoryController {
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
-					.build();
+					.build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -116,7 +116,7 @@ public class StoryController {
 		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
 				.arg(0, projectCode)
 				.arg(1, iterationId)
-				.build();
+				.build().replace("/grupo2","");
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 	

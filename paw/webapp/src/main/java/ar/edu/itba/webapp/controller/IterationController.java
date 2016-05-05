@@ -56,7 +56,7 @@ public class IterationController {
 		} else {			
 			is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, projectCode).build();
+					.arg(0, projectCode).build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -101,8 +101,8 @@ public class IterationController {
 		} else {
 			is.setBeginDate(iteration, iterationForm.getBeginDate());
 			is.setEndDate(iteration, iterationForm.getEndDate());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, projectCode).build();
+			String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
+					.arg(0, projectCode).build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -113,7 +113,7 @@ public class IterationController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		is.deleteIteration(iteration);
 		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-				.arg(0, projectCode).build();
+				.arg(0, projectCode).build().replace("/grupo2","");
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 

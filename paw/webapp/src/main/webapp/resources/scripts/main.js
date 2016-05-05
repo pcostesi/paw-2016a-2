@@ -1,5 +1,5 @@
 requirejs.config({
-    baseUrl: '/scripts',
+    baseUrl: '/grupo2/scripts',
 
     paths: {
 		'css': 'https://cdnjs.cloudflare.com/ajax/libs/require-css/0.1.8/css.min',
