@@ -1,32 +1,36 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
+<%@attribute name="project" required="true" type="ar.edu.itba.models.Project" %>
+<%@attribute name="iteration" required="true" type="ar.edu.itba.models.Iteration" %>
+<%@attribute name="story" required="true" type="ar.edu.itba.models.Story" %>
 <%@attribute name="task" required="true" type="ar.edu.itba.models.Task" %>
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:collapsiblePanel panelId="task-${task.taskId}" panelParent="${panelParent}">
+	<jsp:attribute name="titleInfo">
+		<span class="label label-default">${task.score.value}</span> <t:statusLabel taskStatus="${task.status}"/> 
+	</jsp:attribute>
+
 	<jsp:attribute name="title">
-		<span class="badge label-success">${task.status.label}</span> <span class="badge label-primary">${task.score.value}</span> 
-		${task.title} (owned by ${task.owner})
+		${task.title}
 	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-		<a href="#" class="btn btn-xs btn-default">
-			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
-		</a>
-		<a href="#" class="btn btn-xs btn-danger">
-			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-		</a>
-	<!-- <form action="/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}/delete" method="POST">
-		<button type="submit" class="btn btn-xs btn-danger">
-			Delete
-		  </button>
-		  </form> -->
+		<t:dropdownEditDelete href="/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}"/>
 	</jsp:attribute>
 
 	<jsp:body>
 		<div class="row">
             <div class="col-sm-12">
+            	<c:choose>
+				    <c:when test="${empty task.owner}">
+				        <b>Owner</b> Task doesn't have an owner<br>
+				    </c:when>    
+				    <c:otherwise>
+				        <b>Owner</b> ${task.owner.username}<br>
+				    </c:otherwise>
+				</c:choose>            	
             	<b>Description</b> ${task.description}<br>
             </div>
         </div>

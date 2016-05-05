@@ -8,21 +8,15 @@
     </jsp:attribute>
     
     <jsp:attribute name="actions">
-		<a href="#" class="btn btn-primary btn-sm">
+		<a href="/project/${project.code}/iteration/${iteration.iterationId}/story/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New story
-	 	</a>
-	 	<a href="#" class="btn btn-primary btn-sm">
-			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit iteration
-	 	</a>
-	 	<a href="#" class="btn btn-danger btn-sm">
-			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete Iteration
 	 	</a>
      </jsp:attribute>
 
      <jsp:body>     	
         <div class="panel-group" id="story-list" role="tablist" aria-multiselectable="true">
 			<c:forEach items="${stories}" var="story">
-					<t:storyPanel panelParent="#story-list" story="${story}" />
+					<t:storyPanel panelParent="#story-list" project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}"/>
 			</c:forEach>
 		</div>
     </jsp:body>    

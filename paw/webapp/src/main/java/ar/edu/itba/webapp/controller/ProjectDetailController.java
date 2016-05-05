@@ -83,8 +83,7 @@ public class ProjectDetailController {
 			ps.setCode(project, projectForm.getCode());
 			ps.setDescription(project, projectForm.getDescription());
 			ps.setName(project, projectForm.getName());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, projectForm.getCode()).build();
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
