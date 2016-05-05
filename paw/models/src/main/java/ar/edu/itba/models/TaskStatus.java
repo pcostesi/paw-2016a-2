@@ -9,24 +9,24 @@ public enum TaskStatus {
 	private final int value;
 	private final String label;
 	
-	TaskStatus(int value, String label) {
+	private TaskStatus(int value, String label) {
         this.value = value;
         this.label = label;
     }
 
-    public int getValue() {
+    public final int getValue() {
         return value;
     }
     
-    public String toString() {
+    public final String toString() {
     	return getLabel();
     }
     
-    public String getLabel() {
+    public final String getLabel() {
     	return this.label;
     }
     
-    public static TaskStatus getByValue(int value) {
+    public final static TaskStatus getByValue(int value) {
     	switch(value) {
     	case 0:
     		return TaskStatus.NOT_STARTED;

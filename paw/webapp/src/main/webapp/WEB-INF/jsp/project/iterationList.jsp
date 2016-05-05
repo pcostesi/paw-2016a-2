@@ -4,11 +4,18 @@
 
 <t:page>
 	<jsp:attribute name="title">
+<<<<<<< 7929eda9f2de00a9df8b71f5078fa3238b35ef6a
     	Project ${project.name}
     </jsp:attribute>
      
     <jsp:attribute name="actions">
 	    <a href="${pageContext.request.contextPath}/project/${project.code}/iteration/new" class="btn btn-primary btn-sm">
+=======
+    	Project ${project.name()}
+    </jsp:attribute>    
+    <jsp:attribute name="actions">
+	    <a href="/project/${project.code()}/iteration/new" class="btn btn-primary btn-sm">
+>>>>>>> Move to immutables
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New iteration
 		</a>
      </jsp:attribute>
