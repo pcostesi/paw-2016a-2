@@ -16,7 +16,7 @@
     </li>
     <li>
     	<form action="${href}/delete" method="POST" >
-    		<button type="submit" data-think="twice" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+    		<button class="button-link" type="submit" data-think="twice" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
     		</button>
     	</form>
   	</li>

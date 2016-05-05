@@ -15,7 +15,6 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css"/>
-	    <!-- <link rel="stylesheet" href="/grupo2/css/custom.css"/>  -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="/grupo2/scripts/main.js"></script>    
 	    
 	</head>
