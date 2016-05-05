@@ -83,8 +83,7 @@ public class ProjectDetailController {
 			ps.setCode(project, projectForm.getCode());
 			ps.setDescription(project, projectForm.getDescription());
 			ps.setName(project, projectForm.getName());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build();
-			resourceUrl.replace("/grupo2","");
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -94,8 +93,7 @@ public class ProjectDetailController {
 	public ModelAndView deleteResource(@PathVariable String projectCode) {
 		Project project = ps.getProjectByCode(projectCode);
 		ps.deleteProject(project);
-		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build();
-		resourceUrl.replace("/grupo2","");
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build().replace("/grupo2","");
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 
