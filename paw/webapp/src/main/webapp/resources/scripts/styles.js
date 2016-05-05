@@ -1,2 +1,2 @@
-define(['bootstrap-js', 'css!bootstrap-css',
+define([ 'css!custom', 'bootstrap-js', 'css!bootstrap-css',
         'css!bootswatch-sandstone', 'bootstrap-toggle']);
