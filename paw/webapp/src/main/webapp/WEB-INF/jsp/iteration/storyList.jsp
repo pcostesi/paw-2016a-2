@@ -8,7 +8,7 @@
     </jsp:attribute>
     
     <jsp:attribute name="actions">
-		<a href="/project/${project.code}/iteration/${iteration.iterationId}/story/new" class="btn btn-primary btn-sm">
+		<a href="/grupo2/project/${project.code}/iteration/${iteration.iterationId}/story/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New story
 	 	</a>
      </jsp:attribute>

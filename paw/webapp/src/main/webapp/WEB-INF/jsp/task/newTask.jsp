@@ -10,7 +10,7 @@
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="taskForm" action="/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/new" method="POST">
+		<form:form modelAttribute="taskForm" action="/grupo2/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
