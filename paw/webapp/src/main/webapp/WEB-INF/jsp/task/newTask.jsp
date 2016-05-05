@@ -18,7 +18,7 @@
 						<bs:input path="description" label="Description" />
 						<bs:select path="status" label="Task Status" />
 						<bs:select path="score" label="Task Score" />
-						<bs:select path="owner" label="Task Owner" />
+						<bs:filledSelect path="owner" label="Task Owner" items="${users}"/>
 					</fieldset>
 				</div>
 			</div>

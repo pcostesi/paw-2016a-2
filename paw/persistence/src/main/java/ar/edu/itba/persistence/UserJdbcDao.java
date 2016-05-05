@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +83,20 @@ public class UserJdbcDao implements UserDao {
 				return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM account WHERE mail = ?", Integer.class, mail) > 0;
 			} catch (DataAccessException exception) {
 	        	throw new IllegalStateException("Database failed to verify e-mail adress is free");
+	        }
+		}
+
+		@Override
+		public List<String> getAllUsernames() {
+			try {
+				List<User> users = jdbcTemplate.query("SELECT * FROM account", userRowMapper);
+				List<String> usernames = new LinkedList<String>();
+				for (User user: users) {
+					usernames.add(user.username());
+				}
+				return usernames;
+			} catch (DataAccessException exception) {
+	        	throw new IllegalStateException("Database failed to get users");
 	        }
 		}
 		

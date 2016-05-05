@@ -1,5 +1,7 @@
 package ar.edu.itba.webapp.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
-import ar.edu.itba.webapp.form.IterationForm;
+import ar.edu.itba.models.User;
 import ar.edu.itba.webapp.form.TaskForm;
 
 @Controller
@@ -52,6 +54,9 @@ public class TaskController {
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
+		final List<String> users = us.getUsernames();
+		users.add(0, "None");
+		mav.addObject("users",users);
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		mav.addObject("story", story);
@@ -70,12 +75,21 @@ public class TaskController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		if (result.hasErrors()) {
+			final List<String> users = us.getUsernames();
+			users.add(0, "None");
 			mav = new ModelAndView("task/newTask");
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
-			mav.addObject("story", story);
+			mav.addObject("story", story);			
+			mav.addObject("users",users);
 		} else {
-			final Task task = ts.createTask(story, taskForm.getTitle(), taskForm.getDescription(), taskForm.getStatus(), taskForm.getOwner(), taskForm.getScore());
+			final User owner;
+			if (taskForm.getOwner().equals("None")) {
+				owner = null;
+			} else {
+				owner = us.getByUsername(taskForm.getOwner());
+			}
+			final Task task = ts.createTask(story, taskForm.getTitle(), taskForm.getDescription(), taskForm.getStatus(), owner, taskForm.getScore());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
@@ -96,11 +110,16 @@ public class TaskController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		final Task task = ts.getTaskById(taskId);
+		final User owner = task.getOwner();
+		final String ownerUsername = (owner == null)? "None": owner.username();
+		final List<String> users = us.getUsernames();
+		users.add(0, "None");
 		taskForm.setDescription(task.getDescription());
-		taskForm.setOwner(task.getOwner());
+		taskForm.setOwner(ownerUsername);
 		taskForm.setScore(task.getScore());
 		taskForm.setStatus(task.getStatus());
 		taskForm.setTitle(task.getTitle());
+		mav.addObject("users", users);
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		mav.addObject("story", story);
@@ -119,11 +138,23 @@ public class TaskController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Task task = ts.getTaskById(taskId);
 		if (result.hasErrors()) {
+			final Story story = ss.getById(storyId);
+			final List<String> users = us.getUsernames();
+			users.add(0, "None");
 			mav = new ModelAndView("iteration/editIteration");
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
+			mav.addObject("task", task);
+			mav.addObject("users", users);
+			mav.addObject("story", story);
 		} else {
-			ts.changeOwnership(task, taskForm.getOwner());
+			final User owner;
+			if (taskForm.getOwner().equals("None")) {
+				owner = null;
+			} else {
+				owner = us.getByUsername(taskForm.getOwner());
+			}
+			ts.changeOwnership(task, owner);
 			ts.changeStatus(task, taskForm.getStatus());
 			ts.changeScore(task, taskForm.getScore());
 			ts.changeTitle(task, taskForm.getTitle());

@@ -23,7 +23,7 @@ public class TaskForm {
 	@NotNull
 	private TaskScore score;
 	
-	private User owner;
+	private String owner;
 	
 	public TaskScore getScore() {
 		return score;
@@ -33,11 +33,11 @@ public class TaskForm {
 		this.score = score;
 	}
 
-	public User getOwner() {
+	public String getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(String owner) {
 		this.owner = owner;
 	}
 
