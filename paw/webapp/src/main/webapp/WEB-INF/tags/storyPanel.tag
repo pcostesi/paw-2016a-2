@@ -11,10 +11,10 @@
 	<jsp:attribute name="title">${story.title}</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-	 	<a href="/grupo2/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/new" class="btn btn-primary btn-xs dropdown-toggle">
+	 	<a href="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/new" class="btn btn-primary btn-xs dropdown-toggle">
 		    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New task
 		</a>
-		<t:dropdownEditDelete href="/grupo2/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}"/>
+		<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}"/>
 	</jsp:attribute>
 
 	<jsp:body>		

@@ -17,7 +17,7 @@
 	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-		<t:dropdownEditDelete href="/grupo2/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}"/>
+		<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}"/>
 	</jsp:attribute>
 
 	<jsp:body>

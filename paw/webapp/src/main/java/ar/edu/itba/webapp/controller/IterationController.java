@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
@@ -55,8 +56,8 @@ public class IterationController {
 			mav.addObject(project);
 		} else {			
 			is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, projectCode).build().replace("/grupo2","");
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
+					.arg(0, projectCode).build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -101,8 +102,8 @@ public class IterationController {
 		} else {
 			is.setBeginDate(iteration, iterationForm.getBeginDate());
 			is.setEndDate(iteration, iterationForm.getEndDate());
-			String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, projectCode).build().replace("/grupo2","");
+			String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
+					.arg(0, projectCode).build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -112,8 +113,8 @@ public class IterationController {
 	public ModelAndView deleteResource(@PathVariable String projectCode, @PathVariable int iterationId) {
 		final Iteration iteration = is.getIterationById(iterationId);
 		is.deleteIteration(iteration);
-		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-				.arg(0, projectCode).build().replace("/grupo2","");
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
+				.arg(0, projectCode).build();
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 
