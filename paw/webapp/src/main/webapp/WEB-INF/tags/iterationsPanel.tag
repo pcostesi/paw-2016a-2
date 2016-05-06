@@ -8,10 +8,10 @@
 	<t:collapsiblePanel panelId="iteration-${iteration.number}">
 		<jsp:attribute name="title">Iteration #${iteration.number}</jsp:attribute>	
 			<jsp:attribute name="actions">
-				<a href="${pageContext.servletContext}/project/${project.code}/iteration/${iteration.iterationId}" class="btn btn-default btn-xs" >
+				<a href="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}" class="btn btn-default btn-xs" >
 					<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
 				</a>
-				<t:dropdownEditDelete href="${pageContext.servletContext}/project/${project.code}/iteration/${iteration.iterationId}"/>
+				<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}"/>
 			</jsp:attribute>
 			<jsp:body>
 				<div class="row">

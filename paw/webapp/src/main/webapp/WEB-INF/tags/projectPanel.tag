@@ -7,10 +7,10 @@
 <t:collapsiblePanel panelId="project-${project.code}">
 	<jsp:attribute name="title">${project.name}</jsp:attribute>	
 	<jsp:attribute name="actions">
-		<a href="${pageContext.servletContext}/project/${project.code}" class="btn btn-default btn-xs">
+		<a href="${pageContext.request.contextPath}/project/${project.code}" class="btn btn-default btn-xs">
 				<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to project
 		</a>
-		<t:dropdownEditDelete href="${pageContext.servletContext}/project/${project.code}"/>
+		<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code}"/>
 	</jsp:attribute>
 	<jsp:body>
 		<div class="row">

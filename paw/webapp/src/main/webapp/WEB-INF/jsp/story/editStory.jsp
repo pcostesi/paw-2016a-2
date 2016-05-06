@@ -10,7 +10,7 @@
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="storyForm" action="${pageContext.servletContext}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/edit" method="POST">
+		<form:form modelAttribute="storyForm" action="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/edit" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>

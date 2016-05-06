@@ -8,7 +8,7 @@
     </jsp:attribute>
      
     <jsp:attribute name="actions">
-	    <a href="${pageContext.servletContext}/project/${project.code}/iteration/new" class="btn btn-primary btn-sm">
+	    <a href="${pageContext.request.contextPath}/project/${project.code}/iteration/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New iteration
 		</a>
      </jsp:attribute>
