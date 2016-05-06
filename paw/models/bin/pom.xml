@@ -13,4 +13,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+	<dependencies>
+	<dependency>
+	  <groupId>org.immutables</groupId>
+	  <artifactId>value</artifactId>
+	</dependency>
+	</dependencies>
 </project>

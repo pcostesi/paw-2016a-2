@@ -1,6 +1,7 @@
 package ar.edu.itba.webapp.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -20,6 +21,7 @@ import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
+import ar.edu.itba.models.Task;
 import ar.edu.itba.webapp.form.IterationForm;
 
 @Controller
@@ -54,31 +56,31 @@ public class IterationController {
 		} else {			
 			is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, projectCode).build();
+					.arg(0, projectCode).build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
 	}
 	
-	@RequestMapping(value = "/{iterationNumber}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{iterationId}", method = RequestMethod.GET, name="iteration.details")
 	public ModelAndView getResource(@PathVariable String projectCode,
-			@PathVariable("iterationNumber") int iterationNumber) {
+			@PathVariable("iterationId") int iterationId) {
 		final ModelAndView mav = new ModelAndView("iteration/storyList");
 		final Project project = ps.getProjectByCode(projectCode);
-		final Iteration iteration = is.getIteration(project, iterationNumber);
-		final List<Story> stories = ss.getStoriesForIteration(iteration);
+		final Iteration iteration = is.getIterationById(iterationId);
+		final Map<Story, List<Task>> stories = ss.getStoriesWithTasksForIteration(iteration);
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		mav.addObject("stories", stories);
 		return mav;
 	}
 
-	@RequestMapping(value = "/{iterationNumber}/edit", method = RequestMethod.GET)
-	public ModelAndView getModifyResource(@PathVariable String projectCode, @PathVariable int iterationNumber,
+	@RequestMapping(value = "/{iterationId}/edit", method = RequestMethod.GET)
+	public ModelAndView getModifyResource(@PathVariable String projectCode, @PathVariable int iterationId,
 			@ModelAttribute("iterationForm") IterationForm iterationForm) {
 		final ModelAndView mav = new ModelAndView("iteration/editIteration");
 		final Project project = ps.getProjectByCode(projectCode);
-		final Iteration iteration = is.getIteration(project, iterationNumber);
+		final Iteration iteration = is.getIterationById(iterationId);
 		iterationForm.setBeginDate(iteration.getBeginDate());
 		iterationForm.setEndDate(iteration.getEndDate());
 		mav.addObject("project", project);
@@ -86,12 +88,12 @@ public class IterationController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{iterationNumber}/edit", method = RequestMethod.POST)
-	public ModelAndView postModifyResource(@PathVariable String projectCode, @PathVariable int iterationNumber,
+	@RequestMapping(value = "/{iterationId}/edit", method = RequestMethod.POST)
+	public ModelAndView postModifyResource(@PathVariable String projectCode, @PathVariable int iterationId,
 			@Valid @ModelAttribute("iterationForm") IterationForm iterationForm, BindingResult result) {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
-		final Iteration iteration = is.getIteration(project, iterationNumber);
+		final Iteration iteration = is.getIterationById(iterationId);
 		if (result.hasErrors()) {
 			mav = new ModelAndView("iteration/editIteration");
 			mav.addObject("project", project);
@@ -99,20 +101,19 @@ public class IterationController {
 		} else {
 			is.setBeginDate(iteration, iterationForm.getBeginDate());
 			is.setEndDate(iteration, iterationForm.getEndDate());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, projectCode).build();
+			String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
+					.arg(0, projectCode).build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
 	}
 
-	@RequestMapping(value = "/{itNumber}/delete", method = RequestMethod.POST)
-	public ModelAndView deleteResource(@PathVariable String projectCode, @PathVariable int itNumber) {
-		final Project project = ps.getProjectByCode(projectCode);
-		final Iteration iteration = is.getIteration(project, itNumber);
+	@RequestMapping(value = "/{iterationId}/delete", method = RequestMethod.POST)
+	public ModelAndView deleteResource(@PathVariable String projectCode, @PathVariable int iterationId) {
+		final Iteration iteration = is.getIterationById(iterationId);
 		is.deleteIteration(iteration);
 		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-				.arg(0, projectCode).build();
+				.arg(0, projectCode).build().replace("/grupo2","");
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 

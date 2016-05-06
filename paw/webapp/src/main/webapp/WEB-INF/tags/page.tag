@@ -15,7 +15,7 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css"/>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="/scripts/main.js"></script>    
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="/grupo2/scripts/main.js"></script>    
 	    
 	</head>
 
@@ -27,7 +27,7 @@
 	            <div class="navbar-header">
 	                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-1" aria-expanded="false">
 	                </button>
-	                <a class="navbar-brand" href="/">Scrumlr</a>
+	                <a class="navbar-brand" href="/grupo2/">Scrumlr</a>
 	            </div>	            
 	            <nav class="collapse navbar-collapse" id="nav-1">
 	                <ul class="nav navbar-nav navbar-right">

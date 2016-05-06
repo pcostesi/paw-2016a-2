@@ -8,21 +8,10 @@
 	<t:collapsiblePanel panelId="iteration-${iteration.number}">
 		<jsp:attribute name="title">Iteration #${iteration.number}</jsp:attribute>	
 			<jsp:attribute name="actions">
-				<form action="/project/${project.code}/iteration/${iteration.number}" method="GET" >
-					<button type="submit" class="btn btn-default btn-xs">
-						<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
-					</button>
-				</form>
-				<form action="/project/${project.code}/iteration/${iteration.number}/edit" method="GET" >
-					<button type="submit" class="btn btn-default btn-xs">
-						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
-					</button>
-				</form>
-				<form action="/project/${project.code}/iteration/${iteration.number}/delete" method="POST" >
-					<button type="submit" class="btn btn-xs btn-danger">
-						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-					</button>
-				</form>
+				<a href="/grupo2/project/${project.code}/iteration/${iteration.iterationId}" class="btn btn-default btn-xs" >
+					<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
+				</a>
+				<t:dropdownEditDelete href="/grupo2/project/${project.code}/iteration/${iteration.iterationId}"/>
 			</jsp:attribute>
 			<jsp:body>
 				<div class="row">

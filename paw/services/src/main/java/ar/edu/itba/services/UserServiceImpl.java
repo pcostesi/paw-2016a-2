@@ -1,5 +1,6 @@
 package ar.edu.itba.services;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -107,5 +108,10 @@ public class UserServiceImpl implements UserService{
     	}
     	
     }
+
+	@Override
+	public List<String> getUsernames() {
+		return userDao.getAllUsernames();
+	}
 
 }

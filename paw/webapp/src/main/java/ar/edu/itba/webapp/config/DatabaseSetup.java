@@ -44,10 +44,12 @@ public class DatabaseSetup {
 			return;
 		}
 
-        //Project project = ps.createProject("Scrumlr", "This is a project", "scrumlr");
-        //Iteration iteration = is.createIteration(project, new Date(), new Date());
-        //Story story = ss.create(iteration, "This is a story title");
-        //Task task = ts.createTask(story, "This is a task title", "This is a task description");
+//        Project project = ps.createProject("Scrumlr", "This is a project", "scrumlr");
+//        Iteration iteration = is.createIteration(project, new Date(), new Date());
+//        Story story = ss.create(iteration, "This is a story title");
+//        Task task = ts.createTask(story, "This is a task title", "This is a task description");
+//        Task task2 = ts.createTask(story, "This is a task title2", "This is a task description");
+//        Task task3 = ts.createTask(story, "This is a task title3", "This is a task description");
         //User user = us.create("paul", "passwd", "pcostesi@itba.edu.ar");
         //User user2 = us.create("braulius", "asdf", "bsespede@itba.edu.ar");
         //User user3 = us.create("maio", "ayeztagrazanozequita", "smaio@itba.edu.ar");

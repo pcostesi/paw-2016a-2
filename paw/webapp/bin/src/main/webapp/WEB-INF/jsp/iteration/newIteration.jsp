@@ -1,20 +1,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-
+<%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <t:page>
 	<jsp:attribute name="title">
-    	Add a new iteration <small>for Project Scrumlr</small>
+    	New Iteration <small>Project ${project.name}</small>
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form action="/project/scrumlr/iteration" method="POST">
+		<form:form modelAttribute="iterationForm" action="/project/${project.code}/iteration/new" method="POST">
 			<div class="row">
-				<div class="col-sm-12">
-					<p>Adding...</p>
+				<div class="col-sm-6">
+					<fieldset>
+						<bs:input path="beginDate" label="Begin date" />
+						<bs:input path="endDate" label="End date" />
+					</fieldset>
 				</div>
 			</div>
-		</form>
+			<button type="submit" class="btn btn-primary">Submit</button>
+
+		</form:form>
     </jsp:body>
 </t:page>

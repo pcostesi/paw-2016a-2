@@ -1,6 +1,9 @@
 package ar.edu.itba.services;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,8 +11,10 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.StoryService;
+import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Story;
+import ar.edu.itba.models.Task;
 
 @Service
 public class StoryServiceImpl implements StoryService{
@@ -19,6 +24,9 @@ public class StoryServiceImpl implements StoryService{
 	
 	@Autowired
 	IterationDao iterationDao;
+	
+	@Autowired
+	TaskDao taskDao;
 
 	@Override
 	public Story create(Iteration iteration, String title) {
@@ -65,7 +73,7 @@ public class StoryServiceImpl implements StoryService{
 	}
 	
 	@Override
-	public List<Story> getStoriesForIteration(Iteration iteration) {
+	public Map<Story, List<Task>> getStoriesWithTasksForIteration(Iteration iteration) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
@@ -74,7 +82,12 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		return storyDao.getStoriesForIteration(iteration.getIterationId());
+		Map<Story, List<Task>> result = new HashMap<Story, List<Task>>();
+		List<Story> stories = storyDao.getStoriesForIteration(iteration.getIterationId());
+		for (Story story: stories) {
+			result.put(story, taskDao.getTasksForStory(story.getStoryId()));
+		}
+		return result;
 	}
 
 	@Override

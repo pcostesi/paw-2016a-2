@@ -11,7 +11,7 @@ import ar.edu.itba.models.User;
 
 public interface TaskService {
 
-	public Task createTask(final Story story, final String name, final String description);
+	public Task createTask(final Story story, final String name, final String description, final TaskStatus taskStatus, final User user, final TaskScore taskScore);
 	
 	public Task getTaskById(final int taskId);
 	
@@ -28,5 +28,9 @@ public interface TaskService {
 	public List<Task> getTasksForStory(final Story story);
 	
 	public Story getParent(final Task task);
+
+	public void changeTitle(final Task task, final String title);
+
+	public void changeDescription(final Task task, final String description);
 
 }

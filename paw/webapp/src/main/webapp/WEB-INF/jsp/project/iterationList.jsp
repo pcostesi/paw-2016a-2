@@ -5,18 +5,14 @@
 <t:page>
 	<jsp:attribute name="title">
     	Project ${project.name}
-    </jsp:attribute>    
+    </jsp:attribute>
+     
     <jsp:attribute name="actions">
-	    <a href="/project/${project.code}/iteration/new" class="btn btn-primary btn-sm">
+	    <a href="/grupo2/project/${project.code}/iteration/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New iteration
 		</a>
-		<a href="#" class="btn btn-default btn-sm">
-			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit project
-		</a>
-		<a href="#" class="btn btn-danger btn-sm">
-			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete project
-		</a>
      </jsp:attribute>
+     
      <jsp:body>
 			<div class="panel-group" aria-multiselectable="true">
 				<t:descriptionPanel project="${project}"/>
