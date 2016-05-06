@@ -6,11 +6,11 @@ import ar.edu.itba.models.BacklogItem;
 
 public interface BacklogDao {
 
-	BacklogItem createBacklogItem(String name, String description, int ProjectId);
+	BacklogItem createBacklogItem(String name, String description, int projectId);
 
-	boolean backlogItemExists(String name, String description, int ProjectID);
+	boolean backlogItemExists(String name, String description, int projectId);
 
-	boolean backlogItemExists(int backlogId);
+	boolean backlogItemExists(int itemId);
 	
 	void deleteItem(int itemId);
 	

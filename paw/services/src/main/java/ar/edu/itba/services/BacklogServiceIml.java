@@ -143,7 +143,9 @@ public class BacklogServiceIml implements BacklogService {
 		if (!projectDao.projectCodeExists(project.getCode())) {
 			throw new IllegalStateException("Project does not exist");
 		}
-		return createBacklogItem(project, task.getTitle(), task.getDescription());
+		BacklogItem newItem = createBacklogItem(project, task.getTitle(), task.getDescription());
+		taskDao.deleteTask(task.getTaskId());
+		return newItem;
 	}
 
 	@Override
@@ -160,7 +162,9 @@ public class BacklogServiceIml implements BacklogService {
 		if (!projectDao.projectCodeExists(project.getCode())) {
 			throw new IllegalStateException("Project does not exist");
 		}
-		return null;
+		BacklogItem newItem =createBacklogItem(project, story.getTitle(), story.getTitle()); 
+		storyDao.deleteStory(story.getStoryId());
+		return newItem;
 	}
 
 }
