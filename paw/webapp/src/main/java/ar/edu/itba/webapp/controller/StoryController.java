@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
@@ -19,7 +20,6 @@ import ar.edu.itba.interfaces.TaskService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
-import ar.edu.itba.webapp.form.IterationForm;
 import ar.edu.itba.webapp.form.StoryForm;
 
 @Controller
@@ -63,11 +63,11 @@ public class StoryController {
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
 		} else {
-			final Story story = ss.create(iteration, storyForm.getTitle());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
+			ss.create(iteration, storyForm.getTitle());
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
-					.build().replace("/grupo2","");
+					.build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -100,10 +100,10 @@ public class StoryController {
 			mav.addObject("iteration", iteration);
 		} else {
 			ss.setName(story, storyForm.getTitle());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
-					.build().replace("/grupo2","");
+					.build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -113,10 +113,10 @@ public class StoryController {
 	public ModelAndView deleteResource(@PathVariable int storyId, @PathVariable String projectCode, @PathVariable int iterationId) {
 		Story story = ss.getById(storyId);
 		ss.deleteStory(story);
-		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 				.arg(0, projectCode)
 				.arg(1, iterationId)
-				.build().replace("/grupo2","");
+				.build();
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 	

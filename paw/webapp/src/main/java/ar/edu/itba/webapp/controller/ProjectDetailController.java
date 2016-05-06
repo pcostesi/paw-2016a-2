@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
@@ -83,7 +84,7 @@ public class ProjectDetailController {
 			ps.setCode(project, projectForm.getCode());
 			ps.setDescription(project, projectForm.getDescription());
 			ps.setName(project, projectForm.getName());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build().replace("/grupo2","");
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.list").build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;

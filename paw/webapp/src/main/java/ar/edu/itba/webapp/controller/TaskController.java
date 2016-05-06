@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
@@ -89,11 +90,11 @@ public class TaskController {
 			} else {
 				owner = us.getByUsername(taskForm.getOwner());
 			}
-			final Task task = ts.createTask(story, taskForm.getTitle(), taskForm.getDescription(), taskForm.getStatus(), owner, taskForm.getScore());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
+			ts.createTask(story, taskForm.getTitle(), taskForm.getDescription(), taskForm.getStatus(), owner, taskForm.getScore());
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
-					.build().replace("/grupo2","");
+					.build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -159,10 +160,10 @@ public class TaskController {
 			ts.changeScore(task, taskForm.getScore());
 			ts.changeTitle(task, taskForm.getTitle());
 			ts.changeDescription(task, taskForm.getDescription());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
-					.build().replace("/grupo2","");
+					.build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -175,10 +176,10 @@ public class TaskController {
 			@PathVariable int taskId) {
 		Task task = ts.getTaskById(taskId);
 		ts.deleteTask(task);
-		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("iteration.details")
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 				.arg(0, projectCode)
 				.arg(1, iterationId)
-				.build().replace("/grupo2","");
+				.build();
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 }

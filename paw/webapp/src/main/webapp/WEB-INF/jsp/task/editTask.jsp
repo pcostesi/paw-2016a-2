@@ -3,6 +3,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<
 
 <t:page>
 	<jsp:attribute name="title">
@@ -10,7 +11,7 @@
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="taskForm" action="/grupo2/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}/edit" method="POST">
+		<form:form modelAttribute="taskForm" action="${pageContext.servletContext}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}/edit" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
