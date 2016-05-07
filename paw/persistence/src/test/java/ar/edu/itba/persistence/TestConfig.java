@@ -1,4 +1,4 @@
-package ar.edu.itba.services;
+package ar.edu.itba.persistence;
 import javax.sql.DataSource;
 
 import org.hsqldb.jdbc.JDBCDriver;
@@ -9,8 +9,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 
 
-@ComponentScan({"ar.edu.itba.services.TestConfig","ar.edu.itba.persistence", "ar.edu.itba.services.ProjectServiceImpl" })
-
+@ComponentScan({ "ar.edu.itba.paw.persistence"})
 @Configuration
 public class TestConfig {
 
