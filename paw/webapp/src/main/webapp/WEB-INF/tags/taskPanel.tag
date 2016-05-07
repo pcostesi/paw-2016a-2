@@ -7,31 +7,31 @@
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:collapsiblePanel panelId="task-${task.taskId}" panelParent="${panelParent}">
+<t:collapsiblePanel panelId="task-${task.taskId()}" panelParent="${panelParent}">
 	<jsp:attribute name="titleInfo">
-		<span class="label label-default">${task.score.value}</span> <t:statusLabel taskStatus="${task.status}"/> 
+		<span class="label label-default">${task.score().value}</span> <t:statusLabel taskStatus="${task.status()}"/> 
 	</jsp:attribute>
 
 	<jsp:attribute name="title">
-		${task.title}
+		${task.title()}
 	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-		<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}"/>
+		<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/${task.taskId()}"/>
 	</jsp:attribute>
 
 	<jsp:body>
 		<div class="row">
             <div class="col-sm-12">
             	<c:choose>
-				    <c:when test="${empty task.owner}">
-				        <b>Owner</b> Task doesn't have an owner<br>
+				    <c:when test="${task.owner().isPresent()}">
+				    	<b>Owner</b> ${task.owner().get().username()}<br>
 				    </c:when>    
 				    <c:otherwise>
-				        <b>Owner</b> ${task.owner.username()}<br>
+				    	<b>Owner</b> Task doesn't have an owner<br>
 				    </c:otherwise>
 				</c:choose>            	
-            	<b>Description</b> ${task.description}<br>
+            	<b>Description</b> ${task.description()}<br>
             </div>
         </div>
 	</jsp:body>

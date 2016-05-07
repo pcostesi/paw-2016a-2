@@ -2,9 +2,11 @@ package ar.edu.itba.persistence.rowmapping;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import ar.edu.itba.models.ImmutableTask;
 import ar.edu.itba.models.ImmutableUser;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskPriority;
@@ -17,12 +19,13 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 	@Override
     public Task mapRow(final ResultSet rs, final int rowNum) throws SQLException {
 		
-		Integer taskId = rs.getInt("task_id");
+		int taskId = rs.getInt("task_id");
 		String title = rs.getString("title");
 		String description = rs.getString("description");
 		TaskStatus status = TaskStatus.getByValue(rs.getInt("status"));
 		TaskScore score = TaskScore.getByValue(rs.getInt("score"));
 		TaskPriority priority = TaskPriority.getByValue(rs.getInt("priority"));
+		int	story = rs.getInt("story_id");
 		
 		String username = rs.getString("username");
 		String password = rs.getString("password");
@@ -33,7 +36,17 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 				.mail(mail)
 				.build();
 	
-		return new Task(taskId, title, description, status, score, priority, user);         
+		
+		return ImmutableTask.builder()
+				.taskId(taskId)
+				.title(title)
+				.description(description)
+				.status(status)
+				.score(score)
+				.priority(priority)
+				.owner(Optional.ofNullable(user))
+				.story(story)
+				.build();
     }
 		
 }

@@ -6,11 +6,11 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	New Iteration <small>Project ${project.name}</small>
+    	New Iteration <small>Project ${project.name()}</small>
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="iterationForm" action="${pageContext.request.contextPath}/project/${project.code}/iteration/new" method="POST">
+		<form:form modelAttribute="iterationForm" action="${pageContext.request.contextPath}/project/${project.code()}/iteration/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>

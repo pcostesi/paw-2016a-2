@@ -23,7 +23,7 @@ import ar.edu.itba.webapp.form.ProjectForm;
 
 @Controller
 @RequestMapping("/project")
-public class ProjectDetailController {
+public class ProjectController {
 
 	@Autowired
 	ProjectService ps;
@@ -45,7 +45,7 @@ public class ProjectDetailController {
 		} else {
 			final Project project = ps.createProject(projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, project.getCode()).build().replace("/grupo2","");
+					.arg(0, project.code()).build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -65,9 +65,9 @@ public class ProjectDetailController {
 	public ModelAndView getModifyResource(@ModelAttribute("projectForm") ProjectForm projectForm, @PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("project/editProject");
 		final Project project = ps.getProjectByCode(projectCode);
-		projectForm.setCode(project.getCode());
-		projectForm.setName(project.getName());
-		projectForm.setDescription(project.getDescription());
+		projectForm.setCode(project.code());
+		projectForm.setName(project.name());
+		projectForm.setDescription(project.description());
 		mav.addObject("project", project);
 		return mav;
 	}

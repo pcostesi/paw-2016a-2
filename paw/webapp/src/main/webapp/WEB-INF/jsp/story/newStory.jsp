@@ -6,11 +6,11 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Add a new story <small>to Project ${project.name} (Iteration #${iteration.number})</small>
+    	Add a new story <small>to Project ${project.name()} (Iteration #${iteration.number()})</small>
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="storyForm" action="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/new" method="POST">
+		<form:form modelAttribute="storyForm" action="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
