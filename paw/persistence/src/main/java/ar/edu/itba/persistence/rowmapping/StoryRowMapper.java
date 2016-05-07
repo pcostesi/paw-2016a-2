@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import ar.edu.itba.models.ImmutableStory;
 import ar.edu.itba.models.Story;
 
 public class StoryRowMapper implements RowMapper<Story> {
@@ -12,6 +13,9 @@ public class StoryRowMapper implements RowMapper<Story> {
     @Override
     public Story mapRow(final ResultSet rs, final int rowNum) throws SQLException {
 
-            return new Story(rs.getInt("story_id"), rs.getString("title"));
+            return ImmutableStory.builder()
+            		.storyId(rs.getInt("story_id"))
+            		.title(rs.getString("title"))
+            		.build();
     }
 }
