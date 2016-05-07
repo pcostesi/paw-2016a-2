@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.models.ImmutableTask;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskPriority;
 import ar.edu.itba.models.TaskScore;
@@ -53,14 +52,7 @@ public class TaskJdbcDao implements TaskDao{
 
 		try {
 			int taskId = jdbcInsert.executeAndReturnKey(args).intValue();		
-			return ImmutableTask.builder()
-					.taskId(taskId)
-					.title(title)
-					.description(description)
-					.status(TaskStatus.NOT_STARTED)
-					.score(TaskScore.NORMAL)
-					.priority(TaskPriority.NORMAL)
-					.build();
+			return new Task(taskId, title, description, TaskStatus.NOT_STARTED, TaskScore.NORMAL, TaskPriority.NORMAL, null);
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create task");
         }

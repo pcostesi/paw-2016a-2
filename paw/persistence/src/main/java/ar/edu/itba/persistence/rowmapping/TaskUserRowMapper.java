@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import ar.edu.itba.models.ImmutableTask;
 import ar.edu.itba.models.ImmutableUser;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskPriority;
@@ -34,16 +33,7 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 				.mail(mail)
 				.build();
 	
-		
-		return ImmutableTask.builder()
-				.taskId(taskId)
-				.title(title)
-				.description(description)
-				.status(status)
-				.score(score)
-				.priority(priority)
-				.owner(user)
-				.build();
+		return new Task(taskId, title, description, status, score, priority, user);         
     }
 		
 }

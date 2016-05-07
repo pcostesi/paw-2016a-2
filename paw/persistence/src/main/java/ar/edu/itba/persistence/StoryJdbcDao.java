@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.models.ImmutableStory;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.persistence.rowmapping.StoryRowMapper;
 
@@ -58,10 +57,7 @@ public class StoryJdbcDao implements StoryDao{
 		
 		try {
 			int storyId = jdbcInsert.executeAndReturnKey(args).intValue();			
-			return ImmutableStory.builder()
-					.storyId(storyId)
-					.title(title)
-					.build();
+			return new Story(storyId, title);
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create story");
         }

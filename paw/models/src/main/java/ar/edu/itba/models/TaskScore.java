@@ -11,24 +11,24 @@ public enum TaskScore {
 	private final int value;
 	private final String label;
 	
-	private TaskScore(int value, String label) {
+	TaskScore(int value, String label) {
         this.value = value;
         this.label = label;
     }
 
-    public final int getValue() {
+    public int getValue() {
         return value;
     }
     
-    public final String toString() {
+    public String toString() {
     	return getLabel();
     }
     
-    public final String getLabel() {
+    public String getLabel() {
     	return this.label;
     }
     
-    public final static TaskScore getByValue(int value) {
+    public static TaskScore getByValue(int value) {
     	switch(value) {
     	case 0:
     		return TaskScore.VERY_EASY;

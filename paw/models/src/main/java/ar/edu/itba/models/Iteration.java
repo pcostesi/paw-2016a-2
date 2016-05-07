@@ -2,15 +2,56 @@ package ar.edu.itba.models;
 
 import java.util.Date;
 
-import org.immutables.value.Value;
-
-@Value.Immutable
-public abstract class Iteration{
+public class Iteration{
 	
-	public abstract int iterationId();
-	public abstract int number();
-	public abstract Date startDate();
-	public abstract Date endDate();
-	public abstract Project project();
+	private final int iterationId;
+	private int number;
+	private Date begintDate;
+	private Date endDate;
+	private Project project;
+	
+	public Iteration(int iterationId, int number, Date begintDate, Date endDate){
+		this.iterationId = iterationId;
+		this.number = number;
+		this.begintDate = begintDate;
+		this.endDate = endDate;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public Date getBeginDate() {
+		return begintDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public int getIterationId() {
+		return iterationId;
+	}
+	
+	public void setBeginDate(Date beginDate) {
+		this.begintDate = beginDate;
+	}
+	
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;		
+	}
+
+	public String toString() {
+		return "Iteration [iterationId=" + iterationId + ", number=" + number + ", startDate=" + begintDate
+				+ ", endDate=" + endDate + "]";
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
 }

@@ -1,7 +1,6 @@
 package ar.edu.itba.webapp.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -91,12 +90,12 @@ public class TaskController {
 			} else {
 				owner = us.getByUsername(taskForm.getOwner());
 			}
-			Task task = ts.createTask(story, taskForm.getTitle(), taskForm.getDescription(), taskForm.getStatus(), owner, taskForm.getScore());
+			ts.createTask(story, taskForm.getTitle(), taskForm.getDescription(), taskForm.getStatus(), owner, taskForm.getScore());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
 					.build();
-			mav = new ModelAndView("redirect:" + resourceUrl + "?task=" + task.taskId());
+			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
 	}
@@ -112,15 +111,15 @@ public class TaskController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		final Task task = ts.getTaskById(taskId);
-		final Optional<User> owner = task.owner();
-		final String ownerUsername = (owner.isPresent())? "None": owner.get().username();
+		final User owner = task.getOwner();
+		final String ownerUsername = (owner == null)? "None": owner.username();
 		final List<String> users = us.getUsernames();
 		users.add(0, "None");
-		taskForm.setDescription(task.description());
+		taskForm.setDescription(task.getDescription());
 		taskForm.setOwner(ownerUsername);
-		taskForm.setScore(task.score());
-		taskForm.setStatus(task.status());
-		taskForm.setTitle(task.title());
+		taskForm.setScore(task.getScore());
+		taskForm.setStatus(task.getStatus());
+		taskForm.setTitle(task.getTitle());
 		mav.addObject("users", users);
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);

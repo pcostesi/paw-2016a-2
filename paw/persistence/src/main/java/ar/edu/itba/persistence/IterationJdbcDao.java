@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.IterationDao;
-import ar.edu.itba.models.ImmutableIteration;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.persistence.rowmapping.IterationRowMapper;
 
@@ -66,12 +65,7 @@ public class IterationJdbcDao implements IterationDao {
 		
         try {        
 	        int iterationId = jdbcInsert.executeAndReturnKey(args).intValue();	        
-			return ImmutableIteration.builder()
-					.iterationId(iterationId)
-					.number(nextIterationNumber)
-					.startDate(beginDate)
-					.endDate(endDate)
-					.build();
+			return new Iteration(iterationId, nextIterationNumber, beginDate, endDate);
         } catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create iteration");
         }

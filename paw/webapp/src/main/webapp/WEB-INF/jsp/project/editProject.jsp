@@ -6,15 +6,11 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Edit project ${project.name()}
+    	Edit project ${project.name}
 	</jsp:attribute>
 	
 	<jsp:body>
-<<<<<<< 7929eda9f2de00a9df8b71f5078fa3238b35ef6a
 		<form:form modelAttribute="projectForm" action="${pageContext.request.contextPath}/project/${project.code}/edit" method="POST">
-=======
-		<form:form modelAttribute="projectForm" action="/project/${project.code()}/edit" method="POST">
->>>>>>> Move to immutables
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>

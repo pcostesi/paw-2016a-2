@@ -82,8 +82,8 @@ public class IterationController {
 		final ModelAndView mav = new ModelAndView("iteration/editIteration");
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
-		iterationForm.setBeginDate(iteration.startDate());
-		iterationForm.setEndDate(iteration.endDate());
+		iterationForm.setBeginDate(iteration.getBeginDate());
+		iterationForm.setEndDate(iteration.getEndDate());
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		return mav;

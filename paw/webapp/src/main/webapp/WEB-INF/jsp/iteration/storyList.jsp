@@ -4,11 +4,7 @@
 
 <t:page>
 	<jsp:attribute name="title">
-<<<<<<< 7929eda9f2de00a9df8b71f5078fa3238b35ef6a
     	Iteration #${iteration.number} <small>Project ${project.name}</small>
-=======
-    	Iteration #${iteration.number()} <small>for Project Scrumlr</small>
->>>>>>> Move to immutables
     </jsp:attribute>
     
     <jsp:attribute name="actions">

@@ -80,7 +80,7 @@ public class StoryController {
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
-		storyForm.setTitle(story.title());
+		storyForm.setTitle(story.getTitle());
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		mav.addObject("story", story);
