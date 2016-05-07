@@ -4,11 +4,11 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Iteration #${iteration.number} <small>Project ${project.name}</small>
+    	Iteration #${iteration.number()} <small>Project ${project.name()}</small>
     </jsp:attribute>
     
     <jsp:attribute name="actions">
-		<a href="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/new" class="btn btn-primary btn-sm">
+		<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New story
 	 	</a>
      </jsp:attribute>
