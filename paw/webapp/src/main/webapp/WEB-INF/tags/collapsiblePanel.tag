@@ -2,6 +2,7 @@
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="panelId" required="true"%>
 <%@attribute name="title" fragment="true" required="true"%>
+<%@attribute name="titleInfo" fragment="true" required="false"%>
 <%@attribute name="actions" fragment="true" required="false"%>
 <%@attribute name="panelClass" required="false"%>
 <%@attribute name="panelParent" required="false"%>
@@ -9,6 +10,7 @@
 <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="panel-heading-${panelId}">
         <h2 class="panel-title clearfix">
+        	<jsp:invoke fragment="titleInfo"/> 
             <a role="button" data-toggle="collapse" data-parent="${panelParent}" href="#panel-collapse-${panelId}" aria-expanded="true" aria-controls="panel-collapse-${panelId}">
                 <jsp:invoke fragment="title"/>
             </a>

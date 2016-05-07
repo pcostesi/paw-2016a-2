@@ -13,10 +13,12 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
+import ar.edu.itba.models.ImmutableTask;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskPriority;
 import ar.edu.itba.models.TaskScore;
 import ar.edu.itba.models.TaskStatus;
+import ar.edu.itba.models.User;
 import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
 
 @Repository
@@ -34,20 +36,32 @@ public class TaskJdbcDao implements TaskDao{
     }
 	
 	@Override
-	public Task createTask(int storyId, String title, String description) {
+	public Task createTask(int storyId, String title, String description, TaskStatus status, User owner, TaskScore score) {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("story_id", storyId);
 		args.put("title", title);
 		args.put("description", description);
-		args.put("owner", null);
-		args.put("status", TaskStatus.NOT_STARTED.getValue());
-		args.put("score", TaskScore.NORMAL.getValue());
+		if (owner == null) {
+			args.put("owner", null);
+		} else {
+			args.put("owner", owner.username());
+		}		
+		args.put("status", status.getValue());
+		args.put("score", score.getValue());
 		args.put("priority", TaskPriority.NORMAL.getValue());
 
 		try {
 			int taskId = jdbcInsert.executeAndReturnKey(args).intValue();		
-			return new Task(taskId, title, description, TaskStatus.NOT_STARTED, TaskScore.NORMAL, TaskPriority.NORMAL, null);
+			return ImmutableTask.builder()
+					.taskId(taskId)
+					.title(title)
+					.description(description)
+					.status(TaskStatus.NOT_STARTED)
+					.score(TaskScore.NORMAL)
+					.priority(TaskPriority.NORMAL)
+					.story(storyId)
+					.build();
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create task");
         }
@@ -134,7 +148,7 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public void updateScore(int taskId, int scoreValue) {
 		try {
-			jdbcTemplate.update("UPDATE task SET score = ? WHERE score_id = ?", scoreValue, taskId);
+			jdbcTemplate.update("UPDATE task SET score = ? WHERE task_id = ?", scoreValue, taskId);
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update task score");
         }
@@ -146,6 +160,24 @@ public class TaskJdbcDao implements TaskDao{
 			return jdbcTemplate.queryForObject("SELECT story_id FROM task WHERE task_id = ?", Integer.class, taskId);
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to get task parent ID");
+        }
+	}
+
+	@Override
+	public void updateTitle(int taskId, String title) {
+		try {
+			jdbcTemplate.update("UPDATE task SET title = ? WHERE task_id = ?", title, taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update title");
+        }
+	}
+
+	@Override
+	public void updateDescription(int taskId, String description) {
+		try {
+			jdbcTemplate.update("UPDATE task SET description = ? WHERE task_id = ?", description, taskId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update description");
         }
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.IterationDao;
+import ar.edu.itba.models.ImmutableIteration;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.persistence.rowmapping.IterationRowMapper;
 
@@ -65,7 +66,12 @@ public class IterationJdbcDao implements IterationDao {
 		
         try {        
 	        int iterationId = jdbcInsert.executeAndReturnKey(args).intValue();	        
-			return new Iteration(iterationId, nextIterationNumber, beginDate, endDate);
+			return ImmutableIteration.builder()
+					.iterationId(iterationId)
+					.number(nextIterationNumber)
+					.startDate(beginDate)
+					.endDate(endDate)
+					.build();
         } catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create iteration");
         }
@@ -139,10 +145,11 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public void updateNumbersAfterDelete(int number) {
+	public void updateNumbersAfterDelete(int projectId, int number) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ?", number);
+			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ? AND project_id = ?", number, projectId);
 		} catch (DataAccessException exception) {
+			
 	    	throw new IllegalStateException("Database failed to update iterations number");
 	    }
 	}
@@ -152,7 +159,8 @@ public class IterationJdbcDao implements IterationDao {
 		try {
 			return jdbcTemplate.queryForObject("SELECT project_id FROM iteration WHERE iteration_id = ?", Integer.class, iterationId);
 		} catch (DataAccessException exception) {
-			throw new IllegalStateException("Database failed to get iteration parent ID");
+			
+			throw new IllegalStateException(exception.getMessage());
 		}
 	}
 

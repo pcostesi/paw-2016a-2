@@ -15,7 +15,7 @@ public class MainController {
 	@Autowired
 	ProjectService ps;
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, name = "project.list")
 	public ModelAndView getResource() {
 		final ModelAndView mav = new ModelAndView("main/projectList");
 		mav.addObject("projects", ps.getProjects());

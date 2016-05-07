@@ -4,7 +4,7 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Story <small>${story.title}</small>
+    	Story <small>${story.title()}</small>
     </jsp:attribute>
     
     <jsp:attribute name="actions">

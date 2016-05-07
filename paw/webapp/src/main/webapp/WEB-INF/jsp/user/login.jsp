@@ -16,22 +16,25 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
+						
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div>
-                        <label for="j_username"><spring:message code="login.username"/><label>
-						<input type="text" id="j_username" name="j_username" />
-						</div>
                         
-                        <div>
-                        <label for="j_password"><spring:message code="login.password"/><label>
-						<input type="password" id="j_password" name="j_password" />
+                        <div class="form-group input-group">
+		                   	<span class="input-group-addon" for="j_username" id="username-addon"><spring:message code="login.username"/></span>
+							<input class="form-control" type="text" id="j_username" name="j_username" aria-describedby="username-addon"/>
+						</div>
+		                <div class="form-group input-group">
+		                   	<span class="input-group-addon" for="j_password" id="password-addon"><spring:message code="login.password"/></span>
+							<input class="form-control" type="password" id="j_password" name="j_password" aria-describedby="password-addon"/>
 						</div>
 						
-						<div>
-						<label><input name="j_rememberme" id="j_rememberme" type="checkbox" 
-						data-on="<spring:message code='login.remember_me'/>" 
-						data-off="<spring:message code='login.remember_me_not'/>" 
-						data-toggle="toggle" /> <spring:message code="login.remember_me"/></label>
+						<div class="form-group">
+							<input name="j_rememberme" id="j_rememberme" type="checkbox" 
+							data-on="<spring:message code='login.remember_me'/>" 
+							data-off="<spring:message code='login.remember_me_not'/>" 
+							data-toggle="toggle" /> <spring:message code="login.remember_me"/>
+						</div>
+							
 					</fieldset>
 				</div>
 			</div>

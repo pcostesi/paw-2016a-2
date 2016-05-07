@@ -5,24 +5,19 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <c:forEach items="${iterations}" var="iteration">
-	<t:collapsiblePanel panelId="iteration-${iteration.number}">
-		<jsp:attribute name="title">Iteration #${iteration.number}</jsp:attribute>	
+	<t:collapsiblePanel panelId="iteration-${iteration.number()}">
+		<jsp:attribute name="title">Iteration #${iteration.number()}</jsp:attribute>	
 			<jsp:attribute name="actions">
-				<a href="/project/${project.code}/iteration/${iteration.number}" class="btn btn-default btn-xs">
+				<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}" class="btn btn-default btn-xs" >
 					<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
 				</a>
-				<a href="#" class="btn btn-default btn-xs">
-				  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
-				</a>
-				<a href="#" class="btn btn-danger btn-xs">
-				  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-				</a>		  
+				<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}"/>
 			</jsp:attribute>
 			<jsp:body>
 				<div class="row">
 			        <div class="col-sm-12">
-			            <b>Start date</b> ${iteration.beginDate}<br>
-			            <b>End date</b> ${iteration.endDate}<br>
+			            <b>Start date</b> ${iteration.startDate()}<br>
+			            <b>End date</b> ${iteration.endDate()}<br>
 			        </div>
 			    </div>
 			</jsp:body>

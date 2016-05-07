@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
@@ -22,7 +23,7 @@ import ar.edu.itba.webapp.form.ProjectForm;
 
 @Controller
 @RequestMapping("/project")
-public class ProjectDetailController {
+public class ProjectController {
 
 	@Autowired
 	ProjectService ps;
@@ -44,7 +45,7 @@ public class ProjectDetailController {
 		} else {
 			final Project project = ps.createProject(projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, project.getCode()).build();
+					.arg(0, project.code()).build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -60,16 +61,41 @@ public class ProjectDetailController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{projectCode}", method = RequestMethod.PUT)
-	public ModelAndView modifyResource(@PathVariable String projectCode) {
-		final ModelAndView mav = new ModelAndView("helloworld");
+	@RequestMapping(value = "/{projectCode}/edit", method = RequestMethod.GET)
+	public ModelAndView getModifyResource(@ModelAttribute("projectForm") ProjectForm projectForm, @PathVariable String projectCode) {
+		final ModelAndView mav = new ModelAndView("project/editProject");
+		final Project project = ps.getProjectByCode(projectCode);
+		projectForm.setCode(project.code());
+		projectForm.setName(project.name());
+		projectForm.setDescription(project.description());
+		mav.addObject("project", project);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/{projectCode}/edit", method = RequestMethod.POST)
+	public ModelAndView modifyResource(@Valid @ModelAttribute("projectForm") ProjectForm projectForm,
+			@PathVariable String projectCode, BindingResult result) {
+		final ModelAndView mav;
+		final Project project = ps.getProjectByCode(projectCode);
+		if (result.hasErrors()) {
+			mav = new ModelAndView("project/editProject");
+			mav.addObject("project", project);
+		} else {
+			ps.setCode(project, projectForm.getCode());
+			ps.setDescription(project, projectForm.getDescription());
+			ps.setName(project, projectForm.getName());
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.list").build();
+			mav = new ModelAndView("redirect:" + resourceUrl);
+		}
 		return mav;
 	}
 
-	@RequestMapping(value = "/{projectCode}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{projectCode}/delete", method = RequestMethod.POST)
 	public ModelAndView deleteResource(@PathVariable String projectCode) {
-		final ModelAndView mav = new ModelAndView("helloworld");
-		return mav;
+		Project project = ps.getProjectByCode(projectCode);
+		ps.deleteProject(project);
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build().replace("/grupo2","");
+		return new ModelAndView("redirect:" + resourceUrl);
 	}
 
 }

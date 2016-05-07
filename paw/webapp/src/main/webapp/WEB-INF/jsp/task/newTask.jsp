@@ -6,17 +6,19 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Add a new task <small>to Project Scrumlr &mdash; iteration #0</small>
+    	Add a new task <small>to Project ${project.name()} (Iteration #${iteration.number()})</small>
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="taskForm" action="/project/scrumlr/iteration/0/story/0/task/new" method="POST">
+		<form:form modelAttribute="taskForm" action="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
 						<bs:input path="title" label="Title" />
 						<bs:input path="description" label="Description" />
 						<bs:select path="status" label="Task Status" />
+						<bs:select path="score" label="Task Score" />
+						<bs:filledSelect path="owner" label="Task Owner" items="${users}"/>
 					</fieldset>
 				</div>
 			</div>

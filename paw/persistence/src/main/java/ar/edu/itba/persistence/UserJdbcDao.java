@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.models.ImmutableUser;
 import ar.edu.itba.models.User;
 import ar.edu.itba.persistence.rowmapping.UserRowMapper;
 
@@ -40,7 +42,11 @@ public class UserJdbcDao implements UserDao {
             
             try {
 	            jdbcInsert.execute(args);            
-	            return new User(username, password, mail);
+	            return ImmutableUser.builder()
+	            		.username(username)
+	            		.password(password)
+	            		.mail(mail)
+	            		.build();
             } catch (DataAccessException exception) {
             	throw new IllegalStateException("Database failed to create user");
             }
@@ -77,6 +83,20 @@ public class UserJdbcDao implements UserDao {
 				return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM account WHERE mail = ?", Integer.class, mail) > 0;
 			} catch (DataAccessException exception) {
 	        	throw new IllegalStateException("Database failed to verify e-mail adress is free");
+	        }
+		}
+
+		@Override
+		public List<String> getAllUsernames() {
+			try {
+				List<User> users = jdbcTemplate.query("SELECT * FROM account", userRowMapper);
+				List<String> usernames = new LinkedList<String>();
+				for (User user: users) {
+					usernames.add(user.username());
+				}
+				return usernames;
+			} catch (DataAccessException exception) {
+	        	throw new IllegalStateException("Database failed to get users");
 	        }
 		}
 		

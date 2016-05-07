@@ -1,5 +1,5 @@
 requirejs.config({
-    baseUrl: '/scripts',
+    baseUrl: '/grupo2/scripts',
 
     paths: {
 		'css': 'https://cdnjs.cloudflare.com/ajax/libs/require-css/0.1.8/css.min',
@@ -25,7 +25,12 @@ requirejs.config({
     		exports: 'swal'
     	},
     	'bootstrap-toggle': ['bs', 'css!bootstrap-toggle-css']
-    }
+    },
+	
+	packages: [
+		{ name: 'app', location: '' },
+		{ name: 'ui', location: '../styles' }
+	]
 });
 
 // Start the main app logic.
