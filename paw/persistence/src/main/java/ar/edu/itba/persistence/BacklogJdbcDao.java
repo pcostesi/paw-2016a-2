@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BacklogDao;
 import ar.edu.itba.models.BacklogItem;
+import ar.edu.itba.models.ImmutableBacklogItem;
 import ar.edu.itba.persistence.rowmapping.BacklogRowMapper;
 
+@Repository
 public class BacklogJdbcDao implements BacklogDao {
 
 	private JdbcTemplate jdbcTemplate;
@@ -37,7 +40,11 @@ public class BacklogJdbcDao implements BacklogDao {
 
 		try {
 			int itemId = jdbcInsert.executeAndReturnKey(args).intValue();
-			return new BacklogItem(name, description, itemId);
+			return ImmutableBacklogItem.builder()
+					.name(name)
+					.description(description)
+					.backlogItemID(itemId)
+					.build();
 		} catch (DataAccessException exception) {
 			throw new IllegalStateException("Database failed to create story");
 		}

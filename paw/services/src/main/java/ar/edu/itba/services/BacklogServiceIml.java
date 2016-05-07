@@ -41,14 +41,14 @@ public class BacklogServiceIml implements BacklogService {
 		if (name.length() > 100 || description.length() > 100) {
 			throw new IllegalArgumentException("Name nor description can be more than 100 characters long");
 		}
-		if (backlogDao.backlogItemExists(name, description, project.getProjectId())) {
+		if (backlogDao.backlogItemExists(name, description, project.projectId())) {
 			throw new IllegalStateException("Backlog Item already exist");
 		}
-		if (!projectDao.projectCodeExists(project.getCode())) {
+		if (!projectDao.projectCodeExists(project.code())) {
 			throw new IllegalStateException("Project does not exist");
 		}
 
-		return backlogDao.createBacklogItem(name, description, project.getProjectId());
+		return backlogDao.createBacklogItem(name, description, project.projectId());
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class BacklogServiceIml implements BacklogService {
 		if (backlogItem == null) {
 			throw new IllegalArgumentException("Item can't be null");
 		}
-		if (!backlogDao.backlogItemExists(backlogItem.getBacklogItemID())) {
+		if (!backlogDao.backlogItemExists(backlogItem.backlogItemID())) {
 			return;
 		}
 
-		backlogDao.deleteItem(backlogItem.getBacklogItemID());
+		backlogDao.deleteItem(backlogItem.backlogItemID());
 	}
 
 	@Override
@@ -69,11 +69,11 @@ public class BacklogServiceIml implements BacklogService {
 			throw new IllegalArgumentException("Project can't be null");
 		}
 
-		if (!projectDao.projectCodeExists(project.getCode())) {
+		if (!projectDao.projectCodeExists(project.code())) {
 			throw new IllegalStateException("Project does not exist");
 		}
 
-		return backlogDao.getBacklogForProject(project.getProjectId());
+		return backlogDao.getBacklogForProject(project.projectId());
 	}
 
 	@Override
@@ -84,13 +84,13 @@ public class BacklogServiceIml implements BacklogService {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
-		if (!projectDao.projectCodeExists(project.getCode())) {
+		if (!projectDao.projectCodeExists(project.code())) {
 			throw new IllegalStateException("Project does not exist");
 		}
-		if (!backlogDao.backlogItemExists(item.getBacklogItemID())) {
+		if (!backlogDao.backlogItemExists(item.backlogItemID())) {
 			throw new IllegalStateException("Item does not exist in this project");
 		}
-		if (backlogDao.backlogItemExists(name, item.getDescription(), project.getProjectId())) {
+		if (backlogDao.backlogItemExists(name, item.description(), project.projectId())) {
 			throw new IllegalStateException("Item already exists in this project");
 		}
 		if (name == null ) {
@@ -99,7 +99,7 @@ public class BacklogServiceIml implements BacklogService {
 		if (name.length() > 100) {
 			throw new IllegalArgumentException("Name can't be more than 100 characters long");
 		}
-		return backlogDao.createBacklogItem(name, item.getDescription(), project.getProjectId());
+		return backlogDao.createBacklogItem(name, item.description(), project.projectId());
 	}
 
 	@Override
@@ -110,13 +110,13 @@ public class BacklogServiceIml implements BacklogService {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
-		if (!projectDao.projectCodeExists(project.getCode())) {
+		if (!projectDao.projectCodeExists(project.code())) {
 			throw new IllegalStateException("Project does not exist");
 		}
-		if (!backlogDao.backlogItemExists(item.getBacklogItemID())) {
+		if (!backlogDao.backlogItemExists(item.backlogItemID())) {
 			throw new IllegalStateException("Item does not exist in this project");
 		}
-		if (backlogDao.backlogItemExists(item.getName(), description, project.getProjectId())) {
+		if (backlogDao.backlogItemExists(item.name(), description, project.projectId())) {
 			throw new IllegalStateException("Item already exists in this project");
 		}
 		if (description == null ) {
@@ -125,7 +125,7 @@ public class BacklogServiceIml implements BacklogService {
 		if (description.length() > 100) {
 			throw new IllegalArgumentException("Description can't be more than 100 characters long");
 		}
-		return backlogDao.createBacklogItem(item.getName(), description, project.getProjectId());
+		return backlogDao.createBacklogItem(item.name(), description, project.projectId());
 	}
 	
 
@@ -134,17 +134,17 @@ public class BacklogServiceIml implements BacklogService {
 		if(task == null){
 			throw new IllegalArgumentException("Task cannot be null");
 		}
-		if(!taskDao.taskExists(task.getTaskId())){
+		if(!taskDao.taskExists(task.taskId())){
 			throw new IllegalStateException("Task does not exist");
 		}
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
-		if (!projectDao.projectCodeExists(project.getCode())) {
+		if (!projectDao.projectCodeExists(project.code())) {
 			throw new IllegalStateException("Project does not exist");
 		}
-		BacklogItem newItem = createBacklogItem(project, task.getTitle(), task.getDescription());
-		taskDao.deleteTask(task.getTaskId());
+		BacklogItem newItem = createBacklogItem(project, task.title(), task.description());
+		taskDao.deleteTask(task.taskId());
 		return newItem;
 	}
 
@@ -153,17 +153,17 @@ public class BacklogServiceIml implements BacklogService {
 		if(story == null){
 			throw new IllegalArgumentException("Story cannot be null");
 		}
-		if(!storyDao.storyExists(story.getStoryId())){
+		if(!storyDao.storyExists(story.storyId())){
 			throw new IllegalStateException("Story does not exist");
 		}
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
-		if (!projectDao.projectCodeExists(project.getCode())) {
+		if (!projectDao.projectCodeExists(project.code())) {
 			throw new IllegalStateException("Project does not exist");
 		}
-		BacklogItem newItem =createBacklogItem(project, story.getTitle(), story.getTitle()); 
-		storyDao.deleteStory(story.getStoryId());
+		BacklogItem newItem =createBacklogItem(project, story.title(), story.title()); 
+		storyDao.deleteStory(story.storyId());
 		return newItem;
 	}
 
