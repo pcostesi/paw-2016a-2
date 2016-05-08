@@ -122,6 +122,10 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
+		if (iteration.getBeginDate().equals(beginDate)) {
+			return iteration;
+		}
+		
 		iterationDao.updateBeginDate(iteration.getIterationId(), beginDate);
 		iteration.setBeginDate(beginDate);
 			
@@ -140,6 +144,10 @@ public class IterationServiceImpl implements IterationService{
 		
 		if (!iterationDao.iterationExists(iteration.getIterationId())) {
 			throw new IllegalStateException("Iteration doesn't exist");
+		}
+		
+		if (iteration.getEndDate().equals(endDate)) {
+			return iteration;
 		}
 		
 		iterationDao.updateEndDate(iteration.getIterationId(), endDate);

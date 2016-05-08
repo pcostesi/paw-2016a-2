@@ -142,7 +142,7 @@ public class TaskController {
 			final Story story = ss.getById(storyId);
 			final List<String> users = us.getUsernames();
 			users.add(0, "None");
-			mav = new ModelAndView("iteration/editIteration");
+			mav = new ModelAndView("task/editTask");
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
 			mav.addObject("task", task);

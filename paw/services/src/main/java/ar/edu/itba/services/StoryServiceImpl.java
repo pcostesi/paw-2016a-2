@@ -1,7 +1,6 @@
 package ar.edu.itba.services;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -112,6 +111,16 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
+		if (story.getTitle().equals(title)) {
+			return story;
+		}
+		
+		int parentId = storyDao.getParentId(story.getStoryId());
+		
+		if (storyDao.storyExists(parentId, title)) {
+			throw new IllegalStateException("There is another story with this title in this iteration");
+		}
+		
 		storyDao.updateName(story.getStoryId(), title);
 		story.setTitle(title);
 			
@@ -144,6 +153,19 @@ public class StoryServiceImpl implements StoryService{
 		int parentId = storyDao.getParentId(story.getStoryId());
 		
 		return iterationDao.getIterationById(parentId);	
+	}
+
+	@Override
+	public boolean storyExists(Iteration iteration, String title) {
+		if (iteration == null) {
+			throw new IllegalArgumentException("Iteration cant' be null");
+		}
+		
+		if (!iterationDao.iterationExists(iteration.getIterationId())) {
+			throw new IllegalStateException("Iteration doesn't exist");
+		}
+		
+		return storyDao.storyExists(iteration.getIterationId(), title);
 	}
 
 }

@@ -35,8 +35,7 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Iterat
             }
         }
         catch (final Exception e) {
-            //ignore
-        }
-        return true;
+        	return true;
+        }        
     }
 }

@@ -112,9 +112,15 @@ public class TaskServiceImpl implements TaskService{
 		}
 		
 		if (user == null) {
+			if (task.getOwner() == null) {
+				return task;
+			}
 			taskDao.updateOwner(task.getTaskId(), null);
 			task.setOwner(null);
 		} else {
+			if (task.getOwner().equals(user)) {
+				return task;
+			}			
 			taskDao.updateOwner(task.getTaskId(), user.username());
 			task.setOwner(user);
 		}
@@ -134,6 +140,10 @@ public class TaskServiceImpl implements TaskService{
 		
 		if (!taskDao.taskExists(task.getTaskId())) {
 			throw new IllegalStateException("Task doesn't exist");
+		}
+		
+		if (task.getStatus().equals(status)) {
+			return task;
 		}
 		
 		taskDao.updateStatus(task.getTaskId(), status.getValue());
@@ -184,6 +194,10 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.getPriority().equals(priority)) {
+			return task;
+		}
+		
 		taskDao.updatePriority(task.getTaskId(), priority.getValue());
 		task.setPriority(priority);
 		
@@ -204,6 +218,10 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.getScore().equals(score)) {
+			return task;
+		}
+		
 		taskDao.updateScore(task.getTaskId(), score.getValue());
 		task.setScore(score);
 		
@@ -211,7 +229,7 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public void changeTitle(Task task, String title) {
+	public Task changeTitle(Task task, String title) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -232,11 +250,24 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.getTitle().equals(title)) {
+			return task;
+		}
+		
+		int parentId = taskDao.getParentId(task.getTaskId());
+		
+		if (taskDao.taskExists(parentId, title)) {
+			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
+		}		
+		
 		taskDao.updateTitle(task.getTaskId(), title);
+		task.setTitle(title);
+		
+		return task;
 	}
 
 	@Override
-	public void changeDescription(Task task, String description) {
+	public Task changeDescription(Task task, String description) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -257,7 +288,31 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.getDescription().equals(description)) {
+			return task;
+		}
+		
 		taskDao.updateDescription(task.getTaskId(), description);
+		task.setDescription(description);
+		
+		return task;
+	}
+
+	@Override
+	public boolean taskNameExists(Story story, String title) {
+		if (story == null) {
+			throw new IllegalStateException("Story can't be null");
+		}
+		
+		if (!storyDao.storyExists(story.getStoryId())) {
+			throw new IllegalStateException("Story doesn't exist");
+		}
+		
+		if (title == null) {
+			throw new IllegalArgumentException("Title can't be null");
+		}
+		
+		return taskDao.taskExists(story.getStoryId(), title);
 	}
 
 }

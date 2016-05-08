@@ -107,6 +107,14 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
+		if (project.getName().equals(name)) {
+			return project;
+		}
+		
+		if (projectDao.projectNameExists(name)) {
+			throw new IllegalStateException("This project name has been used already");
+		}
+		
 		projectDao.updateName(project.getProjectId(), name);
 		project.setName(name);
 		
@@ -133,6 +141,10 @@ public class ProjectServiceImpl implements ProjectService{
 		
 		if (!projectDao.projectExists(project.getProjectId())) {
 			throw new IllegalStateException("Project doesn't exist");
+		}
+		
+		if (project.getDescription().equals(description)) {
+			return project;
 		}
 		
 		projectDao.updateDescription(project.getProjectId(), description);
@@ -165,6 +177,14 @@ public class ProjectServiceImpl implements ProjectService{
 		
 		if (!projectDao.projectExists(project.getProjectId())) {
 			throw new IllegalStateException("Project doesn't exist");
+		}
+		
+		if (project.getCode().equals(code)) {
+			return project;
+		}
+		
+		if (projectDao.projectCodeExists(code)) {
+			throw new IllegalStateException("This project code has been used already");
 		}
 		
 		projectDao.updateCode(project.getProjectId(), code);
@@ -237,5 +257,23 @@ public class ProjectServiceImpl implements ProjectService{
     	}
     	
     }
+
+	@Override
+	public boolean projectCodeExists(String code) {
+		if (code == null) {
+			throw new IllegalArgumentException("Project code can't be null");
+		}
+		
+		return projectDao.projectCodeExists(code);
+	}
+
+	@Override
+	public boolean projectNameExists(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("Project name can't be null");
+		}
+		
+		return projectDao.projectNameExists(name);
+	}
 
 }
