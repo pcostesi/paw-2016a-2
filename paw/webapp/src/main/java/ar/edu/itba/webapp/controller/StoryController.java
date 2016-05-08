@@ -95,9 +95,10 @@ public class StoryController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		if (result.hasErrors()) {
-			mav = new ModelAndView("story/editIteration");
+			mav = new ModelAndView("story/editStory");
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
+			mav.addObject("story", story);
 		} else {
 			ss.setName(story, storyForm.getTitle());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")

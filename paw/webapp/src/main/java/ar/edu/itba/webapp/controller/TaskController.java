@@ -113,7 +113,7 @@ public class TaskController {
 		final Story story = ss.getById(storyId);
 		final Task task = ts.getTaskById(taskId);
 		final Optional<User> owner = task.owner();
-		final String ownerUsername = (owner.isPresent())? "None": owner.get().username();
+		final String ownerUsername = (!owner.isPresent())? "None": owner.get().username();
 		final List<String> users = us.getUsernames();
 		users.add(0, "None");
 		taskForm.setDescription(task.description());
@@ -143,7 +143,7 @@ public class TaskController {
 			final Story story = ss.getById(storyId);
 			final List<String> users = us.getUsernames();
 			users.add(0, "None");
-			mav = new ModelAndView("iteration/editIteration");
+			mav = new ModelAndView("task/editTask");
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
 			mav.addObject("task", task);

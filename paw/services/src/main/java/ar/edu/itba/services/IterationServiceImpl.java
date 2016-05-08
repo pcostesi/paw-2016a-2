@@ -123,9 +123,12 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
+		if (iteration.startDate().equals(beginDate)) {
+			return ImmutableIteration.copyOf(iteration);
+		}
+		
 		iterationDao.updateBeginDate(iteration.iterationId(), beginDate);
-		return ImmutableIteration.copyOf(iteration)
-				.withStartDate(beginDate);
+		return ImmutableIteration.copyOf(iteration).withStartDate(beginDate);
 	}
 
 	@Override
@@ -142,9 +145,12 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
+		if (iteration.endDate().equals(endDate)) {
+			return iteration;
+		}
+
 		iterationDao.updateEndDate(iteration.iterationId(), endDate);
-		return ImmutableIteration.copyOf(iteration)
-				.withEndDate(endDate);
+		return ImmutableIteration.copyOf(iteration).withEndDate(endDate);
 	}
 
 	@Override

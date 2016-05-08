@@ -73,8 +73,8 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/{projectCode}/edit", method = RequestMethod.POST)
-	public ModelAndView modifyResource(@Valid @ModelAttribute("projectForm") ProjectForm projectForm,
-			@PathVariable String projectCode, BindingResult result) {
+	public ModelAndView modifyResource(@Valid @ModelAttribute("projectForm") ProjectForm projectForm, BindingResult result,
+			@PathVariable String projectCode) {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {

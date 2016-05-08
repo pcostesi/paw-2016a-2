@@ -61,6 +61,7 @@ public class StoryJdbcDao implements StoryDao{
 			return ImmutableStory.builder()
 					.storyId(storyId)
 					.title(title)
+					.iteration(iterationId)
 					.build();
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create story");

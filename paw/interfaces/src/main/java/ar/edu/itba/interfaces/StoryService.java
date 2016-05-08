@@ -20,5 +20,7 @@ public interface StoryService {
 	public Map<Story, List<Task>> getStoriesWithTasksForIteration(final Iteration iteration);
 	
 	public Iteration getParent(final Story story);
+
+	public boolean storyExists(final Iteration iteration, final String title);
 	
 }

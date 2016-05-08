@@ -115,8 +115,8 @@ public class TaskServiceImpl implements TaskService{
 		}
 		
 		taskDao.updateOwner(task.taskId(), user != null ? user.username() : null);
-		return ImmutableTask.copyOf(task)
-				.withOwner(Optional.ofNullable(user));
+		return ImmutableTask.copyOf(task).withOwner(Optional.ofNullable(user));
+		
 	}
 
 	@Override
@@ -133,9 +133,13 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.status().equals(status)) {
+			return ImmutableTask.copyOf(task);
+		}
+		
 		taskDao.updateStatus(task.taskId(), status.getValue());
-		return ImmutableTask.copyOf(task)
-				.withStatus(status);
+		return ImmutableTask.copyOf(task).withStatus(status);
+
 	}
 
 	@Override
@@ -180,8 +184,13 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.priority().equals(priority)) {
+			return ImmutableTask.copyOf(task);
+		}
+		
 		taskDao.updatePriority(task.taskId(), priority.getValue());
 		return ImmutableTask.copyOf(task).withPriority(priority);
+		
 	}
 
 	@Override
@@ -198,13 +207,16 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.score().equals(score)) {
+			return ImmutableTask.copyOf(task);
+		}
+		
 		taskDao.updateScore(task.taskId(), score.getValue());
-		return ImmutableTask.copyOf(task)
-				.withScore(score);
+		return ImmutableTask.copyOf(task).withScore(score);
 	}
 
 	@Override
-	public void changeTitle(Task task, String title) {
+	public Task changeTitle(Task task, String title) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -225,11 +237,23 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.title().equals(title)) {
+			return ImmutableTask.copyOf(task);
+		}
+		
+		int parentId = taskDao.getParentId(task.taskId());
+		
+		if (taskDao.taskExists(parentId, title)) {
+			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
+		}		
+		
 		taskDao.updateTitle(task.taskId(), title);
+		
+		return ImmutableTask.copyOf(task).withTitle(title);
 	}
 
 	@Override
-	public void changeDescription(Task task, String description) {
+	public Task changeDescription(Task task, String description) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -250,7 +274,30 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		if (task.description().equals(description)) {
+			return ImmutableTask.copyOf(task);
+		}
+		
 		taskDao.updateDescription(task.taskId(), description);
+		
+		return ImmutableTask.copyOf(task).withDescription(description);
+	}
+
+	@Override
+	public boolean taskNameExists(Story story, String title) {
+		if (story == null) {
+			throw new IllegalStateException("Story can't be null");
+		}
+		
+		if (!storyDao.storyExists(story.storyId())) {
+			throw new IllegalStateException("Story doesn't exist");
+		}
+		
+		if (title == null) {
+			throw new IllegalArgumentException("Title can't be null");
+		}
+		
+		return taskDao.taskExists(story.storyId(), title);
 	}
 
 }
