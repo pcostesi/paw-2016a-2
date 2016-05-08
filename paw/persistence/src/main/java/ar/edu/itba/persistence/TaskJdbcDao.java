@@ -3,6 +3,7 @@ package ar.edu.itba.persistence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -42,11 +43,7 @@ public class TaskJdbcDao implements TaskDao{
 		args.put("story_id", storyId);
 		args.put("title", title);
 		args.put("description", description);
-		if (owner == null) {
-			args.put("owner", null);
-		} else {
-			args.put("owner", owner.username());
-		}		
+		args.put("owner", owner == null ? null : owner.username());
 		args.put("status", status.getValue());
 		args.put("score", score.getValue());
 		args.put("priority", TaskPriority.NORMAL.getValue());
@@ -56,9 +53,9 @@ public class TaskJdbcDao implements TaskDao{
 			return ImmutableTask.builder()
 					.taskId(taskId)
 					.title(title)
-					.description(description)
-					.status(TaskStatus.NOT_STARTED)
-					.score(TaskScore.NORMAL)
+					.description(Optional.ofNullable(description))
+					.status(status)
+					.score(score)
 					.priority(TaskPriority.NORMAL)
 					.story(storyId)
 					.build();

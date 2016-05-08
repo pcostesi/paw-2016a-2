@@ -52,15 +52,11 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task title can't be longer than 100 characters");
 		}
 		
-		if (description == null) {
-			throw new IllegalArgumentException("Description can't be null");
+		if (description != null && description.length() == 0) {
+			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
-		if (description.length() == 0) {
-			throw new IllegalArgumentException("Description needs can't be empty");
-		}
-		
-		if (description.length() > 500) {
+		if (description != null && description.length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
 		
@@ -247,8 +243,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
 		}		
 		
-		taskDao.updateTitle(task.taskId(), title);
-		
+		taskDao.updateTitle(task.taskId(), title);		
 		return ImmutableTask.copyOf(task).withTitle(title);
 	}
 
@@ -257,16 +252,12 @@ public class TaskServiceImpl implements TaskService{
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
-		
-		if (description == null) {
-			throw new IllegalArgumentException("Description can't be null");
+			
+		if (description != null && description.length() == 0) {
+			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
-		if (description.length() == 0) {
-			throw new IllegalArgumentException("Description needs can't be empty");
-		}
-		
-		if (description.length() > 500) {
+		if (description != null && description.length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
 		
@@ -278,9 +269,8 @@ public class TaskServiceImpl implements TaskService{
 			return ImmutableTask.copyOf(task);
 		}
 		
-		taskDao.updateDescription(task.taskId(), description);
-		
-		return ImmutableTask.copyOf(task).withDescription(description);
+		taskDao.updateDescription(task.taskId(), description);		
+		return ImmutableTask.copyOf(task).withDescription(Optional.ofNullable(description));
 	}
 
 	@Override

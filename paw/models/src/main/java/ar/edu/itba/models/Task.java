@@ -9,7 +9,7 @@ public abstract class Task{
 	
 	public abstract int taskId();
 	public abstract String title();
-	public abstract String description();
+	public abstract Optional<String> description();
 	public abstract TaskStatus status();
 	public abstract TaskScore score();
 	public abstract TaskPriority priority();
