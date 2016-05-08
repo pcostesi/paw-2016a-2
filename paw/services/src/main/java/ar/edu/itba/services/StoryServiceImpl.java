@@ -11,6 +11,7 @@ import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.interfaces.TaskDao;
+import ar.edu.itba.models.ImmutableStory;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
@@ -45,15 +46,15 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story title can't be longer than 100 characters");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.getIterationId())) {
+		if (!iterationDao.iterationExists(iteration.iterationId())) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		if (storyDao.storyExists(iteration.getIterationId(), title)) {
+		if (storyDao.storyExists(iteration.iterationId(), title)) {
 			throw new IllegalStateException("There is another story with this title in this iteration");
 		}
 		
-		return storyDao.createStory(iteration.getIterationId(), title);
+		return storyDao.createStory(iteration.iterationId(), title);
 	}
 
 	@Override
@@ -77,14 +78,14 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.getIterationId())) {
+		if (!iterationDao.iterationExists(iteration.iterationId())) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
 		Map<Story, List<Task>> result = new HashMap<Story, List<Task>>();
-		List<Story> stories = storyDao.getStoriesForIteration(iteration.getIterationId());
+		List<Story> stories = storyDao.getStoriesForIteration(iteration.iterationId());
 		for (Story story: stories) {
-			result.put(story, taskDao.getTasksForStory(story.getStoryId()));
+			result.put(story, taskDao.getTasksForStory(story.storyId()));
 		}
 		return result;
 	}
@@ -107,24 +108,22 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story title can't be longer than 100 characters");
 		}
 		
-		if (!storyDao.storyExists(story.getStoryId())) {
+		if (!storyDao.storyExists(story.storyId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		if (story.getTitle().equals(title)) {
-			return story;
+		if (story.title().equals(title)) {
+			return ImmutableStory.copyOf(story);
 		}
 		
-		int parentId = storyDao.getParentId(story.getStoryId());
+		int parentId = storyDao.getParentId(story.storyId());
 		
 		if (storyDao.storyExists(parentId, title)) {
 			throw new IllegalStateException("There is another story with this title in this iteration");
 		}
 		
-		storyDao.updateName(story.getStoryId(), title);
-		story.setTitle(title);
-			
-		return story;
+		storyDao.updateName(story.storyId(), title);
+		return ImmutableStory.copyOf(story).withTitle(title);
 	}
 
 	@Override
@@ -133,11 +132,11 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story can't be null");
 		}
 		
-		if (!storyDao.storyExists(story.getStoryId())) {
+		if (!storyDao.storyExists(story.storyId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		storyDao.deleteStory(story.getStoryId());
+		storyDao.deleteStory(story.storyId());
 	}
 	
 	@Override
@@ -146,11 +145,11 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story can't be null");
 		}
 		
-		if (!storyDao.storyExists(story.getStoryId())) {
+		if (!storyDao.storyExists(story.storyId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		int parentId = storyDao.getParentId(story.getStoryId());
+		int parentId = storyDao.getParentId(story.storyId());
 		
 		return iterationDao.getIterationById(parentId);	
 	}
@@ -161,11 +160,11 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Iteration cant' be null");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.getIterationId())) {
+		if (!iterationDao.iterationExists(iteration.iterationId())) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		return storyDao.storyExists(iteration.getIterationId(), title);
+		return storyDao.storyExists(iteration.iterationId(), title);
 	}
 
 }

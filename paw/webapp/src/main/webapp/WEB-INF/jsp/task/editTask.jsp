@@ -10,12 +10,12 @@
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="taskForm" action="${pageContext.request.contextPath}/project/${project.code}/iteration/${iteration.iterationId}/story/${story.storyId}/task/${task.taskId}/edit" method="POST">
+		<form:form modelAttribute="taskForm" action="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/${task.taskId()}/edit" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<form:hidden path="oldTitle" value="${task.title}"/>
-						<form:hidden path="storyId" value="${story.storyId}"/>
+						<form:hidden path="oldTitle" value="${task.title()}"/>
+						<form:hidden path="storyId" value="${story.storyId()}"/>
 						<bs:input path="title" label="Title" />
 						<bs:input path="description" label="Description" />
 						<bs:select path="status" label="Task Status" />

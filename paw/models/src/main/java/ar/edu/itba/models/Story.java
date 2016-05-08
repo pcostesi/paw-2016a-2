@@ -1,34 +1,12 @@
 package ar.edu.itba.models;
 
-public class Story {
+import org.immutables.value.Value;
 
-	private final int storyId;
-	private String title;
-	private Iteration iteration;
+@Value.Immutable
+public abstract class Story {
 
-	public Story(final int storyId, final String title) {
-		this.storyId = storyId;
-		this.title = title;
-	}
+	public abstract int storyId();
+	public abstract String title();
+	public abstract int iteration();
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getStoryId() {
-		return storyId;
-	}
-
-	public Iteration getIteration() {
-		return iteration;
-	}
-
-	public void setIteration(Iteration iteration) {
-		this.iteration = iteration;
-	}
-	
 }
