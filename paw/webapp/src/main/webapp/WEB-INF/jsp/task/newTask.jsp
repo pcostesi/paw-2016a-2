@@ -14,7 +14,7 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<form:hidden path="oldTitle" value="${task.title()}"/>
+						<form:hidden path="oldTitle" value=""/>
 						<form:hidden path="storyId" value="${story.storyId()}"/>
 						<bs:input path="title" label="Title" />
 						<bs:input path="description" label="Description" />

@@ -22,7 +22,7 @@ public @interface StoryNameFree {
 
     Class<? extends Payload>[] payload() default {};
     
-    String title();
+    String markedField();
 
     @Target({TYPE, ANNOTATION_TYPE})
     @Retention(RUNTIME)

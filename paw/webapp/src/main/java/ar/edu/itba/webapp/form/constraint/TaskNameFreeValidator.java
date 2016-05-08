@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.interfaces.TaskService;
 import ar.edu.itba.models.Story;
-import ar.edu.itba.models.Task;
 import ar.edu.itba.webapp.form.TaskForm;
 
 public class TaskNameFreeValidator implements ConstraintValidator<TaskNameFree, TaskForm> {
@@ -19,11 +18,11 @@ public class TaskNameFreeValidator implements ConstraintValidator<TaskNameFree, 
 	@Autowired
 	private TaskService ts;
 	
-	private String titleFieldName;
+	private String markedFieldName;
 	
     @Override
     public void initialize(final TaskNameFree constraintAnnotation) {
-    	titleFieldName = constraintAnnotation.title();
+    	markedFieldName = constraintAnnotation.markedField();
     }
 
     @Override
@@ -34,7 +33,7 @@ public class TaskNameFreeValidator implements ConstraintValidator<TaskNameFree, 
     		}    		
     		final Story story = ss.getById(form.getStoryId());
     		if (ts.taskNameExists(story, form.getTitle())) {
-    			context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(titleFieldName).addConstraintViolation();
+    			context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
     			return false;
     		} else {
     			return true;

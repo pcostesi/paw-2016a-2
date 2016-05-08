@@ -4,7 +4,7 @@ import javax.validation.constraints.Size;
 
 import ar.edu.itba.webapp.form.constraint.StoryNameFree;
 
-@StoryNameFree(title="title")
+@StoryNameFree(markedField="title")
 public class StoryForm {
 	
 	@Size(min=0, max=100)

@@ -7,7 +7,7 @@ import ar.edu.itba.models.TaskScore;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.webapp.form.constraint.TaskNameFree;
 
-@TaskNameFree(title="title")
+@TaskNameFree(markedField="title")
 public class TaskForm {
 	
 	@Size(min=1, max=100)
@@ -22,10 +22,10 @@ public class TaskForm {
 	@NotNull
 	private TaskScore score;
 	
+	@NotNull
 	private String owner;
 	
-	private String oldTitle;
-	
+	private String oldTitle;	
 	private int storyId;	
 	
 	public int getStoryId() {

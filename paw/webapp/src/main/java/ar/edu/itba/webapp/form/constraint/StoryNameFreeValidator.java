@@ -18,11 +18,11 @@ public class StoryNameFreeValidator implements ConstraintValidator<StoryNameFree
 	@Autowired
 	private IterationService is;
 	
-	private String titleFieldName;
+	private String markedFieldName;
 	
     @Override
     public void initialize(final StoryNameFree constraintAnnotation) {
-    	titleFieldName = constraintAnnotation.title();
+    	markedFieldName = constraintAnnotation.markedField();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class StoryNameFreeValidator implements ConstraintValidator<StoryNameFree
     		}
     		final Iteration iteration = is.getIterationById(form.getIterationId());
     		if (ss.storyExists(iteration, form.getTitle())) {
-    			context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(titleFieldName).addConstraintViolation();
+    			context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
     			return false;
     		} else {
     			return true;
