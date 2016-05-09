@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +36,13 @@ public class ProjectJdbcDao implements ProjectDao{
 	@Override
 	public Project createProject(String name, String description, String code) {
 		
-		Date curDate = new Date();
+		LocalDate curDate = LocalDate.now();
 		Map<String, Object> args = new HashMap<String, Object>();
 		
         args.put("name", name);
         args.put("description", description);
         args.put("code", code);
-        args.put("date_start", new java.sql.Date(new Date().getTime()));
+        args.put("date_start", Date.valueOf(curDate));
         
         try {
 	        int projectId = jdbcInsert.executeAndReturnKey(args).intValue();	

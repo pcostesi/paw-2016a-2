@@ -1,6 +1,6 @@
 package ar.edu.itba.services;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class IterationServiceImpl implements IterationService{
 	StoryDao storyDao;
 
 	@Override
-	public Iteration createIteration(Project project, Date beginDate, Date endDate) {
+	public Iteration createIteration(Project project, LocalDate beginDate, LocalDate endDate) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -110,7 +110,7 @@ public class IterationServiceImpl implements IterationService{
 	}
 
 	@Override
-	public Iteration setBeginDate(Iteration iteration, Date beginDate) {
+	public Iteration setBeginDate(Iteration iteration, LocalDate beginDate) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
@@ -132,7 +132,7 @@ public class IterationServiceImpl implements IterationService{
 	}
 
 	@Override
-	public Iteration setEndDate(Iteration iteration, Date endDate) {
+	public Iteration setEndDate(Iteration iteration, LocalDate endDate) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
