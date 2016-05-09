@@ -6,6 +6,21 @@
   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 <display-name>Scrumlr</display-name>
 
+<error-page>
+ <error-code>400</error-code>
+ <location>/400</location>
+</error-page>
+ 
+<error-page>
+ <error-code>404</error-code>
+ <location>/404</location>
+</error-page>
+ 
+<error-page>
+ <error-code>500</error-code>
+ <location>/500</location>
+</error-page>
+
   <context-param>
     <param-name>contextClass</param-name>
     <param-value>
