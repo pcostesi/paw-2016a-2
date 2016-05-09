@@ -9,7 +9,8 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 
 
-@ComponentScan({ "ar.edu.itba.paw.persistence"})
+@ComponentScan({"ar.edu.itba.persistence.TestConfig","ar.edu.itba.persistence" })
+
 @Configuration
 public class TestConfig {
 

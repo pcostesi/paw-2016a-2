@@ -53,8 +53,8 @@ public class TaskJdbcDaoTests {
 		Project testProject = projectDao.createProject(projectName, "Best Project EVAR", "Test");
 		Date beginDate = new Date();
 		Date endDate = new Date();
-		Iteration testIteration = iterDao.createIteration(testProject.getProjectId(), 1, beginDate, endDate);
-		testStory = storyDao.createStory(testIteration.getIterationId(),
+		Iteration testIteration = iterDao.createIteration(testProject.projectId(), 1, beginDate, endDate);
+		testStory = storyDao.createStory(testIteration.iterationId(),
 				"A sad story about extreme unhappyness whilst testing");
 	}
 
