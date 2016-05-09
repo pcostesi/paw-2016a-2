@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@tag description="Page Template" pageEncoding="UTF-8"%>
-<%@attribute name="title" fragment="true" required="true" %>
+<%@attribute name="title" fragment="true" required="false" %>
 <%@attribute name="actions" fragment="true" required="false" %>
 <%@attribute name="user" required="false" type="ar.edu.itba.models.User" %>
 
@@ -27,7 +27,7 @@
 	            <div class="navbar-header">
 	                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-1" aria-expanded="false">
 	                </button>
-	                <a class="navbar-brand" href="/grupo2/">Scrumlr</a>
+	                <a class="navbar-brand" href="${pageContext.request.contextPath}/">Scrumlr</a>
 	            </div>	            
 	            <nav class="collapse navbar-collapse" id="nav-1">
 	                <ul class="nav navbar-nav navbar-right">
@@ -51,6 +51,7 @@
 	    </header>
 	
 	    <div class="container">
+	    	<c:if test="${not empty title}">
 	        <div class="page-header">
 	            <h1><jsp:invoke fragment="title"/>
 		            <div class="pull-right">	            
@@ -58,7 +59,7 @@
 		            </div>
 	            </h1>
 	        </div>
-	        
+	        </c:if>
 	        <jsp:doBody/>
 	    </div>
 	</body>

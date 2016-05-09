@@ -21,5 +21,4 @@ public class MainController extends BaseController {
 		mav.addObject("projects", ps.getProjects());
 		return mav;
 	}
-	
 }
