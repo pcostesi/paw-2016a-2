@@ -27,7 +27,7 @@ import ar.edu.itba.webapp.form.IterationForm;
 
 @Controller
 @RequestMapping("/project/{projectCode}/iteration")
-public class IterationController {
+public class IterationController extends BaseController {
 	
 	@Autowired
 	private ProjectService ps;

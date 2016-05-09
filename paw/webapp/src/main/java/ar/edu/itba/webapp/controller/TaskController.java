@@ -30,7 +30,7 @@ import ar.edu.itba.webapp.form.TaskForm;
 
 @Controller
 @RequestMapping(value = "/project/{projectCode}/iteration/{iterationId}/story/{storyId}/task")
-public class TaskController {
+public class TaskController extends BaseController {
 
 	@Autowired
 	TaskService ts;

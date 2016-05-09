@@ -23,7 +23,7 @@ import ar.edu.itba.webapp.form.ProjectForm;
 
 @Controller
 @RequestMapping("/project")
-public class ProjectController {
+public class ProjectController extends BaseController {
 
 	@Autowired
 	ProjectService ps;

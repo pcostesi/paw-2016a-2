@@ -31,11 +31,18 @@
 	            </div>	            
 	            <nav class="collapse navbar-collapse" id="nav-1">
 	                <ul class="nav navbar-nav navbar-right">
+	                	<c:if test="${not empty user}">
 			     		<li>
-			     			<a href="#">
-			     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout
+			     			<a href="${pageContext.request.contextPath}/me">
+			     				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${user.username()}
 			     			</a>
-			     		</li>		     		
+			     		</li>	
+			     		<li>
+			     			<a href="${pageContext.request.contextPath}/logout">
+			     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> logout
+			     			</a>
+			     		</li>	
+			     		</c:if>
 			        </ul>				
 	            </nav>
 	            <!-- /.navbar-collapse -->
