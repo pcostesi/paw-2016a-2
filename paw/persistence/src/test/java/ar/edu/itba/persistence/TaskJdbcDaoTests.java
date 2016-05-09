@@ -10,16 +10,12 @@ import javax.sql.DataSource;
 import org.hsqldb.jdbc.JDBCDriver;
 import org.junit.Before;
 import org.junit.Test;
-<<<<<<< HEAD
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-=======
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
->>>>>>> 87d79ee840b4044d5f6238267ce433d1ac6baa11
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.ProjectDao;
@@ -38,7 +34,7 @@ import ar.edu.itba.models.Task;
 
 public class TaskJdbcDaoTests {
 
-	private TaskDao dao;
+	private TaskDao taskDao;
 	private StoryDao storyDao;
 	private IterationDao iterDao;
 	private ProjectDao projectDao;
@@ -52,11 +48,11 @@ public class TaskJdbcDaoTests {
 	@Before
 	public void setUp() throws Exception {
 
-		userDao = new UserJdbcDao(ds);
-		projectDao = new ProjectJdbcDao(ds);
-		iterDao = new IterationJdbcDao(ds);
+		taskDao = new TaskJdbcDao(ds);
 		storyDao = new StoryJdbcDao(ds);
-		dao = new TaskJdbcDao(ds);
+		iterDao = new IterationJdbcDao(ds);
+		projectDao = new ProjectJdbcDao(ds);
+		userDao = new UserJdbcDao(ds);
 		Project testProject = projectDao.createProject(projectName, "Best Project EVAR", "Test");
 		Date beginDate = new Date();
 		Date endDate = new Date();
