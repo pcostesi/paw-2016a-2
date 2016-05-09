@@ -12,7 +12,7 @@ define(['swal', 'jquery'], function(swal, $) {
     return function(selector) {
         selector = selector || '[data-think="twice"]';
         
-        $(selector).on('submit', function thinkTwice(event) {
+        $(selector).closest('form').on('submit', function thinkTwice(event) {
             event.stopPropagation();
             event.stopImmediatePropagation();
             event.preventDefault();
