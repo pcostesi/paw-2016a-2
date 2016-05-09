@@ -21,4 +21,9 @@ public interface ProjectService {
 	public List<Project> getProjects();
 
 	public Project getProjectByCode(String code);
+
+	public boolean projectCodeExists(final String code);
+
+	public boolean projectNameExists(final String name);
+	
 }
