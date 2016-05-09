@@ -53,7 +53,7 @@ public class IterationController extends BaseController {
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
 			mav = new ModelAndView("iteration/newIteration");
-			mav.addObject(project);
+			mav.addObject("project", project);
 		} else {			
 			is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
