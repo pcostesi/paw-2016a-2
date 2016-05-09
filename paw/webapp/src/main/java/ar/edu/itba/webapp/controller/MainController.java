@@ -10,7 +10,7 @@ import ar.edu.itba.interfaces.ProjectService;
 
 @Controller
 @RequestMapping("/")
-public class MainController {
+public class MainController extends BaseController {
 	
 	@Autowired
 	ProjectService ps;

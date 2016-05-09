@@ -24,7 +24,7 @@ import ar.edu.itba.webapp.form.StoryForm;
 
 @Controller
 @RequestMapping("/project/{projectCode}/iteration/{iterationId}/story")
-public class StoryController {
+public class StoryController extends BaseController {
 	
 	@Autowired
 	TaskService ts;

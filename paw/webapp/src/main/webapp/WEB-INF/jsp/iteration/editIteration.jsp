@@ -14,8 +14,8 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<bs:input path="beginDate" label="Begin date" />
-						<bs:input path="endDate" label="End date" />
+						<bs:input path="beginDate" label="Begin date" dateClass="dateInput"/>
+						<bs:input path="endDate" label="End date" dateClass="dateInput"/>
 					</fieldset>
 				</div>
 			</div>

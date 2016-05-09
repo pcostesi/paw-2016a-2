@@ -2,11 +2,11 @@ package ar.edu.itba.models;
 
 public enum TaskScore {
 
-	VERY_EASY(0, "Very easy"), 
-	EASY(1, "Easy"), 
-	NORMAL(2, "Normal"), 
-	HARD(4, "Hard"),
-	EPIC(8, "Epic");
+	VERY_EASY(0, "0 points"), 
+	EASY(1, "1 points"), 
+	NORMAL(2, "2 points"), 
+	HARD(4, "4 points"),
+	EPIC(8, "8 points");
 	
 	private final int value;
 	private final String label;
