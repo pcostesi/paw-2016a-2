@@ -1,37 +1,37 @@
 package ar.edu.itba.webapp.form;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import ar.edu.itba.webapp.form.constraint.*;
+import ar.edu.itba.webapp.form.constraint.DateRange;
 
 @DateRange(first="beginDate", second="endDate")
 public class IterationForm {
 	
 	@NotNull
 	@DateTimeFormat(pattern = "dd/MM/yyyy")	
-	private Date beginDate;
+	private LocalDate beginDate;
 	
 	@NotNull
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date endDate;
+	private LocalDate endDate;
 
-	public Date getBeginDate() {
+	public LocalDate getBeginDate() {
 		return beginDate;
 	}
 
-	public void setBeginDate(Date beginDate) {
+	public void setBeginDate(LocalDate beginDate) {
 		this.beginDate = beginDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

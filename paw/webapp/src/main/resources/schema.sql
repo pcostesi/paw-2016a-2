@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS account (
 
 CREATE TABLE IF NOT EXISTS backlog (
 	item_id SERIAL PRIMARY KEY,
-	name varchar(100) NOT NULL,
-	description varchar(100) NOT NULL,
 	project_id INTEGER NOT NULL,
+	title varchar(100) NOT NULL,
+	description varchar(500),	
 	FOREIGN KEY ( project_id ) REFERENCES project ( project_id ) ON DELETE CASCADE,
-	UNIQUE ( name, description, project_id )
+	UNIQUE ( project_id, title )
 );

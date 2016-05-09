@@ -14,9 +14,9 @@ public class BacklogRowMapper implements RowMapper<BacklogItem>{
 	public BacklogItem mapRow(final ResultSet rs, final int rowNum) throws SQLException {
 
         return ImmutableBacklogItem.builder()
-        		.name(rs.getString("name"))
+        		.title(rs.getString("name"))
         		.description(rs.getString("description"))
-        		.backlogItemID(rs.getInt("item_id"))
+        		.backlogItemId(rs.getInt("item_id"))
         		.build();
 }
 }

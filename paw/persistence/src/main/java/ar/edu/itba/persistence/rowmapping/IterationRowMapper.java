@@ -2,7 +2,6 @@ package ar.edu.itba.persistence.rowmapping;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -16,8 +15,8 @@ public class IterationRowMapper implements RowMapper<Iteration> {
             return ImmutableIteration.builder()
             		.iterationId(rs.getInt("iteration_id"))
             		.number(rs.getInt("number"))
-            		.startDate(new Date(rs.getDate("date_start").getTime()))
-            		.endDate(new Date(rs.getDate("date_end").getTime()))
+            		.startDate(rs.getDate("date_start").toLocalDate())
+            		.endDate(rs.getDate("date_end").toLocalDate())
             		.project(rs.getInt("project_id"))
             		.build();
     }
