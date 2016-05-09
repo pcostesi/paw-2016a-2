@@ -30,7 +30,7 @@ import ar.edu.itba.webapp.form.TaskForm;
 
 @Controller
 @RequestMapping(value = "/project/{projectCode}/iteration/{iterationId}/story/{storyId}/task")
-public class TaskController {
+public class TaskController extends BaseController {
 
 	@Autowired
 	TaskService ts;
@@ -85,18 +85,14 @@ public class TaskController {
 			mav.addObject("story", story);			
 			mav.addObject("users",users);
 		} else {
-			final User owner;
-			if (taskForm.getOwner().equals("None")) {
-				owner = null;
-			} else {
-				owner = us.getByUsername(taskForm.getOwner());
-			}
-			Task task = ts.createTask(story, taskForm.getTitle(), taskForm.getDescription(), taskForm.getStatus(), owner, taskForm.getScore());
+			final User owner = taskForm.getOwner().equals("None")? null : us.getByUsername(taskForm.getOwner());
+			final String description = taskForm.getDescription().length() == 0 ? null: taskForm.getDescription();
+			ts.createTask(story, taskForm.getTitle(), description, taskForm.getStatus(), owner, taskForm.getScore());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
 					.build();
-			mav = new ModelAndView("redirect:" + resourceUrl + "?task=" + task.taskId());
+			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
 	}
@@ -113,10 +109,10 @@ public class TaskController {
 		final Story story = ss.getById(storyId);
 		final Task task = ts.getTaskById(taskId);
 		final Optional<User> owner = task.owner();
-		final String ownerUsername = (owner.isPresent())? "None": owner.get().username();
+		final String ownerUsername = (!owner.isPresent())? "None": owner.get().username();
 		final List<String> users = us.getUsernames();
 		users.add(0, "None");
-		taskForm.setDescription(task.description());
+		taskForm.setDescription(task.description().isPresent()? task.description().get() : null);
 		taskForm.setOwner(ownerUsername);
 		taskForm.setScore(task.score());
 		taskForm.setStatus(task.status());
@@ -143,7 +139,7 @@ public class TaskController {
 			final Story story = ss.getById(storyId);
 			final List<String> users = us.getUsernames();
 			users.add(0, "None");
-			mav = new ModelAndView("iteration/editIteration");
+			mav = new ModelAndView("task/editTask");
 			mav.addObject("project", project);
 			mav.addObject("iteration", iteration);
 			mav.addObject("task", task);
@@ -156,11 +152,13 @@ public class TaskController {
 			} else {
 				owner = us.getByUsername(taskForm.getOwner());
 			}
+			final String description = taskForm.getDescription().length() == 0 ? null: taskForm.getDescription();
+			
 			ts.changeOwnership(task, owner);
 			ts.changeStatus(task, taskForm.getStatus());
 			ts.changeScore(task, taskForm.getScore());
 			ts.changeTitle(task, taskForm.getTitle());
-			ts.changeDescription(task, taskForm.getDescription());
+			ts.changeDescription(task, description);
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)

@@ -6,13 +6,19 @@ import ar.edu.itba.models.BacklogItem;
 
 public interface BacklogDao {
 
-	BacklogItem createBacklogItem(String name, String description, int projectId);
+	public BacklogItem createBacklogItem(final String title, final String description, final int projectId);
 
-	boolean backlogItemExists(String name, String description, int projectId);
+	public boolean backlogItemExists(final String title, int projectId);
 
-	boolean backlogItemExists(int itemId);
+	public boolean backlogItemExists(final int itemId);
 	
-	void deleteItem(int itemId);
+	public void deleteItem(final int itemId);
 	
-	List<BacklogItem> getBacklogForProject(int projectId);
+	public void updateTitle(final int itemId, final String title);
+	
+	public void updateDescription(final int itemId, final String description);
+	
+	public List<BacklogItem> getBacklogForProject(final int projectId);
+
+	public int getParent(final int backlogItemId);
 }

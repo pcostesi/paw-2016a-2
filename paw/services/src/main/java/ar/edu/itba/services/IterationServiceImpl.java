@@ -1,6 +1,6 @@
 package ar.edu.itba.services;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class IterationServiceImpl implements IterationService{
 	StoryDao storyDao;
 
 	@Override
-	public Iteration createIteration(Project project, Date beginDate, Date endDate) {
+	public Iteration createIteration(Project project, LocalDate beginDate, LocalDate endDate) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -110,7 +110,7 @@ public class IterationServiceImpl implements IterationService{
 	}
 
 	@Override
-	public Iteration setBeginDate(Iteration iteration, Date beginDate) {
+	public Iteration setBeginDate(Iteration iteration, LocalDate beginDate) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
@@ -123,13 +123,16 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
+		if (iteration.startDate().equals(beginDate)) {
+			return ImmutableIteration.copyOf(iteration);
+		}
+		
 		iterationDao.updateBeginDate(iteration.iterationId(), beginDate);
-		return ImmutableIteration.copyOf(iteration)
-				.withStartDate(beginDate);
+		return ImmutableIteration.copyOf(iteration).withStartDate(beginDate);
 	}
 
 	@Override
-	public Iteration setEndDate(Iteration iteration, Date endDate) {
+	public Iteration setEndDate(Iteration iteration, LocalDate endDate) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
@@ -142,9 +145,12 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
+		if (iteration.endDate().equals(endDate)) {
+			return iteration;
+		}
+
 		iterationDao.updateEndDate(iteration.iterationId(), endDate);
-		return ImmutableIteration.copyOf(iteration)
-				.withEndDate(endDate);
+		return ImmutableIteration.copyOf(iteration).withEndDate(endDate);
 	}
 
 	@Override

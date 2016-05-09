@@ -108,9 +108,16 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
+		if (project.name().equals(name)) {
+			return ImmutableProject.copyOf(project);
+		}
+		
+		if (projectDao.projectNameExists(name)) {
+			throw new IllegalStateException("This project name has been used already");
+		}
+		
 		projectDao.updateName(project.projectId(), name);
-		return ImmutableProject.copyOf(project)
-				.withName(name);
+		return ImmutableProject.copyOf(project).withName(name);
 	}
 
 	@Override
@@ -135,9 +142,12 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
+		if (project.description().equals(description)) {
+			return ImmutableProject.copyOf(project);
+		}
+		
 		projectDao.updateDescription(project.projectId(), description);
-		return ImmutableProject.copyOf(project)
-				.withDescription(description);
+		return ImmutableProject.copyOf(project).withDescription(description);
 	}
 
 	@Override
@@ -166,9 +176,16 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
+		if (project.code().equals(code)) {
+			return ImmutableProject.copyOf(project);
+		}
+		
+		if (projectDao.projectCodeExists(code)) {
+			throw new IllegalStateException("This project code has been used already");
+		}
+		
 		projectDao.updateCode(project.projectId(), code);
-		return ImmutableProject.copyOf(project)
-				.withCode(code);
+		return ImmutableProject.copyOf(project).withCode(code);
 	}
 
 	@Override
@@ -235,5 +252,23 @@ public class ProjectServiceImpl implements ProjectService{
     	}
     	
     }
+
+	@Override
+	public boolean projectCodeExists(String code) {
+		if (code == null) {
+			throw new IllegalArgumentException("Project code can't be null");
+		}
+		
+		return projectDao.projectCodeExists(code);
+	}
+
+	@Override
+	public boolean projectNameExists(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("Project name can't be null");
+		}
+		
+		return projectDao.projectNameExists(name);
+	}
 
 }

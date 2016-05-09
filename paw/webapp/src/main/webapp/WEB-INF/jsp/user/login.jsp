@@ -5,7 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<t:page>
+<t:page user="${user}">
 	<jsp:attribute name="title">
     	Log in
 	</jsp:attribute>

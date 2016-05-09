@@ -10,7 +10,7 @@ import ar.edu.itba.interfaces.ProjectService;
 
 @Controller
 @RequestMapping("/")
-public class MainController {
+public class MainController extends BaseController {
 	
 	@Autowired
 	ProjectService ps;
@@ -21,5 +21,4 @@ public class MainController {
 		mav.addObject("projects", ps.getProjects());
 		return mav;
 	}
-	
 }

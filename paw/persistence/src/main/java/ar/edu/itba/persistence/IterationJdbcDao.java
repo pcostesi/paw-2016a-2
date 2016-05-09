@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,13 +57,13 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public Iteration createIteration(int projectId, int nextIterationNumber, Date beginDate, Date endDate) {
+	public Iteration createIteration(int projectId, int nextIterationNumber, LocalDate beginDate, LocalDate endDate) {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("project_id", projectId);
         args.put("number", nextIterationNumber);
-        args.put("date_start", new java.sql.Date(beginDate.getTime()));
-        args.put("date_end", new java.sql.Date(endDate.getTime()));
+        args.put("date_start", Date.valueOf(beginDate));
+        args.put("date_end", Date.valueOf(endDate));
 		
         try {        
 	        int iterationId = jdbcInsert.executeAndReturnKey(args).intValue();	        
@@ -71,6 +72,7 @@ public class IterationJdbcDao implements IterationDao {
 					.number(nextIterationNumber)
 					.startDate(beginDate)
 					.endDate(endDate)
+					.project(projectId)
 					.build();
         } catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create iteration");
@@ -118,18 +120,18 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public void updateBeginDate(int iterationId, Date beginDate) {
+	public void updateBeginDate(int iterationId, LocalDate beginDate) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", new java.sql.Date(beginDate.getTime()), iterationId);
+			jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", Date.valueOf(beginDate), iterationId);
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to update begin date");
 	    }
 	}
 
 	@Override
-	public void updateEndDate(int iterationId, Date endDate) {
+	public void updateEndDate(int iterationId, LocalDate endDate) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET date_end = ? WHERE iteration_id = ?", new java.sql.Date(endDate.getTime()), iterationId);
+			jdbcTemplate.update("UPDATE iteration SET date_end = ? WHERE iteration_id = ?", Date.valueOf(endDate), iterationId);
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to update end date");
 	    }

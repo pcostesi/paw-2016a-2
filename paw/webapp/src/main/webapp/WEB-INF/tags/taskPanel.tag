@@ -30,8 +30,15 @@
 				    <c:otherwise>
 				    	<b>Owner</b> Task doesn't have an owner<br>
 				    </c:otherwise>
-				</c:choose>            	
-            	<b>Description</b> ${task.description()}<br>
+				</c:choose>
+				<c:choose>
+				    <c:when test="${task.description().isPresent()}">
+				    	<b>Description</b> ${task.description().get()}<br>
+				    </c:when>    
+				    <c:otherwise>
+				    	<b>Description</b> Task doesn't have a description<br>
+				    </c:otherwise>
+				</c:choose>
             </div>
         </div>
 	</jsp:body>

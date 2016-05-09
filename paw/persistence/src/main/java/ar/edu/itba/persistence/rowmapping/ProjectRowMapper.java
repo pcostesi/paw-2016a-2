@@ -2,7 +2,6 @@ package ar.edu.itba.persistence.rowmapping;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -19,7 +18,7 @@ public class ProjectRowMapper implements RowMapper<Project> {
             		.name(rs.getString("name"))
             		.code(rs.getString("code"))
             		.description(rs.getString("description"))
-            		.startDate(new Date(rs.getDate("date_start").getTime()))
+            		.startDate(rs.getDate("date_start").toLocalDate())
             		.build();
     }
 }

@@ -32,42 +32,39 @@ public class BacklogJdbcDao implements BacklogDao {
 	}
 
 	@Override
-	public BacklogItem createBacklogItem(String name, String description, int projectId) {
+	public BacklogItem createBacklogItem(String title, String description, int projectId) {
 		final Map<String, Object> args = new HashMap<String, Object>();
-		args.put("title", name);
-		args.put("title", description);
-		args.put("iteration_id", projectId);
+		args.put("title", title);
+		args.put("description", description);
+		args.put("project_id", projectId);
 
 		try {
 			int itemId = jdbcInsert.executeAndReturnKey(args).intValue();
 			return ImmutableBacklogItem.builder()
-					.name(name)
+					.title(title)
 					.description(description)
-					.backlogItemID(itemId)
+					.backlogItemId(itemId)
 					.build();
 		} catch (DataAccessException exception) {
-			throw new IllegalStateException("Database failed to create story");
+			throw new IllegalStateException("Database failed to create backlog item");
 		}
 	}
 
 	@Override
 	public boolean backlogItemExists(int itemId) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM backlog WHERE item_id = ?", Integer.class,
-					itemId) == 1;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM backlog WHERE item_id = ?", Integer.class, itemId) == 1;
 		} catch (DataAccessException exception) {
 			throw new IllegalStateException("Database failed to check backlog item exists");
 		}
 	}
 
 	@Override
-	public boolean backlogItemExists(String name, String description, int projectId) {
+	public boolean backlogItemExists(String title, int projectId) {
 		try {
-			return jdbcTemplate.queryForObject(
-					"SELECT COUNT(*) FROM backlog WHERE name = ? AND description = ? AND project_id = ?", Integer.class,
-					name, description, projectId) == 1;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM backlog WHERE title = ? AND project_id = ?", Integer.class, title, projectId) == 1;
 		} catch (DataAccessException exception) {
-			throw new IllegalStateException("Database failed to check story exists");
+			throw new IllegalStateException("Database failed to check there is another backlog item with this title in this project");
 		}
 	}
 
@@ -85,7 +82,34 @@ public class BacklogJdbcDao implements BacklogDao {
 		try {
 			return jdbcTemplate.query("SELECT * FROM backlog WHERE item_id = ?", backlogRowMapper, projectId);
 		} catch (DataAccessException exception) {
-        	throw new IllegalStateException("Database failed to get stories for iteration");
+        	throw new IllegalStateException("Database failed to get backlog items for iteration");
+        }
+	}
+
+	@Override
+	public void updateTitle(int itemId, String title) {
+		try {
+			jdbcTemplate.update("UPDATE backlog SET title = ? WHERE item_id = ?", title, itemId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update backlog item title");
+        }
+	}
+
+	@Override
+	public void updateDescription(int itemId, String description) {
+		try {
+			jdbcTemplate.update("UPDATE backlog SET description = ? WHERE item_id = ?", description, itemId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to update backlog item description");
+        }
+	}
+
+	@Override
+	public int getParent(int backlogItemId) {
+		try {
+			return jdbcTemplate.queryForObject("SELECT project_id FROM backlog WHERE item_id = ?", Integer.class, backlogItemId);
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get task parent ID");
         }
 	}
 

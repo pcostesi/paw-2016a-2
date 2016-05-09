@@ -6,7 +6,7 @@
 <t:staticPanel panelId="${project.code()}-description">
 	<jsp:attribute name="title">Project description</jsp:attribute>
 	<jsp:body>
-		<b>Start date</b> ${project.startDate()}<br>
+		<b>Start date</b> ${project.formattedStartDate()}<br>
 	    <b>Description</b> ${project.description()}
 	</jsp:body>
 </t:staticPanel>

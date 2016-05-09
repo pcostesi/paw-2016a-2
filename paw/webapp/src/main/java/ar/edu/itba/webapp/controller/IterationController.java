@@ -27,7 +27,7 @@ import ar.edu.itba.webapp.form.IterationForm;
 
 @Controller
 @RequestMapping("/project/{projectCode}/iteration")
-public class IterationController {
+public class IterationController extends BaseController {
 	
 	@Autowired
 	private ProjectService ps;
@@ -53,7 +53,7 @@ public class IterationController {
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
 			mav = new ModelAndView("iteration/newIteration");
-			mav.addObject(project);
+			mav.addObject("project", project);
 		} else {			
 			is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")

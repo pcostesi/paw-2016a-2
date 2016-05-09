@@ -40,7 +40,7 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 		return ImmutableTask.builder()
 				.taskId(taskId)
 				.title(title)
-				.description(description)
+				.description(Optional.ofNullable(description))
 				.status(status)
 				.score(score)
 				.priority(priority)

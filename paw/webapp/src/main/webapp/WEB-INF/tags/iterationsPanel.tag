@@ -16,8 +16,8 @@
 			<jsp:body>
 				<div class="row">
 			        <div class="col-sm-12">
-			            <b>Start date</b> ${iteration.startDate()}<br>
-			            <b>End date</b> ${iteration.endDate()}<br>
+			            <b>Start date</b> ${iteration.formattedStartDate()}<br>
+			            <b>End date</b> ${iteration.formattedEndDate()}<br>
 			        </div>
 			    </div>
 			</jsp:body>

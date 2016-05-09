@@ -29,8 +29,10 @@ public interface TaskService {
 	
 	public Story getParent(final Task task);
 
-	public void changeTitle(final Task task, final String title);
+	public Task changeTitle(final Task task, final String title);
 
-	public void changeDescription(final Task task, final String description);
+	public Task changeDescription(final Task task, final String description);
+
+	public boolean taskNameExists(final Story story, final String title);
 
 }

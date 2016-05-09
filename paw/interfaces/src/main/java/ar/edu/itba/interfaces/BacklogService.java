@@ -9,15 +9,15 @@ import ar.edu.itba.models.Task;
 
 public interface BacklogService {
 
-	public BacklogItem createBacklogItem(final Project project, String name, String description);
+	public BacklogItem createBacklogItem(final Project project, String title, String description);
 	
 	public void deleteBacklogItem(final BacklogItem backlogItem);
 	
 	public List<BacklogItem> getBacklogForProject(final Project project);
 		
-	public BacklogItem setBacklogItemName(final BacklogItem item, final String name, final Project project);
+	public BacklogItem setBacklogItemTitle(final BacklogItem item, final String title);
 	
-	public BacklogItem setBacklogItemDescription(final BacklogItem item, final String description, Project project);
+	public BacklogItem setBacklogItemDescription(final BacklogItem item, final String description);
 
 	public BacklogItem createBacklogItemFromTask(final Task task, final Project project);
 
