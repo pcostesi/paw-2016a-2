@@ -10,12 +10,16 @@ import javax.sql.DataSource;
 import org.hsqldb.jdbc.JDBCDriver;
 import org.junit.Before;
 import org.junit.Test;
+<<<<<<< HEAD
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+=======
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+>>>>>>> 87d79ee840b4044d5f6238267ce433d1ac6baa11
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.ProjectDao;
@@ -27,9 +31,11 @@ import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 
+
 @Sql("classpath:schema.sql")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+
 public class TaskJdbcDaoTests {
 
 	private TaskDao dao;
@@ -39,6 +45,7 @@ public class TaskJdbcDaoTests {
 	private UserDao userDao;
 	private String projectName = "TesterProject";
 	private Story testStory;
+	
 	@Autowired
 	DataSource ds;
 
@@ -62,6 +69,7 @@ public class TaskJdbcDaoTests {
 	public void CreateTaskWithCorrectParametersTest() {
 	//	Task newTask = dao.createTask(testStory.getStoryId(), "Test Task", "The tester's life is a tough one");
 	//	assertNotNull(newTask);
+
 	}
 
 	

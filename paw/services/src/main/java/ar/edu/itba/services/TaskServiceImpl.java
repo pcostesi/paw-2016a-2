@@ -23,6 +23,10 @@ public class TaskServiceImpl implements TaskService{
 	@Autowired
 	private TaskDao taskDao;
 	
+	@Autowired TaskServiceImpl(TaskDao taskDao, StoryDao storyDao){
+		this.taskDao = taskDao;
+		this.storyDao = storyDao;
+	}
 	@Autowired
 	private StoryDao storyDao;
 
