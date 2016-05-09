@@ -16,16 +16,12 @@
 		</a>
 		<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}"/>
 	</jsp:attribute>
+	
+	<jsp:attribute name="list">
+		<c:forEach items="${tasks}" var="task">		
+			<li class="list-group-item"><t:taskPanel panelParent="#story-group-${story.storyId()}" project="${project}" iteration="${iteration}" story="${story}" task="${task}"/></li>
+		</c:forEach>
+	</jsp:attribute>	
 
-	<jsp:body>		
-			<div class="row">		
-	            <div class="col-sm-12">
-	            	<div class="panel-group" id="story-group-${story.storyId()}" role="tablist" aria-multiselectable="true">	
-	            		<c:forEach items="${tasks}" var="task">		
-							<t:taskPanel panelParent="#story-group-${story.storyId()}" project="${project}" iteration="${iteration}" story="${story}" task="${task}"/>	
-						</c:forEach>		
-					</div>
-	            </div>
-	        </div>        
-	</jsp:body>
+	<jsp:body></jsp:body>
 </t:collapsiblePanel>

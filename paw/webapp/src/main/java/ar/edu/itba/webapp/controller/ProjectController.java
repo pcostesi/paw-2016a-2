@@ -15,8 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import ar.edu.itba.interfaces.BacklogService;
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.webapp.form.ProjectForm;
@@ -26,11 +28,14 @@ import ar.edu.itba.webapp.form.ProjectForm;
 public class ProjectController extends BaseController {
 
 	@Autowired
-	ProjectService ps;
+	private ProjectService ps;
 
 	@Autowired
-	IterationService is;
+	private IterationService is;
 
+	@Autowired
+	private BacklogService bs;
+	
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public ModelAndView getNewResource(@ModelAttribute("projectForm") ProjectForm projectForm) {
 		final ModelAndView mav = new ModelAndView("project/newProject");
@@ -56,8 +61,10 @@ public class ProjectController extends BaseController {
 		final ModelAndView mav = new ModelAndView("project/iterationList");
 		final Project project = ps.getProjectByCode(projectCode);
 		final List<Iteration> iterations = is.getIterationsForProject(project);
+		final List<BacklogItem> backlog = bs.getBacklogForProject(project);
 		mav.addObject("iterations", iterations);
 		mav.addObject("project", project);
+		mav.addObject("backlog", backlog);
 		return mav;
 	}
 
