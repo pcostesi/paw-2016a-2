@@ -181,20 +181,6 @@ public class IterationServiceImplTest {
 	public void getIterationsForProject() {
 		assertNotNull("List should not be null", is.getIterationsForProject(project));
 	}
-	/*Destroys DB, intensive tester WINS!
-	@Test
-	public void theIntensiveTester(){
-		int i;
-		for (i = 0 ; i < 100; i++){
-			is.createIteration(project, LocalDate.now(), LocalDate.now().plusDays(15));
-		}
-		List<Iteration> list = is.getIterationsForProject(project);
-		System.out.println(list.size());
-		if(!list.isEmpty()){		
-			list.forEach((iteration) -> {System.out.println(iteration.iterationId()); is.deleteIteration(iteration); System.out.println("Borre 1");});
-		}
-		System.out.println("Borre 100");
-	}*/
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void getIterationsForProjectWithNullProject() {
