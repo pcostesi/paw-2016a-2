@@ -19,7 +19,7 @@
             <div class="col-sm-12">
 				<c:choose>
 				    <c:when test="${items.isEmpty()}">
-				    	This backlog doesn't have any item so far
+				    	This backlog doesn't have any items so far
 				    </c:when>    
 				    <c:otherwise>
 				    	<c:forEach items="${items}" var="backlogItem">

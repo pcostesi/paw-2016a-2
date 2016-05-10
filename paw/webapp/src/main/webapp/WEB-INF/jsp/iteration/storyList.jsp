@@ -21,10 +21,8 @@
 		<div class="col-sm-8">
 	     	<c:choose>
 			    <c:when test="${stories.isEmpty()}">
-			    	<div class="panel panel-default">
-			    		<div class="panel-heading">
-							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This iteration doesn't have any story so far
-						</div>
+			    	<div class="alert alert-info" role="alert">
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This iteration doesn't have any story so far
 					</div>
 			    </c:when>    
 			    <c:otherwise>

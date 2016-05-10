@@ -6,10 +6,8 @@
 
 <c:choose>
 	<c:when test="${iterations.isEmpty()}">
-		<div class="panel panel-default">
-    		<div class="panel-heading">
-				<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This project doesn't have any iteration so far
-			</div>
+		<div class="alert alert-info" role="alert">
+			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This project doesn't have any iteration so far
 		</div>
 	</c:when>    
 	<c:otherwise>
@@ -20,7 +18,7 @@
 							<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}" class="btn btn-default btn-xs" >
 								<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
 							</a>
-							<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}"/>
+							<t:dropdownEditDelete url="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}"/>
 						</jsp:attribute>
 						<jsp:body>
 							<div class="row">
