@@ -6,16 +6,25 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 
+@Sql("classpath:schema.sql")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class IterationServiceImplTest {
 
 	@Autowired
@@ -25,22 +34,36 @@ public class IterationServiceImplTest {
 	ProjectService ps;
 
 	private Project project;
-	private String projectName = "IterationTest";
+	private String pName = "IterationTest";
+	private String pDesc = "Project for testing Iteration service";
+	private String pCode = "ITP";
 	private LocalDate beginDate;
 	private LocalDate endDate;
 	private Iteration iter;
 
 	@Before
 	public void setup() {
-		project = ps.createProject(projectName, "Project for testing Iteration service", "ITP");
+		project = ps.createProject(pName, pDesc, pCode);
 		endDate = LocalDate.now();
 		beginDate = endDate.minusDays(15);
 		iter = is.createIteration(project, beginDate, endDate);
 	}
+	
+	@After
+	public void endingSetup(){
+		if(ps.projectCodeExists(pCode)){
+			List<Iteration> list = is.getIterationsForProject(project);
+			if(!list.isEmpty()){
+				
+				list.forEach(iteration -> is.deleteIteration(iteration));
+			}
+			ps.deleteProject(ps.getProjectByCode(pCode));
+		}
+		
+	}
 
 	@Test
 	public void createIteration() {
-		iter = is.createIteration(project, beginDate, endDate);
 		assertNotNull("Iteration should not be null", iter);
 	}
 
@@ -52,121 +75,127 @@ public class IterationServiceImplTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void createIterationWithNonExistingProject() {
-		Project errasable = ps.createProject("Turu", "Tu", "tu");
-		ps.deleteProject(errasable);
-		is.createIteration(errasable, beginDate, endDate);
-		fail("Exception not thrown when project didn't exist");
+		ps.deleteProject(project);
+		is.createIteration(project, beginDate, endDate);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void createIterationWithNullBeginDate() {
 		is.createIteration(project, null, endDate);
 		fail("Exception not thrown when Date was null");
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void createIterationWithNullEndDate() {
 		is.createIteration(project, beginDate, null);
 		fail("Exception not thrown when Date was null");
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void createIterationWitWrongDate() {
 		is.createIteration(project, endDate.plusDays(5), endDate);
 		fail("Exception not thrown when end date was before begin date");
-	}
-
+	}	
+	
 	@Test(expected = IllegalStateException.class)
-	public void deleteIteration() {
-		Iteration newIter = is.createIteration(project, beginDate.plusDays(20), endDate.plusDays(20));
-		int iterId = newIter.iterationId();
-		is.deleteIteration(newIter);
+	public void deleteIteration() {	
+		int iterId = iter.iterationId();
+		is.deleteIteration(iter);
 		is.getIterationById(iterId);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteNullIteration() {
 		is.deleteIteration(null);
 	}
-
+	
 	@Test(expected = IllegalStateException.class)
 	public void deleteIterationThatDoesNotExist() {
-		Iteration newIter = is.createIteration(project, beginDate.plusDays(20), endDate.plusDays(20));
-		is.deleteIteration(newIter);
-		is.deleteIteration(newIter);
+		is.deleteIteration(iter);
+		is.deleteIteration(iter);
 	}
-
+	
 	@Test
 	public void getIteration() {
 		int iterNumber = iter.number();
 		iter = is.getIteration(project, iterNumber);
 		assertNotNull("Iteration should not be null", iter);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void getIterationWithNullProject() {
 		is.getIteration(null, iter.number());
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void getIterationWithNegativeNumber() {
 		is.getIteration(project, -5);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void getIterationByIdWithNegativeNumber() {
 		is.getIterationById(-5);
 	}
-
+	
 	@Test
 	public void getIterationByIdWithTest() {
 		Iteration iteration = is.getIterationById(iter.iterationId());
 		assertNotNull("Iteration shouldn't be null", iteration);
 	}
-
+	
 	@Test
 	public void setBeginDate() {
 		LocalDate newDate = iter.startDate().plusDays(1);
-		is.setBeginDate(iter, newDate);
+		iter = is.setBeginDate(iter, newDate);
 		assertTrue(newDate.equals(iter.startDate()));
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void setBeginDateWithBadDate() {
 		is.setBeginDate(iter, iter.endDate().plusDays(1));
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void setBeginWithNullDate() {
-		is.createIteration(project, beginDate, endDate);
 		is.setBeginDate(iter, null);
 	}
-
+	
 	@Test
 	public void setEndDate() {
 		LocalDate newEndDate = iter.endDate().plusDays(1);
-		is.setEndDate(iter, newEndDate);
-		assertTrue(newEndDate.equals(iter.endDate()));
-		
+		iter = is.setEndDate(iter, newEndDate);
+		assertTrue(newEndDate.equals(iter.endDate()));		
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void setEndDateWithNullDate() {
-		Iteration iter = is.createIteration(project, beginDate, endDate);
 		is.setEndDate(iter, null);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void setEndDateWithInvalidDate() {
-		Iteration iter = is.createIteration(project, beginDate, endDate);
 		is.setEndDate(iter, beginDate.minusDays(5));
 	}
-
+	
 	@Test
 	public void getIterationsForProject() {
 		assertNotNull("List should not be null", is.getIterationsForProject(project));
 	}
-
+	/*Destroys DB, intensive tester WINS!
+	@Test
+	public void theIntensiveTester(){
+		int i;
+		for (i = 0 ; i < 100; i++){
+			is.createIteration(project, LocalDate.now(), LocalDate.now().plusDays(15));
+		}
+		List<Iteration> list = is.getIterationsForProject(project);
+		System.out.println(list.size());
+		if(!list.isEmpty()){		
+			list.forEach((iteration) -> {System.out.println(iteration.iterationId()); is.deleteIteration(iteration); System.out.println("Borre 1");});
+		}
+		System.out.println("Borre 100");
+	}*/
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void getIterationsForProjectWithNullProject() {
 		is.getIterationsForProject(null);
@@ -174,9 +203,17 @@ public class IterationServiceImplTest {
 	
 	@Test(expected = IllegalStateException.class)
 	public void getIterationsForProjectWithDeletedProject() {
-		Project newProject = ps.createProject("NewTesting", "Insert Description", "jgf");
-		ps.deleteProject(newProject);
-		is.getIterationsForProject(newProject);
+		ps.deleteProject(project);
+		is.getIterationsForProject(project);
+	}
+	
+	@Test
+	public void theIntensiveTesterLightEdition(){
+		int i;
+		for (i = 0 ; i < 100; i++){
+			iter = is.createIteration(project, LocalDate.now(), LocalDate.now().plusDays(15));
+			is.deleteIteration(iter);
+		}
 	}
 	
 	@Test
@@ -192,8 +229,8 @@ public class IterationServiceImplTest {
 	
 	@Test(expected = IllegalStateException.class)
 	public void getParentWithInvalidProject(){
-		Iteration newIter = is.createIteration(project, beginDate.plusDays(40), endDate.plusDays(40));
-		is.deleteIteration(newIter);
-		is.getParent(newIter);
+		is.deleteIteration(iter);
+		is.getParent(iter);
 	}
+	
 }
