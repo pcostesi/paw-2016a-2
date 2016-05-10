@@ -35,7 +35,7 @@ public class ProjectController extends BaseController {
 	
 	@Autowired
 	private BacklogService bs;
-
+	
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public ModelAndView getNewResource(@ModelAttribute("projectForm") ProjectForm projectForm) {
 		final ModelAndView mav = new ModelAndView("project/newProject");

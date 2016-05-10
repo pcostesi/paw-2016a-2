@@ -26,3 +26,22 @@
 	background-color: #f8f5f0 !important;
 	outline: 0 !important;
 }
+
+.list-group-item > .panel {
+	margin: -16px -24px !important;
+	border: none !important;
+}
+
+
+.list-group-item > .panel > .panel-heading{
+	border-radius: 0;
+	border: none;
+}
+
+.list-group-item:last-child > .panel > .panel-heading{
+	border-top-left-radius: 0 !important;
+	border-top-right-radius: 0 !important;
+	border-bottom-left-radius: 3px !important;
+	border-bottom-right-radius: 3px !important;
+}
+

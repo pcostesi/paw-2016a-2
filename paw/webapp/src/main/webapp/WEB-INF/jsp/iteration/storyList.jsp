@@ -26,14 +26,12 @@
 					</div>
 			    </c:when>    
 			    <c:otherwise>
-			    	<div class="panel-group" id="story-list" role="tablist" aria-multiselectable="true">
 						<c:forEach items="${stories}" var="story">
 								<t:storyPanel project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}"/>
 						</c:forEach>
-					</div>	
 			    </c:otherwise>
 			</c:choose>
 		</div>
-	</div> 
+	</div>
     </jsp:body>    
 </t:page>

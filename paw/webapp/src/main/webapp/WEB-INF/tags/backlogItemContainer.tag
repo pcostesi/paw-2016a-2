@@ -13,23 +13,21 @@
 		    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New item
 		</a>
 	</jsp:attribute>
+	
+	<jsp:attribute name="list"><c:if test="${not items.isEmpty()}">		
+		<c:forEach items="${backlog}" var="item">
+			<li class="list-group-item">
+				<t:backlogItemPanel project="${project}" item="${item}"/>
+			</li>
+		</c:forEach>  		
+	</c:if></jsp:attribute>
 
-	<jsp:body>
+	<jsp:body><c:if test="${items.isEmpty()}">
 		<div class="row">
             <div class="col-sm-12">
-				<c:choose>
-				    <c:when test="${items.isEmpty()}">
-				    	This backlog doesn't have any items so far
-				    </c:when>    
-				    <c:otherwise>
-				    	<div class="panel-group" id="backlog-group" role="tablist" aria-multiselectable="true">
-					    	<c:forEach items="${items}" var="backlogItem">
-					    		<t:backlogItemPanel item="${backlogItem}" panelParent="#backlog-group"/>
-					    	</c:forEach>	
-				    	</div>
-				    </c:otherwise>
-				</c:choose>
+				    This backlog doesn't have any items so far
             </div>
         </div>
-	</jsp:body>
+	</c:if></jsp:body>
+	
 </t:collapsiblePanel>

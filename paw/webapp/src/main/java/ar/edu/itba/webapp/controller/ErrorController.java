@@ -19,14 +19,14 @@ public class ErrorController extends BaseController {
 	
 	@RequestMapping(value = "/404")
 	public ModelAndView notFound() {
-		final ModelAndView mav = new ModelAndView("error/not_found");
+		final ModelAndView mav = new ModelAndView("error/notFound");
 		return mav;
 	}	
 
 	@RequestMapping(value = "/500")
-	@ExceptionHandler(value = {Exception.class, RuntimeException.class})
+	@ExceptionHandler(value = {Exception.class, IllegalStateException.class})
 	public ModelAndView internalServerError(HttpServletRequest request, Exception exception) {
-		final ModelAndView mav = new ModelAndView("error/internal_server_error");
+		final ModelAndView mav = new ModelAndView("error/internalServerError");
 		mav.addObject("exception", exception);
 
 		return mav;

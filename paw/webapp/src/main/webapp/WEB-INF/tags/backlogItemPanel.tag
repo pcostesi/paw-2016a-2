@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="item" required="true" type="ar.edu.itba.models.BacklogItem"%>
+<%@attribute name="project" required="true" type="ar.edu.itba.models.Project"%>
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
@@ -27,4 +28,5 @@
             </div>
         </div>
 	</jsp:body>
+	
 </t:collapsiblePanel>

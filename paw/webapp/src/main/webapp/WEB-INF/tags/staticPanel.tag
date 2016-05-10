@@ -3,6 +3,9 @@
 <%@attribute name="panelId" required="true"%>
 <%@attribute name="title" fragment="true" required="true"%>
 <%@attribute name="actions" fragment="true" required="false"%>
+<%@attribute name="list" fragment="true" required="false"%>
+
+<jsp:doBody var="bodyText" />
 
 <div class="panel panel-default" id="${panelId}">
     <div class="panel-heading" role="tab">
@@ -13,11 +16,15 @@
 			</div>
         </h2>
     </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-12">
-				<jsp:doBody/>
-			</div>
-		</div>
-	</div>
+    
+       <c:if test="${not empty bodyText}">
+        <div class="panel-body">
+            ${bodyText}
+        </div>
+    </c:if>
+    <c:if test="${not empty list}">
+	    <ul class="list-group">
+	        <jsp:invoke fragment="list"/>
+	    </ul>
+   	</c:if>
 </div>

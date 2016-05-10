@@ -6,6 +6,9 @@
 <%@attribute name="actions" fragment="true" required="false"%>
 <%@attribute name="panelClass" required="false"%>
 <%@attribute name="panelParent" required="false"%>
+<%@attribute name="list" fragment="true" required="false"%>
+
+<jsp:doBody var="bodyText" />
 
 <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="panel-heading-${panelId}">
@@ -20,8 +23,15 @@
         </h2>
     </div>
     <div id="panel-collapse-${panelId}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-${panelId}">
+        <c:if test="${not empty bodyText}">
         <div class="panel-body">
             <jsp:doBody/>
         </div>
+        </c:if>
+        <c:if test="${not empty list}">
+	        <ul class="list-group">
+	            <jsp:invoke fragment="list"/>
+	        </ul>
+        </c:if>
     </div>
-</div> <!-- /panel -->
+</div>

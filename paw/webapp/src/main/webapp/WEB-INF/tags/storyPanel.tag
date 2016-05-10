@@ -16,18 +16,20 @@
 		<t:dropdownEditDelete url="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}"/>
 	</jsp:attribute>
 
-	<jsp:body>		
-        <c:choose>
-	        <c:when test="${tasks.isEmpty()}">
-	    		This story doesn't have any task so far
-		    </c:when>    
-		    <c:otherwise>
-		    	<div class="panel-group" id="story-group-${story.storyId()}" role="tablist" aria-multiselectable="true">
-			    	<c:forEach items="${tasks}" var="task">		
-						<t:taskPanel panelParent="#story-group-${story.storyId()}" project="${project}" iteration="${iteration}" story="${story}" task="${task}"/>	
-					</c:forEach>	
-				</div>
-		    </c:otherwise>	
-        </c:choose>					
-	</jsp:body>
+	<jsp:attribute name="list"><c:if test="${not items.isEmpty()}">	
+		<c:forEach items="${tasks}" var="task">	
+			<li class="list-group-item">	
+				<t:taskPanel panelParent="#story-group-${story.storyId()}" project="${project}" iteration="${iteration}" story="${story}" task="${task}"/>	
+			</li>
+		</c:forEach>	 		
+	</c:if></jsp:attribute>
+
+	<jsp:body><c:if test="${tasks.isEmpty()}">
+		<div class="row">
+            <div class="col-sm-12">
+				    This story doesn't have any task so far
+            </div>
+        </div>		
+	</c:if></jsp:body>
+	
 </t:collapsiblePanel>
