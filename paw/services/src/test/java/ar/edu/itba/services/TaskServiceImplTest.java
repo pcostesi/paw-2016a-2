@@ -23,8 +23,8 @@ import ar.edu.itba.models.Task;
 import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
-/*public class TaskServiceImplTest {
-	private static final int taskID = 0;
+public class TaskServiceImplTest {
+/*	private static final int taskID = 0;
 
 	private TaskService ts;
 	@Mock
@@ -166,7 +166,6 @@ import ar.edu.itba.models.User;
 		Mockito.when(taskDao.taskExists(testTask.taskId())).thenReturn(true);
 		ts.changeStatus(testTask, status);
 		verify(taskDao, times(1)).updateStatus(testTask.taskId(), status.getValue());
-		verify(testTask, times(1)).setStatus(status);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -210,5 +209,5 @@ import ar.edu.itba.models.User;
 	public void testGetTaskForStoryWithNullStory() {;
 		List<Task> list = ts.getTasksForStory(null);
 	}
-	
-}*/
+	*/
+}

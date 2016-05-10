@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 
 
-@ComponentScan({"ar.edu.itba.services.TestConfig","ar.edu.itba.persistence", "ar.edu.itba.services" })
+@ComponentScan({"ar.edu.itba.persistence", "ar.edu.itba.services" })
 
 @Configuration
 public class TestConfig {
@@ -21,7 +21,6 @@ public class TestConfig {
         ds.setUrl("jdbc:hsqldb:mem:paw");
         ds.setUsername("ha");
         ds.setPassword("");
-
         return ds;
     }
 }

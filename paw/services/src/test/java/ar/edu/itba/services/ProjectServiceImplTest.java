@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,28 +23,29 @@ import ar.edu.itba.models.Project;
 public class ProjectServiceImplTest {
 
 	@Autowired
-	private ProjectServiceImpl ps;
+	private ProjectService ps;
 
 	private String pName = "Test Project";
 	private String pDesc = "This project was created for testing purpouses";
 	private String pCode = "tp";
-
-	public Project testProject;
+	
+	Project testProject;
 
 	@Before
 	public void setup() {
-		System.out.println(ps == null);	
+		testProject = ps.createProject(pName, pDesc, pCode);
 	}
-
-	/*
-	 * @Test public void test(){ System.out.println(dao == null);
-	 * System.out.println("hola gator"); System.out.println(ds == null);
-	 * //System.out.println(ps != null); }
-	 */
+	
+	@After
+	public void endingSetup(){
+		if(ps.projectCodeExists(pCode)){
+			ps.deleteProject(ps.getProjectByCode(pCode));
+		}
+	}
 
 	@Test
 	public void createProjectTest() {
-		assertNotNull("Project should not be null", ps.createProject(pName, pDesc, pCode));
+		assertNotNull("Project should not be null", testProject);
 	}
 
 	@Test
@@ -53,7 +55,7 @@ public class ProjectServiceImplTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void deleteProjectTest() {
-		ps.deleteProject(ps.getProjectByCode(pCode));
+		ps.deleteProject(testProject);
 		ps.getProjectByCode(pCode);
 	}
 
@@ -85,8 +87,8 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void getNullProject() {
-		ps.getProjectByCode("fake code");
+	public void getInexistingProject() {
+		ps.getProjectByCode("fakecode");
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -97,21 +99,25 @@ public class ProjectServiceImplTest {
 
 	@Test
 	public void setNewName() {
-		testProject = ps.createProject(pName, pDesc, pCode);
-		testProject = ps.setName(testProject, "This is the projects new name");
-		assertSame("should be same", testProject.name(), "This is the projects new name");
+		String newName = "Super Name";
+		testProject = ps.setName(testProject, newName);
+		assertSame("should be same", testProject.name(), newName);
 	}
 
 	@Test
 	public void setNewDescrpition() {
-		testProject = ps.createProject(pName, pDesc, pCode);
 		testProject = ps.setDescription(testProject, "This is the projects new description");
-		assertSame("should be same", testProject.description(), "This is the projects new name");
+		assertSame("should be same", testProject.description(), "This is the projects new description");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setInvalidName() {
 		ps.setName(testProject, "");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void setInvalidLongName() {
+		ps.setName(testProject, "asdasdasj kjsabfksbaf kj dbs fkljdsbfkl jsdb fkjsdbflksdjbfiewif bB FKDB KfbIEBUfbeeufib DifbsIFBo bbDuf yufs busdybf sidyfbysudfb xcv jbesui");
 	}
 
 	@Test
@@ -142,8 +148,7 @@ public class ProjectServiceImplTest {
 
 	@Test
 	public void setCodeTest() {
-		testProject = ps.createProject("setCodeTester", "Idem", "sc");
-
+		Project testMonkey;
 		try {
 			ps.setCode(testProject, null);
 			fail("Exception not thrown when code was null");
@@ -175,16 +180,17 @@ public class ProjectServiceImplTest {
 		}
 
 		try {
-			ps.deleteProject(testProject);
-			ps.setCode(testProject, "tcc");
+			testMonkey = ps.createProject(pName + "a", pDesc + "a", pCode + "a");
+			ps.deleteProject(testMonkey);
+			ps.setCode(testMonkey, "tcc");
 			fail("Exception not thrown when project was inexistent");
 		} catch (Exception e) {
 		}
 
-		testProject = ps.createProject("setCodeTester", "Idem", "sc");
-
-		testProject = ps.setCode(testProject, "nc");
-		assertSame("Should be nc", testProject.code(), "nc");
+		testMonkey = ps.createProject("setCodeTester", "Idem", "sc");
+		testMonkey = ps.setCode(testMonkey, "nc");		
+		assertSame("Code should be nc, but it was not", testMonkey.code(), "nc");
+		ps.deleteProject(testMonkey);
 	}
 
 	@Test
@@ -206,9 +212,6 @@ public class ProjectServiceImplTest {
 
 	@Test
 	public void getProjectByCodeTest() {
-		String code = "gpbct";
-
-		testProject = ps.createProject("getProjectByCodeTester", "Shalalalal", code);
 		try {
 			ps.getProjectByCode(null);
 			fail("Exception not thrown when code was null");
@@ -229,6 +232,6 @@ public class ProjectServiceImplTest {
 			fail("Exception not thrown when code was inexistent in db");
 		} catch (Exception e) {
 		}
-		assertNotNull("project should not be null", ps.getProjectByCode(code));
+		assertNotNull("project should not be null", ps.getProjectByCode(pCode));
 	}
 }

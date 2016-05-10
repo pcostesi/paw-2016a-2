@@ -190,7 +190,7 @@ public class IterationServiceImplTest {
 		is.getParent(null);
 	}
 	
-	@Test(expected = IllegalStatetException.class)
+	@Test(expected = IllegalStateException.class)
 	public void getParentWithInvalidProject(){
 		Iteration newIter = is.createIteration(project, beginDate.plusDays(40), endDate.plusDays(40));
 		is.deleteIteration(newIter);

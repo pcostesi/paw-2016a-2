@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS backlog (
-	item_id PRIMARY KEY,
+	item_id IDENTITY,
 	project_id INTEGER NOT NULL,
 	title varchar(100) NOT NULL,
 	description varchar(500),
