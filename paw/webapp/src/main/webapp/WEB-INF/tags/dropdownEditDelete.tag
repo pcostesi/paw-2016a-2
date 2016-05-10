@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
-<%@attribute name="href" required="true"%>
-<%@attribute name="btnClass" required="false"%>
+<%@attribute name="url" required="true"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <div class="dropdown fix-inline">
   <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -10,15 +10,12 @@
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
     <li>
-    	<a href="${href}/edit">
+    	<a href="${url}/edit">
     		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
     	</a>
     </li>
     <li>
-    	<form action="${href}/delete" method="POST" >
-    		<button class="button-link" type="submit" data-think="twice" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-    		</button>
-    	</form>
+    	<t:deleteButton url="${url}"/>
   	</li>
   </ul>
 </div>
