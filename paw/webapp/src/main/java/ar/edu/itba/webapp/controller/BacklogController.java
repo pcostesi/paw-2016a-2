@@ -1,5 +1,6 @@
 package ar.edu.itba.webapp.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class BacklogController extends BaseController {
 	
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
 	public ModelAndView createResourcePost(@PathVariable String projectCode,
-			@Valid @ModelAttribute("backlogForm") BacklogForm backlogForm, BindingResult result) {
+			@Valid @ModelAttribute("backlogForm") BacklogForm backlogForm, BindingResult result,
+			HttpServletRequest request) {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
@@ -48,18 +50,19 @@ public class BacklogController extends BaseController {
 		} else {
 			final String description = backlogForm.getDescription();
 			bs.createBacklogItem(project, backlogForm.getTitle(), description.length() == 0 ? null : description);
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, project.code()).build().replace("/grupo2","");
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
+					.arg(0, projectCode).build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
 	}
 	
 	@RequestMapping(value = "/{backlogId}/delete", method = RequestMethod.POST)
-	public ModelAndView deleteResource(@PathVariable int backlogId) {
+	public ModelAndView deleteResource(@PathVariable String projectCode, @PathVariable int backlogId) {
 		final BacklogItem item = bs.getBacklogById(backlogId);
 		bs.deleteBacklogItem(item);
-		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.list").build();
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
+				.arg(0, projectCode).build();
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 	
