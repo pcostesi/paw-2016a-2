@@ -4,7 +4,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:staticPanel panelId="${project.code()}-description">
-	<jsp:attribute name="title">Project description</jsp:attribute>
+	<jsp:attribute name="title">Project details</jsp:attribute>
 	<jsp:body>
 		<b>Start date</b> ${project.formattedStartDate()}<br>
 	    <b>Description</b> ${project.description()}

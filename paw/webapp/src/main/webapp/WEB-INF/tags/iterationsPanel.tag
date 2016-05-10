@@ -4,24 +4,31 @@
 <%@attribute name="iterations" required="true" type="java.util.List" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-
-<t:staticPanel panelId="iterations">
-	<jsp:attribute name="title">
-		Iterations
-	</jsp:attribute>
-
-	<jsp:attribute name="list">
-	<c:forEach items="${iterations}" var="iteration">
-		<li class="list-group-item">
-			<t:iterationPanel iteration="${iteration}" project="${project}" panelParent="#panel-iterations-list" />
-		</li>
-	</c:forEach>
-	</jsp:attribute>
-	
-	
-	<jsp:body>
-		<p><strong>Start date</strong> ${project.startDate()}</p>
-	    <p><strong>Description</strong> ${project.description()}</p>
-	</jsp:body>
-
-</t:staticPanel>
+<c:choose>
+	<c:when test="${iterations.isEmpty()}">
+		<div class="alert alert-info" role="alert">
+			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This project doesn't have any iteration so far
+		</div>
+	</c:when>    
+	<c:otherwise>
+		<c:forEach items="${iterations}" var="iteration">
+				<t:collapsiblePanel panelId="iteration-${iteration.number()}">
+					<jsp:attribute name="title">Iteration #${iteration.number()}</jsp:attribute>	
+						<jsp:attribute name="actions">
+							<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}" class="btn btn-default btn-xs" >
+								<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
+							</a>
+							<t:dropdownEditDelete url="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}"/>
+						</jsp:attribute>
+						<jsp:body>
+							<div class="row">
+						        <div class="col-sm-12">
+						            <b>Start date</b> ${iteration.formattedStartDate()}<br>
+						            <b>End date</b> ${iteration.formattedEndDate()}<br>
+						        </div>
+						    </div>
+						</jsp:body>
+				</t:collapsiblePanel>
+			</c:forEach>
+	</c:otherwise>
+</c:choose>

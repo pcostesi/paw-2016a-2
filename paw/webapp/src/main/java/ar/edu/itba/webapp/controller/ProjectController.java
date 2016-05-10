@@ -32,7 +32,7 @@ public class ProjectController extends BaseController {
 
 	@Autowired
 	private IterationService is;
-
+	
 	@Autowired
 	private BacklogService bs;
 	
@@ -48,9 +48,8 @@ public class ProjectController extends BaseController {
 		if (result.hasErrors()) {
 			mav = new ModelAndView("project/newProject");
 		} else {
-			final Project project = ps.createProject(projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
-					.arg(0, project.code()).build().replace("/grupo2","");
+			ps.createProject(projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"),"project.list").build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
@@ -101,7 +100,7 @@ public class ProjectController extends BaseController {
 	public ModelAndView deleteResource(@PathVariable String projectCode) {
 		Project project = ps.getProjectByCode(projectCode);
 		ps.deleteProject(project);
-		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build().replace("/grupo2","");
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.list").build();
 		return new ModelAndView("redirect:" + resourceUrl);
 	}
 

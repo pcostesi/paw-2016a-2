@@ -16,14 +16,15 @@
 			</div>
         </h2>
     </div>
-    <c:if test="${not empty bodyText}">
+    
+       <c:if test="${not empty bodyText}">
         <div class="panel-body">
             ${bodyText}
         </div>
     </c:if>
     <c:if test="${not empty list}">
-    <ul class="list-group" id="panel-${panelId}-list">
-        <jsp:invoke fragment="list"/>
-    </ul>
-    </c:if>
+	    <ul class="list-group">
+	        <jsp:invoke fragment="list"/>
+	    </ul>
+   	</c:if>
 </div>

@@ -21,7 +21,6 @@ import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.models.BacklogItem;
-import ar.edu.itba.models.ImmutableBacklogItem;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;

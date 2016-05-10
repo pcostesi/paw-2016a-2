@@ -186,4 +186,32 @@ public class BacklogServiceImpl implements BacklogService {
 		return newItem;
 	}
 
+	@Override
+	public BacklogItem getBacklogById(int itemId) {
+		if (itemId < 0) {
+			throw new IllegalArgumentException("Invalid backlog id");
+		}
+
+		BacklogItem item = backlogDao.getBacklogItemById(itemId);
+		
+		if (item == null) {
+			throw new IllegalStateException("Backlog item doesn't exist");
+		} else {
+			return item;
+		}
+	}
+
+	@Override
+	public boolean titleIsUsed(Project project, String title) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+		
+		if (title == null) {
+			throw new IllegalArgumentException("Backlog item title can't be null");
+		}
+		
+		return backlogDao.backlogItemExists(title, project.projectId());
+	}
+
 }

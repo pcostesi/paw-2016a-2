@@ -14,12 +14,17 @@
      </jsp:attribute>
      
      <jsp:body>
-		<div class="row">
-			<div class="col-md-6 col-sm-12">
-				<t:iterationsPanel project="${project}" iterations="${iterations}"/>
+     	<div class="row">
+     		<div class="col-sm-12">
+				<t:descriptionPanel project="${project}"/>
 			</div>
-			<div class="col-md-6 col-sm-12">
-				<t:backlogPanel project="${project}" backlog="${backlog}"/>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
+			</div>
+			<div class="col-sm-6">
+				<t:iterationsPanel project="${project}" iterations="${iterations}"/>
 			</div>
 		</div>
     </jsp:body>    

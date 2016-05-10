@@ -9,6 +9,7 @@
 <%@attribute name="list" fragment="true" required="false"%>
 
 <jsp:doBody var="bodyText" />
+
 <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="panel-heading-${panelId}">
         <h2 class="panel-title clearfix">
@@ -28,9 +29,9 @@
         </div>
         </c:if>
         <c:if test="${not empty list}">
-        <ul class="list-group" id="panel-${panelId}-list">
-            <jsp:invoke fragment="list"/>
-        </ul>
+	        <ul class="list-group">
+	            <jsp:invoke fragment="list"/>
+	        </ul>
         </c:if>
     </div>
-</div> <!-- /panel -->
+</div>
