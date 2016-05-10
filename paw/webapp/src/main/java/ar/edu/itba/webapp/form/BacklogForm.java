@@ -15,14 +15,6 @@ public class BacklogForm {
 	
 	private int projectId;
 
-	public int getProjectId() {
-		return projectId;
-	}
-
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -37,6 +29,14 @@ public class BacklogForm {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
 	}
 	
 }

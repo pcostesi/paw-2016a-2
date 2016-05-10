@@ -22,9 +22,11 @@
 				    	This backlog doesn't have any items so far
 				    </c:when>    
 				    <c:otherwise>
-				    	<c:forEach items="${items}" var="backlogItem">
-				    		<t:backlogItemPanel item="${backlogItem}" panelParent="backlog"/>
-				    	</c:forEach>	
+				    	<div class="panel-group" id="backlog-group" role="tablist" aria-multiselectable="true">
+					    	<c:forEach items="${items}" var="backlogItem">
+					    		<t:backlogItemPanel item="${backlogItem}" panelParent="#backlog-group"/>
+					    	</c:forEach>	
+				    	</div>
 				    </c:otherwise>
 				</c:choose>
             </div>

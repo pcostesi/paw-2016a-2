@@ -3,6 +3,7 @@ package ar.edu.itba.persistence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -42,7 +43,7 @@ public class BacklogJdbcDao implements BacklogDao {
 			int itemId = jdbcInsert.executeAndReturnKey(args).intValue();
 			return ImmutableBacklogItem.builder()
 					.title(title)
-					.description(description)
+					.description(Optional.ofNullable(description))
 					.backlogItemId(itemId)
 					.build();
 		} catch (DataAccessException exception) {
@@ -80,9 +81,9 @@ public class BacklogJdbcDao implements BacklogDao {
 	@Override
 	public List<BacklogItem> getBacklogForProject(int projectId) {
 		try {
-			return jdbcTemplate.query("SELECT * FROM backlog WHERE item_id = ?", backlogRowMapper, projectId);
+			return jdbcTemplate.query("SELECT * FROM backlog WHERE project_id = ?", backlogRowMapper, projectId);
 		} catch (DataAccessException exception) {
-        	throw new IllegalStateException("Database failed to get backlog items for iteration");
+        	throw new IllegalStateException("Database failed to get backlog items for project");
         }
 	}
 

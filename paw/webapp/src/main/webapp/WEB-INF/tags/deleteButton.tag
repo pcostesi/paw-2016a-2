@@ -4,6 +4,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <form action="${url}/delete" method="POST" >
-	<button class="button-link" type="submit" data-think="twice" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+	<button class="btn btn-danger btn-xs" type="submit" data-think="twice" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
     </button>
 </form>

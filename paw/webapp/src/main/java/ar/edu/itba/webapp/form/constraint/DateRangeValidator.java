@@ -1,5 +1,6 @@
 package ar.edu.itba.webapp.form.constraint;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.validation.ConstraintValidator;
@@ -23,8 +24,8 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Iterat
     @Override
     public boolean isValid(final IterationForm value, final ConstraintValidatorContext context) {
         try {
-            final Date firstDate = (Date) PropertyUtils.getProperty(value, firstFieldName);
-            final Date secondDate = (Date) PropertyUtils.getProperty(value, secondFieldName);
+            final LocalDate firstDate = (LocalDate) PropertyUtils.getProperty(value, firstFieldName);
+            final LocalDate secondDate = (LocalDate) PropertyUtils.getProperty(value, secondFieldName);
             
             if (secondDate.compareTo(firstDate) < 0) {
             	context.disableDefaultConstraintViolation();

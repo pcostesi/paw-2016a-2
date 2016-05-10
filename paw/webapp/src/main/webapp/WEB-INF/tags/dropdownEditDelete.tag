@@ -15,7 +15,10 @@
     	</a>
     </li>
     <li>
-    	<t:deleteButton url="${url}"/>
+    	<form action="${url}/delete" method="POST" >
+			<button class="button-link" type="submit" data-think="twice" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+		    </button>
+		</form>
   	</li>
   </ul>
 </div>

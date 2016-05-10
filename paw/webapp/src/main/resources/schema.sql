@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS task (
 	task_id SERIAL PRIMARY KEY,
 	story_id INTEGER NOT NULL,
 	title varchar(100) NOT NULL,
-	description varchar(500) NOT NULL,
+	description varchar(500),
 	owner varchar(100),
 	status INTEGER NOT NULL,
 	priority INTEGER NOT NULL,

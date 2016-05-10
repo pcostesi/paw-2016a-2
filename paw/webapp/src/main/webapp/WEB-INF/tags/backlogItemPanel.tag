@@ -10,7 +10,7 @@
 	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-		<t:deleteButton url="${url}"/>
+		<t:deleteButton url="${pageContext.request.contextPath}/project/${project.code()}/backlog/${item.backlogItemId()}"/>
 	</jsp:attribute>
 
 	<jsp:body>

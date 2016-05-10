@@ -20,7 +20,7 @@ import ar.edu.itba.models.Project;
 import ar.edu.itba.webapp.form.BacklogForm;
 
 @Controller
-@RequestMapping("/project/{projectCode}/iteration/{iteration}/backlog")
+@RequestMapping("/project/{projectCode}/backlog")
 public class BacklogController extends BaseController {
 
 	@Autowired
@@ -30,13 +30,15 @@ public class BacklogController extends BaseController {
 	private BacklogService bs;
 	
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
-	public ModelAndView backlogCreateItem() {
+	public ModelAndView createResourceGet(@PathVariable String projectCode, @ModelAttribute("backlogForm") BacklogForm backlogForm) {
+		final Project project = ps.getProjectByCode(projectCode);
 		final ModelAndView mav = new ModelAndView("backlog/newItem");
+		mav.addObject("project", project);
 		return mav;
 	}
 	
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
-	public ModelAndView backlogCreateItem(@PathVariable String projectCode,
+	public ModelAndView createResourcePost(@PathVariable String projectCode,
 			@Valid @ModelAttribute("backlogForm") BacklogForm backlogForm, BindingResult result) {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
@@ -44,7 +46,8 @@ public class BacklogController extends BaseController {
 			mav = new ModelAndView("backlog/newItem");
 			mav.addObject("project", project);
 		} else {
-			bs.createBacklogItem(project, backlogForm.getTitle(), backlogForm.getDescription());
+			final String description = backlogForm.getDescription();
+			bs.createBacklogItem(project, backlogForm.getTitle(), description.length() == 0 ? null : description);
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.details")
 					.arg(0, project.code()).build().replace("/grupo2","");
 			mav = new ModelAndView("redirect:" + resourceUrl);
