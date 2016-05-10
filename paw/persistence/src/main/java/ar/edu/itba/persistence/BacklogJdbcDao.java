@@ -113,4 +113,19 @@ public class BacklogJdbcDao implements BacklogDao {
         }
 	}
 
+	@Override
+	public BacklogItem getBacklogItemById(int itemId) {
+		try {
+			List<BacklogItem> backlog = jdbcTemplate.query("SELECT * FROM backlog WHERE item_id = ?", backlogRowMapper, itemId);
+			
+			if (backlog.isEmpty()) {
+				return null;
+			} else {
+				return backlog.get(0);
+			}
+		} catch (DataAccessException exception) {
+        	throw new IllegalStateException("Database failed to get backlog item by id");
+        }
+	}
+
 }
