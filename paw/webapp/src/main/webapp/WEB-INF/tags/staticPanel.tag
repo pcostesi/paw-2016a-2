@@ -22,7 +22,7 @@
         </div>
     </c:if>
     <c:if test="${not empty list}">
-    <ul class="list-group">
+    <ul class="list-group" id="panel-${panelId}-list">
         <jsp:invoke fragment="list"/>
     </ul>
     </c:if>

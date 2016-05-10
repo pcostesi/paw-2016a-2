@@ -2,10 +2,11 @@
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="project" required="true" type="ar.edu.itba.models.Project" %>
 <%@attribute name="iteration" required="true" type="ar.edu.itba.models.Iteration" %>
+<%@attribute name="panelParent" required="false" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 
-<t:collapsiblePanel panelId="iteration-${iteration.number()}">
+<t:collapsiblePanel panelId="iteration-${iteration.number()}" panelParent="${panelParent}">
     <jsp:attribute name="title">Iteration #${iteration.number()}</jsp:attribute>	
         
     <jsp:attribute name="actions">

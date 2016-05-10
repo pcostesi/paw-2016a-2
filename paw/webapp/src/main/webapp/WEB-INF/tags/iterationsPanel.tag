@@ -13,7 +13,7 @@
 	<jsp:attribute name="list">
 	<c:forEach items="${iterations}" var="iteration">
 		<li class="list-group-item">
-			<t:iterationPanel iteration="${iteration}" project="${project}" />
+			<t:iterationPanel iteration="${iteration}" project="${project}" panelParent="#panel-iterations-list" />
 		</li>
 	</c:forEach>
 	</jsp:attribute>
