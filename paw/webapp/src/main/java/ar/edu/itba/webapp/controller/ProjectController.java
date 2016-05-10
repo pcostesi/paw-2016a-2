@@ -49,7 +49,7 @@ public class ProjectController extends BaseController {
 			mav = new ModelAndView("project/newProject");
 		} else {
 			ps.createProject(projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
-			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName("project.list").build();
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"),"project.list").build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
 		return mav;
