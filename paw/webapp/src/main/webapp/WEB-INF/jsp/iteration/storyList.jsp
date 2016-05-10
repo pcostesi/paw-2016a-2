@@ -13,11 +13,18 @@
 	 	</a>
      </jsp:attribute>
 
-     <jsp:body>     	
-        <div class="panel-group" id="story-list" role="tablist" aria-multiselectable="true">
-			<c:forEach items="${stories}" var="story">
-					<t:storyPanel panelParent="#story-list" project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}"/>
-			</c:forEach>
-		</div>
+     <jsp:body>    
+		 <div class="row">
+			 <div class="col-md-6 col-sm-12">	
+				<div class="panel-group" id="story-list" role="tablist" aria-multiselectable="true">
+					<c:forEach items="${stories}" var="story">
+							<t:storyPanel panelParent="#story-list" project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}"/>
+					</c:forEach>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<t:backlogPanel project="${project}" backlog="${backlog}"/>
+			</div>
+		 </div>
     </jsp:body>    
 </t:page>
