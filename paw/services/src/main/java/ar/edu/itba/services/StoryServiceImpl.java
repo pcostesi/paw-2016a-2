@@ -28,6 +28,13 @@ public class StoryServiceImpl implements StoryService{
 	@Autowired
 	TaskDao taskDao;
 
+	@Autowired
+	/*default*/ StoryServiceImpl(StoryDao storyDao2, IterationDao iterationDao2, TaskDao taskDao2) {
+		this.storyDao = storyDao2;
+		this.iterationDao = iterationDao2;
+		this.taskDao = taskDao2;
+	}
+
 	@Override
 	public Story create(Iteration iteration, String title) {
 		if (iteration == null) {
@@ -111,17 +118,17 @@ public class StoryServiceImpl implements StoryService{
 		if (!storyDao.storyExists(story.storyId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
-		
+
 		if (story.title().equals(title)) {
 			return ImmutableStory.copyOf(story);
 		}
-		
+
 		int parentId = storyDao.getParentId(story.storyId());
 		
 		if (storyDao.storyExists(parentId, title)) {
 			throw new IllegalStateException("There is another story with this title in this iteration");
 		}
-		
+
 		storyDao.updateName(story.storyId(), title);
 		return ImmutableStory.copyOf(story).withTitle(title);
 	}

@@ -26,6 +26,12 @@ public class TaskServiceImpl implements TaskService{
 	@Autowired
 	private StoryDao storyDao;
 
+	@Autowired TaskServiceImpl(TaskDao newTaskDao, StoryDao newStoryDao){
+		this.taskDao = newTaskDao;
+		this.storyDao = newStoryDao;
+	}
+	
+
 	@Override
 	public Task createTask(Story story, String title, String description, TaskStatus status, User user, TaskScore score) {
 		if (story == null) {

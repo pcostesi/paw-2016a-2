@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS task (
 	task_id INTEGER NOT NULL IDENTITY,
 	story_id INTEGER NOT NULL,
 	title varchar(100) NOT NULL,
-	description varchar(500),
+	description varchar(500) NOT NULL,
 	owner varchar(100),
 	status INTEGER NOT NULL,
 	priority INTEGER NOT NULL,
@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS user (
 
 CREATE TABLE IF NOT EXISTS backlog (
 	item_id IDENTITY,
+	name varchar(100) NOT NULL,
+	description varchar(100) NOT NULL,
 	project_id INTEGER NOT NULL,
-	title varchar(100) NOT NULL,
-	description varchar(500),
 	FOREIGN KEY ( project_id ) REFERENCES project ( project_id ) ON DELETE CASCADE,
-	UNIQUE ( project_id, title )
+	UNIQUE ( name, description, project_id )
 );
