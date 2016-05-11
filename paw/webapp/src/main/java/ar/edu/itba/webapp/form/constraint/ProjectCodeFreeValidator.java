@@ -25,15 +25,11 @@ public class ProjectCodeFreeValidator implements ConstraintValidator<ProjectCode
     	if (form.getName().equals(form.getOldName())) {
     		return true;
     	}
-    	try {
-	    	boolean projectCodeExists = ps.projectCodeExists(form.getCode());	    	
-	    	if (projectCodeExists) {
-	    		context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
-	    		return false;
-	    	} else {
-	    		return true;
-	    	}
-    	} catch (IllegalStateException exception) {
+    	boolean projectCodeExists = ps.projectCodeExists(form.getCode());	    	
+    	if (projectCodeExists) {
+    		context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
+    		return false;
+    	} else {
     		return true;
     	}
     }

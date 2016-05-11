@@ -14,8 +14,8 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<form:hidden path="oldName" value=""/>
-						<form:hidden path="oldCode" value=""/>
+						<form:hidden path="oldName"/>
+						<form:hidden path="oldCode"/>
 						<bs:input path="name" label="Name" />
 						<bs:input path="code" label="Code" />
 						<bs:input path="description" label="Description" />

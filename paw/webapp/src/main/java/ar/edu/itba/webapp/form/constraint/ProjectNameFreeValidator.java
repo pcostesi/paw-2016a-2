@@ -25,15 +25,11 @@ public class ProjectNameFreeValidator implements ConstraintValidator<ProjectName
     	if (form.getName().equals(form.getOldName())) {
     		return true;
     	}
-    	try {
-	    	boolean projectNameExists = ps.projectNameExists(form.getName());	    	
-	    	if (projectNameExists) {
-	    		context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
-	    		return false;
-	    	} else {
-	    		return true;
-	    	}
-    	} catch (IllegalStateException exception) {
+    	boolean projectNameExists = ps.projectNameExists(form.getName());	    	
+    	if (projectNameExists) {
+    		context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
+    		return false;
+    	} else {
     		return true;
     	}
     }

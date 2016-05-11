@@ -15,10 +15,10 @@
 
      <jsp:body>
      <div class="row">    
-		<div class="col-sm-5">
+		<div class="col-sm-4">
 			<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
 		</div>
-		<div class="col-sm-7">
+		<div class="col-sm-8">
 	     	<c:choose>
 			    <c:when test="${stories.isEmpty()}">
 			    	<div class="alert alert-info" role="alert">

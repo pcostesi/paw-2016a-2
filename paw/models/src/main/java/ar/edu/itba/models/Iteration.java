@@ -23,7 +23,7 @@ public abstract class Iteration{
 	
 	@Value.Lazy
 	public String formattedEndDate() {
-		return startDate().format(formatter);
+		return endDate().format(formatter);
 	}
 
 }

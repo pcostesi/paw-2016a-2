@@ -27,7 +27,6 @@ public class TaskNameFreeValidator implements ConstraintValidator<TaskNameFree, 
 
     @Override
     public boolean isValid(final TaskForm form, final ConstraintValidatorContext context) {
-    	try {
     		if (form.getOldTitle().equals(form.getTitle())) {
     			return true;
     		}    		
@@ -38,8 +37,5 @@ public class TaskNameFreeValidator implements ConstraintValidator<TaskNameFree, 
     		} else {
     			return true;
     		}
-    	} catch(IllegalStateException exception) {
-    		return true;
-    	}
     }
 }
