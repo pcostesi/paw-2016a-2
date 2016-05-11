@@ -7,7 +7,7 @@ import ar.edu.itba.webapp.form.constraint.StoryNameFree;
 @StoryNameFree(markedField="title")
 public class StoryForm {
 	
-	@Size(min=0, max=100)
+	@Size(min=1, max=100)
 	private String title;
 	
 	private int iterationId;
