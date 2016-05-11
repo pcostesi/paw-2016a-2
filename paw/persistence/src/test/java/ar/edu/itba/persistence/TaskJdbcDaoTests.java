@@ -16,9 +16,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.ProjectDao;
@@ -38,6 +40,7 @@ import ar.edu.itba.models.User;
 @ContextConfiguration(classes = TestConfig.class)
 public class TaskJdbcDaoTests {
 
+	JdbcTestUtils utils = new JdbcTestUtils();
 	@Autowired
 	private TaskDao taskDao;
 	@Autowired
@@ -48,7 +51,9 @@ public class TaskJdbcDaoTests {
 	private ProjectDao projectDao;
 	@Autowired
 	private UserDao userDao;
-	
+	@Autowired
+	DataSource ds;
+
 	private String pName = "TesterProject";
 	private String pCode = "Test";
 	private String tName = "Test Task";
@@ -60,138 +65,178 @@ public class TaskJdbcDaoTests {
 	private TaskStatus status = TaskStatus.getByValue(1);
 	private TaskScore score = TaskScore.getByValue(1);
 	private User owner;
+	private JdbcTemplate jdbcTemplate;
 
 	@Before
 	public void setUp() throws Exception {
 		testProject = projectDao.createProject(pName, "Best Project EVAR", pCode);
 		LocalDate beginDate = LocalDate.now();
 		LocalDate endDate = LocalDate.now().plusDays(15);
-		testIteration= iterDao.createIteration(testProject.projectId(), iterDao.getNextIterationNumber(testProject.projectId()), beginDate, endDate);
+		testIteration = iterDao.createIteration(testProject.projectId(),
+				iterDao.getNextIterationNumber(testProject.projectId()), beginDate, endDate);
 		testStory = storyDao.createStory(testIteration.iterationId(),
 				"A sad story about extreme unhappyness while testing");
-		if(owner == null){
-			//System.out.println(owner == null);
-			//owner = userDao.createUser("t", "test", "testerr@gmail.com");
-			//System.out.println(owner == null);
+		if (!userDao.userNameExists("testuser")) {
+			owner = userDao.createUser("testuser", "test", "testerr@gmail.com");
 		}
-		
+		jdbcTemplate = new JdbcTemplate(ds);
+
 	}
-	
+
 	@After
-	public void after(){
+	public void after() {
 		projectDao.deleteProject(testProject.projectId());
 	}
 
 	@Test
 	public void CreateTaskWithCorrectParametersTest() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		assertTrue(utils.countRowsInTable(jdbcTemplate, "task") == 1);
+	}
+
+	@Test
+	public void getTest() {
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		testTask = taskDao.getTaskById(testTask.taskId());
 		assertTrue(testTask.score() == score);
 		assertTrue(testTask.status() == status);
 		assertTrue(testTask.title().compareTo(tName) == 0);
 		assertTrue(testTask.description().isPresent());
 		assertTrue(testTask.owner().isPresent());
+		assertNotNull(userDao.getByUsername(owner.username()));
 		assertNotNull(testTask);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void createCreatedTask() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		assertTrue(utils.countRowsInTable(jdbcTemplate, "task") == 0);
 	}
-	
+
 	@Test(expected = IllegalStateException.class)
 	public void createTaskWithNullName() {
-		testTask = taskDao.createTask(testStory.storyId(), null, tDesc, status, owner, score );
+		testTask = taskDao.createTask(testStory.storyId(), null, tDesc, status, owner, score);
 	}
-	
-	@Test(expected = IllegalStateException.class)
-	public void createTaskWithNullDesc() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, null, status, owner, score );
-	}
-	
-	@Test(expected = IllegalStateException.class)
-	public void createTaskWithNullStatus() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, null, owner, score );
-	}
-	
-	@Test(expected = IllegalStateException.class)
-	public void createTaskWithNullScore() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, null );
-	}
-	
+
 	@Test(expected = IllegalStateException.class)
 	public void createTaskWithWrongStory() {
-		testTask = taskDao.createTask(testStory.storyId() +1, tName, tDesc, status, owner, score );
+		testTask = taskDao.createTask(testStory.storyId() + 1, tName, tDesc, status, owner, score);
 	}
-	
+
 	@Test(expected = IllegalStateException.class)
 	public void createTaskWithnegativeStory() {
-		testTask = taskDao.createTask(-10, tName, tDesc, status, owner, score );
+		testTask = taskDao.createTask(-10, tName, tDesc, status, owner, score);
 	}
-	
-	@Test(expected = IllegalStateException.class)
+
+	@Test
 	public void deleteTask() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
 		taskDao.deleteTask(testTask.taskId());
-		taskDao.getTaskById(testTask.taskId());
+		assertTrue(utils.countRowsInTable(jdbcTemplate, "task") == 0);
 	}
-	
+
 	@Test
 	public void deleteDeletedTask() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
 		taskDao.deleteTask(testTask.taskId());
 		taskDao.deleteTask(testTask.taskId());
+		assertTrue(utils.countRowsInTable(jdbcTemplate, "task") == 0);
 	}
 
 	@Test
 	public void deleteTaskWithWrongId() {
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
-		taskDao.deleteTask(testTask.taskId()+2);
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		taskDao.deleteTask(testTask.taskId() + 2);
 	}
-	
+
 	@Test
-	public void updateOwnerTest(){
+	public void updateOwnerTest() {
 		String newName = "newname";
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		User newUser = userDao.createUser(newName, "pw", newName + "@test.com");
 		taskDao.updateOwner(testTask.taskId(), newName);
-		assertTrue(newName.compareTo(taskDao.getTaskById(testTask.taskId()).owner().get().username()) == 0);
+		assertTrue(utils.countRowsInTableWhere(jdbcTemplate, "task",
+				"task_id = " + testTask.taskId() + " AND owner = \'" + newName + "\'") == 1);
 	}
-	
+
 	@Test
-	public void updateOwnerWithNull(){
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
+	public void updateOwnerWithNull() {
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
 		taskDao.updateOwner(testTask.taskId(), null);
 		assertFalse(taskDao.getTaskById(testTask.taskId()).owner().isPresent());
 	}
+
+	@Test
+	public void updateStatusTest() {
+		int newStatus = 3;
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		taskDao.updateStatus(testTask.taskId(), newStatus);
+		assertTrue(utils.countRowsInTableWhere(jdbcTemplate, "task",
+				"task_id = " + testTask.taskId() + " AND status = " + newStatus) == 1);
+	}
+
+	@Test
+	public void theMassiveCreator() {
+		int i;
+		for (i = 0; i < 150; i++) {
+			testTask = taskDao.createTask(testStory.storyId(), tName + String.valueOf(i), tDesc + String.valueOf(i),
+					status, owner, score);
+		}
+		assertTrue(utils.countRowsInTable(jdbcTemplate, "task") == 150);
+	}
+
+	@Test
+	public void taskExistsTest() {
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		assertTrue(taskDao.taskExists(testTask.taskId()));
+	}
+
+	@Test
+	public void taskExistsNOT() {
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		taskDao.deleteTask(testTask.taskId());
+		assertFalse(taskDao.taskExists(testTask.taskId()));
+	}
+
+	@Test
+	public void updatePriorityTest() {
+		int priority = 3;
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		taskDao.updatePriority(testTask.taskId(), priority);
+		assertTrue(utils.countRowsInTableWhere(jdbcTemplate, "task",
+				"task_id = " + testTask.taskId() + " AND priority = " + priority) == 1);
+	}
+
+	@Test
+	public void getParentTest() {
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		assertTrue(taskDao.getParentId(testTask.taskId()) == testStory.storyId());
+	}
 	
 	@Test
-	public void updateStatusTest(){
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
-		taskDao.updateStatus(testTask.taskId(), 0);
-		assertTrue(taskDao.getTaskById(testTask.taskId()).status().compareTo(TaskStatus.getByValue(0)) == 0);
+	public void updateTitleTest(){
+		String newTitle = "epic title";
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		taskDao.updateTitle(testTask.taskId(), newTitle);
+		assertTrue(utils.countRowsInTableWhere(jdbcTemplate, "task",
+				"task_id = " + testTask.taskId() + " AND title = \'" + newTitle + "\'") == 1);
 	}
-	
+
 	@Test(expected = IllegalStateException.class)
-	public void updateStatusWithInexistentStatus(){
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
-		taskDao.updateStatus(testTask.taskId(), 100);
-	}
-	
-	@Test(expected = IllegalStateException.class)
-	public void updateStatusWithInexistentTaskId(){
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
-		taskDao.updateStatus(testTask.taskId()+1000, 100);
+	public void updateTitleToExistingTitle(){
+		String newTitle = "epic title";
+		testTask = taskDao.createTask(testStory.storyId(), newTitle, tDesc, status, owner, score);
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		taskDao.updateTitle(testTask.taskId(), newTitle);
 	}
 	
 	@Test
-	public void getTaskById(){
-		System.out.println(testTask==null);
-		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score );
-		System.out.println(testTask==null);
-		System.out.println("Task id:" + testTask.taskId());
-		System.out.println("grabbed:" + taskDao.getTasksForStory(testStory.storyId()));
-		System.out.println(testTask.taskId());
-		assertSame(testTask.taskId(), taskDao.getTaskById(13));
+	public void updateDescriptionTest(){
+		String newDesc = "epic description";
+		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
+		taskDao.updateTitle(testTask.taskId(), newDesc);
+		assertTrue(utils.countRowsInTableWhere(jdbcTemplate, "task",
+				"task_id = " + testTask.taskId() + " AND title = \'" + newDesc + "\'") == 1);
 	}
-	
 }
