@@ -15,11 +15,17 @@
         
         
      <jsp:body>
-		<div class="panel-group" id="project-list">
-			<c:forEach items="${projects}" var="project">
-					<t:projectPanel project="${project}" />
-			</c:forEach>
-        </div>
-
+	     <c:choose>
+			<c:when test="${projects.isEmpty()}">
+				<div class="alert alert-info" role="alert">
+					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> There aren't any projects so far
+				</div>
+			</c:when>    
+			<c:otherwise>
+				<c:forEach items="${projects}" var="project">
+						<t:projectPanel project="${project}" />
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
     </jsp:body>    
 </t:page>

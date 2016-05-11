@@ -10,7 +10,7 @@
 		<a href="${pageContext.request.contextPath}/project/${project.code()}" class="btn btn-default btn-xs">
 				<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to project
 		</a>
-		<t:dropdownEditDelete href="${pageContext.request.contextPath}/project/${project.code()}"/>
+		<t:dropdownEditDelete url="${pageContext.request.contextPath}/project/${project.code()}"/>
 	</jsp:attribute>
 	<jsp:body>
 		<div class="row">

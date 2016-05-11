@@ -6,21 +6,17 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Add a new task <small>to Project ${project.name()} (Iteration #${iteration.number()})</small>
+    	New backlog item <small> for project ${project.name()}</small>
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="taskForm" action="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/new" method="POST">
+		<form:form modelAttribute="backlogForm" action="${pageContext.request.contextPath}/project/${project.code()}/backlog/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<form:hidden path="oldTitle"/>
-						<form:hidden path="storyId" value="${story.storyId()}"/>
+						<form:hidden path="projectId" value="${project.projectId()}"/>
 						<bs:input path="title" label="Title" />
 						<bs:input path="description" label="Description" />
-						<bs:select path="status" label="Task Status" />
-						<bs:select path="score" label="Task Score" />
-						<bs:filledSelect path="owner" label="Task Owner" items="${users}"/>
 					</fieldset>
 				</div>
 			</div>

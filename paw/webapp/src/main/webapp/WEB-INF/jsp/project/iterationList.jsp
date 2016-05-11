@@ -14,10 +14,19 @@
      </jsp:attribute>
      
      <jsp:body>
-			<div class="panel-group" aria-multiselectable="true">
+     	<div class="row">
+     		<div class="col-sm-12">
 				<t:descriptionPanel project="${project}"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
+			</div>
+			<div class="col-sm-6">
 				<t:iterationsPanel project="${project}" iterations="${iterations}"/>
 			</div>
+		</div>
     </jsp:body>    
 </t:page>    
 </body>

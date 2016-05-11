@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="alert alert-danger" role="alert">
-					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Looks like our server is having some issues: ${exception.getMessage()}
+					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Looks like our server is having some issues: ${exception.getMessage()}.
 				</div>			
 			</div>
         </div>

@@ -21,4 +21,7 @@ public interface BacklogDao {
 	public List<BacklogItem> getBacklogForProject(final int projectId);
 
 	public int getParent(final int backlogItemId);
+
+	public BacklogItem getBacklogItemById(final int itemId);
+
 }

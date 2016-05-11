@@ -9,7 +9,7 @@ import ar.edu.itba.models.Task;
 
 public interface BacklogService {
 
-	public BacklogItem createBacklogItem(final Project project, String title, String description);
+	public BacklogItem createBacklogItem(final Project project, final String title, final String description);
 	
 	public void deleteBacklogItem(final BacklogItem backlogItem);
 	
@@ -22,5 +22,9 @@ public interface BacklogService {
 	public BacklogItem createBacklogItemFromTask(final Task task, final Project project);
 
 	public BacklogItem createBacklogItemFromStory(final Story story, final Project project);
+
+	public BacklogItem getBacklogById(final int backlogId);
+
+	public boolean titleIsUsed(final Project project, final String title);
 	
 }

@@ -14,7 +14,7 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<form:hidden path="oldTitle" value="${story.title()}"/>
+						<form:hidden path="oldTitle"/>
 						<form:hidden path="iterationId" value="${iteration.iterationId()}"/>
 						<bs:input path="title" label="Title" />
 					</fieldset>

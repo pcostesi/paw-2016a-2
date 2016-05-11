@@ -13,11 +13,25 @@
 	 	</a>
      </jsp:attribute>
 
-     <jsp:body>     	
-        <div class="panel-group" id="story-list" role="tablist" aria-multiselectable="true">
-			<c:forEach items="${stories}" var="story">
-					<t:storyPanel panelParent="#story-list" project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}"/>
-			</c:forEach>
+     <jsp:body>
+     <div class="row">    
+		<div class="col-sm-4">
+			<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
 		</div>
+		<div class="col-sm-8">
+	     	<c:choose>
+			    <c:when test="${stories.isEmpty()}">
+			    	<div class="alert alert-info" role="alert">
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This iteration doesn't have any story so far
+					</div>
+			    </c:when>    
+			    <c:otherwise>
+						<c:forEach items="${stories}" var="story">
+								<t:storyPanel project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}"/>
+						</c:forEach>
+			    </c:otherwise>
+			</c:choose>
+		</div>
+	</div>
     </jsp:body>    
 </t:page>

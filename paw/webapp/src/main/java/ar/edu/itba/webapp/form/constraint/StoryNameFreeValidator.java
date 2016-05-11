@@ -27,19 +27,15 @@ public class StoryNameFreeValidator implements ConstraintValidator<StoryNameFree
 
     @Override
     public boolean isValid(final StoryForm form, final ConstraintValidatorContext context) {
-    	try {
-    		if (form.getOldTitle().equals(form.getTitle())) {
-    			return true;
-    		}
-    		final Iteration iteration = is.getIterationById(form.getIterationId());
-    		if (ss.storyExists(iteration, form.getTitle())) {
-    			context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
-    			return false;
-    		} else {
-    			return true;
-    		}
-    	} catch(IllegalStateException exception) {
-    		return true;
-    	}
+		if (form.getOldTitle().equals(form.getTitle())) {
+			return true;
+		}
+		final Iteration iteration = is.getIterationById(form.getIterationId());
+		if (ss.storyExists(iteration, form.getTitle())) {
+			context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(markedFieldName).addConstraintViolation();
+			return false;
+		} else {
+			return true;
+		}
     }
 }
