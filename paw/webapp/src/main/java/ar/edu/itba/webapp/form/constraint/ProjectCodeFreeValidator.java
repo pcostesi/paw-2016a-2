@@ -22,7 +22,7 @@ public class ProjectCodeFreeValidator implements ConstraintValidator<ProjectCode
 
     @Override
     public boolean isValid(final ProjectForm form, final ConstraintValidatorContext context) {
-    	if (form.getName().equals(form.getOldName())) {
+    	if (form.getCode().equals(form.getOldCode())) {
     		return true;
     	}
     	boolean projectCodeExists = ps.projectCodeExists(form.getCode());	    	
