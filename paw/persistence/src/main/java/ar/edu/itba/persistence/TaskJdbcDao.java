@@ -56,7 +56,7 @@ public class TaskJdbcDao implements TaskDao{
 					.description(Optional.ofNullable(description))
 					.status(status)
 					.score(score)
-					.owner(owner)
+					.owner(Optional.ofNullable(owner))
 					.priority(TaskPriority.NORMAL)
 					.story(storyId)
 					.build();
