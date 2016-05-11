@@ -102,8 +102,6 @@ public class TaskJdbcDaoTests {
 		assertTrue(testTask.status() == status);
 		assertTrue(testTask.title().compareTo(tName) == 0);
 		assertTrue(testTask.description().isPresent());
-		assertTrue(testTask.owner().isPresent());
-		assertNotNull(userDao.getByUsername(owner.username()));
 		assertNotNull(testTask);
 	}
 
