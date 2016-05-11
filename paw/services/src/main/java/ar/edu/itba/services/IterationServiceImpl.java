@@ -115,6 +115,10 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
 		
+		if (beginDate == null) {
+			throw new IllegalArgumentException("Begin date can't be null");
+		}
+		
 		if (iteration.endDate().compareTo(beginDate) < 0) {
 			throw new IllegalArgumentException("Iteration can't begin after it's ending date");
 		}
@@ -135,6 +139,9 @@ public class IterationServiceImpl implements IterationService{
 	public Iteration setEndDate(Iteration iteration, LocalDate endDate) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
+		}
+		if (endDate == null) {
+			throw new IllegalArgumentException("End date can't be null");
 		}
 		
 		if (iteration.startDate().compareTo(endDate) > 0) {
