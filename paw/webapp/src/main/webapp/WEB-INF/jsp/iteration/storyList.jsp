@@ -16,7 +16,16 @@
      <jsp:body>
      <div class="row">    
 		<div class="col-sm-4">
-			<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
+			<div class="row">
+				<div class="col-sm-12">
+					<t:iterationDescriptionPanel iteration="${iteration}"></t:iterationDescriptionPanel>
+				</div>
+			</div>
+			<div class="row">  
+				<div class="col-sm-12">
+					<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
+				</div>
+			</div>
 		</div>
 		<div class="col-sm-8">
 	     	<c:choose>
