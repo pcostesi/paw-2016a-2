@@ -10,6 +10,12 @@
     	Log in
 	</jsp:attribute>
 	
+	<jsp:attribute name="actions">
+		<a href="${pageContext.request.contextPath}/user/new" class="btn btn-primary">
+		    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Register
+		</a>
+	</jsp:attribute>
+	
 	<jsp:body>
 		<c:url value="/login" var="loginUrl" />
 		<form action="${loginUrl}" method="POST" enctype="application/x-www-form-urlencoded">
