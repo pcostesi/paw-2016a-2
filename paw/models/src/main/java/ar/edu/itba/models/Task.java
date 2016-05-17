@@ -1,5 +1,8 @@
 package ar.edu.itba.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -50,6 +53,22 @@ public class Task {
 	@Column(name = "story_id", nullable = false)
 	private int storyId;
 
+	private Task() {
+		// Just for Hibernate
+	}
+	
+	private Task(int taskId, String title, String description, Status status, Score score, Priority priority,
+			String owner, int storyId) {
+		this.taskId = taskId;
+		this.title = title;
+		this.description = description;
+		this.status = status;
+		this.score = score;
+		this.priority = priority;
+		this.owner = owner;
+		this.storyId = storyId;
+	}
+
 	public int taskId() {
 		return taskId;
 	}
@@ -77,5 +96,170 @@ public class Task {
 	public Optional<String> owner() {
 		return Optional.ofNullable(owner);
 	}
+	
+	public int storyId() {
+		return storyId;
+	}
 
+	public boolean equals(Object another) {
+		if (this == another) return true;
+		return another instanceof Task
+				&& equalTo((Task) another);
+	}
+
+	private boolean equalTo(Task another) {
+		return taskId == another.taskId
+				&& title.equals(another.title)
+				&& Objects.equals(description, another.description)
+				&& status.equals(another.status)
+				&& score.equals(another.score)
+				&& priority.equals(another.priority)
+				&& Objects.equals(owner, another.owner)
+				&& storyId == another.storyId;
+	}
+
+	public int hashCode() {
+		int h = 31;
+		h = h * 17 + taskId;
+		h = h * 17 + title.hashCode();
+		h = h * 17 + Objects.hashCode(description);
+		h = h * 17 + status.hashCode();
+		h = h * 17 + score.hashCode();
+		h = h * 17 + priority.hashCode();
+		h = h * 17 + Objects.hashCode(owner);
+		h = h * 17 + storyId;
+		return h;
+	}
+
+	public String toString() {
+		return "Task{"
+				+ "taskId=" + taskId
+				+ ", title=" + title
+				+ ", description=" + description
+				+ ", status=" + status
+				+ ", score=" + score
+				+ ", priority=" + priority
+				+ ", owner=" + owner
+				+ ", storyId=" + storyId
+				+ "}";
+	}
+
+	public static Task.Builder builder() {
+		return new Task.Builder();
+	}
+
+	public static final class Builder {
+		private static final long INIT_BIT_TASK_ID = 0x1L;
+		private static final long INIT_BIT_TITLE = 0x2L;
+		private static final long INIT_BIT_STATUS = 0x4L;
+		private static final long INIT_BIT_SCORE = 0x8L;
+		private static final long INIT_BIT_PRIORITY = 0x10L;
+		private static final long INIT_BIT_STORY_ID = 0x20L;
+		private long initBits = 0x3f;
+
+		private int taskId;
+		private String title;
+		private String description;
+		private Status status;
+		private Score score;
+		private Priority priority;
+		private String owner;
+		private int storyId;
+
+		private Builder() {
+		}
+
+		public final Builder from(Task instance) {
+			Objects.requireNonNull(instance, "instance");
+			taskId(instance.taskId());
+			title(instance.title());
+			Optional<String> descriptionOptional = instance.description();
+			if (descriptionOptional.isPresent()) {
+				description(descriptionOptional);
+			}
+			status(instance.status());
+			score(instance.score());
+			priority(instance.priority());
+			Optional<String> ownerOptional = instance.owner();
+			if (ownerOptional.isPresent()) {
+				owner(ownerOptional);
+			}
+			storyId(instance.storyId());
+			return this;
+		}
+
+		public final Builder taskId(int taskId) {
+			this.taskId = taskId;
+			initBits &= ~INIT_BIT_TASK_ID;
+			return this;
+		}
+
+		public final Builder title(String title) {
+			this.title = Objects.requireNonNull(title, "title");
+			initBits &= ~INIT_BIT_TITLE;
+			return this;
+		}
+
+		public final Builder description(String description) {
+			this.description = Objects.requireNonNull(description, "description");
+			return this;
+		}
+
+		public final Builder description(Optional<String> description) {
+			this.description = description.orElse(null);
+			return this;
+		}
+
+		public final Builder status(Status status) {
+			this.status = Objects.requireNonNull(status, "status");
+			initBits &= ~INIT_BIT_STATUS;
+			return this;
+		}
+
+		public final Builder score(Score score) {
+			this.score = Objects.requireNonNull(score, "score");
+			initBits &= ~INIT_BIT_SCORE;
+			return this;
+		}
+
+		public final Builder priority(Priority priority) {
+			this.priority = Objects.requireNonNull(priority, "priority");
+			initBits &= ~INIT_BIT_PRIORITY;
+			return this;
+		}
+		
+		public final Builder owner(String owner) {
+			this.owner = Objects.requireNonNull(owner, "owner");
+			return this;
+		}
+		
+		public final Builder owner(Optional<String> owner) {
+			this.owner = owner.orElse(null);
+			return this;
+		}
+		
+		public final Builder storyId(int storyId) {
+			this.storyId = storyId;
+			initBits &= ~INIT_BIT_STORY_ID;
+			return this;
+		}
+
+		public Task build() {
+			if (initBits != 0) {
+				throw new IllegalStateException(formatRequiredAttributesMessage());
+			}
+			return new Task(taskId, title, description, status, score, priority, owner, storyId);
+		}
+
+		private String formatRequiredAttributesMessage() {
+			List<String> attributes = new ArrayList<String>();
+			if ((initBits & INIT_BIT_TASK_ID) != 0) attributes.add("taskId");
+			if ((initBits & INIT_BIT_TITLE) != 0) attributes.add("title");
+			if ((initBits & INIT_BIT_STATUS) != 0) attributes.add("status");
+			if ((initBits & INIT_BIT_SCORE) != 0) attributes.add("score");
+			if ((initBits & INIT_BIT_PRIORITY) != 0) attributes.add("priority");
+			if ((initBits & INIT_BIT_STORY_ID) != 0) attributes.add("storyId");
+			return "Cannot build Task, some of required attributes are not set " + attributes;
+		}
+	}
 }
