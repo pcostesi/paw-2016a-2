@@ -39,26 +39,20 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public Task createTask(int storyId, String title, String description, Status status, Optional<User> owner, Score score) {
 		
+		final String ownerUsername = owner.isPresent()? owner.get().username() : null;
+		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("story_id", storyId);
 		args.put("title", title);
 		args.put("description", description);
-		args.put("owner", owner.isPresent()? owner.get().username() : null);
+		args.put("owner", ownerUsername);
 		args.put("status", status.getValue());
 		args.put("score", score.getValue());
 		args.put("priority", Priority.NORMAL.getValue());
 
 		try {
 			int taskId = jdbcInsert.executeAndReturnKey(args).intValue();		
-			return ImmutableTask.builder()
-					.taskId(taskId)
-					.title(title)
-					.description(Optional.ofNullable(description))
-					.status(status)
-					.score(score)
-					.owner(Optional.ofNullable(owner.isPresent()? owner.get().username() : null))
-					.priority(Priority.NORMAL)
-					.build();
+			return new Task(taskId, title, description, status, score, ownerUsername, priority);
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create task");
         }

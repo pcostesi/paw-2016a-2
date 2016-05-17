@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.models.HibernateTask;
+import ar.edu.itba.models.Task;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Task;
@@ -21,7 +21,7 @@ public class TaskHibernateDao implements TaskDao{
 	
 	@Override
 	public List<Task> getTasksForStory(int storyId) {
-		final TypedQuery<HibernateTask> query = em.createQuery("from HibernateTask task where task.storyId = :storyId", HibernateTask.class);
+		final TypedQuery<Task> query = em.createQuery("from HibernateTask task where task.storyId = :storyId", Task.class);
         query.setParameter("storyId", storyId);
         return query.getResultList();
 	}
