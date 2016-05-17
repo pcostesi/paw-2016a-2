@@ -59,6 +59,12 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = "/me/edit/password", method = RequestMethod.POST)
 	public ModelAndView editPasswordForm(@Valid @ModelAttribute("editPasswordForm") EditPasswordForm editPasswordForm, BindingResult result) {
-		return new ModelAndView("user/editPassword");
+		if(result.hasErrors()) {
+			return new ModelAndView("user/editPassword");
+		}
+		else {
+			us.editPassword(user().username(), editPasswordForm.getPassword());
+		}
+		return new ModelAndView("user/profile");
 	}
 }
