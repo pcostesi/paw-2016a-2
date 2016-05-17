@@ -15,5 +15,7 @@ public interface UserService {
 	public boolean usernameExists(String user);
 
 	public boolean emailExists(String user);
+
+	public void editPassword(String username, String newPassword);
   
 }
