@@ -2,12 +2,14 @@ package ar.edu.itba.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "account")
 public class HibernateUser extends User{
 
+	@Id
 	@Column(length = 100, nullable = false, unique = true)
 	private String username;
 	
@@ -17,6 +19,16 @@ public class HibernateUser extends User{
 	@Column(length = 100, nullable = false, unique = true)
 	private String mail;
 	
+	public HibernateUser() {
+		// Just for hibernate
+	}
+	
+	public HibernateUser(String username, String password, String mail) {
+		this.username = username;
+		this.password = password;
+		this.mail = mail;
+	}
+
 	public String username() {
 		return username;
 	}
