@@ -116,14 +116,14 @@ public class UserServiceImpl implements UserService{
 	
 	public boolean usernameExists(String username){
 		if(username == null){
-			throw new IllegalArgumentException("Username is null");
+			throw new IllegalArgumentException("Username can't be null");
 		}
 		return userDao.userNameExists(username);
 	}
 	
 	public boolean emailExists(String email){
 		if(email == null){
-			throw new IllegalArgumentException("Email is null");
+			throw new IllegalArgumentException("Email can't be null");
 		}
 		return userDao.userMailExists(email);
 	}

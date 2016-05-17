@@ -5,15 +5,14 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 
 import ar.edu.itba.webapp.form.constraint.UserMailFree;
-import ar.edu.itba.webapp.form.constraint.UserNameFree;
+import ar.edu.itba.webapp.form.constraint.UserUsernameFree;
 import ar.edu.itba.webapp.form.constraint.VerifyEquals;
 
 @VerifyEquals(first="password", second="verifyPassword")
-@UserNameFree(markedField="user")
-@UserMailFree(markedField="mail")
 public class UserForm {
 
 	@Size(min=1, max=100)
+	@UserUsernameFree
 	private String user;
 
 	@Size(min=6, max=100)
@@ -24,6 +23,7 @@ public class UserForm {
 	
 	@Size(min=1, max=100)
 	@Email
+	@UserMailFree
 	private String mail;
 
 	public String getUser() {
