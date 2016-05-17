@@ -39,10 +39,11 @@ public class BacklogItem {
 		// Just for hibernate
 	}
 
-	private BacklogItem(int backlogItemId, String title, String description) {
+	private BacklogItem(int backlogItemId, String title, String description, int projectId) {
 		this.backlogItemId = backlogItemId;
 		this.title = title;
 		this.description = description;
+		this.projectId = projectId;
 	}
 
 	public int backlogItemId() {
@@ -55,6 +56,10 @@ public class BacklogItem {
 
 	public Optional<String> description() {
 		return Optional.ofNullable(description);
+	}
+	
+	public int projectId() {
+		return projectId;
 	}
 
 	public boolean equals(Object another) {
@@ -95,13 +100,14 @@ public class BacklogItem {
 	}
 
 	public static final class Builder {
-		private static final long INIT_BIT_BACKLOG_ITEM_ID = 0x1L;
-		private static final long INIT_BIT_TITLE = 0x2L;
+		private static final long INIT_BIT_TITLE = 0x1L;
+		private static final long INIT_BIT_PROJECT_ID= 0x2L;
 		private long initBits = 0x3;
 
 		private int backlogItemId;
 		private String title;
 		private String description;
+		private int projectId;
 
 		private Builder() {
 		}
@@ -114,18 +120,29 @@ public class BacklogItem {
 			if (descriptionOptional.isPresent()) {
 				description(descriptionOptional);
 			}
+			projectId(instance.projectId());
 			return this;
 		}
 
-		public final Builder backlogItemId(int backlogItemId) {
-			this.backlogItemId = backlogItemId;
-			initBits &= ~INIT_BIT_BACKLOG_ITEM_ID;
+		public final Builder backlogItemId(Integer backlogItemId) {
+			this.backlogItemId = Objects.requireNonNull(backlogItemId, "backlogItemId");
+			return this;
+		}
+		
+		public final Builder backlogItemId(Optional<Integer> backlogItemId) {
+			this.backlogItemId = backlogItemId.orElse(null);
 			return this;
 		}
 
 		public final Builder title(String title) {
 			this.title = Objects.requireNonNull(title, "title");
 			initBits &= ~INIT_BIT_TITLE;
+			return this;
+		}
+		
+		public final Builder projectId(int projectId) {
+			this.projectId = projectId;
+			initBits &= ~INIT_BIT_PROJECT_ID;
 			return this;
 		}
 
@@ -143,13 +160,13 @@ public class BacklogItem {
 			if (initBits != 0) {
 				throw new IllegalStateException(formatRequiredAttributesMessage());
 			}
-			return new BacklogItem(backlogItemId, title, description);
+			return new BacklogItem(backlogItemId, title, description, projectId);
 		}
 
 		private String formatRequiredAttributesMessage() {
 			List<String> attributes = new ArrayList<String>();
-			if ((initBits & INIT_BIT_BACKLOG_ITEM_ID) != 0) attributes.add("backlogItemId");
 			if ((initBits & INIT_BIT_TITLE) != 0) attributes.add("title");
+			if ((initBits & INIT_BIT_PROJECT_ID) != 0) attributes.add("projectId");
 			return "Cannot build BacklogItem, some of required attributes are not set " + attributes;
 		}
 	}

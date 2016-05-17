@@ -149,13 +149,12 @@ public class Task {
 	}
 
 	public static final class Builder {
-		private static final long INIT_BIT_TASK_ID = 0x1L;
-		private static final long INIT_BIT_TITLE = 0x2L;
-		private static final long INIT_BIT_STATUS = 0x4L;
-		private static final long INIT_BIT_SCORE = 0x8L;
-		private static final long INIT_BIT_PRIORITY = 0x10L;
-		private static final long INIT_BIT_STORY_ID = 0x20L;
-		private long initBits = 0x3f;
+		private static final long INIT_BIT_TITLE = 0x1L;
+		private static final long INIT_BIT_STATUS = 0x2L;
+		private static final long INIT_BIT_SCORE = 0x4L;
+		private static final long INIT_BIT_PRIORITY = 0x8L;
+		private static final long INIT_BIT_STORY_ID = 0x10L;
+		private long initBits = 0x1f;
 
 		private int taskId;
 		private String title;
@@ -188,9 +187,13 @@ public class Task {
 			return this;
 		}
 
-		public final Builder taskId(int taskId) {
-			this.taskId = taskId;
-			initBits &= ~INIT_BIT_TASK_ID;
+		public final Builder taskId(Integer taskId) {
+			this.taskId = Objects.requireNonNull(taskId, "taskId");
+			return this;
+		}
+		
+		public final Builder taskId(Optional<Integer> taskId) {
+			this.taskId = taskId.orElse(null);
 			return this;
 		}
 
@@ -253,7 +256,6 @@ public class Task {
 
 		private String formatRequiredAttributesMessage() {
 			List<String> attributes = new ArrayList<String>();
-			if ((initBits & INIT_BIT_TASK_ID) != 0) attributes.add("taskId");
 			if ((initBits & INIT_BIT_TITLE) != 0) attributes.add("title");
 			if ((initBits & INIT_BIT_STATUS) != 0) attributes.add("status");
 			if ((initBits & INIT_BIT_SCORE) != 0) attributes.add("score");

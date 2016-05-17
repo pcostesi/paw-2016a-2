@@ -41,7 +41,11 @@ public class UserJdbcDao implements UserDao {
             
             try {
 	            jdbcInsert.execute(args);            
-	            return new User(username, password, mail);
+	            return User.builder()
+	            		.username(username)
+	            		.password(password)
+	            		.mail(mail)
+	            		.build();
             } catch (DataAccessException exception) {
             	throw new IllegalStateException("Database failed to create user");
             }

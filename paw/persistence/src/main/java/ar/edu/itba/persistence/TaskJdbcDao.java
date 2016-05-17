@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.models.ImmutableTask;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
@@ -37,7 +36,7 @@ public class TaskJdbcDao implements TaskDao{
     }
 	
 	@Override
-	public Task createTask(int storyId, String title, String description, Status status, Optional<User> owner, Score score) {
+	public Task createTask(int storyId, String title, String description, Status status, Optional<User> owner, Score score, Priority priority) {
 		
 		final String ownerUsername = owner.isPresent()? owner.get().username() : null;
 		
@@ -48,11 +47,20 @@ public class TaskJdbcDao implements TaskDao{
 		args.put("owner", ownerUsername);
 		args.put("status", status.getValue());
 		args.put("score", score.getValue());
-		args.put("priority", Priority.NORMAL.getValue());
+		args.put("priority", priority.getValue());
 
 		try {
 			int taskId = jdbcInsert.executeAndReturnKey(args).intValue();		
-			return new Task(taskId, title, description, status, score, ownerUsername, priority);
+			return Task.builder()
+					.taskId(taskId)
+					.title(title)
+					.description(Optional.ofNullable(description))
+					.status(status)
+					.score(score)
+					.owner(Optional.ofNullable(ownerUsername))
+					.priority(priority)
+					.storyId(storyId)
+					.build();
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create task");
         }

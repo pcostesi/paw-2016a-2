@@ -40,7 +40,11 @@ public class UserHibernateDao implements UserDao{
 
 	@Override
 	public User createUser(String name, String password, String mail) {
-		final User user = new User(name, password, mail);
+		final User user = User.builder()
+				.username(name)
+				.password(password)
+				.mail(mail)
+				.build();
 		em.persist(user);
 		return user;
 	}

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BacklogDao;
 import ar.edu.itba.models.BacklogItem;
-import ar.edu.itba.models.ImmutableBacklogItem;
 import ar.edu.itba.persistence.rowmapping.BacklogRowMapper;
 
 @Repository
@@ -41,7 +40,7 @@ public class BacklogJdbcDao implements BacklogDao {
 
 		try {
 			int itemId = jdbcInsert.executeAndReturnKey(args).intValue();
-			return ImmutableBacklogItem.builder()
+			return BacklogItem.builder()
 					.title(title)
 					.description(Optional.ofNullable(description))
 					.backlogItemId(itemId)

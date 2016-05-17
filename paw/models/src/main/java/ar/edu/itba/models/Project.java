@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -111,12 +112,11 @@ public class Project {
 	}
 
 	public static final class Builder {
-		private static final long INIT_BIT_PROJECT_ID = 0x1L;
-		private static final long INIT_BIT_NAME = 0x2L;
-		private static final long INIT_BIT_CODE = 0x4L;
-		private static final long INIT_BIT_DESCRIPTION = 0x8L;
-		private static final long INIT_BIT_START_DATE = 0x10L;
-		private long initBits = 0x1f;
+		private static final long INIT_BIT_NAME = 0x1L;
+		private static final long INIT_BIT_CODE = 0x2L;
+		private static final long INIT_BIT_DESCRIPTION = 0x4L;
+		private static final long INIT_BIT_START_DATE = 0x8L;
+		private long initBits = 0xf;
 
 		private int projectId;
 		private String name;
@@ -137,9 +137,13 @@ public class Project {
 			return this;
 		}
 
-		public final Builder projectId(int projectId) {
-			this.projectId = projectId;
-			initBits &= ~INIT_BIT_PROJECT_ID;
+		public final Builder projectId(Integer projectId) {
+			this.projectId = Objects.requireNonNull(projectId, "projectId");
+			return this;
+		}
+		
+		public final Builder projectId(Optional<Integer> projectId) {
+			this.projectId = projectId.orElse(null);
 			return this;
 		}
 
@@ -176,7 +180,6 @@ public class Project {
 
 		private String formatRequiredAttributesMessage() {
 			List<String> attributes = new ArrayList<String>();
-			if ((initBits & INIT_BIT_PROJECT_ID) != 0) attributes.add("projectId");
 			if ((initBits & INIT_BIT_NAME) != 0) attributes.add("name");
 			if ((initBits & INIT_BIT_CODE) != 0) attributes.add("code");
 			if ((initBits & INIT_BIT_DESCRIPTION) != 0) attributes.add("description");

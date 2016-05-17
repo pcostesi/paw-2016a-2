@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import ar.edu.itba.models.ImmutableTask;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
@@ -25,7 +24,7 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 		Priority priority = Priority.getByValue(rs.getInt("priority"));		
 		String username = rs.getString("username");	
 		
-		return ImmutableTask.builder()
+		return Task.builder()
 				.taskId(taskId)
 				.title(title)
 				.description(Optional.ofNullable(description))

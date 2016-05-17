@@ -12,7 +12,7 @@ import ar.edu.itba.models.User;
 
 public interface TaskService {
 
-	public Task createTask(final Story story, final String name, final String description, final Status taskStatus, final Optional<User> user, final Score taskScore);
+	public Task createTask(final Story story, final String name, final String description, final Status taskStatus, final Optional<User> user, final Score taskScore, final Priority priority);
 	
 	public Task getTaskById(final int taskId);
 	

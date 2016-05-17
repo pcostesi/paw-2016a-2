@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -118,12 +119,11 @@ public class Iteration{
 	}
 
 	public static final class Builder {
-		private static final long INIT_BIT_ITERATION_ID = 0x1L;
-		private static final long INIT_BIT_NUMBER = 0x2L;
-		private static final long INIT_BIT_START_DATE = 0x4L;
-		private static final long INIT_BIT_END_DATE = 0x8L;
-		private static final long INIT_BIT_PROJECT_ID = 0x10L;
-		private long initBits = 0x1f;
+		private static final long INIT_BIT_NUMBER = 0x1L;
+		private static final long INIT_BIT_START_DATE = 0x2L;
+		private static final long INIT_BIT_END_DATE = 0x4L;
+		private static final long INIT_BIT_PROJECT_ID = 0x8L;
+		private long initBits = 0xf;
 
 		private int iterationId;
 		private int number;
@@ -144,9 +144,13 @@ public class Iteration{
 			return this;
 		}
 
-		public final Builder iterationId(int iterationId) {
-			this.iterationId = iterationId;
-			initBits &= ~INIT_BIT_ITERATION_ID;
+		public final Builder iterationId(Integer iterationId) {
+			this.iterationId = Objects.requireNonNull(iterationId, "iterationId");
+			return this;
+		}
+		
+		public final Builder iterationId(Optional<Integer> iterationId) {
+			this.iterationId = iterationId.orElse(null);
 			return this;
 		}
 
@@ -183,7 +187,6 @@ public class Iteration{
 
 		private String formatRequiredAttributesMessage() {
 			List<String> attributes = new ArrayList<String>();
-			if ((initBits & INIT_BIT_ITERATION_ID) != 0) attributes.add("iterationId");
 			if ((initBits & INIT_BIT_NUMBER) != 0) attributes.add("number");
 			if ((initBits & INIT_BIT_START_DATE) != 0) attributes.add("startDate");
 			if ((initBits & INIT_BIT_END_DATE) != 0) attributes.add("endDate");
