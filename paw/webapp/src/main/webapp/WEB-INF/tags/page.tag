@@ -44,7 +44,7 @@
 			     		</li>	
 			     		<li>
 			     			<a href="${pageContext.request.contextPath}/logout">
-			     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> logout
+			     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <spring:message code="login.logout"/>
 			     			</a>
 			     		</li>	
 			     		</c:if>

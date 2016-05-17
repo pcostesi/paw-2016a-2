@@ -2,15 +2,18 @@
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="items" required="true" type="java.util.List"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<c:url value="/project/${project.code()}/backlog/new" var="newLink"/>
 
 <t:collapsiblePanel panelId="backlog">
 	<jsp:attribute name="title">
-		Project backlog
+		<spring:message code="backlogItemContainer.title"/>
 	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-		<a href="${pageContext.request.contextPath}/project/${project.code()}/backlog/new" class="btn btn-primary btn-xs dropdown-toggle">
-		    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New item
+		<a href="${newLink}" class="btn btn-primary btn-xs dropdown-toggle">
+		    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="backlogItemContainer.new_item"/>
 		</a>
 	</jsp:attribute>
 	
@@ -25,7 +28,7 @@
 	<jsp:body><c:if test="${items.isEmpty()}">
 		<div class="row">
             <div class="col-sm-12">
-				    This backlog doesn't have any items so far
+				<spring:message code="backlogItemContainer.empty_list"/>
             </div>
         </div>
 	</c:if></jsp:body>

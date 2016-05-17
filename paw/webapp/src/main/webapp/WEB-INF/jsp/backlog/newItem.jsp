@@ -3,14 +3,18 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 
 <t:page>
 	<jsp:attribute name="title">
-    	New backlog item <small> for project ${project.name()}</small>
+		<spring:message code="item.new.title" arguments="${project.name()}" />
 	</jsp:attribute>
-	
+
+	<c:url value="/project/${project.code()}/backlog/new" var="formUrl"/>
+
 	<jsp:body>
-		<form:form modelAttribute="backlogForm" action="${pageContext.request.contextPath}/project/${project.code()}/backlog/new" method="POST">
+		<form:form modelAttribute="backlogForm" action="${formUrl}" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
@@ -20,7 +24,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<bs:submit/>
 
 		</form:form>
     </jsp:body>

@@ -1,15 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 
 <t:page>
 	<jsp:attribute name="title">
-    	Iteration #${iteration.number()} <small>Project ${project.name()}</small>
+    	<spring:message code="story.list.title">
+    		<spring:argument>${project.name()}</spring:argument>
+    		<spring:argument>${iteration.number()}</spring:argument>
+    	</spring:message>
     </jsp:attribute>
     
     <jsp:attribute name="actions">
 		<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/new" class="btn btn-primary btn-sm">
-			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New story
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="story.list.new_story"/>
 	 	</a>
      </jsp:attribute>
 
@@ -31,7 +36,7 @@
 	     	<c:choose>
 			    <c:when test="${stories.isEmpty()}">
 			    	<div class="alert alert-info" role="alert">
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This iteration doesn't have any story so far
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> <spring:message code="story.list.empty_list" />
 					</div>
 			    </c:when>    
 			    <c:otherwise>

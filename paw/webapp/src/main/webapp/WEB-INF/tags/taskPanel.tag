@@ -1,3 +1,4 @@
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="project" required="true" type="ar.edu.itba.models.Project" %>
@@ -7,6 +8,8 @@
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
+<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/${task.taskId()}" var="taskUrl"/>
+
 <t:collapsiblePanel panelId="task-${task.taskId()}" panelParent="${panelParent}">
 	<jsp:attribute name="titleInfo">
 		<span class="label label-default">${task.score().value}</span> <t:statusLabel taskStatus="${task.status()}"/> 
@@ -15,9 +18,9 @@
 	<jsp:attribute name="title">
 		${task.title()}
 	</jsp:attribute>
-	
+		
 	<jsp:attribute name="actions">
-		<t:dropdownEditDelete url="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/${task.taskId()}"/>
+		<t:dropdownEditDelete url="${taskUrl}"/>
 	</jsp:attribute>
 
 	<jsp:body>
@@ -25,18 +28,18 @@
             <div class="col-sm-12">
             	<c:choose>
 				    <c:when test="${task.owner().isPresent()}">
-				    	<b>Owner</b> ${task.owner().get().username()}<br>
+				    	<p><strong><spring:message code="taskPanel.owner.label"/></strong> ${task.owner().get().username()}</p>
 				    </c:when>    
 				    <c:otherwise>
-				    	<b>Owner</b> Task doesn't have an owner<br>
+				    	<p><strong><spring:message code="taskPanel.owner.label"/></strong> <spring:message code="taskPanel.owner.empty"/></p>
 				    </c:otherwise>
 				</c:choose>
 				<c:choose>
 				    <c:when test="${task.description().isPresent()}">
-				    	<b>Description</b> ${task.description().get()}<br>
+				    	<p><strong><spring:message code="taskPanel.description.label"/></strong> ${task.description().get()}</p>
 				    </c:when>    
 				    <c:otherwise>
-				    	<b>Description</b> Task doesn't have a description<br>
+				    	<p><strong><spring:message code="taskPanel.description.label"/></strong> <spring:message code="taskPanel.description.empty"/></p>
 				    </c:otherwise>
 				</c:choose>
             </div>
