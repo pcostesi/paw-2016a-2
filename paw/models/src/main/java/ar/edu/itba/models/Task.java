@@ -10,10 +10,9 @@ public abstract class Task{
 	public abstract int taskId();
 	public abstract String title();
 	public abstract Optional<String> description();
-	public abstract TaskStatus status();
-	public abstract TaskScore score();
-	public abstract TaskPriority priority();
-	public abstract Optional<User> owner();
-	public abstract int story();
+	public abstract Status status();
+	public abstract Score score();
+	public abstract Priority priority();
+	public abstract Optional<String> owner();
 	
 }

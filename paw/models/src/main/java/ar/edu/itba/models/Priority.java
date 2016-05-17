@@ -1,6 +1,6 @@
 package ar.edu.itba.models;
 
-public enum TaskPriority {
+public enum Priority {
 
 	LOW(0, "Low"), 
 	NORMAL(1, "Normal"), 
@@ -11,7 +11,7 @@ public enum TaskPriority {
 	private final int value;
 	private final String label;
 	
-	TaskPriority(int value, String label) {
+	Priority(int value, String label) {
         this.value = value;
         this.label = label;
     }
@@ -28,18 +28,18 @@ public enum TaskPriority {
     	return this.label;
     }
     
-    public static TaskPriority getByValue(int value) {
+    public static Priority getByValue(int value) {
     	switch(value) {
     	case 0:
-    		return TaskPriority.LOW;
+    		return Priority.LOW;
     	case 1:
-			return TaskPriority.NORMAL;
+			return Priority.NORMAL;
     	case 2:
-			return TaskPriority.NORMAL;
+			return Priority.NORMAL;
     	case 3:
-			return TaskPriority.URGENT;
+			return Priority.URGENT;
     	case 4:
-			return TaskPriority.CRITICAL;
+			return Priority.CRITICAL;
 		default:
 			return null;
 		}

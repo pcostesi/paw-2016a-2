@@ -15,10 +15,10 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.ImmutableTask;
+import ar.edu.itba.models.Priority;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Task;
-import ar.edu.itba.models.TaskPriority;
-import ar.edu.itba.models.TaskScore;
-import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 import ar.edu.itba.persistence.rowmapping.TaskUserRowMapper;
 
@@ -37,16 +37,16 @@ public class TaskJdbcDao implements TaskDao{
     }
 	
 	@Override
-	public Task createTask(int storyId, String title, String description, TaskStatus status, User owner, TaskScore score) {
+	public Task createTask(int storyId, String title, String description, Status status, Optional<User> owner, Score score) {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("story_id", storyId);
 		args.put("title", title);
 		args.put("description", description);
-		args.put("owner", owner == null ? null : owner.username());
+		args.put("owner", owner.isPresent()? owner.get().username() : null);
 		args.put("status", status.getValue());
 		args.put("score", score.getValue());
-		args.put("priority", TaskPriority.NORMAL.getValue());
+		args.put("priority", Priority.NORMAL.getValue());
 
 		try {
 			int taskId = jdbcInsert.executeAndReturnKey(args).intValue();		
@@ -56,9 +56,8 @@ public class TaskJdbcDao implements TaskDao{
 					.description(Optional.ofNullable(description))
 					.status(status)
 					.score(score)
-					.owner(Optional.ofNullable(owner))
-					.priority(TaskPriority.NORMAL)
-					.story(storyId)
+					.owner(Optional.ofNullable(owner.isPresent()? owner.get().username() : null))
+					.priority(Priority.NORMAL)
 					.build();
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create task");
@@ -75,9 +74,9 @@ public class TaskJdbcDao implements TaskDao{
 	}
 
 	@Override
-	public void updateOwner(final int taskId,final  String username) {
+	public void updateOwner(final int taskId, final Optional<User> user) {
 		try {
-			jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", username, taskId);
+			jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.isPresent()? user.get().username() : null, taskId);
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update owner");
         }

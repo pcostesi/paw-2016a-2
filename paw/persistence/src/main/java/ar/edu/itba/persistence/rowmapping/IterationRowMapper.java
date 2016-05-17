@@ -17,7 +17,6 @@ public class IterationRowMapper implements RowMapper<Iteration> {
             		.number(rs.getInt("number"))
             		.startDate(rs.getDate("date_start").toLocalDate())
             		.endDate(rs.getDate("date_end").toLocalDate())
-            		.project(rs.getInt("project_id"))
             		.build();
     }
 }

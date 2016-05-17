@@ -16,7 +16,6 @@ public class StoryRowMapper implements RowMapper<Story> {
             return ImmutableStory.builder()
             		.storyId(rs.getInt("story_id"))
             		.title(rs.getString("title"))
-            		.iteration(rs.getInt("iteration_id"))
             		.build();
     }
 }

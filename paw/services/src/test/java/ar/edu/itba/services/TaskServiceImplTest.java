@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +19,10 @@ import org.mockito.MockitoAnnotations;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
-import ar.edu.itba.models.TaskScore;
-import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
 public class TaskServiceImplTest {
@@ -36,13 +37,13 @@ public class TaskServiceImplTest {
 	@Mock
 	private Story testStory;
 	@Mock
-	private User testUser;
+	private Optional<User> testUser;
 
-	private TaskStatus status = TaskStatus.getByValue(1);
-	private TaskScore score = TaskScore.getByValue(1);
-	private String name = "Epic tests";
-	private String description = "The life of a tester is hard";
-	private String veryLongString = "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+	private final Status status = Status.getByValue(1);
+	private final Score score = Score.getByValue(1);
+	private final String name = "Epic tests";
+	private final String description = "The life of a tester is hard";
+	private final String veryLongString = "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
 			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
 			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
 			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
@@ -169,7 +170,7 @@ public class TaskServiceImplTest {
 		Mockito.when(taskDao.taskExists(testTask.taskId())).thenReturn(false);
 
 		ts.changeOwnership(testTask, testUser);
-		verify(taskDao, times(0)).updateOwner(testTask.taskId(), testUser.username());
+		verify(taskDao, times(0)).updateOwner(testTask.taskId(), testUser);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

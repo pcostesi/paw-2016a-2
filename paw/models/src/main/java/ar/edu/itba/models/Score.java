@@ -1,15 +1,17 @@
 package ar.edu.itba.models;
 
-public enum TaskStatus {
-	
-	NOT_STARTED(0, "Not started"), 
-	STARTED(1, "Started"), 
-	COMPLETED(2, "Done");
+public enum Score {
+
+	VERY_EASY(0, "0 points"), 
+	EASY(1, "1 points"), 
+	NORMAL(2, "2 points"), 
+	HARD(4, "4 points"),
+	EPIC(8, "8 points");
 	
 	private final int value;
 	private final String label;
 	
-	private TaskStatus(int value, String label) {
+	private Score(int value, String label) {
         this.value = value;
         this.label = label;
     }
@@ -26,17 +28,20 @@ public enum TaskStatus {
     	return this.label;
     }
     
-    public final static TaskStatus getByValue(int value) {
+    public final static Score getByValue(int value) {
     	switch(value) {
     	case 0:
-    		return TaskStatus.NOT_STARTED;
+    		return Score.VERY_EASY;
     	case 1:
-			return TaskStatus.STARTED;
+			return Score.EASY;
     	case 2:
-			return TaskStatus.COMPLETED;
+			return Score.NORMAL;
+    	case 4:
+			return Score.HARD;
+    	case 8:
+			return Score.EPIC;
 		default:
 			return null;
 		}
     }
-
 }

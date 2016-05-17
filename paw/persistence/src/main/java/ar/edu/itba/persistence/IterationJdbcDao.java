@@ -72,7 +72,6 @@ public class IterationJdbcDao implements IterationDao {
 					.number(nextIterationNumber)
 					.startDate(beginDate)
 					.endDate(endDate)
-					.project(projectId)
 					.build();
         } catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create iteration");

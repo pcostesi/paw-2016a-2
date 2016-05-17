@@ -85,7 +85,7 @@ public class TaskController extends BaseController {
 			mav.addObject("story", story);			
 			mav.addObject("users",users);
 		} else {
-			final User owner = taskForm.getOwner().equals("None")? null : us.getByUsername(taskForm.getOwner());
+			final Optional<User> owner = taskForm.getOwner().equals("None")? null : Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
 			final String description = taskForm.getDescription().length() == 0 ? null: taskForm.getDescription();
 			ts.createTask(story, taskForm.getTitle(), description, taskForm.getStatus(), owner, taskForm.getScore());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
@@ -108,8 +108,8 @@ public class TaskController extends BaseController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		final Task task = ts.getTaskById(taskId);
-		final Optional<User> owner = task.owner();
-		final String ownerUsername = (!owner.isPresent())? "None": owner.get().username();
+		final Optional<String> owner = task.owner();
+		final String ownerUsername = (!owner.isPresent())? "None": owner.get();
 		final List<String> users = us.getUsernames();
 		users.add(0, "None");
 		taskForm.setDescription(task.description().isPresent()? task.description().get() : null);
@@ -146,11 +146,11 @@ public class TaskController extends BaseController {
 			mav.addObject("users", users);
 			mav.addObject("story", story);
 		} else {
-			final User owner;
+			final Optional<User> owner;
 			if (taskForm.getOwner().equals("None")) {
 				owner = null;
 			} else {
-				owner = us.getByUsername(taskForm.getOwner());
+				owner = Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
 			}
 			final String description = taskForm.getDescription().length() == 0 ? null: taskForm.getDescription();
 			

@@ -7,6 +7,7 @@ public abstract class Story {
 
 	public abstract int storyId();
 	public abstract String title();
-	public abstract int iteration();
+	public abstract Status status();
+	public abstract int totalScore();
 
 }

@@ -10,11 +10,11 @@ import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
 import ar.edu.itba.models.ImmutableTask;
+import ar.edu.itba.models.Priority;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
-import ar.edu.itba.models.TaskPriority;
-import ar.edu.itba.models.TaskScore;
-import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
 @Service
@@ -29,11 +29,10 @@ public class TaskServiceImpl implements TaskService{
 	@Autowired TaskServiceImpl(TaskDao newTaskDao, StoryDao newStoryDao){
 		this.taskDao = newTaskDao;
 		this.storyDao = newStoryDao;
-	}
-	
+	}	
 
 	@Override
-	public Task createTask(Story story, String title, String description, TaskStatus status, User user, TaskScore score) {
+	public Task createTask(Story story, String title, String description, Status status, Optional<User> user, Score score) {
 		if (story == null) {
 			throw new IllegalArgumentException("Story can't be null");
 		}
@@ -58,6 +57,14 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task title can't be longer than 100 characters");
 		}
 		
+		if (user.isPresent() && user.get().username().length() == 0) {
+			throw new IllegalArgumentException("Task owner can't be empty");
+		}
+		
+		if (user.isPresent() && user.get().username().length() > 100) {
+			throw new IllegalArgumentException("Task owner can't be longer than 100 characters");
+		}
+		
 		if (description != null && description.length() == 0) {
 			throw new IllegalArgumentException("Description can't be empty");
 		}
@@ -65,7 +72,6 @@ public class TaskServiceImpl implements TaskService{
 		if (description != null && description.length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
-		
 		if (!storyDao.storyExists(story.storyId())) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
@@ -106,7 +112,7 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public Task changeOwnership(Task task, User user) {
+	public Task changeOwnership(Task task, Optional<User> user) {
 		
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
@@ -116,13 +122,13 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		taskDao.updateOwner(task.taskId(), user != null ? user.username() : null);
-		return ImmutableTask.copyOf(task).withOwner(Optional.ofNullable(user));
+		taskDao.updateOwner(task.taskId(), user);
+		return ImmutableTask.copyOf(task).withOwner(Optional.ofNullable(user.isPresent()? user.get().username() : null));
 		
 	}
 
 	@Override
-	public Task changeStatus(Task task, TaskStatus status) {
+	public Task changeStatus(Task task, Status status) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -173,7 +179,7 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public Task changePriority(Task task, TaskPriority priority) {
+	public Task changePriority(Task task, Priority priority) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -196,7 +202,7 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public Task changeScore(Task task, TaskScore score) {
+	public Task changeScore(Task task, Score score) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}

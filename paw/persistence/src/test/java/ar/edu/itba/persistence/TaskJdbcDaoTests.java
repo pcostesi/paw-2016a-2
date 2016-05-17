@@ -1,13 +1,11 @@
 package ar.edu.itba.persistence;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -29,10 +27,10 @@ import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
-import ar.edu.itba.models.TaskScore;
-import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
 @Sql("classpath:schema.sql")
@@ -54,18 +52,19 @@ public class TaskJdbcDaoTests {
 	@Autowired
 	DataSource ds;
 
-	private String pName = "TesterProject";
-	private String pCode = "Test";
-	private String tName = "Test Task";
-	private String tDesc = "The tester's life is a tough one";
+	private final String pName = "TesterProject";
+	private final String pCode = "Test";
+	private final String tName = "Test Task";
+	private final String tDesc = "The tester's life is a tough one";
+	private final Status status = Status.getByValue(1);
+	private final Score score = Score.getByValue(1);
+	private final JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+	
 	private Story testStory;
 	private Iteration testIteration;
 	private Project testProject;
 	private Task testTask;
-	private TaskStatus status = TaskStatus.getByValue(1);
-	private TaskScore score = TaskScore.getByValue(1);
-	private User owner;
-	private JdbcTemplate jdbcTemplate;
+	private Optional<User> owner;
 
 	@Before
 	public void setUp() throws Exception {
@@ -77,10 +76,8 @@ public class TaskJdbcDaoTests {
 		testStory = storyDao.createStory(testIteration.iterationId(),
 				"A sad story about extreme unhappyness while testing");
 		if (!userDao.userNameExists("testuser")) {
-			owner = userDao.createUser("testuser", "test", "testerr@gmail.com");
+			owner = Optional.ofNullable(userDao.createUser("testuser", "test", "testerr@gmail.com"));
 		}
-		jdbcTemplate = new JdbcTemplate(ds);
-
 	}
 
 	@After
@@ -153,7 +150,7 @@ public class TaskJdbcDaoTests {
 		String newName = "newname";
 		testTask = taskDao.createTask(testStory.storyId(), tName, tDesc, status, owner, score);
 		User newUser = userDao.createUser(newName, "pw", newName + "@test.com");
-		taskDao.updateOwner(testTask.taskId(), newName);
+		taskDao.updateOwner(testTask.taskId(), owner);
 		assertTrue(utils.countRowsInTableWhere(jdbcTemplate, "task",
 				"task_id = " + testTask.taskId() + " AND owner = \'" + newName + "\'") == 1);
 	}

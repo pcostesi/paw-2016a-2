@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -16,6 +17,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
@@ -50,7 +55,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 	
 	@Bean
-	public DataSource dataSurce() {
+	public DataSource dataSource() {
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(org.postgresql.Driver.class);
         //ds.setUrl("jdbc:postgresql://10.16.1.110/grupo2");
@@ -110,8 +115,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
         // Si ponen esto en prod, hay tabla!!!
-        hibernateProperties.setProperty("hibernate.show_sql", "true");
-        hibernateProperties.setProperty("format_sql", "true");
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("format_sql", "true");
 
         factoryBean.setJpaProperties(properties);
 
