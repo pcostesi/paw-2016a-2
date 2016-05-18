@@ -3,10 +3,11 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <t:page>
 	<jsp:attribute name="title">
-    	New Iteration <small>Project ${project.name()}</small>
+		<spring:message code="iteration.new.title" arguments="${project.name()}" />
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -19,7 +20,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<bs:submit/>
 
 		</form:form>
     </jsp:body>

@@ -3,10 +3,11 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <t:page>
 	<jsp:attribute name="title">
-    	New project
+    	<spring:message code="project.new.title"/>
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -22,7 +23,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<bs:submit/>
 
 		</form:form>
     </jsp:body>

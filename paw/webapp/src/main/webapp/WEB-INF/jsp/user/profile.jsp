@@ -7,9 +7,9 @@
 
 <t:page user="${user}">
 	<jsp:attribute name="title">
-		Hi ${user.username()}!
+		<spring:message code="profile.title" arguments="${user.username()}" />
 	</jsp:attribute>
 	<jsp:body>
-		Your email address is <a href="mailto:${user.mail()}">${user.mail()}</a>, right?
+		<spring:message code="profile.email" arguments="${user.mail()}" />
     </jsp:body>
 </t:page>

@@ -1,3 +1,4 @@
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="panelId" required="true"%>

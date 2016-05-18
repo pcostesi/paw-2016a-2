@@ -10,9 +10,16 @@
 <%@attribute name="dateClass" required="false" type="java.lang.String"%>
 <%@attribute name="type" required="false" type="java.lang.String"%>
 
+
+<jsp:doBody var="body"/>
+<c:if test="${not empty body}">
+	<c:set var="label" value="${body}"/>
+</c:if>
+
 <c:if test="${empty label}">
     <c:set var="label" value="${fn:toUpperCase(fn:substring(path, 0, 1))}${fn:toLowerCase(fn:substring(path, 1,fn:length(path)))}" />
 </c:if>
+
 <spring:bind path="${path}">
 	<div class="form-group ${status.error ? 'has-error' : '' }">
 	    <div class="input-group ${cssClass}">

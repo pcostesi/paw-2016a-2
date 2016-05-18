@@ -7,7 +7,7 @@
 
 <t:page user="${user}">
 	<jsp:attribute name="title">
-    	Log in
+    	<spring:message code="login.title"/>
 	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
@@ -35,16 +35,16 @@
 						</div>
 						
 						<div class="form-group">
-							<input name="j_rememberme" id="j_rememberme" type="checkbox" 
+							<input name="j_rememberme" id="j_rememberme" type="checkbox" checked="checked"
 							data-on="<spring:message code='login.remember_me'/>" 
 							data-off="<spring:message code='login.remember_me_not'/>" 
-							data-toggle="toggle" /> <spring:message code="login.remember_me"/>
+							data-toggle="toggle" />
 						</div>
 							
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary"><spring:message code="login.submit"/></button>
 
 		</form>
     </jsp:body>

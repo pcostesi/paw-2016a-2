@@ -6,11 +6,13 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Edit Story
+    	<spring:message code="story.edit.title" />
 	</jsp:attribute>
 	
+	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/edit" var="formUrl"/>
+	
 	<jsp:body>
-		<form:form modelAttribute="storyForm" action="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/edit" method="POST">
+		<form:form modelAttribute="storyForm" action="${formUrl}" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
@@ -20,7 +22,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<bs:submit/>
 
 		</form:form>
     </jsp:body>
