@@ -6,10 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 
+@Primary
+@Repository
 public class ProjectHibernateDao implements ProjectDao{
 
 	@PersistenceContext

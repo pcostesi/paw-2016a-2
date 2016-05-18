@@ -7,11 +7,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.PersistableIteration;
 import ar.edu.itba.models.Project;
 
+@Primary
+@Repository
 public class IterationHibernateDao implements IterationDao{
 
 	@PersistenceContext

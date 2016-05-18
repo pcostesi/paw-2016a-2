@@ -7,6 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.PersistableTask;
 import ar.edu.itba.models.Priority;
@@ -16,6 +19,8 @@ import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.User;
 
+@Primary
+@Repository
 public class TaskHibernateDao implements TaskDao{
 
 	@PersistenceContext

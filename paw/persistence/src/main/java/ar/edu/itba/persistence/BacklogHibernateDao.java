@@ -7,11 +7,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+
 import ar.edu.itba.interfaces.BacklogDao;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.PersistableBacklogItem;
 import ar.edu.itba.models.Project;
 
+@Primary
+@Repository
 public class BacklogHibernateDao implements BacklogDao{
 
 	@PersistenceContext
