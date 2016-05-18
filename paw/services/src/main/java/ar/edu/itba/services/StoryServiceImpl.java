@@ -79,7 +79,7 @@ public class StoryServiceImpl implements StoryService{
 	}
 	
 	@Override
-	public Map<Story, List<Task>> getStoriesWithTasksForIteration(Iteration iteration) {
+	public Map<Story, List<? extends Task>> getStoriesWithTasksForIteration(Iteration iteration) {
 		if (iteration == null) {
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
@@ -88,8 +88,8 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		Map<Story, List<Task>> result = new HashMap<Story, List<Task>>();
-		List<Story> stories = storyDao.getStoriesForIteration(iteration);
+		Map<Story, List<? extends Task>> result = new HashMap<Story, List<? extends Task>>();
+		List<? extends Story> stories = storyDao.getStoriesForIteration(iteration);
 		for (Story story: stories) {
 			result.put(story, taskDao.getTasksForStory(story));
 		}

@@ -14,5 +14,5 @@ public interface Story {
 
 	public int iterationId();
 
-	public List<Task> tasks();
+	public List<? extends Task> tasks();
 }

@@ -20,7 +20,7 @@ public interface IterationService {
 	
 	public Iteration setEndDate(final Iteration iteration, final LocalDate endDate);
 
-	public List<Iteration> getIterationsForProject(final Project project);
+	public List<? extends Iteration> getIterationsForProject(final Project project);
 	
 	public Project getParent(final Iteration iteration);
 	

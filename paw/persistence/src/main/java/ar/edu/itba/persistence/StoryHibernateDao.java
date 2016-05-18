@@ -22,7 +22,7 @@ public class StoryHibernateDao implements StoryDao{
     private EntityManager em;
 	
 	@Override
-	public List<Story> getStoriesForIteration(Iteration iteration) {
+	public List<? extends Story> getStoriesForIteration(Iteration iteration) {
 		return iteration.getStories();
 	}
 

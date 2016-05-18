@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -38,12 +39,12 @@ public class PersistableIteration implements Iteration{
 	@Column(name = "date_end", nullable = false)
 	private LocalDate endDate;
 
-	@ManyToOne
-	@Column(name = "project_id", nullable = false)
+	@ManyToOne(targetEntity = PersistableProject.class)
+	@JoinColumn(name = "project_id", nullable = false)
 	private int projectId;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Story> iterationStories;
+	@OneToMany(mappedBy = "iterationId", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PersistableStory> iterationStories;
 
 	private PersistableIteration() {
 		// Just for Hibernate
@@ -77,7 +78,7 @@ public class PersistableIteration implements Iteration{
 		return projectId;
 	}
 
-	public List<Story>getStories() {
+	public List<? extends Story>getStories() {
 		return iterationStories;
 	}
 	

@@ -20,7 +20,7 @@ public interface BacklogDao {
 	
 	public BacklogItem updateDescription(final BacklogItem backlogItem, final Optional<String> description);
 	
-	public List<BacklogItem> getBacklogForProject(final Project project);
+	public List<? extends BacklogItem> getBacklogForProject(final Project project);
 
 	public Project getParent(final BacklogItem backlogItem);
 

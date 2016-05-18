@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -39,12 +40,12 @@ public class PersistableStory implements Story{
 	@Formula("SELECT sum(task.score) FROM Task task WHERE task.storyId = storyId")
 	private int totalScore;
 	
-	@ManyToOne
-	@Column(name = "iteration_id", nullable = false)
+	@ManyToOne(targetEntity = PersistableIteration.class)
+	@JoinColumn(name = "iteration_id", nullable = false)
 	private int iterationId;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Task> storyTasks;
+	@OneToMany(mappedBy ="storyId", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PersistableTask> storyTasks;
 	
 	private PersistableStory() {
 		// Just for Hibernate
@@ -78,7 +79,7 @@ public class PersistableStory implements Story{
 		return iterationId;
 	}
 
-	public List<Task> tasks() {
+	public List<? extends Task> tasks() {
 		return storyTasks;
 	}
 	public void setTitle(String title) {

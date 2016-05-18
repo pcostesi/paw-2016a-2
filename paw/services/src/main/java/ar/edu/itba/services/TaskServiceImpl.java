@@ -147,7 +147,7 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public List<Task> getTasksForStory(Story story) {
+	public List<? extends Task> getTasksForStory(Story story) {
 		if (story == null) {
 			throw new IllegalArgumentException("Story can't be null");
 		}

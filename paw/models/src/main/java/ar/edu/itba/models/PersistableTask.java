@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -45,12 +46,12 @@ public class PersistableTask implements Task{
 	@Column(nullable = false)
 	private Score score;
 	
-	@ManyToOne
-	@Column(nullable = true)
+	@ManyToOne(targetEntity = PersistableUser.class)
+	@JoinColumn(nullable = true)
 	private String owner;
 	
-	@ManyToOne
-	@Column(name = "story_id", nullable = false)
+	@ManyToOne(targetEntity = PersistableStory.class)
+	@JoinColumn(name = "story_id", nullable = false)
 	private int storyId;
 
 	private PersistableTask() {

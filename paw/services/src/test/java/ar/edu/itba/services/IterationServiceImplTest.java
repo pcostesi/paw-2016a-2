@@ -52,7 +52,7 @@ public class IterationServiceImplTest {
 	@After
 	public void endingSetup(){
 		if(ps.projectCodeExists(pCode)){
-			List<Iteration> list = is.getIterationsForProject(project);
+			List<? extends Iteration> list = is.getIterationsForProject(project);
 			if(!list.isEmpty()){
 				
 				list.forEach(iteration -> is.deleteIteration(iteration));

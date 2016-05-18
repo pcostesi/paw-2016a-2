@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -31,8 +32,8 @@ public class PersistableBacklogItem implements BacklogItem{
 	@Column(length = 500, nullable = true)
 	private String description;
 
-	@ManyToOne
-	@Column(name = "project_id", nullable = false)
+	@ManyToOne(targetEntity = PersistableProject.class)
+	@JoinColumn(name = "project_id", nullable = false)
 	private int projectId;
 
 	private PersistableBacklogItem() {

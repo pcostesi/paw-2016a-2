@@ -74,7 +74,7 @@ public class BacklogServiceImpl implements BacklogService {
 	}
 
 	@Override
-	public List<BacklogItem> getBacklogForProject(Project project) {
+	public List<? extends BacklogItem> getBacklogForProject(Project project) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}

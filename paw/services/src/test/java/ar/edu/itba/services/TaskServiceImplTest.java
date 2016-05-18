@@ -188,7 +188,7 @@ public class TaskServiceImplTest {
 	@Test
 	public void testGetTaskForStoryWithCorrectParams() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
-		List<Task> list = ts.getTasksForStory(testStory);
+		List<? extends Task> list = ts.getTasksForStory(testStory);
 		assertNotNull(list);
 	}
 

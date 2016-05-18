@@ -6,7 +6,9 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +24,9 @@ public class PersistableUser implements User{
 	
 	@Column(length = 100, nullable = false, unique = true)
 	private String mail;
+	
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+	private List<PersistableTask> tasks;
 	
 	private PersistableUser() {
 		// Just for hibernate

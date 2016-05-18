@@ -7,7 +7,7 @@ import ar.edu.itba.models.Story;
 
 public interface StoryDao {
 
-	public List<Story> getStoriesForIteration(final Iteration iteration);
+	public List<? extends Story> getStoriesForIteration(final Iteration iteration);
 
 	public boolean storyExists(final Story story);
 

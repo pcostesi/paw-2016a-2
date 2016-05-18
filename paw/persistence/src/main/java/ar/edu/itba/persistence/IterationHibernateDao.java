@@ -82,7 +82,7 @@ public class IterationHibernateDao implements IterationDao{
 	}
 
 	@Override
-	public List<Iteration> getIterationsForProject(Project project) {
+	public List<? extends Iteration> getIterationsForProject(Project project) {
 		return project.geIterations();
 	}
 

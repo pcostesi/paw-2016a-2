@@ -152,7 +152,7 @@ public class IterationServiceImpl implements IterationService{
 	}
 
 	@Override
-	public List<Iteration> getIterationsForProject(Project project) {
+	public List<? extends Iteration> getIterationsForProject(Project project) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}

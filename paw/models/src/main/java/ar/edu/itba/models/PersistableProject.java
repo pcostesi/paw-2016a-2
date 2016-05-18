@@ -39,11 +39,11 @@ public class PersistableProject implements Project{
 	@Column(nullable = false)
 	private LocalDate startDate;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Iteration> projectIterations;
+	@OneToMany(mappedBy = "projectId", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PersistableIteration> projectIterations;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<BacklogItem> projectBacklogItems;
+	@OneToMany(mappedBy = "projectId", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PersistableBacklogItem> projectBacklogItems;
 
 	private PersistableProject() {
 		// Just for Hibernate
@@ -77,11 +77,11 @@ public class PersistableProject implements Project{
 		return startDate;
 	}
 	
-	public List<Iteration> geIterations() {
+	public List<? extends PersistableIteration> geIterations() {
 		return projectIterations;
 	}
 	
-	public List<BacklogItem> getBacklogItems() {
+	public List<? extends BacklogItem> getBacklogItems() {
 		return projectBacklogItems;
 	}
 

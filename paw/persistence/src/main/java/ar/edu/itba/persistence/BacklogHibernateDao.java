@@ -69,7 +69,7 @@ public class BacklogHibernateDao implements BacklogDao{
 	}
 
 	@Override
-	public List<BacklogItem> getBacklogForProject(Project project) {
+	public List<? extends BacklogItem> getBacklogForProject(Project project) {
         return project.getBacklogItems();
 	}
 

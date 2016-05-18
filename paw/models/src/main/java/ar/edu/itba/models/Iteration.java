@@ -15,5 +15,5 @@ public interface Iteration {
 
 	public int projectId();
 
-	public List<Story>getStories();
+	public List<? extends Story>getStories();
 }

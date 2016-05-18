@@ -28,7 +28,7 @@ public class TaskHibernateDao implements TaskDao{
 	private EntityManager em;
 
 	@Override
-	public List<Task> getTasksForStory(Story story) {
+	public List<? extends Task> getTasksForStory(Story story) {
 		return story.tasks();
 	}
 

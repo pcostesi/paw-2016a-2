@@ -12,7 +12,7 @@ import ar.edu.itba.models.User;
 
 public interface TaskDao {
 
-	public List<Task> getTasksForStory(final Story story);
+	public List<? extends Task> getTasksForStory(final Story story);
 
 	public boolean taskExists(final Task task);
 	

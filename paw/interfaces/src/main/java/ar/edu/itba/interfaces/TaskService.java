@@ -26,7 +26,7 @@ public interface TaskService {
 	
 	public Task changeScore(final Task task, final Score score);
 	
-	public List<Task> getTasksForStory(final Story story);
+	public List<? extends Task> getTasksForStory(final Story story);
 	
 	public Story getParent(final Task task);
 

@@ -15,7 +15,7 @@ public interface Project {
 
 	public LocalDate startDate();
 	
-	public List<Iteration> geIterations();
+	public List<? extends Iteration> geIterations();
 	
-	public List<BacklogItem> getBacklogItems();
+	public List<? extends BacklogItem> getBacklogItems();
 }
