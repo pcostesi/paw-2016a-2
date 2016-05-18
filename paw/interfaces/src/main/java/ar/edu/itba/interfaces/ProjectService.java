@@ -20,7 +20,7 @@ public interface ProjectService {
 	
 	public List<Project> getProjects();
 
-	public Project getProjectByCode(String code);
+	public Project getProjectByCode(final String code);
 
 	public boolean projectCodeExists(final String code);
 

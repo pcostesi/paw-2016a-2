@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.models.PersistableUser;
 import ar.edu.itba.models.User;
 
 @Repository
@@ -40,13 +41,13 @@ public class UserHibernateDao implements UserDao{
 
 	@Override
 	public User createUser(String name, String password, String mail) {
-		final User user = User.builder()
+		final PersistableUser persistableUser = PersistableUser.builder()
 				.username(name)
 				.password(password)
 				.mail(mail)
 				.build();
-		em.persist(user);
-		return user;
+		em.persist(persistableUser);
+		return persistableUser;
 	}
 
 	@Override

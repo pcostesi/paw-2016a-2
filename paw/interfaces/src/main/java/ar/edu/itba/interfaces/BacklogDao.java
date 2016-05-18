@@ -1,27 +1,29 @@
 package ar.edu.itba.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
 import ar.edu.itba.models.BacklogItem;
+import ar.edu.itba.models.Project;
 
 public interface BacklogDao {
 
-	public BacklogItem createBacklogItem(final String title, final String description, final int projectId);
+	public BacklogItem createBacklogItem(final String title, final Optional<String> description, final Project project);
 
-	public boolean backlogItemExists(final String title, int projectId);
+	public boolean backlogItemExists(final Project project, final String title);
 
-	public boolean backlogItemExists(final int itemId);
+	public boolean backlogItemExists(final BacklogItem backlogItem);
 	
-	public void deleteItem(final int itemId);
+	public void deleteItem(final BacklogItem backlogItem);
 	
-	public void updateTitle(final int itemId, final String title);
+	public BacklogItem updateTitle(final BacklogItem backlogItem, final String title);
 	
-	public void updateDescription(final int itemId, final String description);
+	public BacklogItem updateDescription(final BacklogItem backlogItem, final Optional<String> description);
 	
-	public List<BacklogItem> getBacklogForProject(final int projectId);
+	public List<BacklogItem> getBacklogForProject(final Project project);
 
-	public int getParent(final int backlogItemId);
+	public Project getParent(final BacklogItem backlogItem);
 
-	public BacklogItem getBacklogItemById(final int itemId);
+	public BacklogItem getBacklogItemById(final int backlogItemId);
 
 }

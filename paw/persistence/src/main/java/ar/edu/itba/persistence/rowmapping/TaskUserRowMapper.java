@@ -2,10 +2,10 @@ package ar.edu.itba.persistence.rowmapping;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import ar.edu.itba.models.PersistableTask;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
@@ -22,16 +22,16 @@ public class TaskUserRowMapper implements RowMapper<Task> {
 		Status status = Status.getByValue(rs.getInt("status"));
 		Score score = Score.getByValue(rs.getInt("score"));
 		Priority priority = Priority.getByValue(rs.getInt("priority"));		
-		String username = rs.getString("username");	
+		String owner = rs.getString("owner");	
 		
-		return Task.builder()
+		return PersistableTask.builder()
 				.taskId(taskId)
 				.title(title)
-				.description(Optional.ofNullable(description))
+				.description(description)
 				.status(status)
 				.score(score)
 				.priority(priority)
-				.owner(Optional.ofNullable(username))
+				.owner(owner)
 				.build();
     }
 		

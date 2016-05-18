@@ -9,6 +9,8 @@ import javax.persistence.TypedQuery;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.PersistableIteration;
+import ar.edu.itba.models.Project;
 
 public class IterationHibernateDao implements IterationDao{
 
@@ -16,90 +18,79 @@ public class IterationHibernateDao implements IterationDao{
     private EntityManager em;
 	
 	@Override
-	public int getNextIterationNumber(int projectId) {
+	public int getNextIterationNumber(Project project) {
 		final TypedQuery<Integer> query = em.createQuery("select max(number) from Iteration iteration where iteration.projectId = :projectId", Integer.class);
-        query.setParameter("projectId", projectId);
+        query.setParameter("projectId", project.projectId());
         return query.getSingleResult();
 	}
 
 	@Override
-	public Iteration createIteration(int projectId, int nextIterationNumber, LocalDate startDate, LocalDate endDate) {
-		final Iteration iteration = Iteration.builder()
-				.projectId(projectId)
+	public Iteration createIteration(Project project, int nextIterationNumber, LocalDate startDate, LocalDate endDate) {
+		final PersistableIteration persistableIteration = PersistableIteration.builder()
+				.projectId(project.projectId())
 				.number(nextIterationNumber)
 				.startDate(startDate)
 				.endDate(endDate)
 				.build();
-		em.persist(iteration);
+		em.persist(persistableIteration);
 		em.flush();
-		return iteration;
+		return persistableIteration;
 	}
 
 	@Override
-	public void deleteIteration(int iterationId) {
-		final TypedQuery<Integer> query = em.createQuery("delete from Iteration where iterationId = :iterationId", Integer.class);
-		query.setParameter("iterationId", iterationId);
-		query.executeUpdate();
+	public void deleteIteration(Iteration iteration) {
+		PersistableIteration persistableIteration = (PersistableIteration) iteration;
+		em.remove(persistableIteration);
 	}
 
 	@Override
-	public Iteration getIteration(int projectId, int number) {
+	public Iteration getIteration(Project project, int number) {
 		final TypedQuery<Iteration> query = em.createQuery("from Iteration iteration where iteration.projectId = :projectId and iteration.number = :number", Iteration.class);
-		query.setParameter("projectId", projectId);
+		query.setParameter("projectId", project.projectId());
 		query.setParameter("number", number);
         return query.getSingleResult();
 	}
 
 	@Override
 	public Iteration getIterationById(int iterationId) {
-		final TypedQuery<Iteration> query = em.createQuery("from Iteration iteration where iteration.iterationId = :iterationId", Iteration.class);
-		query.setParameter("iterationId", iterationId);
-        return query.getSingleResult();
+		return em.find(Iteration.class, iterationId);
 	}
 
 	@Override
-	public boolean iterationExists(int iterationId) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Iteration iteration where iteration.iterationId = :iterationId", Integer.class);
-        query.setParameter("iterationId", iterationId);
-        return query.getSingleResult() > 0;
+	public boolean iterationExists(Iteration iteration) {
+		return em.contains(iteration);
 	}
 
 	@Override
-	public void updateBeginDate(int iterationId, LocalDate startDate) {
-		final TypedQuery<Integer> query = em.createQuery("update Iteration set startDate = :startDate where iterationId = :iterationId", Integer.class);
-		query.setParameter("iterationId", iterationId);
-		query.setParameter("startDate", startDate);
-		query.executeUpdate();
+	public Iteration updateStartDate(Iteration iteration, LocalDate startDate) {
+		PersistableIteration persistableIteration = (PersistableIteration) iteration;
+		persistableIteration.setStartDate(startDate);
+		return em.merge(persistableIteration);
 	}
 
 	@Override
-	public void updateEndDate(int iterationId, LocalDate endDate) {
-		final TypedQuery<Integer> query = em.createQuery("update Iteration set endDate = :endDate where iterationId = :iterationId", Integer.class);
-		query.setParameter("iterationId", iterationId);
-		query.setParameter("endDate", endDate);
-		query.executeUpdate();
+	public Iteration updateEndDate(Iteration iteration, LocalDate endDate) {
+		PersistableIteration persistableIteration = (PersistableIteration) iteration;
+		persistableIteration.setEndDate(endDate);
+		return em.merge(persistableIteration);
 	}
 
 	@Override
-	public List<Iteration> getIterationsForProject(int projectId) {
-		final TypedQuery<Iteration> query = em.createQuery("from Iteration iteration where iteration.projectId = :projectId", Iteration.class);
-        query.setParameter("projectId", projectId);
-        return query.getResultList();
+	public List<Iteration> getIterationsForProject(Project project) {
+		return project.geIterations();
 	}
 
 	@Override
-	public void updateNumbersAfterDelete(int projectId, int number) {
+	public void updateNumbersAfterDelete(Iteration iteration, int number) {
 		final TypedQuery<Integer> query = em.createQuery("update Iteration set number = (:number - 1) where number > :number and projectId = :projectId", Integer.class);
 		query.setParameter("number", number);
-		query.setParameter("projectId", projectId);
+		query.setParameter("projectId", iteration.projectId());
 		query.executeUpdate();
 	}
 
 	@Override
-	public int getParentId(int iterationId) {
-		final TypedQuery<Integer> query = em.createQuery("select iteration.projectId from Iteration iteration where iteration.iterationId = :iterationId", Integer.class);
-		query.setParameter("iterationId", iterationId);
-		return query.getSingleResult();
+	public Project getParent(Iteration iteration) {
+		return em.find(Project.class, iteration.projectId());
 	}
 
 }

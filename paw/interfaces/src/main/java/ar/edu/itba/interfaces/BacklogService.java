@@ -1,6 +1,7 @@
 package ar.edu.itba.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
@@ -9,7 +10,7 @@ import ar.edu.itba.models.Task;
 
 public interface BacklogService {
 
-	public BacklogItem createBacklogItem(final Project project, final String title, final String description);
+	public BacklogItem createBacklogItem(final Project project, final String title, final Optional<String> description);
 	
 	public void deleteBacklogItem(final BacklogItem backlogItem);
 	
@@ -17,7 +18,7 @@ public interface BacklogService {
 		
 	public BacklogItem setBacklogItemTitle(final BacklogItem item, final String title);
 	
-	public BacklogItem setBacklogItemDescription(final BacklogItem item, final String description);
+	public BacklogItem setBacklogItemDescription(final BacklogItem item, final Optional<String> description);
 
 	public BacklogItem createBacklogItemFromTask(final Task task, final Project project);
 

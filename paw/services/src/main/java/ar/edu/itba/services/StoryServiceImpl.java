@@ -11,7 +11,6 @@ import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.models.ImmutableStory;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
@@ -29,10 +28,10 @@ public class StoryServiceImpl implements StoryService{
 	TaskDao taskDao;
 
 	@Autowired
-	/*default*/ StoryServiceImpl(StoryDao storyDao2, IterationDao iterationDao2, TaskDao taskDao2) {
-		this.storyDao = storyDao2;
-		this.iterationDao = iterationDao2;
-		this.taskDao = taskDao2;
+	StoryServiceImpl(StoryDao storyDao, IterationDao iterationDao, TaskDao taskDao) {
+		this.storyDao = storyDao;
+		this.iterationDao = iterationDao;
+		this.taskDao = taskDao;
 	}
 
 	@Override
@@ -53,15 +52,15 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story title can't be longer than 100 characters");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.iterationId())) {
+		if (!iterationDao.iterationExists(iteration)) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		if (storyDao.storyExists(iteration.iterationId(), title)) {
+		if (storyDao.storyExists(iteration, title)) {
 			throw new IllegalStateException("There is another story with this title in this iteration");
 		}
 		
-		return storyDao.createStory(iteration.iterationId(), title);
+		return storyDao.createStory(iteration, title);
 	}
 
 	@Override
@@ -85,14 +84,14 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.iterationId())) {
+		if (!iterationDao.iterationExists(iteration)) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
 		Map<Story, List<Task>> result = new HashMap<Story, List<Task>>();
-		List<Story> stories = storyDao.getStoriesForIteration(iteration.iterationId());
+		List<Story> stories = storyDao.getStoriesForIteration(iteration);
 		for (Story story: stories) {
-			result.put(story, taskDao.getTasksForStory(story.storyId()));
+			result.put(story, taskDao.getTasksForStory(story));
 		}
 		return result;
 	}
@@ -115,22 +114,19 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story title can't be longer than 100 characters");
 		}
 		
-		if (!storyDao.storyExists(story.storyId())) {
+		if (!storyDao.storyExists(story)) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 
 		if (story.title().equals(title)) {
-			return ImmutableStory.copyOf(story);
+			return story;
 		}
-
-		int parentId = storyDao.getParentId(story.storyId());
 		
-		if (storyDao.storyExists(parentId, title)) {
+		if (storyDao.storyExists(storyDao.getParent(story), title)) {
 			throw new IllegalStateException("There is another story with this title in this iteration");
 		}
 
-		storyDao.updateName(story.storyId(), title);
-		return ImmutableStory.copyOf(story).withTitle(title);
+		return storyDao.updateTitle(story, title);
 	}
 
 	@Override
@@ -139,11 +135,11 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story can't be null");
 		}
 		
-		if (!storyDao.storyExists(story.storyId())) {
+		if (!storyDao.storyExists(story)) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		storyDao.deleteStory(story.storyId());
+		storyDao.deleteStory(story);
 	}
 	
 	@Override
@@ -152,13 +148,11 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Story can't be null");
 		}
 		
-		if (!storyDao.storyExists(story.storyId())) {
+		if (!storyDao.storyExists(story)) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		int parentId = storyDao.getParentId(story.storyId());
-		
-		return iterationDao.getIterationById(parentId);	
+		return iterationDao.getIterationById(story.iterationId());	
 	}
 
 	@Override
@@ -167,11 +161,11 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalArgumentException("Iteration cant' be null");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.iterationId())) {
+		if (!iterationDao.iterationExists(iteration)) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		return storyDao.storyExists(iteration.iterationId(), title);
+		return storyDao.storyExists(iteration, title);
 	}
 
 }

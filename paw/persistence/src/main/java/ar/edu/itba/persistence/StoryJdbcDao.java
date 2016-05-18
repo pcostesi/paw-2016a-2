@@ -13,51 +13,54 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.StoryDao;
+import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.PersistableStory;
 import ar.edu.itba.models.Story;
+import ar.edu.itba.persistence.rowmapping.IterationRowMapper;
 import ar.edu.itba.persistence.rowmapping.StoryRowMapper;
 
 @Repository
 public class StoryJdbcDao implements StoryDao{
 
-	private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsert;
-    private StoryRowMapper storyRowMapper;
+	private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
+    private final StoryRowMapper storyRowMapper;
+    private final IterationRowMapper iterationRowMapper;
 
     @Autowired
     public StoryJdbcDao(final DataSource ds) {
             jdbcTemplate = new JdbcTemplate(ds);
             storyRowMapper = new StoryRowMapper();
+            iterationRowMapper = new IterationRowMapper();
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("story").usingGeneratedKeyColumns("story_id");
     }
 	
 	@Override
-	public List<Story> getStoriesForIteration(int iterationId) {
+	public List<Story> getStoriesForIteration(Iteration iteration) {
 		try {
-			return jdbcTemplate.query("SELECT * FROM story WHERE iteration_id = ?", storyRowMapper, iterationId);
+			return jdbcTemplate.query("SELECT * FROM story WHERE iteration_id = ?", storyRowMapper, iteration.iterationId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to get stories for iteration");
         }
 	}
 
 	@Override
-	public boolean storyExists(int storyId) {
+	public boolean storyExists(Story story) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM story WHERE story_id = ?", Integer.class, storyId) == 1;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM story WHERE story_id = ?", Integer.class, story.storyId()) == 1;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to check story exists");
         }
 	}
 
 	@Override
-	public Story createStory(int iterationId, String title) {
-		
+	public Story createStory(Iteration iteration, String title) {		
 		final Map<String, Object> args = new HashMap<String, Object>();
-		args.put("iteration_id", iterationId);
-		args.put("title", title);
-		
+		args.put("iteration_id", iteration.iterationId());
+		args.put("title", title);		
 		try {
 			int storyId = jdbcInsert.executeAndReturnKey(args).intValue();			
-			return Story.builder()
+			return PersistableStory.builder()
 					.storyId(storyId)
 					.title(title)
 					.build();
@@ -69,8 +72,7 @@ public class StoryJdbcDao implements StoryDao{
 	@Override
 	public Story getStoryById(int storyId) {
 		try {
-			List<Story> stories = jdbcTemplate.query("SELECT * FROM story WHERE story_id = ?", storyRowMapper, storyId);
-			
+			List<Story> stories = jdbcTemplate.query("SELECT * FROM story WHERE story_id = ?", storyRowMapper, storyId);			
 			if (stories.isEmpty()) {
 				return null;
 			} else {
@@ -82,36 +84,39 @@ public class StoryJdbcDao implements StoryDao{
 	}
 
 	@Override
-	public void updateName(int storyId, String title) {
+	public Story updateTitle(Story story, String title) {
 		try {
-			jdbcTemplate.update("UPDATE story SET title = ? WHERE story_id = ?", title, storyId);
+			PersistableStory persistableStory = (PersistableStory) story;
+			persistableStory.setTitle(title);
+			jdbcTemplate.update("UPDATE story SET title = ? WHERE story_id = ?", title, story.storyId());
+			return persistableStory;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update name");
         }
 	}
 
 	@Override
-	public void deleteStory(int storyId) {
+	public void deleteStory(Story story) {
 		try {
-			jdbcTemplate.update("DELETE FROM story WHERE story_id = ?", storyId);
+			jdbcTemplate.update("DELETE FROM story WHERE story_id = ?", story.storyId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to delete story");
         }
 	}
 	
 	@Override
-	public boolean storyExists(int iterationId, String title) {
+	public boolean storyExists(Iteration iteration, String title) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM story WHERE iteration_id = ? AND title = ?", Integer.class, iterationId, title) == 1;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM story WHERE iteration_id = ? AND title = ?", Integer.class, iteration.iterationId(), title) == 1;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to check story exists");
         }
 	}
 
 	@Override
-	public int getParentId(int storyId) {
+	public Iteration getParent(Story story) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT iteration_id FROM story WHERE story_id = ?", Integer.class, storyId);
+			return jdbcTemplate.queryForObject("SELECT iteration_id FROM story WHERE story_id = ?", iterationRowMapper, story.storyId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to get story parent ID");
         }

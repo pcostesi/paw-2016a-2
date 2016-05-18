@@ -15,15 +15,16 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ProjectDao;
+import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
 
 @Repository
 public class ProjectJdbcDao implements ProjectDao{
 	
-	private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsert;
-    private ProjectRowMapper projectRowMapper;
+	private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
+    private final ProjectRowMapper projectRowMapper;
 
     @Autowired
     public ProjectJdbcDao(final DataSource ds) {
@@ -45,7 +46,7 @@ public class ProjectJdbcDao implements ProjectDao{
         
         try {
 	        int projectId = jdbcInsert.executeAndReturnKey(args).intValue();	
-	        return Project.builder()
+	        return PersistableProject.builder()
 	        		.projectId(projectId)
 	        		.name(name)
 	        		.code(code)
@@ -58,9 +59,9 @@ public class ProjectJdbcDao implements ProjectDao{
 	}
 	
 	@Override
-	public void deleteProject(final int projectId) {
+	public void deleteProject(Project project) {
 		try {
-			jdbcTemplate.update("DELETE FROM project WHERE project_id = ?", projectId);
+			jdbcTemplate.update("DELETE FROM project WHERE project_id = ?", project.projectId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to delete project");
         }
@@ -76,9 +77,9 @@ public class ProjectJdbcDao implements ProjectDao{
 	}
 
 	@Override
-	public boolean projectExists(int projectId) {
+	public boolean projectExists(Project project) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE project_id = ?", Integer.class, projectId) == 1;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM project WHERE project_id = ?", Integer.class, project.projectId()) == 1;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to check project exists");
         }
@@ -103,27 +104,36 @@ public class ProjectJdbcDao implements ProjectDao{
 	}
 
 	@Override
-	public void updateName(int projectId, String name) {
+	public Project updateName(Project project, String name) {
 		try {
-			jdbcTemplate.update("UPDATE project SET name = ? WHERE project_id = ?", name, projectId);
+			PersistableProject persistableProject = (PersistableProject) project;
+			persistableProject.setName(name);
+			jdbcTemplate.update("UPDATE project SET name = ? WHERE project_id = ?", name, project.projectId());
+			return persistableProject;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update project name");
         }
 	}
 
 	@Override
-	public void updateDescription(int projectId, String description) {
+	public Project updateDescription(Project project, String description) {
 		try {
-			jdbcTemplate.update("UPDATE project SET description = ? WHERE project_id = ?", description, projectId);
+			PersistableProject persistableProject = (PersistableProject) project;
+			persistableProject.setDescription(description);
+			jdbcTemplate.update("UPDATE project SET description = ? WHERE project_id = ?", description, project.projectId());
+			return persistableProject;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update project description");
         }
 	}
 
 	@Override
-	public void updateCode(int projectId, String code) {
+	public Project updateCode(Project project, String code) {
 		try {
-			jdbcTemplate.update("UPDATE project SET code = ? WHERE project_id = ?", code, projectId);
+			PersistableProject persistableProject = (PersistableProject) project;
+			persistableProject.setCode(code);
+			jdbcTemplate.update("UPDATE project SET code = ? WHERE project_id = ?", code, project.projectId());
+			return persistableProject;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update project code");
         }

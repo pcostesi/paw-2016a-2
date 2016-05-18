@@ -10,7 +10,6 @@ import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.models.ImmutableIteration;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 
@@ -44,8 +43,8 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("End date cannot be sooner than begin date");
 		}
 		
-		if (projectDao.projectExists(project.projectId())) {
-			return iterationDao.createIteration(project.projectId(), iterationDao.getNextIterationNumber(project.projectId()), beginDate, endDate);
+		if (projectDao.projectExists(project)) {
+			return iterationDao.createIteration(project, iterationDao.getNextIterationNumber(project), beginDate, endDate);
 		} else {
 			throw new IllegalStateException("Project "+ project.name() +" doesn't exist");
 		}
@@ -57,14 +56,12 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.iterationId())) {
+		if (!iterationDao.iterationExists(iteration)) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		int iterationId = iteration.iterationId();
-		int projectId = iterationDao.getParentId(iterationId);
-		iterationDao.deleteIteration(iterationId);		
-		iterationDao.updateNumbersAfterDelete(projectId, iteration.number());
+		iterationDao.deleteIteration(iteration);
+		iterationDao.updateNumbersAfterDelete(iteration, iteration.number());
 	}
 
 	@Override
@@ -77,11 +74,11 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Iteration number has to be at least 1");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		Iteration iteration = iterationDao.getIteration(project.projectId(), iterationNumber);
+		Iteration iteration = iterationDao.getIteration(project, iterationNumber);
 		
 		if (iteration == null) {
 			throw new IllegalStateException("Couldn't find iteration "+ iterationNumber +" in project "+ project.name());
@@ -95,11 +92,7 @@ public class IterationServiceImpl implements IterationService{
 		if (iterationId < 0) {
 			throw new IllegalArgumentException("Invalid iteration id");
 		}
-		
-		if (!iterationDao.iterationExists(iterationId)) {
-			throw new IllegalStateException("Iteration doesn't exist");
-		}
-		
+
 		Iteration iteration = iterationDao.getIterationById(iterationId);
 		
 		if (iteration == null) {
@@ -123,16 +116,15 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Iteration can't begin after it's ending date");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.iterationId())) {
+		if (!iterationDao.iterationExists(iteration)) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
 		if (iteration.startDate().equals(beginDate)) {
-			return ImmutableIteration.copyOf(iteration);
+			return iteration;
 		}
 		
-		iterationDao.updateBeginDate(iteration.iterationId(), beginDate);
-		return ImmutableIteration.copyOf(iteration).withStartDate(beginDate);
+		return iterationDao.updateStartDate(iteration, beginDate);
 	}
 
 	@Override
@@ -148,7 +140,7 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Iteration can't begin after it's ending date");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.iterationId())) {
+		if (!iterationDao.iterationExists(iteration)) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
@@ -156,8 +148,7 @@ public class IterationServiceImpl implements IterationService{
 			return iteration;
 		}
 
-		iterationDao.updateEndDate(iteration.iterationId(), endDate);
-		return ImmutableIteration.copyOf(iteration).withEndDate(endDate);
+		return iterationDao.updateEndDate(iteration, endDate);
 	}
 
 	@Override
@@ -166,11 +157,11 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Project can't be null");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		return iterationDao.getIterationsForProject(project.projectId());
+		return iterationDao.getIterationsForProject(project);
 	}
 
 	@Override
@@ -179,13 +170,11 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("Iteration can't be null");
 		}
 		
-		if (!iterationDao.iterationExists(iteration.iterationId())) {
+		if (!iterationDao.iterationExists(iteration)) {
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		int parentId = iterationDao.getParentId(iteration.iterationId());
-		
-		return projectDao.getProjectById(parentId);
+		return projectDao.getProjectById(iteration.projectId());
 	}
 
 }

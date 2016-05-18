@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 
 public class ProjectRowMapper implements RowMapper<Project> {
@@ -12,7 +13,7 @@ public class ProjectRowMapper implements RowMapper<Project> {
     @Override
     public Project mapRow(final ResultSet rs, final int rowNum) throws SQLException {
 
-            return Project.builder()
+            return PersistableProject.builder()
             		.projectId(rs.getInt("project_id"))
             		.name(rs.getString("name"))
             		.code(rs.getString("code"))

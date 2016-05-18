@@ -16,35 +16,40 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.PersistableIteration;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.persistence.rowmapping.IterationRowMapper;
+import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
 
 @Repository
 public class IterationJdbcDao implements IterationDao {
 
-	private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsert;
-    private IterationRowMapper iterationDetailRowMapper;
+	private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
+    private final IterationRowMapper iterationRowMapper;
+    private final ProjectRowMapper projectRowMapper;
     
     @Autowired
     public IterationJdbcDao(final DataSource ds) {
-    		iterationDetailRowMapper = new IterationRowMapper();
+    		iterationRowMapper = new IterationRowMapper();
+    		projectRowMapper = new ProjectRowMapper();
             jdbcTemplate = new JdbcTemplate(ds);
             jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("iteration").usingGeneratedKeyColumns("iteration_id");
     }
 	
 	@Override
-	public void deleteIteration(int iterationId) {
+	public void deleteIteration(Iteration iteration) {
 		try {
-			jdbcTemplate.update("DELETE FROM iteration WHERE iteration_id = ?", iterationId);
+			jdbcTemplate.update("DELETE FROM iteration WHERE iteration_id = ?", iteration.iterationId());
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to delete iteration");
 	    }
 	}
 
 	@Override
-	public int getNextIterationNumber(int projectId) {
+	public int getNextIterationNumber(Project project) {
 		try {
-			Integer itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, projectId);
+			Integer itNumber = jdbcTemplate.queryForObject("SELECT MAX(number) FROM iteration WHERE project_id = ?", Integer.class, project.projectId());
 			if (itNumber == null) {
 				return 1;
 			} else {
@@ -56,17 +61,17 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public Iteration createIteration(int projectId, int nextIterationNumber, LocalDate beginDate, LocalDate endDate) {
+	public Iteration createIteration(Project project, int nextIterationNumber, LocalDate beginDate, LocalDate endDate) {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
-		args.put("project_id", projectId);
+		args.put("project_id", project.projectId());
         args.put("number", nextIterationNumber);
         args.put("date_start", Date.valueOf(beginDate));
         args.put("date_end", Date.valueOf(endDate));
 		
         try {        
 	        int iterationId = jdbcInsert.executeAndReturnKey(args).intValue();	        
-			return Iteration.builder()
+			return PersistableIteration.builder()
 					.iterationId(iterationId)
 					.number(nextIterationNumber)
 					.startDate(beginDate)
@@ -79,9 +84,9 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public Iteration getIteration(int projectId, int iterationNumber) {		
+	public Iteration getIteration(Project project, int iterationNumber) {		
 		try {
-			List<Iteration> iterationList = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ? AND number = ?", iterationDetailRowMapper, projectId, iterationNumber);
+			List<Iteration> iterationList = jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ? AND number = ?", iterationRowMapper, project.projectId(), iterationNumber);
 	
 			if (iterationList.isEmpty()) {
 				return null;
@@ -96,7 +101,7 @@ public class IterationJdbcDao implements IterationDao {
 	@Override
 	public Iteration getIterationById(int iterationId) {
 		try {			
-			List<Iteration> iterationList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationDetailRowMapper, iterationId);
+			List<Iteration> iterationList = jdbcTemplate.query("SELECT * FROM iteration WHERE iteration_id = ?", iterationRowMapper, iterationId);
 	
 			if (iterationList.isEmpty()) {
 				return null;
@@ -109,45 +114,51 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public boolean iterationExists(int iterationId) {
+	public boolean iterationExists(Iteration iteration) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE iteration_id = ?", Integer.class, iterationId) == 1;
+			return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM iteration WHERE iteration_id = ?", Integer.class, iteration.iterationId()) == 1;
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to check if iteration exists");
 	    }
 	}
 
 	@Override
-	public void updateBeginDate(int iterationId, LocalDate beginDate) {
+	public Iteration updateStartDate(Iteration iteration, LocalDate startDate) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", Date.valueOf(beginDate), iterationId);
+			PersistableIteration persistableIteration = (PersistableIteration) iteration;
+			persistableIteration.setStartDate(startDate);
+			jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", Date.valueOf(startDate), iteration.iterationId());
+			return persistableIteration;
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to update begin date");
 	    }
 	}
 
 	@Override
-	public void updateEndDate(int iterationId, LocalDate endDate) {
+	public Iteration updateEndDate(Iteration iteration, LocalDate endDate) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET date_end = ? WHERE iteration_id = ?", Date.valueOf(endDate), iterationId);
+			PersistableIteration persistableIteration = (PersistableIteration) iteration;
+			persistableIteration.setEndDate(endDate);
+			jdbcTemplate.update("UPDATE iteration SET date_end = ? WHERE iteration_id = ?", Date.valueOf(endDate), iteration.iterationId());
+			return persistableIteration;
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to update end date");
 	    }
 	}
 
 	@Override
-	public List<Iteration> getIterationsForProject(int projectId) {
+	public List<Iteration> getIterationsForProject(Project project) {
 		try {
-			return jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationDetailRowMapper, projectId);
+			return jdbcTemplate.query("SELECT * FROM iteration WHERE project_id = ?", iterationRowMapper, project.projectId());
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to get iterations for project");
 	    }
 	}
 
 	@Override
-	public void updateNumbersAfterDelete(int projectId, int number) {
+	public void updateNumbersAfterDelete(Iteration iteration, int number) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ? AND project_id = ?", number, projectId);
+			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ? AND project_id = ?", number, iteration.projectId());
 		} catch (DataAccessException exception) {
 			
 	    	throw new IllegalStateException("Database failed to update iterations number");
@@ -155,9 +166,9 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public int getParentId(int iterationId) {
+	public Project getParent(Iteration iteration) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT project_id FROM iteration WHERE iteration_id = ?", Integer.class, iterationId);
+			return jdbcTemplate.queryForObject("SELECT * FROM project WHERE project_id = ?", projectRowMapper, iteration.iterationId());
 		} catch (DataAccessException exception) {
 			
 			throw new IllegalStateException(exception.getMessage());

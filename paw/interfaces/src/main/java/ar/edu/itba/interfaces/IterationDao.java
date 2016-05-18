@@ -4,29 +4,30 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Project;
 
 public interface IterationDao {
 
-	public int getNextIterationNumber(final int projectId);
+	public int getNextIterationNumber(final Project project);
 
-	public Iteration createIteration(final int projectId, final int nextIterationNumber, final LocalDate beginDate, final LocalDate endDate);
+	public Iteration createIteration(final Project project, final int nextIterationNumber, final LocalDate startDate, final LocalDate endDate);
 
-	public void deleteIteration(final int iterationId);
+	public void deleteIteration(final Iteration iteration);
 
-	public Iteration getIteration(final int projectId, final int iterationNumber);
+	public Iteration getIteration(final Project project, final int iterationNumber);
 
 	public Iteration getIterationById(final int iterationId);
 
-	public boolean iterationExists(final int iterationId);
+	public boolean iterationExists(final Iteration iteration);
 
-	public void updateBeginDate(final int iterationId, final LocalDate beginDate);
+	public Iteration updateStartDate(final Iteration iteration, final LocalDate startDate);
 
-	public void updateEndDate(final int iterationId, final LocalDate endDate);
+	public Iteration updateEndDate(final Iteration iteration, final LocalDate endDate);
 
-	public List<Iteration> getIterationsForProject(final int projectId);
+	public List<Iteration> getIterationsForProject(final Project project);
 
-	public void updateNumbersAfterDelete(final int projectId, final int number);
+	public void updateNumbersAfterDelete(final Iteration iteration, final int number);
 
-	public int getParentId(final int iterationId);
+	public Project getParent(final Iteration iteration);
 
 }

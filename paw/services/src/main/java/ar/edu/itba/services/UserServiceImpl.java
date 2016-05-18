@@ -89,6 +89,11 @@ public class UserServiceImpl implements UserService{
     	}
     }
     
+	@Override
+	public List<String> getUsernames() {
+		return userDao.getAllUsernames();
+	}
+	
     private class MailValidator {
 
     	private Pattern pattern;
@@ -108,10 +113,4 @@ public class UserServiceImpl implements UserService{
     	}
     	
     }
-
-	@Override
-	public List<String> getUsernames() {
-		return userDao.getAllUsernames();
-	}
-
 }

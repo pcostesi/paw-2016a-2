@@ -8,123 +8,109 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import ar.edu.itba.interfaces.TaskDao;
+import ar.edu.itba.models.PersistableTask;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
+import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.User;
 
 public class TaskHibernateDao implements TaskDao{
 
 	@PersistenceContext
-    private EntityManager em;
-	
+	private EntityManager em;
+
 	@Override
-	public List<Task> getTasksForStory(int storyId) {
-		final TypedQuery<Task> query = em.createQuery("from Task task where task.storyId = :storyId", Task.class);
-        query.setParameter("storyId", storyId);
-        return query.getResultList();
+	public List<Task> getTasksForStory(Story story) {
+		return story.tasks();
 	}
 
 	@Override
-	public boolean taskExists(int taskId) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Task task where task.taskId = :taskId", Integer.class);
-        query.setParameter("taskId", taskId);
-        return query.getSingleResult() > 0;
+	public boolean taskExists(Task task) {
+		return em.contains(task);
 	}
 
 	@Override
-	public boolean taskExists(int storyId, String title) {
+	public boolean taskExists(Story story, String title) {
 		final TypedQuery<Integer> query = em.createQuery("select count(*) from Task task where task.title = :title and task.storyId = :storyId", Integer.class);
 		query.setParameter("title", title);
-		query.setParameter("storyId", storyId);
-        return query.getSingleResult() > 0;
+		query.setParameter("storyId", story.storyId());
+		return query.getSingleResult() > 0;
 	}
 
 	@Override
-	public void updateStatus(int taskId, int value) {
-		final TypedQuery<Integer> query = em.createQuery("update Task set status = :status where taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		query.setParameter("status", Status.getByValue(value));
-		query.executeUpdate();
+	public Task updateStatus(Task task, Status status) {
+		PersistableTask persistableTask = (PersistableTask) task;
+		persistableTask.setStatus(status);
+		return em.merge(persistableTask);
 	}
 
 	@Override
-	public void updateOwner(int taskId, Optional<User> user) {
-		final TypedQuery<Integer> query = em.createQuery("update Task set owner = :owner where taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		query.setParameter("owner", user.isPresent()? user.get().username() : null);
-		query.executeUpdate();
+	public Task updateOwner(Task task, Optional<User> owner) {
+		PersistableTask persistableTask = (PersistableTask) task;
+		persistableTask.setOwner(Optional.ofNullable(owner.isPresent()? owner.get().username():null));
+		return em.merge(persistableTask);
 	}
 
 	@Override
-	public void deleteTask(int taskId) {
-		final TypedQuery<Integer> query = em.createQuery("delete from Task where taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		query.executeUpdate();
+	public void deleteTask(Task task) {
+		em.remove(task);
 	}
 
 	@Override
 	public Task getTaskById(int taskId) {
-		final TypedQuery<Task> query = em.createQuery("from Task task where task.taskId = :taskId", Task.class);
-        query.setParameter("taskId", taskId);
-        return query.getSingleResult();
+		return em.find(Task.class, taskId);
 	}
 
 	@Override
-	public Task createTask(int storyId, String title, String description, Status status, Optional<User> user,
+	public Task createTask(Story story, String title, Optional<String> description, Status status, Optional<User> user,
 			Score score, Priority priority) {
-		final Task task = Task.builder()
+		final PersistableTask persistableTask = PersistableTask.builder()
 				.title(title)
 				.description(description)
 				.status(status)
 				.owner(user.isPresent()? user.get().username() : null)
 				.score(score)
 				.priority(priority)
-				.storyId(storyId)
+				.storyId(story.storyId())
 				.build();
-		em.persist(task);
+		em.persist(persistableTask);
 		em.flush();
-		return task;
+		return persistableTask;
 	}
 
 	@Override
-	public void updatePriority(int taskId, int value) {
-		final TypedQuery<Integer> query = em.createQuery("update Task set priority = :priority where taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		query.setParameter("status", Priority.getByValue(value));
-		query.executeUpdate();
+	public Task updatePriority(Task task, Priority priority) {
+		PersistableTask persistableTask = (PersistableTask) task;
+		persistableTask.setPriority(priority);
+		return em.merge(persistableTask);
 	}
 
 	@Override
-	public void updateScore(int taskId, int value) {
-		final TypedQuery<Integer> query = em.createQuery("update Task set score = :score where taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		query.setParameter("score", Score.getByValue(value));
-		query.executeUpdate();
+	public Task updateScore(Task task, Score score) {
+		PersistableTask persistableTask = (PersistableTask) task;
+		persistableTask.setScore(score);
+		return em.merge(persistableTask);
 	}
 
 	@Override
-	public int getParentId(int taskId) {
-		final TypedQuery<Integer> query = em.createQuery("select task.storyId from Task task where task.taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		return query.getSingleResult();
+	public Story getParent(Task task) {
+		return em.find(Story.class, task.storyId());
 	}
 
 	@Override
-	public void updateTitle(int taskId, String title) {
-		final TypedQuery<Integer> query = em.createQuery("update Task set title = :title where taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		query.setParameter("title", title);
-		query.executeUpdate();
+	public Task updateTitle(Task task, String title) {
+		PersistableTask persistableTask = (PersistableTask) task;
+		persistableTask.setTitle(title);
+		return em.merge(persistableTask);
 	}
 
 	@Override
-	public void updateDescription(int taskId, String description) {
-		final TypedQuery<Integer> query = em.createQuery("update Task set description = :description where taskId = :taskId", Integer.class);
-		query.setParameter("taskId", taskId);
-		query.setParameter("description", description);
-		query.executeUpdate();
+	public Task updateDescription(Task task, Optional<String> description) {
+		PersistableTask persistableTask = (PersistableTask) task;
+		persistableTask.setDescription(description);
+		return em.merge(persistableTask);
 	}
 
 }

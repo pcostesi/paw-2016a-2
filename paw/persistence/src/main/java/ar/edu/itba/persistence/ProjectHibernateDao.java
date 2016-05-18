@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import ar.edu.itba.interfaces.ProjectDao;
+import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 
 public class ProjectHibernateDao implements ProjectDao{
@@ -15,10 +16,8 @@ public class ProjectHibernateDao implements ProjectDao{
     private EntityManager em;
 	
 	@Override
-	public boolean projectExists(int projectId) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Project project where project.projectId = :projectId", Integer.class);
-        query.setParameter("projectId", projectId);
-        return query.getSingleResult() > 0;
+	public boolean projectExists(Project project) {
+		return em.contains(project);
 	}
 
 	@Override
@@ -30,14 +29,14 @@ public class ProjectHibernateDao implements ProjectDao{
 
 	@Override
 	public Project createProject(String title, String description, String code) {
-		final Project project = Project.builder()
+		final PersistableProject persistableProject = PersistableProject.builder()
 				.name(title)
 				.description(description)
 				.code(code)
 				.build();
-		em.persist(project);
+		em.persist(persistableProject);
 		em.flush();
-		return project;
+		return persistableProject;
 	}
 
 	@Override
@@ -48,41 +47,35 @@ public class ProjectHibernateDao implements ProjectDao{
 	}
 
 	@Override
-	public void deleteProject(int projectId) {
-		final TypedQuery<Integer> query = em.createQuery("delete from Project where projectId = :projectId", Integer.class);
-		query.setParameter("projectId", projectId);
-		query.executeUpdate();
+	public void deleteProject(Project project) {
+		PersistableProject persistableProject = (PersistableProject) project;
+		em.remove(persistableProject);
 	}
 
 	@Override
-	public void updateName(int projectId, String title) {
-		final TypedQuery<Integer> query = em.createQuery("update Project set title = :title where projectId = :projectId", Integer.class);
-		query.setParameter("projectId", projectId);
-		query.setParameter("title", title);
-		query.executeUpdate();
+	public Project updateName(Project project, String name) {
+		PersistableProject persistableProject = (PersistableProject) project;
+		persistableProject.setName(name);
+		return em.merge(persistableProject);
 	}
 
 	@Override
-	public void updateDescription(int projectId, String description) {
-		final TypedQuery<Integer> query = em.createQuery("update Project set description = :description where projectId = :projectId", Integer.class);
-		query.setParameter("projectId", projectId);
-		query.setParameter("description", description);
-		query.executeUpdate();
+	public Project updateDescription(Project project, String description) {
+		PersistableProject persistableProject = (PersistableProject) project;
+		persistableProject.setDescription(description);
+		return em.merge(persistableProject);
 	}
 
 	@Override
-	public void updateCode(int projectId, String code) {
-		final TypedQuery<Integer> query = em.createQuery("update Project set code = :code where projectId = :projectId", Integer.class);
-		query.setParameter("projectId", projectId);
-		query.setParameter("code", code);
-		query.executeUpdate();
+	public Project updateCode(Project project, String code) {
+		PersistableProject persistableProject = (PersistableProject) project;
+		persistableProject.setCode(code);
+		return em.merge(persistableProject);
 	}
 
 	@Override
 	public Project getProjectById(int projectId) {
-		final TypedQuery<Project> query = em.createQuery("from Project project where project.projectId = :projectId", Project.class);
-        query.setParameter("projectId", projectId);
-        return query.getSingleResult();
+		return em.find(Project.class, projectId);
 	}
 
 	@Override

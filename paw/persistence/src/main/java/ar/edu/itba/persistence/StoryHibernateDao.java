@@ -7,6 +7,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import ar.edu.itba.interfaces.StoryDao;
+import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.PersistableStory;
 import ar.edu.itba.models.Story;
 
 public class StoryHibernateDao implements StoryDao{
@@ -15,65 +17,54 @@ public class StoryHibernateDao implements StoryDao{
     private EntityManager em;
 	
 	@Override
-	public List<Story> getStoriesForIteration(int iterationId) {
-		final TypedQuery<Story> query = em.createQuery("from Story story where story.iterationId = :iterationId", Story.class);
-        query.setParameter("iterationId", iterationId);
-        return query.getResultList();
+	public List<Story> getStoriesForIteration(Iteration iteration) {
+		return iteration.getStories();
 	}
 
 	@Override
-	public boolean storyExists(int storyId) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Story story where story.storyId = :storyId", Integer.class);
-        query.setParameter("storyId", storyId);
-        return query.getSingleResult() > 0;
+	public boolean storyExists(Story story) {
+		return em.contains(story);
 	}
 
 	@Override
-	public Story createStory(int iterationId, String title) {
-		final Story story = Story.builder()
+	public Story createStory(Iteration iteration, String title) {
+		final PersistableStory persistableStory = PersistableStory.builder()
 				.title(title)
-				.iterationId(iterationId)
+				.iterationId(iteration.iterationId())
 				.build();
-		em.persist(story);
+		em.persist(persistableStory);
 		em.flush();
-		return story;
+		return persistableStory;
 	}
 
 	@Override
 	public Story getStoryById(int storyId) {
-		final TypedQuery<Story> query = em.createQuery("from Story story where story.storyId = :storyId", Story.class);
-        query.setParameter("storyId", storyId);
-        return query.getSingleResult();
+		return em.find(Story.class, storyId);
 	}
 
 	@Override
-	public void updateName(int storyId, String title) {
-		final TypedQuery<Integer> query = em.createQuery("update Story set title = :title where storyId = :storyId", Integer.class);
-		query.setParameter("storyId", storyId);
-		query.setParameter("title", title);
-		query.executeUpdate();
+	public Story updateTitle(Story story, String title) {
+		PersistableStory persistableStory = (PersistableStory) story;
+		persistableStory.setTitle(title);
+		return em.merge(persistableStory);
 	}
 
 	@Override
-	public void deleteStory(int storyId) {
-		final TypedQuery<Integer> query = em.createQuery("delete from Story where storyId = :storyId", Integer.class);
-		query.setParameter("storyId", storyId);
-		query.executeUpdate();
+	public void deleteStory(Story story) {
+		em.remove(story);
 	}
 
 	@Override
-	public boolean storyExists(int iterationId, String title) {
+	public boolean storyExists(Iteration iteration, String title) {
 		final TypedQuery<Integer> query = em.createQuery("select count(*) from Story story where story.iterationId = :iterationId and story.title = :title", Integer.class);
-		query.setParameter("iterationId", iterationId);
+		query.setParameter("iterationId", iteration.iterationId());
 		query.setParameter("title", title);
         return query.getSingleResult() > 0;
 	}
 
 	@Override
-	public int getParentId(int storyId) {
-		final TypedQuery<Integer> query = em.createQuery("select story.iterationId from Story story where story.storyId = :storyId", Integer.class);
-		query.setParameter("storyId", storyId);
-		return query.getSingleResult();
+	public Iteration getParent(Story story) {
+		return em.find(Iteration.class, story.iterationId());
 	}
 
 }

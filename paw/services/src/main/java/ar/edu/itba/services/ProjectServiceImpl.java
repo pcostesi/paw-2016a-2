@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.models.ImmutableProject;
 import ar.edu.itba.models.Project;
 
 @Service
@@ -79,11 +78,11 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project can't be null");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
-		projectDao.deleteProject(project.projectId());
+		projectDao.deleteProject(project);
 	}
 
 	@Override
@@ -104,20 +103,19 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project name can't be longer than 100 characters");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
 		if (project.name().equals(name)) {
-			return ImmutableProject.copyOf(project);
+			return project;
 		}
 		
 		if (projectDao.projectNameExists(name)) {
 			throw new IllegalStateException("This project name has been used already");
-		}
+		}		
 		
-		projectDao.updateName(project.projectId(), name);
-		return ImmutableProject.copyOf(project).withName(name);
+		return projectDao.updateName(project, name);
 	}
 
 	@Override
@@ -138,16 +136,15 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project description can't be longer than 100 characters");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
 		if (project.description().equals(description)) {
-			return ImmutableProject.copyOf(project);
-		}
+			return project;
+		}		
 		
-		projectDao.updateDescription(project.projectId(), description);
-		return ImmutableProject.copyOf(project).withDescription(description);
+		return projectDao.updateDescription(project, description);
 	}
 
 	@Override
@@ -172,20 +169,19 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalArgumentException("Project code can only have numbers and lower case characters");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project doesn't exist");
 		}
 		
 		if (project.code().equals(code)) {
-			return ImmutableProject.copyOf(project);
+			return project;
 		}
 		
 		if (projectDao.projectCodeExists(code)) {
 			throw new IllegalStateException("This project code has been used already");
 		}
 		
-		projectDao.updateCode(project.projectId(), code);
-		return ImmutableProject.copyOf(project).withCode(code);
+		return projectDao.updateCode(project, code);
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
@@ -28,19 +29,25 @@ import ar.edu.itba.models.User;
 public class TaskServiceImplTest {
 
 	private TaskService ts;
+	
 	@Mock
 	private Task testTask;
+	
 	@Mock
 	private StoryDao storyDao;
+	
 	@Mock
 	private TaskDao taskDao;
+	
 	@Mock
 	private Story testStory;
+	
 	@Mock
 	private Optional<User> testUser;
 
 	private final Status status = Status.getByValue(1);
 	private final Score score = Score.getByValue(1);
+	private final Priority priority = Priority.getByValue(1);
 	private final String name = "Epic tests";
 	private final String description = "The life of a tester is hard";
 	private final String veryLongString = "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
@@ -65,18 +72,18 @@ public class TaskServiceImplTest {
 
 	@Test
 	public void testDeleteTask() {
-		Mockito.when(taskDao.taskExists(testTask.taskId())).thenReturn(true);
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
 		ts.deleteTask(testTask);
-		verify(taskDao, atLeastOnce()).deleteTask(testTask.taskId());
+		verify(taskDao, atLeastOnce()).deleteTask(testTask);
 	}
 
 	@Test
 	public void CreateTaskWithValidParameters() {
-		Mockito.when(storyDao.storyExists(testStory.storyId())).thenReturn(true);
-		Mockito.when(taskDao.createTask(testStory.storyId(), name, description, status, testUser, score))
+		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
+		Mockito.when(taskDao.createTask(testStory, name, description, status, testUser, score, priority))
 				.thenReturn(testTask);
-		Task newTask = ts.createTask(testStory, name, description, status, testUser, score);
-		verify(taskDao, atLeastOnce()).createTask(testStory.storyId(), name, description, status, testUser, score);
+		Task newTask = ts.createTask(testStory, name, description, status, testUser, score, priority);
+		verify(taskDao, atLeastOnce()).createTask(testStory, name, description, status, testUser, score, priority);
 		assertNotNull(newTask);
 	}
 

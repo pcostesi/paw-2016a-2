@@ -12,7 +12,6 @@ import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.BacklogItem;
-import ar.edu.itba.models.ImmutableBacklogItem;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
@@ -33,7 +32,7 @@ public class BacklogServiceImpl implements BacklogService {
 	StoryDao storyDao;
 
 	@Override
-	public BacklogItem createBacklogItem(Project project, String title, String description) {
+	public BacklogItem createBacklogItem(Project project, String title, Optional<String> description) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -46,19 +45,19 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Backlog item title can't be more than 100 characters long");
 		}
 		
-		if (description != null && description.length() > 500) {
+		if (description.isPresent() && description.get().length() > 500) {
 			throw new IllegalArgumentException("Backlog item description can't be more than 500 characters long");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project does not exist");
 		}
 		
-		if (backlogDao.backlogItemExists(title, project.projectId())) {
+		if (backlogDao.backlogItemExists(project, title)) {
 			throw new IllegalStateException("There is another backlog item with this title in the project");
 		}		
 
-		return backlogDao.createBacklogItem(title, description, project.projectId());
+		return backlogDao.createBacklogItem(title, description, project);
 	}
 
 	@Override
@@ -67,11 +66,11 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Item can't be null");
 		}
 		
-		if (!backlogDao.backlogItemExists(backlogItem.backlogItemId())) {
+		if (!backlogDao.backlogItemExists(backlogItem)) {
 			throw new IllegalStateException("Backlog item doesn't exist");
 		}
 
-		backlogDao.deleteItem(backlogItem.backlogItemId());
+		backlogDao.deleteItem(backlogItem);
 	}
 
 	@Override
@@ -80,11 +79,11 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Project can't be null");
 		}
 
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project does not exist");
 		}
 
-		return backlogDao.getBacklogForProject(project.projectId());
+		return backlogDao.getBacklogForProject(project);
 	}
 
 	@Override
@@ -105,36 +104,32 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Backlog item title can't be more than 100 characters long");
 		}
 								
-		if (!backlogDao.backlogItemExists(item.backlogItemId())) {
+		if (!backlogDao.backlogItemExists(item)) {
 			throw new IllegalStateException("Backlog item does not exist");
-		}		
+		}
 		
-		final int parentId = backlogDao.getParent(item.backlogItemId());
-		
-		if (backlogDao.backlogItemExists(title, parentId)) {
+		if (backlogDao.backlogItemExists(backlogDao.getParent(item), title)) {
 			throw new IllegalStateException("There is another item with this title in this project");
 		}		
 		
-		backlogDao.updateTitle(item.backlogItemId(), title);
-		return ImmutableBacklogItem.copyOf(item).withTitle(title);
+		return backlogDao.updateTitle(item, title);
 	}
 
 	@Override
-	public BacklogItem setBacklogItemDescription(BacklogItem item, String description) {
+	public BacklogItem setBacklogItemDescription(BacklogItem item, Optional<String> description) {
 		if (item == null) {
 			throw new IllegalArgumentException("Item can't be null");
 		}
 		
-		if (!backlogDao.backlogItemExists(item.backlogItemId())) {
+		if (!backlogDao.backlogItemExists(item)) {
 			throw new IllegalStateException("Item does not exist in this project");
 		}
 		
-		if (description != null && description.length() > 500) {
+		if (description.isPresent() && description.get().length() > 500) {
 			throw new IllegalArgumentException("Description can't be more than 500 characters long");
 		}
 		
-		backlogDao.updateDescription(item.backlogItemId(), description);
-		return ImmutableBacklogItem.copyOf(item).withDescription(Optional.ofNullable(description));
+		return backlogDao.updateDescription(item, description);
 	}
 	
 
@@ -148,16 +143,16 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Project can't be null");
 		}
 		
-		if(!taskDao.taskExists(task.taskId())){
+		if(!taskDao.taskExists(task)){
 			throw new IllegalStateException("Task does not exist");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project does not exist");
 		}
 		
-		final BacklogItem newItem = createBacklogItem(project, task.title(), task.description().isPresent()? task.description().get() : null);
-		taskDao.deleteTask(task.taskId());
+		final BacklogItem newItem = createBacklogItem(project, task.title(), task.description());
+		taskDao.deleteTask(task);
 		
 		return newItem;
 	}
@@ -172,16 +167,16 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Project can't be null");
 		}
 		
-		if(!storyDao.storyExists(story.storyId())){
+		if(!storyDao.storyExists(story)){
 			throw new IllegalStateException("Story does not exist");
 		}
 		
-		if (!projectDao.projectExists(project.projectId())) {
+		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project does not exist");
 		}
 		
 		final BacklogItem newItem = createBacklogItem(project, story.title(), null); 
-		storyDao.deleteStory(story.storyId());
+		storyDao.deleteStory(story);
 		
 		return newItem;
 	}
@@ -211,7 +206,7 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Backlog item title can't be null");
 		}
 		
-		return backlogDao.backlogItemExists(title, project.projectId());
+		return backlogDao.backlogItemExists(project, title);
 	}
 
 }
