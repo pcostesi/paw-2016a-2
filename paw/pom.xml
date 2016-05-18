@@ -36,10 +36,22 @@
         <maven-war-plugin.version>2.6</maven-war-plugin.version>
         <org.immutables.version>2.1.18</org.immutables.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <javax-mail.version>1.5.5</javax-mail.version>
+        <greenmail.version>1.5.0</greenmail.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.icegreen</groupId>
+                <artifactId>greenmail</artifactId>
+                <version>${greenmail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>javax.mail-api</artifactId>
+                <version>${javax-mail.version}</version>
+            </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>

@@ -19,5 +19,9 @@
       <artifactId>models</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+        </dependency>
   </dependencies>  
 </project>
