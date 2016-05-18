@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.interfaces.BacklogDao;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.PersistableBacklogItem;
+import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 
 @Primary
@@ -36,7 +37,7 @@ public class BacklogHibernateDao implements BacklogDao{
 
 	@Override
 	public boolean backlogItemExists(Project project, String title) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from BacklogItem backlog where backlog.title = :title and backlog.projectId = :projectId", Integer.class);
+		final TypedQuery<Integer> query = em.createQuery("select count(*) from PersistableBacklogItem backlog where backlog.title = :title and backlog.projectId = :projectId", Integer.class);
 		query.setParameter("title", title);
 		query.setParameter("projectId", project.projectId());
         return query.getSingleResult() > 0;
@@ -74,12 +75,12 @@ public class BacklogHibernateDao implements BacklogDao{
 
 	@Override
 	public Project getParent(BacklogItem backlogItem) {
-		return em.find(Project.class, backlogItem.projectId());
+		return em.find(PersistableProject.class, backlogItem.projectId());
 	}
 
 	@Override
 	public BacklogItem getBacklogItemById(int backlogItemId) {
-		return em.find(BacklogItem.class, backlogItemId);
+		return em.find(PersistableBacklogItem.class, backlogItemId);
 	}
 
 }

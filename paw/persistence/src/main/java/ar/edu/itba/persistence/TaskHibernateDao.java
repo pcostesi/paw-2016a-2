@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
+import ar.edu.itba.models.PersistableStory;
 import ar.edu.itba.models.PersistableTask;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
@@ -38,7 +39,7 @@ public class TaskHibernateDao implements TaskDao{
 
 	@Override
 	public boolean taskExists(Story story, String title) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Task task where task.title = :title and task.storyId = :storyId", Integer.class);
+		final TypedQuery<Integer> query = em.createQuery("select count(*) from PersistableTask task where task.title = :title and task.storyId = :storyId", Integer.class);
 		query.setParameter("title", title);
 		query.setParameter("storyId", story.storyId());
 		return query.getSingleResult() > 0;
@@ -65,7 +66,7 @@ public class TaskHibernateDao implements TaskDao{
 
 	@Override
 	public Task getTaskById(int taskId) {
-		return em.find(Task.class, taskId);
+		return em.find(PersistableTask.class, taskId);
 	}
 
 	@Override
@@ -101,7 +102,7 @@ public class TaskHibernateDao implements TaskDao{
 
 	@Override
 	public Story getParent(Task task) {
-		return em.find(Story.class, task.storyId());
+		return em.find(PersistableStory.class, task.storyId());
 	}
 
 	@Override

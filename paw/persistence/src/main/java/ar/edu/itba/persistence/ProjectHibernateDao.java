@@ -27,7 +27,7 @@ public class ProjectHibernateDao implements ProjectDao{
 
 	@Override
 	public boolean projectNameExists(String title) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Project project where project.title = :title", Integer.class);
+		final TypedQuery<Integer> query = em.createQuery("select count(*) from PersistableProject project where project.title = :title", Integer.class);
         query.setParameter("title", title);
         return query.getSingleResult() > 0;
 	}
@@ -46,7 +46,7 @@ public class ProjectHibernateDao implements ProjectDao{
 
 	@Override
 	public boolean projectCodeExists(String code) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Project project where project.code = :code", Integer.class);
+		final TypedQuery<Integer> query = em.createQuery("select count(*) from PersistableProject project where project.code = :code", Integer.class);
         query.setParameter("code", code);
         return query.getSingleResult() > 0;
 	}
@@ -84,14 +84,14 @@ public class ProjectHibernateDao implements ProjectDao{
 	}
 
 	@Override
-	public List<Project> getProjects() {
-		final TypedQuery<Project> query = em.createQuery("from Project", Project.class);
+	public List<? extends Project> getProjects() {
+		final TypedQuery<PersistableProject> query = em.createQuery("from Project", PersistableProject.class);
         return query.getResultList();
 	}
 
 	@Override
 	public Project getProjectByCode(String code) {
-		final TypedQuery<Project> query = em.createQuery("from Project project where project.code = :code", Project.class);
+		final TypedQuery<PersistableProject> query = em.createQuery("from PersistableProject project where project.code = :code", PersistableProject.class);
         query.setParameter("code", code);
         return query.getSingleResult();
 	}

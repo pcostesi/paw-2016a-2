@@ -22,22 +22,22 @@ public class UserHibernateDao implements UserDao{
 	
 	@Override
 	public User getByUsername(String username) {
-        return em.find(User.class, username);
+        return em.find(PersistableUser.class, username);
 	}
 
 	@Override
 	public boolean userNameExists(String username) {
-		final TypedQuery<User> query = em.createQuery("from User user where user.username = :username", User.class);
+		final TypedQuery<PersistableUser> query = em.createQuery("from PersistableUser user where user.username = :username", PersistableUser.class);
         query.setParameter("username", username);
-        final List<User> list = query.getResultList();
+        final List<PersistableUser> list = query.getResultList();
         return list.isEmpty() ? false : true;
 	}
 
 	@Override
 	public boolean userMailExists(String mail) {
-		final TypedQuery<User> query = em.createQuery("from User user where user.mail = :mail", User.class);
+		final TypedQuery<PersistableUser> query = em.createQuery("from PersistableUser user where user.mail = :mail", PersistableUser.class);
         query.setParameter("mail", mail);
-        final List<User> list = query.getResultList();
+        final List<PersistableUser> list = query.getResultList();
         return list.isEmpty() ? false : true;
 	}
 
@@ -54,7 +54,7 @@ public class UserHibernateDao implements UserDao{
 
 	@Override
 	public List<String> getAllUsernames() {
-		final TypedQuery<String> query = em.createQuery("select user.username from User user", String.class);
+		final TypedQuery<String> query = em.createQuery("select user.username from PersistableUser user", String.class);
         return query.getResultList();
 	}
 

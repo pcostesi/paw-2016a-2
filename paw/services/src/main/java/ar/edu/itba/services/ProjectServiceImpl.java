@@ -200,7 +200,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public List<Project> getProjects() {
+	public List<? extends Project> getProjects() {
 		return projectDao.getProjects();	
 	}
 

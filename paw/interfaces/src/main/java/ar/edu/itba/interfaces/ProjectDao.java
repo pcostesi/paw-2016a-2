@@ -24,7 +24,7 @@ public interface ProjectDao {
 
 	public Project getProjectById(final int projectId);
 
-	public List<Project> getProjects();
+	public List<? extends Project> getProjects();
 
 	public Project getProjectByCode(final String code);
 

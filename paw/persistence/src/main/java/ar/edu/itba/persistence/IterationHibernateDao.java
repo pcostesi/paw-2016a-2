@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.PersistableIteration;
+import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 
 @Primary
@@ -24,7 +25,7 @@ public class IterationHibernateDao implements IterationDao{
 	
 	@Override
 	public int getNextIterationNumber(Project project) {
-		final TypedQuery<Integer> query = em.createQuery("select max(number) from Iteration iteration where iteration.projectId = :projectId", Integer.class);
+		final TypedQuery<Integer> query = em.createQuery("select max(number) from PersistableIteration iteration where iteration.projectId = :projectId", Integer.class);
         query.setParameter("projectId", project.projectId());
         return query.getSingleResult();
 	}
@@ -50,7 +51,7 @@ public class IterationHibernateDao implements IterationDao{
 
 	@Override
 	public Iteration getIteration(Project project, int number) {
-		final TypedQuery<Iteration> query = em.createQuery("from Iteration iteration where iteration.projectId = :projectId and iteration.number = :number", Iteration.class);
+		final TypedQuery<PersistableIteration> query = em.createQuery("from PersistableIteration iteration where iteration.projectId = :projectId and iteration.number = :number", PersistableIteration.class);
 		query.setParameter("projectId", project.projectId());
 		query.setParameter("number", number);
         return query.getSingleResult();
@@ -87,7 +88,7 @@ public class IterationHibernateDao implements IterationDao{
 
 	@Override
 	public void updateNumbersAfterDelete(Iteration iteration, int number) {
-		final TypedQuery<Integer> query = em.createQuery("update Iteration set number = (:number - 1) where number > :number and projectId = :projectId", Integer.class);
+		final TypedQuery<Integer> query = em.createQuery("update PersistableIteration set number = (:number - 1) where number > :number and projectId = :projectId", Integer.class);
 		query.setParameter("number", number);
 		query.setParameter("projectId", iteration.projectId());
 		query.executeUpdate();
@@ -95,7 +96,7 @@ public class IterationHibernateDao implements IterationDao{
 
 	@Override
 	public Project getParent(Iteration iteration) {
-		return em.find(Project.class, iteration.projectId());
+		return em.find(PersistableProject.class, iteration.projectId());
 	}
 
 }

@@ -44,7 +44,7 @@ public class StoryHibernateDao implements StoryDao{
 
 	@Override
 	public Story getStoryById(int storyId) {
-		return em.find(Story.class, storyId);
+		return em.find(PersistableStory.class, storyId);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class StoryHibernateDao implements StoryDao{
 
 	@Override
 	public boolean storyExists(Iteration iteration, String title) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from Story story where story.iterationId = :iterationId and story.title = :title", Integer.class);
+		final TypedQuery<Integer> query = em.createQuery("select count(*) from PersistableStory story where story.iterationId = :iterationId and story.title = :title", Integer.class);
 		query.setParameter("iterationId", iteration.iterationId());
 		query.setParameter("title", title);
         return query.getSingleResult() > 0;
