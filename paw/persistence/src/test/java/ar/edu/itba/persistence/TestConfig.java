@@ -7,8 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
-
-
 @ComponentScan({"ar.edu.itba.persistence"})
 
 @Configuration
