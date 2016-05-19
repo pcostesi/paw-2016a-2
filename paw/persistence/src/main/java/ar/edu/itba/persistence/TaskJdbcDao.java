@@ -98,7 +98,7 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public Task getTaskById(int taskId) {
 		try {
-			List<Task> tasks = jdbcTemplate.query("SELECT * FROM task WHERE task_id = ?", taskRowMapper, taskId);
+			List<Task> tasks = jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE task_id = ?", taskRowMapper, taskId);
 		
 			if (tasks.isEmpty()) {
 				return null;
@@ -113,7 +113,7 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public List<Task> getTasksForStory(Story story) {
 		try {
-			return jdbcTemplate.query("SELECT * FROM task WHERE story_id = ?", taskRowMapper, story.storyId());
+			return jdbcTemplate.query("SELECT * FROM task LEFT JOIN account ON account.username = task.owner WHERE story_id = ?", taskRowMapper, story.storyId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to get tasks for story");
         }
