@@ -7,7 +7,7 @@
 <t:staticPanel panelId="${project.code()}-description">
 	<jsp:attribute name="title"><spring:message code="descriptionPanel.title"/></jsp:attribute>
 	<jsp:body>
-		<p><strong><spring:message code="descriptionPanel.start_date"/></strong> ${project.formattedStartDate()}</p>
-	    <p><strong><spring:message code="descriptionPanel.description"/></strong> ${project.description()}</p>
+		<strong><spring:message code="descriptionPanel.start_date"/></strong> ${project.startDate()}<br>
+	    <strong><spring:message code="descriptionPanel.description"/></strong> ${project.description()}
 	</jsp:body>
 </t:staticPanel>

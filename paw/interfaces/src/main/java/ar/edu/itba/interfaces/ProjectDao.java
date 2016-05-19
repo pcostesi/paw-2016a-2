@@ -6,7 +6,7 @@ import ar.edu.itba.models.Project;
 
 public interface ProjectDao {
 
-	public boolean projectExists(final int projectId);
+	public boolean projectExists(final Project project);
 
 	public boolean projectNameExists(final String name);
 
@@ -14,13 +14,13 @@ public interface ProjectDao {
 
 	public boolean projectCodeExists(String code);
 
-	public void deleteProject(final int projectId);
+	public void deleteProject(final Project project);
 
-	public void updateName(final int projectId, final String name);
+	public void updateName(final Project project, final String name);
 
-	public void updateDescription(final int projectId, final String description);
+	public void updateDescription(final Project project, final String description);
 
-	public void updateCode(final int projectId, final String code);
+	public void updateCode(final Project project, final String code);
 
 	public Project getProjectById(final int projectId);
 

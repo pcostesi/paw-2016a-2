@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS project (
 	code varchar(10) NOT NULL,
 	description varchar(500) NOT NULL,
 	date_start DATE NOT NULL,
-	UNIQUE ( project_id, name ),
 	UNIQUE ( name ),
 	UNIQUE ( code )
 );

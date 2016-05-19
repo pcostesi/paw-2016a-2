@@ -85,9 +85,19 @@ public class TaskController extends BaseController {
 			mav.addObject("story", story);			
 			mav.addObject("users",users);
 		} else {
-			final User owner = taskForm.getOwner().equals("None")? null : us.getByUsername(taskForm.getOwner());
-			final String description = taskForm.getDescription().length() == 0 ? null: taskForm.getDescription();
-			ts.createTask(story, taskForm.getTitle(), description, taskForm.getStatus(), owner, taskForm.getScore());
+			final Optional<User> owner;
+			if(taskForm.getOwner().equals("None")){
+				owner = Optional.ofNullable(null);
+			} else {
+				owner = Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
+			}
+			final Optional<String> description;
+			if (taskForm.getDescription().length() == 0) {
+				description = Optional.ofNullable(null);
+			} else {
+				description = Optional.ofNullable(taskForm.getDescription());
+			}
+			ts.createTask(story, taskForm.getTitle(), description, taskForm.getStatus(), owner, taskForm.getScore(), taskForm.getPriority());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)
@@ -117,6 +127,7 @@ public class TaskController extends BaseController {
 		taskForm.setScore(task.score());
 		taskForm.setStatus(task.status());
 		taskForm.setTitle(task.title());
+		taskForm.setPriority(task.priority());
 		mav.addObject("users", users);
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
@@ -146,19 +157,24 @@ public class TaskController extends BaseController {
 			mav.addObject("users", users);
 			mav.addObject("story", story);
 		} else {
-			final User owner;
+			final Optional<User> owner;
 			if (taskForm.getOwner().equals("None")) {
-				owner = null;
+				owner = Optional.ofNullable(null);
 			} else {
-				owner = us.getByUsername(taskForm.getOwner());
-			}
-			final String description = taskForm.getDescription().length() == 0 ? null: taskForm.getDescription();
-			
+				owner = Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
+			}			
+			final Optional<String> description;
+			if (taskForm.getDescription().length() == 0) {
+				description = Optional.ofNullable(null);
+			} else {
+				description = Optional.ofNullable(taskForm.getDescription());
+			}			
 			ts.changeOwnership(task, owner);
 			ts.changeStatus(task, taskForm.getStatus());
 			ts.changeScore(task, taskForm.getScore());
 			ts.changeTitle(task, taskForm.getTitle());
 			ts.changeDescription(task, description);
+			ts.changePriority(task, taskForm.getPriority());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
 					.arg(1, iterationId)

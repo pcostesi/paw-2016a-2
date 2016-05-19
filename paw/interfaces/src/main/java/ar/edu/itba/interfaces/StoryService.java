@@ -9,13 +9,13 @@ import ar.edu.itba.models.Task;
 
 public interface StoryService {
 	
-	public Story create(Iteration iteration, String name);
+	public Story create(final Iteration iteration, final String name);
 	
-	public Story getById(int id);
+	public Story getById(final int storyId);
 	
-	public Story setName(Story story, String name);
+	public Story setName(final Story story, final String name);
 	
-	public void deleteStory(Story story);
+	public void deleteStory(final Story story);
 
 	public Map<Story, List<Task>> getStoriesWithTasksForIteration(final Iteration iteration);
 	

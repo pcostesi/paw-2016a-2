@@ -7,14 +7,13 @@ import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 
 import ar.edu.itba.models.BacklogItem;
-import ar.edu.itba.models.ImmutableBacklogItem;
 
 public class BacklogRowMapper implements RowMapper<BacklogItem>{
 
 	@Override
 	public BacklogItem mapRow(final ResultSet rs, final int rowNum) throws SQLException {
 
-        return ImmutableBacklogItem.builder()
+        return BacklogItem.builder()
         		.title(rs.getString("title"))
         		.description(Optional.ofNullable(rs.getString("description")))
         		.backlogItemId(rs.getInt("item_id"))

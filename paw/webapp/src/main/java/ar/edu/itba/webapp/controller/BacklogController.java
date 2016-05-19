@@ -1,5 +1,7 @@
 package ar.edu.itba.webapp.controller;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -48,8 +50,14 @@ public class BacklogController extends BaseController {
 			mav = new ModelAndView("backlog/newItem");
 			mav.addObject("project", project);
 		} else {
-			final String description = backlogForm.getDescription();
-			bs.createBacklogItem(project, backlogForm.getTitle(), description.length() == 0 ? null : description);
+			final String formDescription = backlogForm.getDescription();
+			final Optional<String> description;
+			if (formDescription.length() == 0) {
+				description = Optional.ofNullable(null);
+			} else {
+				description = Optional.ofNullable(formDescription);
+			}
+			bs.createBacklogItem(project, backlogForm.getTitle(), description);
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
 					.arg(0, projectCode).build();
 			mav = new ModelAndView("redirect:" + resourceUrl);

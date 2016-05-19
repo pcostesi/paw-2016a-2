@@ -1,6 +1,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<%@attribute name="taskStatus" required="true" type="ar.edu.itba.models.TaskStatus" %>
+<%@attribute name="taskStatus" required="true" type="ar.edu.itba.models.Status" %>
 
 <c:choose>
 	<c:when test="${taskStatus.value == 0}"><span class="label label-danger"><spring:message code="taskStatus.${taskStatus}"/></span></c:when>

@@ -25,8 +25,8 @@
 						<jsp:body>
 							<div class="row">
 						        <div class="col-sm-12">
-						            <p><strong><spring:message code="iterationsPanel.start_date"/></strong> ${iteration.formattedStartDate()}</p>
-						            <p><strong><spring:message code="iterationsPanel.end_date"/></strong> ${iteration.formattedEndDate()}</p>
+						            <strong><spring:message code="iterationsPanel.start_date"/></strong> ${iteration.startDate()}<br>
+						            <strong><spring:message code="iterationsPanel.end_date"/></strong> ${iteration.endDate()}
 						        </div>
 						    </div>
 						</jsp:body>

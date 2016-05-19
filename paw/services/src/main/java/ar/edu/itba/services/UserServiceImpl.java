@@ -89,6 +89,30 @@ public class UserServiceImpl implements UserService{
     	}
     }
     
+	@Override
+	@Transactional
+	public List<String> getUsernames() {
+		return userDao.getAllUsernames();
+	}
+	
+	@Override
+	@Transactional
+	public boolean usernameExists(String username){
+		if(username == null){
+			throw new IllegalArgumentException("Username can't be null");
+		}
+		return userDao.userNameExists(username);
+	}
+	
+	@Override
+	@Transactional
+	public boolean emailExists(String email){
+		if(email == null){
+			throw new IllegalArgumentException("Email can't be null");
+		}
+		return userDao.userMailExists(email);
+	}
+	
     private class MailValidator {
 
     	private Pattern pattern;
@@ -108,24 +132,5 @@ public class UserServiceImpl implements UserService{
     	}
     	
     }
-
-	@Override
-	public List<String> getUsernames() {
-		return userDao.getAllUsernames();
-	}
-	
-	public boolean usernameExists(String username){
-		if(username == null){
-			throw new IllegalArgumentException("Username can't be null");
-		}
-		return userDao.userNameExists(username);
-	}
-	
-	public boolean emailExists(String email){
-		if(email == null){
-			throw new IllegalArgumentException("Email can't be null");
-		}
-		return userDao.userMailExists(email);
-	}
 
 }

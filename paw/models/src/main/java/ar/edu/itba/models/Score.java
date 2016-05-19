@@ -1,6 +1,6 @@
 package ar.edu.itba.models;
 
-public enum TaskScore {
+public enum Score {
 
 	VERY_EASY(0, "0 points"), 
 	EASY(1, "1 points"), 
@@ -11,7 +11,7 @@ public enum TaskScore {
 	private final int value;
 	private final String label;
 	
-	private TaskScore(int value, String label) {
+	private Score(int value, String label) {
         this.value = value;
         this.label = label;
     }
@@ -28,18 +28,18 @@ public enum TaskScore {
     	return this.label;
     }
     
-    public final static TaskScore getByValue(int value) {
+    public final static Score getByValue(int value) {
     	switch(value) {
     	case 0:
-    		return TaskScore.VERY_EASY;
+    		return Score.VERY_EASY;
     	case 1:
-			return TaskScore.EASY;
+			return Score.EASY;
     	case 2:
-			return TaskScore.NORMAL;
+			return Score.NORMAL;
     	case 4:
-			return TaskScore.HARD;
+			return Score.HARD;
     	case 8:
-			return TaskScore.EPIC;
+			return Score.EPIC;
 		default:
 			return null;
 		}

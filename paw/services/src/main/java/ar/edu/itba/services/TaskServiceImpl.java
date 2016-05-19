@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
-import ar.edu.itba.models.ImmutableTask;
+import ar.edu.itba.models.Priority;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
-import ar.edu.itba.models.TaskPriority;
-import ar.edu.itba.models.TaskScore;
-import ar.edu.itba.models.TaskStatus;
 import ar.edu.itba.models.User;
 
 @Service
@@ -29,11 +28,10 @@ public class TaskServiceImpl implements TaskService{
 	@Autowired TaskServiceImpl(TaskDao newTaskDao, StoryDao newStoryDao){
 		this.taskDao = newTaskDao;
 		this.storyDao = newStoryDao;
-	}
-	
+	}	
 
 	@Override
-	public Task createTask(Story story, String title, String description, TaskStatus status, User user, TaskScore score) {
+	public Task createTask(Story story, String title, Optional<String> description, Status status, Optional<User> user, Score score, Priority priority) {
 		if (story == null) {
 			throw new IllegalArgumentException("Story can't be null");
 		}
@@ -58,23 +56,30 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task title can't be longer than 100 characters");
 		}
 		
-		if (description != null && description.length() == 0) {
+		if (user.isPresent() && user.get().username().length() == 0) {
+			throw new IllegalArgumentException("Task owner can't be empty");
+		}
+		
+		if (user.isPresent() && user.get().username().length() > 100) {
+			throw new IllegalArgumentException("Task owner can't be longer than 100 characters");
+		}
+		
+		if (description.isPresent() && description.get().length() == 0) {
 			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
-		if (description != null && description.length() > 500) {
+		if (description.isPresent() && description.get().length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
-		
-		if (!storyDao.storyExists(story.storyId())) {
+		if (!storyDao.storyExists(story)) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		if (taskDao.taskExists(story.storyId(), title)) {
+		if (taskDao.taskExists(story, title)) {
 			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
 		}
 		
-		return taskDao.createTask(story.storyId(), title, description, status, user, score);
+		return taskDao.createTask(story, title, description, status, user, score, priority);
 	}
 
 	@Override
@@ -98,31 +103,30 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task can't be null");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		taskDao.deleteTask(task.taskId());
+		taskDao.deleteTask(task);
 	}
 
 	@Override
-	public Task changeOwnership(Task task, User user) {
-		
+	public Task changeOwnership(Task task, Optional<User> user) {		
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
-		}
+		}		
 		
-		taskDao.updateOwner(task.taskId(), user != null ? user.username() : null);
-		return ImmutableTask.copyOf(task).withOwner(Optional.ofNullable(user));
+		taskDao.updateOwner(task, user);
 		
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
-	public Task changeStatus(Task task, TaskStatus status) {
+	public Task changeStatus(Task task, Status status) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -131,17 +135,17 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Status can't be null");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
 		if (task.status().equals(status)) {
-			return ImmutableTask.copyOf(task);
-		}
+			return task;
+		}		
 		
-		taskDao.updateStatus(task.taskId(), status.getValue());
-		return ImmutableTask.copyOf(task).withStatus(status);
+		taskDao.updateStatus(task, status);
 
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
@@ -150,11 +154,11 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Story can't be null");
 		}
 		
-		if (!storyDao.storyExists(story.storyId())) {
+		if (!storyDao.storyExists(story)) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
-		return taskDao.getTasksForStory(story.storyId());
+		return taskDao.getTasksForStory(story);
 	}
 	
 	@Override
@@ -163,17 +167,15 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task can't be null");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		int parentId = taskDao.getParentId(task.taskId());
-		
-		return storyDao.getStoryById(parentId);
+		return taskDao.getParent(task);
 	}
 
 	@Override
-	public Task changePriority(Task task, TaskPriority priority) {
+	public Task changePriority(Task task, Priority priority) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -182,21 +184,20 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Priority can't be null");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
 		if (task.priority().equals(priority)) {
-			return ImmutableTask.copyOf(task);
+			return task;
 		}
 		
-		taskDao.updatePriority(task.taskId(), priority.getValue());
-		return ImmutableTask.copyOf(task).withPriority(priority);
-		
+		taskDao.updatePriority(task, priority);
+		return taskDao.getTaskById(task.taskId());		
 	}
 
 	@Override
-	public Task changeScore(Task task, TaskScore score) {
+	public Task changeScore(Task task, Score score) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -205,16 +206,17 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Score can't be null");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
 		if (task.score().equals(score)) {
-			return ImmutableTask.copyOf(task);
+			return task;
 		}
+				
+		taskDao.updateScore(task, score);
 		
-		taskDao.updateScore(task.taskId(), score.getValue());
-		return ImmutableTask.copyOf(task).withScore(score);
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
@@ -235,48 +237,48 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task title can't be longer than 100 characters");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
 		if (task.title().equals(title)) {
-			return ImmutableTask.copyOf(task);
+			return task;
 		}
 		
-		int parentId = taskDao.getParentId(task.taskId());
-		
-		if (taskDao.taskExists(parentId, title)) {
+		if (taskDao.taskExists(taskDao.getParent(task), title)) {
 			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
 		}		
 		
-		taskDao.updateTitle(task.taskId(), title);		
-		return ImmutableTask.copyOf(task).withTitle(title);
+		taskDao.updateTitle(task, title);
+		
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
-	public Task changeDescription(Task task, String description) {
+	public Task changeDescription(Task task, Optional<String> description) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
 			
-		if (description != null && description.length() == 0) {
+		if (description.isPresent() && description.get().length() == 0) {
 			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
-		if (description != null && description.length() > 500) {
+		if (description.isPresent() && description.get().length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
 		
-		if (!taskDao.taskExists(task.taskId())) {
+		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
 		if (task.description().equals(description)) {
-			return ImmutableTask.copyOf(task);
+			return task;
 		}
 		
-		taskDao.updateDescription(task.taskId(), description);		
-		return ImmutableTask.copyOf(task).withDescription(Optional.ofNullable(description));
+		taskDao.updateDescription(task, description);
+		
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
@@ -285,7 +287,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Story can't be null");
 		}
 		
-		if (!storyDao.storyExists(story.storyId())) {
+		if (!storyDao.storyExists(story)) {
 			throw new IllegalStateException("Story doesn't exist");
 		}
 		
@@ -293,7 +295,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Title can't be null");
 		}
 		
-		return taskDao.taskExists(story.storyId(), title);
+		return taskDao.taskExists(story, title);
 	}
 
 }

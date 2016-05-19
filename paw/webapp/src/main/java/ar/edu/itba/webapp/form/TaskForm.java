@@ -3,8 +3,9 @@ package ar.edu.itba.webapp.form;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import ar.edu.itba.models.TaskScore;
-import ar.edu.itba.models.TaskStatus;
+import ar.edu.itba.models.Priority;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.webapp.form.constraint.TaskNameFree;
 
 @TaskNameFree(markedField="title")
@@ -17,16 +18,28 @@ public class TaskForm {
 	private String description;
 	
 	@NotNull
-	private TaskStatus status;
+	private Status status;
 	
 	@NotNull
-	private TaskScore score;
+	private Score score;
 	
 	@NotNull
 	private String owner;
 	
+	@NotNull
+	private Priority priority;
+
 	private String oldTitle;	
+	
 	private int storyId;	
+	
+	public Priority getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Priority priority) {
+		this.priority = priority;
+	}
 	
 	public int getStoryId() {
 		return storyId;
@@ -36,11 +49,11 @@ public class TaskForm {
 		this.storyId = storyId;
 	}
 
-	public TaskScore getScore() {
+	public Score getScore() {
 		return score;
 	}
 
-	public void setScore(TaskScore score) {
+	public void setScore(Score score) {
 		this.score = score;
 	}
 
@@ -68,11 +81,11 @@ public class TaskForm {
 		this.description = description;
 	}
 	
-	public TaskStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 	
-	public void setStatus(TaskStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
