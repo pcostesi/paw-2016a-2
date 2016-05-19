@@ -1,3 +1,4 @@
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="project" required="true" type="ar.edu.itba.models.Project" %>
@@ -7,7 +8,7 @@
 <c:choose>
 	<c:when test="${iterations.isEmpty()}">
 		<div class="alert alert-info" role="alert">
-			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This project doesn't have any iteration so far
+			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> <spring:message code="iterationsPanel.empty"/>
 		</div>
 	</c:when>    
 	<c:otherwise>
@@ -15,16 +16,22 @@
 				<t:collapsiblePanel panelId="iteration-${iteration.number()}">
 					<jsp:attribute name="title">Iteration #${iteration.number()}</jsp:attribute>	
 						<jsp:attribute name="actions">
-							<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}" class="btn btn-default btn-xs" >
-								<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Go to iteration
+							<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}" var="iterationUrl"/>
+							<a href="${iterationUrl}" class="btn btn-default btn-xs" >
+								<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> <spring:message code="iterationsPanel.iteration_link"/>
 							</a>
-							<t:dropdownEditDelete url="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}"/>
+							<t:dropdownEditDelete url="${iterationUrl}"/>
 						</jsp:attribute>
 						<jsp:body>
 							<div class="row">
 						        <div class="col-sm-12">
+<<<<<<< HEAD
 						            <b>Start date</b> ${iteration.startDate()}<br>
 						            <b>End date</b> ${iteration.endDate()}<br>
+=======
+						            <p><strong><spring:message code="iterationsPanel.start_date"/></strong> ${iteration.formattedStartDate()}</p>
+						            <p><strong><spring:message code="iterationsPanel.end_date"/></strong> ${iteration.formattedEndDate()}</p>
+>>>>>>> master
 						        </div>
 						    </div>
 						</jsp:body>

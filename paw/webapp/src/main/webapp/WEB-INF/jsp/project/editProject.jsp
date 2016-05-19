@@ -6,7 +6,8 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	Edit project ${project.name()}
+		<spring:message code="project.edit.title" arguments="${project.name()}"/>
+    	Edit project 
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -23,7 +24,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<bs:submit/>
 
 		</form:form>
     </jsp:body>

@@ -5,6 +5,9 @@
 <%@attribute name="title" fragment="true" required="false" %>
 <%@attribute name="actions" fragment="true" required="false" %>
 <%@attribute name="user" required="false" type="ar.edu.itba.models.User" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
+<%@attribute name="supportedLanguages" required="false" type="java.util.Locale[]" %>
 
 <!DOCTYPE html>
 
@@ -31,6 +34,8 @@
 	            </div>	            
 	            <nav class="collapse navbar-collapse" id="nav-1">
 	                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="?language=en"><spring:message code="locale.en"/></a></li>
+                    <li><a href="?language=es"><spring:message code="locale.es"/></a></li>
 	                	<c:if test="${not empty user}">
 			     		<li>
 			     			<a href="${pageContext.request.contextPath}/me">
@@ -39,7 +44,7 @@
 			     		</li>	
 			     		<li>
 			     			<a href="${pageContext.request.contextPath}/logout">
-			     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> logout
+			     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <spring:message code="login.logout"/>
 			     			</a>
 			     		</li>	
 			     		</c:if>

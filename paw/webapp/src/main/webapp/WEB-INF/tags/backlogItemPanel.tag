@@ -4,6 +4,10 @@
 <%@attribute name="project" required="true" type="ar.edu.itba.models.Project"%>
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+
+<c:url value="/project/${project.code()}/backlog/${item.backlogItemId()}" var="deleteUrl" />
 
 <t:collapsiblePanel panelId="item-${item.backlogItemId()}" panelParent="${panelParent}">
 	<jsp:attribute name="title">
@@ -11,7 +15,7 @@
 	</jsp:attribute>
 	
 	<jsp:attribute name="actions">
-		<t:deleteButton url="${pageContext.request.contextPath}/project/${project.code()}/backlog/${item.backlogItemId()}"/>
+		<t:deleteButton url="${deleteUrl}"/>
 	</jsp:attribute>
 
 	<jsp:body>
@@ -19,10 +23,10 @@
             <div class="col-sm-12">
 				<c:choose>
 				    <c:when test="${item.description().isPresent()}">
-				    	<b>Description</b> ${item.description().get()}<br>
+				    	<p><strong><spring:message code="backlogItemPanel.description"/></strong> ${item.description().get()}<p>
 				    </c:when>    
 				    <c:otherwise>
-				    	<b>Description</b> Item doesn't have a description<br>
+				    	<p><strong><spring:message code="backlogItemPanel.description"/></strong> <spring:message code="backlogItemPanel.empty"/></p>
 				    </c:otherwise>
 				</c:choose>
             </div>

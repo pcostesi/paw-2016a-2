@@ -1,3 +1,4 @@
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@tag description="NavBar Button" pageEncoding="UTF-8"%>
 <%@attribute name="project" required="true" type="ar.edu.itba.models.Project"%>
@@ -6,14 +7,18 @@
 <%@attribute name="tasks" required="true" type="java.util.List"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
+
+	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/new" var="newTaskLink"/>
+	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}" var="storyLink"/>
+
 <t:collapsiblePanel panelId="story-${story.storyId()}">
 	<jsp:attribute name="title">${story.title()}</jsp:attribute>
-	
+
 	<jsp:attribute name="actions">
-	 	<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/new" class="btn btn-primary btn-xs dropdown-toggle">
-		    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New task
+	 	<a href="${newTaskLink}" class="btn btn-primary btn-xs dropdown-toggle">
+		    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="storyPanel.new_task"/>
 		</a>
-		<t:dropdownEditDelete url="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}"/>
+		<t:dropdownEditDelete url="${storyLink}"/>
 	</jsp:attribute>
 
 	<jsp:attribute name="list"><c:if test="${not items.isEmpty()}">	
@@ -27,7 +32,7 @@
 	<jsp:body><c:if test="${tasks.isEmpty()}">
 		<div class="row">
             <div class="col-sm-12">
-				    This story doesn't have any task so far
+				<spring:message code="storyPanel.empty"/>
             </div>
         </div>		
 	</c:if></jsp:body>

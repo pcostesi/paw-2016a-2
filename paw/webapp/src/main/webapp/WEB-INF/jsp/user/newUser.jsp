@@ -5,26 +5,24 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-
-<t:page>
+<t:page user="${user}">
 	<jsp:attribute name="title">
-		<spring:message code="item.new.title" arguments="${project.name()}" />
+    	Register
 	</jsp:attribute>
-
-	<c:url value="/project/${project.code()}/backlog/new" var="formUrl"/>
-
+	
 	<jsp:body>
-		<form:form modelAttribute="backlogForm" action="${formUrl}" method="POST">
+		<form:form modelAttribute="userForm" action="${pageContext.request.contextPath}/user/new" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<form:hidden path="projectId" value="${project.projectId()}"/>
-						<bs:input path="title" label="Title" />
-						<bs:input path="description" label="Description" />
+						<bs:input path="user" label="User" />
+						<bs:input type="password" path="password" label="Password" />
+						<bs:input type="password" path="verifyPassword" label="Repeat password" />
+						<bs:input path="mail" label="E-mail" />
 					</fieldset>
 				</div>
 			</div>
-			<bs:submit/>
+			<button type="submit" class="btn btn-primary">Register</button>
 
 		</form:form>
     </jsp:body>
