@@ -10,16 +10,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.models.Project;
 
-@Sql("classpath:schema.sql")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-
 public class ProjectServiceImplTest {
 
 	@Autowired
@@ -32,11 +30,13 @@ public class ProjectServiceImplTest {
 	Project testProject;
 
 	@Before
+	@Transactional
 	public void setup() {
 		testProject = ps.createProject(pName, pDesc, pCode);
 	}
 	
 	@After
+	@Transactional
 	public void endingSetup(){
 		if(ps.projectCodeExists(pCode)){
 			ps.deleteProject(ps.getProjectByCode(pCode));
@@ -44,37 +44,44 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test
+	@Transactional
 	public void createProjectTest() {
 		assertNotNull("Project should not be null", testProject);
 	}
 
 	@Test
+	@Transactional
 	public void getProjectTest() {
 		assertNotNull("Project should not be null", ps.getProjectByCode(pCode));
 	}
 
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void deleteProjectTest() {
 		ps.deleteProject(testProject);
 		ps.getProjectByCode(pCode);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void createNullNameProject() {
 		ps.createProject(null, pDesc, pCode);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void createNullDescProject() {
 		ps.createProject(pName, null, pCode);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void createNullCodeProject() {
 		ps.createProject(pName, pDesc, null);
 	}
 
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void createExistingProject() {
 		ps.createProject(pName, pDesc, pCode);
 		ps.createProject(pName, pDesc, pCode);
@@ -82,22 +89,26 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void getProjectWithNull() {
 		ps.getProjectByCode(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void getInexistingProject() {
 		ps.getProjectByCode("fakecode");
 	}
 
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void doubleDeleteTest() {
 		ps.deleteProject(ps.getProjectByCode(pCode));
 		ps.deleteProject(ps.getProjectByCode(pCode));
 	}
 
 	@Test
+	@Transactional
 	public void setNewName() {
 		String newName = "Super Name";
 		testProject = ps.setName(testProject, newName);
@@ -105,22 +116,26 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test
+	@Transactional
 	public void setNewDescrpition() {
 		testProject = ps.setDescription(testProject, "This is the projects new description");
 		assertSame("should be same", testProject.description(), "This is the projects new description");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void setInvalidName() {
 		ps.setName(testProject, "");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void setInvalidLongName() {
 		ps.setName(testProject, "asdasdasj kjsabfksbaf kj dbs fkljdsbfkl jsdb fkjsdbflksdjbfiewif bB FKDB KfbIEBUfbeeufib DifbsIFBo bbDuf yufs busdybf sidyfbysudfb xcv jbesui");
 	}
 
 	@Test
+	@Transactional
 	public void theIntensiveTester() {
 		int i;
 		Project subject;
@@ -133,6 +148,7 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test
+	@Transactional
 	public void theIntensiveTesterSDeluxeEdition() {
 		int i;
 		String string;
@@ -147,6 +163,7 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test
+	@Transactional
 	public void setCodeTest() {
 		Project testMonkey;
 		try {
@@ -194,6 +211,7 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test
+	@Transactional
 	public void getProjectByIdTest() {
 		testProject = ps.createProject("getProjectTester", "Shalalalal", "gpt");
 		assertNotNull("project should not be null", ps.getProjectById(testProject.projectId()));
@@ -211,6 +229,7 @@ public class ProjectServiceImplTest {
 	}
 
 	@Test
+	@Transactional
 	public void getProjectByCodeTest() {
 		try {
 			ps.getProjectByCode(null);

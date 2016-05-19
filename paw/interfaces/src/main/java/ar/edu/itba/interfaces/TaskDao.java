@@ -1,7 +1,6 @@
 package ar.edu.itba.interfaces;
 
 import java.util.List;
-import java.util.Optional;
 
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
@@ -20,13 +19,13 @@ public interface TaskDao {
 
 	public void updateStatus(final Task task, final Status status);
 
-	public void updateOwner(final Task task, final Optional<User> user);
+	public void updateOwner(final Task task, final User user);
 
 	public void deleteTask(final Task task);
 
 	public Task getTaskById(final int taskId);
 
-	public Task createTask(final Story story, final String name, final Optional<String> description, final Status status, final Optional<User> user, final Score score, final Priority priority);
+	public Task createTask(final Story story, final String name, final String description, final Status status, final User user, final Score score, final Priority priority);
 
 	public void updatePriority(final Task task, final Priority priority);
 
@@ -36,6 +35,6 @@ public interface TaskDao {
 
 	public void updateTitle(final Task task, final String title);
 
-	public void updateDescription(final Task task, final Optional<String> description);
+	public void updateDescription(final Task task, final String description);
 	
 }

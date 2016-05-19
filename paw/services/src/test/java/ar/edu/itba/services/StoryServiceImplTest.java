@@ -7,9 +7,13 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.StoryDao;
@@ -18,6 +22,8 @@ import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Story;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class StoryServiceImplTest {
 
 	private StoryService ss;
@@ -44,12 +50,14 @@ public class StoryServiceImplTest {
 			+ "fgjdkhgdfjkhgdkjfshgdkfjhgjdfkhgdjfkhgjdkfhgkjdfhgkfdgfg";
 
 	@Before
+	@Transactional
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		ss = new StoryServiceImpl(storyDao, iterationDao, taskDao);
 	}
 
 	@Test
+	@Transactional
 	public void testCreateStory() {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(false);
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
@@ -58,6 +66,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void testCreateAlreadyExistingStory() {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(true);
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
@@ -65,6 +74,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void testCreateStoryWithNullIteraiton() {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(false);
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
@@ -72,6 +82,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void testCreateStoryWithNullString() {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(false);
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
@@ -79,6 +90,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void testCreateStoryWithEmptyString() {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(false);
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
@@ -86,6 +98,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void testCreateStoryWithinInexistingIteration() {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(false);
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(false);
@@ -93,6 +106,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void testCreateStoryWithLongString() {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(false);
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
@@ -100,6 +114,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test
+	@Transactional
 	public void getByIdCorrectlly() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(storyDao.getStoryById(testStory.storyId())).thenReturn(testStory);
@@ -108,6 +123,7 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void getByIdwithInvalidId() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		Mockito.when(storyDao.getStoryById(testStory.storyId())).thenReturn(testStory);
@@ -115,6 +131,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void getByIdwithInexistigStory() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		Mockito.when(storyDao.getStoryById(testStory.storyId())).thenReturn(null);
@@ -122,6 +139,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test
+	@Transactional
 	public void setNameTest(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
@@ -132,6 +150,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void setNameTestWithNullString(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
@@ -140,6 +159,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void setNameTestWithEmptyString(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
@@ -148,6 +168,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void setNameTestWithLongString(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
@@ -156,6 +177,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void setNameTestWithInexistentStory(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
@@ -164,6 +186,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void setNameTestWithNullStory(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
@@ -172,6 +195,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test
+	@Transactional
 	public void deleteSToryTest(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		ss.deleteStory(testStory);
@@ -179,18 +203,21 @@ public class StoryServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void deleteSToryWithNullStory(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		ss.deleteStory(null);
 	}
 	
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void deleteSToryWithInexistentStory(){
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		ss.deleteStory(testStory);
 	}
 	
 	@Test
+	@Transactional
 	public void storyExistsTest(){
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(true);
@@ -198,6 +225,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@Transactional
 	public void storyExistsWithNullIteration(){
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(true);
@@ -205,6 +233,7 @@ public class StoryServiceImplTest {
 	}
 	
 	@Test(expected = IllegalStateException.class)
+	@Transactional
 	public void storyExistsWithInexistentIteration(){
 		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(false);
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(true);

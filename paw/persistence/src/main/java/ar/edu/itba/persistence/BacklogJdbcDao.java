@@ -3,7 +3,6 @@ package ar.edu.itba.persistence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -36,7 +35,7 @@ public class BacklogJdbcDao implements BacklogDao {
 	}
 
 	@Override
-	public BacklogItem createBacklogItem(String title, Optional<String> description, Project project) {
+	public BacklogItem createBacklogItem(String title, String description, Project project) {
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("title", title);
 		args.put("description", description);
@@ -100,7 +99,7 @@ public class BacklogJdbcDao implements BacklogDao {
 	}
 
 	@Override
-	public void updateDescription(BacklogItem backlogItem, Optional<String> description) {
+	public void updateDescription(BacklogItem backlogItem, String description) {
 		try {
 			jdbcTemplate.update("UPDATE backlog SET description = ? WHERE item_id = ?", description, backlogItem.backlogItemId());
 		} catch (DataAccessException exception) {

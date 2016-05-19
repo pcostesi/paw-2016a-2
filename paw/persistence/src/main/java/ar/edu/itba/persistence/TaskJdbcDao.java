@@ -3,7 +3,6 @@ package ar.edu.itba.persistence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -40,7 +39,7 @@ public class TaskJdbcDao implements TaskDao{
     }
 	
 	@Override
-	public Task createTask(Story story, String title, Optional<String> description, Status status, Optional<User> owner, Score score, Priority priority) {
+	public Task createTask(Story story, String title, String description, Status status, User owner, Score score, Priority priority) {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("story_id", story.storyId());
@@ -78,9 +77,9 @@ public class TaskJdbcDao implements TaskDao{
 	}
 
 	@Override
-	public void updateOwner(Task task, final Optional<User> user) {
+	public void updateOwner(Task task, final User user) {
 		try {
-			jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.isPresent()? user.get().username() : null, task.taskId());
+			jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", (user == null)? null : user.username());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update owner");
         }
@@ -174,9 +173,9 @@ public class TaskJdbcDao implements TaskDao{
 	}
 
 	@Override
-	public void updateDescription(Task task, Optional<String> description) {
+	public void updateDescription(Task task, String description) {
 		try {
-			jdbcTemplate.update("UPDATE task SET description = ? WHERE task_id = ?", description.orElse(null), task.taskId());
+			jdbcTemplate.update("UPDATE task SET description = ? WHERE task_id = ?", description, task.taskId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update description");
         }

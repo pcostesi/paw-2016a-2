@@ -1,7 +1,6 @@
 package ar.edu.itba.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class BacklogServiceImpl implements BacklogService {
 	StoryDao storyDao;
 
 	@Override
-	public BacklogItem createBacklogItem(Project project, String title, Optional<String> description) {
+	public BacklogItem createBacklogItem(Project project, String title, String description) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -45,7 +44,7 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Backlog item title can't be more than 100 characters long");
 		}
 		
-		if (description.isPresent() && description.get().length() > 500) {
+		if (description != null && description.length() > 500) {
 			throw new IllegalArgumentException("Backlog item description can't be more than 500 characters long");
 		}
 		
@@ -118,7 +117,7 @@ public class BacklogServiceImpl implements BacklogService {
 	}
 
 	@Override
-	public BacklogItem setBacklogItemDescription(BacklogItem item, Optional<String> description) {
+	public BacklogItem setBacklogItemDescription(BacklogItem item, String description) {
 		if (item == null) {
 			throw new IllegalArgumentException("Item can't be null");
 		}
@@ -127,7 +126,7 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalStateException("Item does not exist in this project");
 		}
 		
-		if (description.isPresent() && description.get().length() > 500) {
+		if (description != null && description.length() > 500) {
 			throw new IllegalArgumentException("Description can't be more than 500 characters long");
 		}
 		
@@ -155,7 +154,7 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalStateException("Project does not exist");
 		}
 		
-		final BacklogItem newItem = createBacklogItem(project, task.title(), task.description());
+		final BacklogItem newItem = createBacklogItem(project, task.title(), task.description().get());
 		taskDao.deleteTask(task);
 		
 		return newItem;

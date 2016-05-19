@@ -1,14 +1,13 @@
 package ar.edu.itba.interfaces;
 
 import java.util.List;
-import java.util.Optional;
 
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
 
 public interface BacklogDao {
 
-	public BacklogItem createBacklogItem(final String title, final Optional<String> description, final Project project);
+	public BacklogItem createBacklogItem(final String title, final String description, final Project project);
 
 	public boolean backlogItemExists(final Project project, final String title);
 
@@ -18,7 +17,7 @@ public interface BacklogDao {
 	
 	public void updateTitle(final BacklogItem backlogItem, final String title);
 	
-	public void updateDescription(final BacklogItem backlogItem, final Optional<String> description);
+	public void updateDescription(final BacklogItem backlogItem, final String description);
 	
 	public List<BacklogItem> getBacklogForProject(final Project project);
 

@@ -1,7 +1,6 @@
 package ar.edu.itba.persistence;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +24,7 @@ public class BacklogHibernateDao implements BacklogDao{
 	
 	@Override
 	@Transactional
-	public BacklogItem createBacklogItem(String title, Optional<String> description, Project project) {
+	public BacklogItem createBacklogItem(String title, String description, Project project) {
 		final BacklogItem backlogItem = BacklogItem.builder()
 				.title(title)
 				.description(description)
@@ -72,7 +71,7 @@ public class BacklogHibernateDao implements BacklogDao{
 
 	@Override
 	@Transactional
-	public void updateDescription(BacklogItem backlogItem, Optional<String> description) {
+	public void updateDescription(BacklogItem backlogItem, String description) {
 		final Query query = em.createQuery("update BacklogItem set description = :description where backlogItemId = :backlogItemId");
 		query.setParameter("backlogItemId", backlogItem.backlogItemId());
 		query.setParameter("description", description);

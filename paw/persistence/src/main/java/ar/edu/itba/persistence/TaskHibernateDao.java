@@ -1,7 +1,6 @@
 package ar.edu.itba.persistence;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -63,10 +62,10 @@ public class TaskHibernateDao implements TaskDao{
 
 	@Override
 	@Transactional
-	public void updateOwner(Task task, Optional<User> owner) {
+	public void updateOwner(Task task, User owner) {
 		final Query query = em.createQuery("update Task set owner = :owner where taskId = :taskId");
 		query.setParameter("taskId", task.taskId());
-		query.setParameter("owner", owner.orElse(null));
+		query.setParameter("owner", owner);
 		query.executeUpdate();
 	}
 
@@ -88,7 +87,7 @@ public class TaskHibernateDao implements TaskDao{
 
 	@Override
 	@Transactional
-	public Task createTask(Story story, String title, Optional<String> description, Status status, Optional<User> user,
+	public Task createTask(Story story, String title, String description, Status status, User user,
 			Score score, Priority priority) {
 		final Task persistableTask = Task.builder()
 				.title(title)
@@ -139,10 +138,10 @@ public class TaskHibernateDao implements TaskDao{
 
 	@Override
 	@Transactional
-	public void updateDescription(Task task, Optional<String> description) {
+	public void updateDescription(Task task, String description) {
 		final Query query = em.createQuery("update Task set description = :description where taskId = :taskId");
 		query.setParameter("taskId", task.taskId());
-		query.setParameter("description", description.orElse(null));
+		query.setParameter("description", description);
 		query.executeUpdate();
 	}
 

@@ -7,7 +7,11 @@ import javax.mail.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
@@ -16,12 +20,15 @@ import com.icegreen.greenmail.util.ServerSetupTest;
 import ar.edu.itba.models.User;
 import junit.framework.TestCase;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class EmailServiceImplTest extends TestCase {
 
 	private EmailServiceImpl es;
 	private GreenMail greenMail;
 
     @Before
+    @Transactional
     public void setUp() {
     	greenMail = new GreenMail(ServerSetupTest.SMTP);
     	greenMail.start();
@@ -30,6 +37,7 @@ public class EmailServiceImplTest extends TestCase {
     }
     
     @After
+    @Transactional
     public void tearDown() {
     	es = null;
         greenMail.stop();
@@ -44,6 +52,7 @@ public class EmailServiceImplTest extends TestCase {
     }
 
     @Test
+    @Transactional
     public void testCanSendEmail() throws MessagingException {
     	final String subject = "test subject";
     	final String body = "test body";

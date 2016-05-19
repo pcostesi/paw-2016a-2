@@ -3,7 +3,6 @@ package ar.edu.itba.services;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
-import java.util.concurrent.Future;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;

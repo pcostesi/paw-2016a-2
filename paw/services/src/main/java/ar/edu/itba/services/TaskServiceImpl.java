@@ -1,7 +1,6 @@
 package ar.edu.itba.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class TaskServiceImpl implements TaskService{
 	}	
 
 	@Override
-	public Task createTask(Story story, String title, Optional<String> description, Status status, Optional<User> user, Score score, Priority priority) {
+	public Task createTask(Story story, String title, String description, Status status, User user, Score score, Priority priority) {
 		if (story == null) {
 			throw new IllegalArgumentException("Story can't be null");
 		}
@@ -56,19 +55,19 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Task title can't be longer than 100 characters");
 		}
 		
-		if (user.isPresent() && user.get().username().length() == 0) {
+		if (user != null && user.username().length() == 0) {
 			throw new IllegalArgumentException("Task owner can't be empty");
 		}
 		
-		if (user.isPresent() && user.get().username().length() > 100) {
+		if (user != null && user.username().length() > 100) {
 			throw new IllegalArgumentException("Task owner can't be longer than 100 characters");
 		}
 		
-		if (description.isPresent() && description.get().length() == 0) {
+		if (description != null && description.length() == 0) {
 			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
-		if (description.isPresent() && description.get().length() > 500) {
+		if (description != null && description.length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
 		if (!storyDao.storyExists(story)) {
@@ -111,7 +110,7 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public Task changeOwnership(Task task, Optional<User> user) {		
+	public Task changeOwnership(Task task, User user) {		
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
@@ -255,16 +254,16 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public Task changeDescription(Task task, Optional<String> description) {
+	public Task changeDescription(Task task, String description) {
 		if (task == null) {
 			throw new IllegalArgumentException("Task can't be null");
 		}
 			
-		if (description.isPresent() && description.get().length() == 0) {
+		if (description != null && description.length() == 0) {
 			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
-		if (description.isPresent() && description.get().length() > 500) {
+		if (description != null && description.length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
 		

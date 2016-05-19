@@ -85,18 +85,8 @@ public class TaskController extends BaseController {
 			mav.addObject("story", story);			
 			mav.addObject("users",users);
 		} else {
-			final Optional<User> owner;
-			if(taskForm.getOwner().equals("None")){
-				owner = Optional.ofNullable(null);
-			} else {
-				owner = Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
-			}
-			final Optional<String> description;
-			if (taskForm.getDescription().length() == 0) {
-				description = Optional.ofNullable(null);
-			} else {
-				description = Optional.ofNullable(taskForm.getDescription());
-			}
+			final User owner = (taskForm.getOwner().equals("None"))? null : us.getByUsername(taskForm.getOwner());
+			final String description = (taskForm.getDescription().length() == 0)? null : taskForm.getDescription();
 			ts.createTask(story, taskForm.getTitle(), description, taskForm.getStatus(), owner, taskForm.getScore(), taskForm.getPriority());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
@@ -157,18 +147,8 @@ public class TaskController extends BaseController {
 			mav.addObject("users", users);
 			mav.addObject("story", story);
 		} else {
-			final Optional<User> owner;
-			if (taskForm.getOwner().equals("None")) {
-				owner = Optional.ofNullable(null);
-			} else {
-				owner = Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
-			}			
-			final Optional<String> description;
-			if (taskForm.getDescription().length() == 0) {
-				description = Optional.ofNullable(null);
-			} else {
-				description = Optional.ofNullable(taskForm.getDescription());
-			}			
+			final User owner = (taskForm.getOwner().equals("None"))? null : us.getByUsername(taskForm.getOwner());
+			final String description = (taskForm.getDescription().length() == 0)? null : taskForm.getDescription();			
 			ts.changeOwnership(task, owner);
 			ts.changeStatus(task, taskForm.getStatus());
 			ts.changeScore(task, taskForm.getScore());
