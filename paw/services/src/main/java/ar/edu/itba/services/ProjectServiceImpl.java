@@ -115,7 +115,9 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("This project name has been used already");
 		}		
 		
-		return projectDao.updateName(project, name);
+		projectDao.updateName(project, name);
+		
+		return projectDao.getProjectById(project.projectId());
 	}
 
 	@Override
@@ -144,7 +146,9 @@ public class ProjectServiceImpl implements ProjectService{
 			return project;
 		}		
 		
-		return projectDao.updateDescription(project, description);
+		projectDao.updateDescription(project, description);
+		
+		return projectDao.getProjectById(project.projectId());
 	}
 
 	@Override
@@ -181,7 +185,9 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("This project code has been used already");
 		}
 		
-		return projectDao.updateCode(project, code);
+		projectDao.updateCode(project, code);
+		
+		return projectDao.getProjectById(project.projectId());
 	}
 
 	@Override
@@ -200,7 +206,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public List<? extends Project> getProjects() {
+	public List<Project> getProjects() {
 		return projectDao.getProjects();	
 	}
 

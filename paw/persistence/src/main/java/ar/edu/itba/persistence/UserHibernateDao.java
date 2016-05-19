@@ -8,9 +8,9 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.UserDao;
-import ar.edu.itba.models.PersistableUser;
 import ar.edu.itba.models.User;
 
 @Primary
@@ -21,29 +21,33 @@ public class UserHibernateDao implements UserDao{
     private EntityManager em;
 	
 	@Override
+	@Transactional
 	public User getByUsername(String username) {
-        return em.find(PersistableUser.class, username);
+        return em.find(User.class, username);
 	}
 
 	@Override
+	@Transactional
 	public boolean userNameExists(String username) {
-		final TypedQuery<PersistableUser> query = em.createQuery("from PersistableUser user where user.username = :username", PersistableUser.class);
+		final TypedQuery<User> query = em.createQuery("from User user where user.username = :username", User.class);
         query.setParameter("username", username);
-        final List<PersistableUser> list = query.getResultList();
+        final List<User> list = query.getResultList();
         return list.isEmpty() ? false : true;
 	}
 
 	@Override
+	@Transactional
 	public boolean userMailExists(String mail) {
-		final TypedQuery<PersistableUser> query = em.createQuery("from PersistableUser user where user.mail = :mail", PersistableUser.class);
+		final TypedQuery<User> query = em.createQuery("from User user where user.mail = :mail", User.class);
         query.setParameter("mail", mail);
-        final List<PersistableUser> list = query.getResultList();
+        final List<User> list = query.getResultList();
         return list.isEmpty() ? false : true;
 	}
 
 	@Override
+	@Transactional
 	public User createUser(String name, String password, String mail) {
-		final PersistableUser persistableUser = PersistableUser.builder()
+		final User persistableUser = User.builder()
 				.username(name)
 				.password(password)
 				.mail(mail)
@@ -53,8 +57,9 @@ public class UserHibernateDao implements UserDao{
 	}
 
 	@Override
+	@Transactional
 	public List<String> getAllUsernames() {
-		final TypedQuery<String> query = em.createQuery("select user.username from PersistableUser user", String.class);
+		final TypedQuery<String> query = em.createQuery("select user.username from User user", String.class);
         return query.getResultList();
 	}
 

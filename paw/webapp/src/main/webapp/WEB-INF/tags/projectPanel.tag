@@ -15,7 +15,7 @@
 	<jsp:body>
 		<div class="row">
 	        <div class="col-sm-12">
-	        	<b>Start date</b> ${project.formattedStartDate()}<br>
+	        	<b>Start date</b> ${project.startDate()}<br>
 	            <b>Description</b> ${project.description()}
 	        </div>
 	    </div>

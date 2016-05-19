@@ -16,11 +16,11 @@ public interface BacklogDao {
 	
 	public void deleteItem(final BacklogItem backlogItem);
 	
-	public BacklogItem updateTitle(final BacklogItem backlogItem, final String title);
+	public void updateTitle(final BacklogItem backlogItem, final String title);
 	
-	public BacklogItem updateDescription(final BacklogItem backlogItem, final Optional<String> description);
+	public void updateDescription(final BacklogItem backlogItem, final Optional<String> description);
 	
-	public List<? extends BacklogItem> getBacklogForProject(final Project project);
+	public List<BacklogItem> getBacklogForProject(final Project project);
 
 	public Project getParent(final BacklogItem backlogItem);
 

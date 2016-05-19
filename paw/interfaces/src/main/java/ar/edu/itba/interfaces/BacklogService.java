@@ -14,7 +14,7 @@ public interface BacklogService {
 	
 	public void deleteBacklogItem(final BacklogItem backlogItem);
 	
-	public List<? extends BacklogItem> getBacklogForProject(final Project project);
+	public List<BacklogItem> getBacklogForProject(final Project project);
 		
 	public BacklogItem setBacklogItemTitle(final BacklogItem item, final String title);
 	

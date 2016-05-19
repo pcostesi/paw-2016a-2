@@ -59,8 +59,8 @@ public class ProjectController extends BaseController {
 	public ModelAndView getResource(@PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("project/iterationList");
 		final Project project = ps.getProjectByCode(projectCode);
-		final List<? extends Iteration> iterations = is.getIterationsForProject(project);
-		final List<? extends BacklogItem> backlog = bs.getBacklogForProject(project);
+		final List<Iteration> iterations = is.getIterationsForProject(project);
+		final List<BacklogItem> backlog = bs.getBacklogForProject(project);
 		mav.addObject("iterations", iterations);
 		mav.addObject("project", project);
 		mav.addObject("backlog", backlog);

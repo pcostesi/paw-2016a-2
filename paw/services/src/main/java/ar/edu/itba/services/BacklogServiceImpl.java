@@ -74,7 +74,7 @@ public class BacklogServiceImpl implements BacklogService {
 	}
 
 	@Override
-	public List<? extends BacklogItem> getBacklogForProject(Project project) {
+	public List<BacklogItem> getBacklogForProject(Project project) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -112,7 +112,9 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalStateException("There is another item with this title in this project");
 		}		
 		
-		return backlogDao.updateTitle(item, title);
+		backlogDao.updateTitle(item, title);
+		
+		return backlogDao.getBacklogItemById(item.backlogItemId());
 	}
 
 	@Override
@@ -129,7 +131,9 @@ public class BacklogServiceImpl implements BacklogService {
 			throw new IllegalArgumentException("Description can't be more than 500 characters long");
 		}
 		
-		return backlogDao.updateDescription(item, description);
+		backlogDao.updateDescription(item, description);
+		
+		return backlogDao.getBacklogItemById(item.backlogItemId());
 	}
 	
 

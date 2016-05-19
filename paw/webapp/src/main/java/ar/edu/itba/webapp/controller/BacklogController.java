@@ -51,7 +51,12 @@ public class BacklogController extends BaseController {
 			mav.addObject("project", project);
 		} else {
 			final String formDescription = backlogForm.getDescription();
-			final Optional<String> description = formDescription.length() == 0 ? null : Optional.of(formDescription);
+			final Optional<String> description;
+			if (formDescription.length() == 0) {
+				description = Optional.ofNullable(null);
+			} else {
+				description = Optional.ofNullable(formDescription);
+			}
 			bs.createBacklogItem(project, backlogForm.getTitle(), description);
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
 					.arg(0, projectCode).build();

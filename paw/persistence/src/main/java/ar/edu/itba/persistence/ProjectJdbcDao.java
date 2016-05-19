@@ -15,7 +15,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
 
@@ -46,7 +45,7 @@ public class ProjectJdbcDao implements ProjectDao{
         
         try {
 	        int projectId = jdbcInsert.executeAndReturnKey(args).intValue();	
-	        return PersistableProject.builder()
+	        return Project.builder()
 	        		.projectId(projectId)
 	        		.name(name)
 	        		.code(code)
@@ -104,36 +103,27 @@ public class ProjectJdbcDao implements ProjectDao{
 	}
 
 	@Override
-	public Project updateName(Project project, String name) {
+	public void updateName(Project project, String name) {
 		try {
-			PersistableProject persistableProject = (PersistableProject) project;
-			persistableProject.setName(name);
 			jdbcTemplate.update("UPDATE project SET name = ? WHERE project_id = ?", name, project.projectId());
-			return persistableProject;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update project name");
         }
 	}
 
 	@Override
-	public Project updateDescription(Project project, String description) {
+	public void updateDescription(Project project, String description) {
 		try {
-			PersistableProject persistableProject = (PersistableProject) project;
-			persistableProject.setDescription(description);
 			jdbcTemplate.update("UPDATE project SET description = ? WHERE project_id = ?", description, project.projectId());
-			return persistableProject;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update project description");
         }
 	}
 
 	@Override
-	public Project updateCode(Project project, String code) {
+	public void updateCode(Project project, String code) {
 		try {
-			PersistableProject persistableProject = (PersistableProject) project;
-			persistableProject.setCode(code);
 			jdbcTemplate.update("UPDATE project SET code = ? WHERE project_id = ?", code, project.projectId());
-			return persistableProject;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update project code");
         }

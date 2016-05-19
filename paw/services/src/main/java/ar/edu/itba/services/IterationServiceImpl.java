@@ -124,7 +124,9 @@ public class IterationServiceImpl implements IterationService{
 			return iteration;
 		}
 		
-		return iterationDao.updateStartDate(iteration, beginDate);
+		iterationDao.updateStartDate(iteration, beginDate);
+		
+		return iterationDao.getIterationById(iteration.iterationId());
 	}
 
 	@Override
@@ -148,11 +150,13 @@ public class IterationServiceImpl implements IterationService{
 			return iteration;
 		}
 
-		return iterationDao.updateEndDate(iteration, endDate);
+		iterationDao.updateEndDate(iteration, endDate);
+		
+		return iterationDao.getIterationById(iteration.iterationId());
 	}
 
 	@Override
-	public List<? extends Iteration> getIterationsForProject(Project project) {
+	public List<Iteration> getIterationsForProject(Project project) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
@@ -174,7 +178,7 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalStateException("Iteration doesn't exist");
 		}
 		
-		return projectDao.getProjectById(iteration.projectId());
+		return iterationDao.getParent(iteration);
 	}
 
 }

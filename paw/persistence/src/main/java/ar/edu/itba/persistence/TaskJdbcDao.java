@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.models.PersistableTask;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
@@ -43,28 +42,26 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public Task createTask(Story story, String title, Optional<String> description, Status status, Optional<User> owner, Score score, Priority priority) {
 		
-		final String ownerUsername = owner.isPresent()? owner.get().username() : null;
-		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("story_id", story.storyId());
 		args.put("title", title);
 		args.put("description", description);
-		args.put("owner", ownerUsername);
+		args.put("owner", owner);
 		args.put("status", status.getValue());
 		args.put("score", score.getValue());
 		args.put("priority", priority.getValue());
 
 		try {
 			int taskId = jdbcInsert.executeAndReturnKey(args).intValue();		
-			return PersistableTask.builder()
+			return Task.builder()
 					.taskId(taskId)
 					.title(title)
 					.description(description)
 					.status(status)
 					.score(score)
-					.owner(Optional.ofNullable(ownerUsername))
+					.owner(owner)
 					.priority(priority)
-					.storyId(story.storyId())
+					.story(story)
 					.build();
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to create task");
@@ -81,25 +78,18 @@ public class TaskJdbcDao implements TaskDao{
 	}
 
 	@Override
-	public Task updateOwner(Task task, final Optional<User> user) {
+	public void updateOwner(Task task, final Optional<User> user) {
 		try {
-			PersistableTask persistableTask = (PersistableTask) task;
-			String ownerUsername = user.isPresent()? user.get().username() : null;
-			persistableTask.setOwner(Optional.ofNullable(ownerUsername));
-			jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", ownerUsername, task.taskId());
-			return persistableTask;
+			jdbcTemplate.update("UPDATE task SET owner = ? WHERE task_id = ?", user.isPresent()? user.get().username() : null, task.taskId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update owner");
         }
 	}
 
 	@Override
-	public Task updateStatus(Task task, Status status) {
+	public void updateStatus(Task task, Status status) {
 		try {
-			PersistableTask persistableTask = (PersistableTask) task;
-			persistableTask.setStatus(status);
 			jdbcTemplate.update("UPDATE task SET status = ? WHERE task_id = ?", status.getValue(), task.taskId());
-			return persistableTask;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update status");
         }
@@ -148,24 +138,18 @@ public class TaskJdbcDao implements TaskDao{
 	}
 
 	@Override
-	public Task updatePriority(Task task, Priority priority) {
+	public void updatePriority(Task task, Priority priority) {
 		try {
-			PersistableTask persistableTask = (PersistableTask) task;
-			persistableTask.setPriority(priority);
 			jdbcTemplate.update("UPDATE task SET priority = ? WHERE task_id = ?", priority.getValue(), task.taskId());
-			return persistableTask;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update task priority");
         }
 	}
 
 	@Override
-	public Task updateScore(Task task, Score score) {
+	public void updateScore(Task task, Score score) {
 		try {
-			PersistableTask persistableTask = (PersistableTask) task;
-			persistableTask.setScore(score);
 			jdbcTemplate.update("UPDATE task SET score = ? WHERE task_id = ?", score.getValue(), task.taskId());
-			return persistableTask;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update task score");
         }
@@ -174,31 +158,25 @@ public class TaskJdbcDao implements TaskDao{
 	@Override
 	public Story getParent(Task task) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT story_id FROM task WHERE task_id = ?", storyRowMapper, task.storyId());
+			return jdbcTemplate.queryForObject("SELECT story_id FROM task WHERE task_id = ?", storyRowMapper, task.story().storyId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to get task parent");
         }
 	}
 
 	@Override
-	public Task updateTitle(Task task, String title) {
+	public void updateTitle(Task task, String title) {
 		try {
-			PersistableTask persistableTask = (PersistableTask) task;
-			persistableTask.setTitle(title);
 			jdbcTemplate.update("UPDATE task SET title = ? WHERE task_id = ?", title, task.taskId());
-			return persistableTask;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update title");
         }
 	}
 
 	@Override
-	public Task updateDescription(Task task, Optional<String> description) {
+	public void updateDescription(Task task, Optional<String> description) {
 		try {
-			PersistableTask persistableTask = (PersistableTask) task;
-			persistableTask.setDescription(description);
 			jdbcTemplate.update("UPDATE task SET description = ? WHERE task_id = ?", description.orElse(null), task.taskId());
-			return persistableTask;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update description");
         }

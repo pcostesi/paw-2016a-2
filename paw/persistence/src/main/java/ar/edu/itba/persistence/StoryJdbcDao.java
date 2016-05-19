@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.PersistableStory;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.persistence.rowmapping.IterationRowMapper;
 import ar.edu.itba.persistence.rowmapping.StoryRowMapper;
@@ -60,7 +59,7 @@ public class StoryJdbcDao implements StoryDao{
 		args.put("title", title);		
 		try {
 			int storyId = jdbcInsert.executeAndReturnKey(args).intValue();			
-			return PersistableStory.builder()
+			return Story.builder()
 					.storyId(storyId)
 					.title(title)
 					.build();
@@ -84,12 +83,9 @@ public class StoryJdbcDao implements StoryDao{
 	}
 
 	@Override
-	public Story updateTitle(Story story, String title) {
+	public void updateTitle(Story story, String title) {
 		try {
-			PersistableStory persistableStory = (PersistableStory) story;
-			persistableStory.setTitle(title);
 			jdbcTemplate.update("UPDATE story SET title = ? WHERE story_id = ?", title, story.storyId());
-			return persistableStory;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update name");
         }

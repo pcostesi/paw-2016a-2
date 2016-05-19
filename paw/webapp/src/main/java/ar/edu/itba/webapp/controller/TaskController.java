@@ -85,8 +85,18 @@ public class TaskController extends BaseController {
 			mav.addObject("story", story);			
 			mav.addObject("users",users);
 		} else {
-			final Optional<User> owner = taskForm.getOwner().equals("None")? null : Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
-			final Optional<String> description = taskForm.getDescription().length() == 0 ? null: Optional.ofNullable(taskForm.getDescription());
+			final Optional<User> owner;
+			if(taskForm.getOwner().equals("None")){
+				owner = Optional.ofNullable(null);
+			} else {
+				owner = Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
+			}
+			final Optional<String> description;
+			if (taskForm.getDescription().length() == 0) {
+				description = Optional.ofNullable(null);
+			} else {
+				description = Optional.ofNullable(taskForm.getDescription());
+			}
 			ts.createTask(story, taskForm.getTitle(), description, taskForm.getStatus(), owner, taskForm.getScore(), taskForm.getPriority());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "iteration.details")
 					.arg(0, projectCode)
@@ -108,8 +118,8 @@ public class TaskController extends BaseController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		final Task task = ts.getTaskById(taskId);
-		final Optional<String> owner = task.owner();
-		final String ownerUsername = (!owner.isPresent())? "None": owner.get();
+		final Optional<User> owner = task.owner();
+		final String ownerUsername = (!owner.isPresent())? "None": owner.get().username();
 		final List<String> users = us.getUsernames();
 		users.add(0, "None");
 		taskForm.setDescription(task.description().isPresent()? task.description().get() : null);
@@ -149,12 +159,16 @@ public class TaskController extends BaseController {
 		} else {
 			final Optional<User> owner;
 			if (taskForm.getOwner().equals("None")) {
-				owner = null;
+				owner = Optional.ofNullable(null);
 			} else {
 				owner = Optional.ofNullable(us.getByUsername(taskForm.getOwner()));
-			}
-			final Optional<String> description = taskForm.getDescription().length() == 0 ? null: Optional.of(taskForm.getDescription());
-			
+			}			
+			final Optional<String> description;
+			if (taskForm.getDescription().length() == 0) {
+				description = Optional.ofNullable(null);
+			} else {
+				description = Optional.ofNullable(taskForm.getDescription());
+			}			
 			ts.changeOwnership(task, owner);
 			ts.changeStatus(task, taskForm.getStatus());
 			ts.changeScore(task, taskForm.getScore());

@@ -5,15 +5,15 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.BacklogDao;
 import ar.edu.itba.models.BacklogItem;
-import ar.edu.itba.models.PersistableBacklogItem;
-import ar.edu.itba.models.PersistableProject;
 import ar.edu.itba.models.Project;
 
 @Primary
@@ -24,63 +24,81 @@ public class BacklogHibernateDao implements BacklogDao{
     private EntityManager em;
 	
 	@Override
+	@Transactional
 	public BacklogItem createBacklogItem(String title, Optional<String> description, Project project) {
-		final PersistableBacklogItem persistableBacklogItem = PersistableBacklogItem.builder()
+		final BacklogItem backlogItem = BacklogItem.builder()
 				.title(title)
 				.description(description)
-				.projectId(project.projectId())
+				.project(project)
 				.build();
-		em.persist(persistableBacklogItem);
+		em.persist(backlogItem);
 		em.flush();
-		return persistableBacklogItem;
+		return backlogItem;
 	}
 
 	@Override
+	@Transactional
 	public boolean backlogItemExists(Project project, String title) {
-		final TypedQuery<Integer> query = em.createQuery("select count(*) from PersistableBacklogItem backlog where backlog.title = :title and backlog.projectId = :projectId", Integer.class);
+		final TypedQuery<Long> query = em.createQuery("select count(*) from BacklogItem backlog where backlog.title = :title and backlog.project = :project", Long.class);
 		query.setParameter("title", title);
-		query.setParameter("projectId", project.projectId());
+		query.setParameter("project", project);
         return query.getSingleResult() > 0;
 	}
 
 	@Override
+	@Transactional
 	public boolean backlogItemExists(BacklogItem backlogItem) {
-		return em.contains(backlogItem);
+		final TypedQuery<Long> query = em.createQuery("select count(*) from BacklogItem backlog where backlog.backlogItemId = :backlogItemId", Long.class);
+		query.setParameter("backlogItemId", backlogItem.backlogItemId());
+        return query.getSingleResult() > 0;
 	}
 
 	@Override
+	@Transactional
 	public void deleteItem(BacklogItem backlogItem) {
-		PersistableBacklogItem persistableItem = (PersistableBacklogItem) backlogItem;
-		em.remove(persistableItem);
+		final Query query = em.createQuery("delete from BacklogItem where backlogItemId = :backlogItemId");
+		query.setParameter("backlogItemId", backlogItem.backlogItemId());
+		query.executeUpdate();
 	}
 
 	@Override
-	public BacklogItem updateTitle(BacklogItem backlogItem, String title) {
-		PersistableBacklogItem persistableItem = (PersistableBacklogItem) backlogItem;
-		persistableItem.setTitle(title);
-		return em.merge(persistableItem);
+	@Transactional
+	public void updateTitle(BacklogItem backlogItem, String title) {
+		final Query query = em.createQuery("update BacklogItem set title = :title where backlogItemId = :backlogItemId");
+		query.setParameter("backlogItemId", backlogItem.backlogItemId());
+		query.setParameter("title", title);
+		query.executeUpdate();
 	}
 
 	@Override
-	public BacklogItem updateDescription(BacklogItem backlogItem, Optional<String> description) {
-		PersistableBacklogItem persistableItem = (PersistableBacklogItem) backlogItem;
-		persistableItem.setDescription(description);
-		return em.merge(persistableItem);
+	@Transactional
+	public void updateDescription(BacklogItem backlogItem, Optional<String> description) {
+		final Query query = em.createQuery("update BacklogItem set description = :description where backlogItemId = :backlogItemId");
+		query.setParameter("backlogItemId", backlogItem.backlogItemId());
+		query.setParameter("description", description);
+		query.executeUpdate();
 	}
 
 	@Override
-	public List<? extends BacklogItem> getBacklogForProject(Project project) {
-        return project.getBacklogItems();
+	@Transactional
+	public List<BacklogItem> getBacklogForProject(Project project) {
+		final TypedQuery<BacklogItem> query = em.createQuery("from BacklogItem backlog where backlog.project = :project", BacklogItem.class);
+		query.setParameter("project", project);
+		return query.getResultList();
 	}
 
 	@Override
+	@Transactional
 	public Project getParent(BacklogItem backlogItem) {
-		return em.find(PersistableProject.class, backlogItem.projectId());
+		return backlogItem.project();
 	}
 
 	@Override
+	@Transactional
 	public BacklogItem getBacklogItemById(int backlogItemId) {
-		return em.find(PersistableBacklogItem.class, backlogItemId);
+		final TypedQuery<BacklogItem> query = em.createQuery("from BacklogItem backlog where backlog.backlogItemId = :backlogItemId", BacklogItem.class);
+		query.setParameter("backlogItemId", backlogItemId);
+		return query.getSingleResult();
 	}
 
 }

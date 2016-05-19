@@ -16,15 +16,15 @@ public interface ProjectDao {
 
 	public void deleteProject(final Project project);
 
-	public Project updateName(final Project project, final String name);
+	public void updateName(final Project project, final String name);
 
-	public Project updateDescription(final Project project, final String description);
+	public void updateDescription(final Project project, final String description);
 
-	public Project updateCode(final Project project, final String code);
+	public void updateCode(final Project project, final String code);
 
 	public Project getProjectById(final int projectId);
 
-	public List<? extends Project> getProjects();
+	public List<Project> getProjects();
 
 	public Project getProjectByCode(final String code);
 

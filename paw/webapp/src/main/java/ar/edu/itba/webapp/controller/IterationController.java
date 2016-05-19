@@ -74,8 +74,8 @@ public class IterationController extends BaseController {
 		final ModelAndView mav = new ModelAndView("iteration/storyList");
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
-		final Map<Story, List<? extends Task>> stories = ss.getStoriesWithTasksForIteration(iteration);
-		final List<? extends BacklogItem> backlog = bs.getBacklogForProject(project);
+		final Map<Story, List<Task>> stories = ss.getStoriesWithTasksForIteration(iteration);
+		final List<BacklogItem> backlog = bs.getBacklogForProject(project);
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		mav.addObject("stories", stories);

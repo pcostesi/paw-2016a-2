@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BacklogDao;
 import ar.edu.itba.models.BacklogItem;
-import ar.edu.itba.models.PersistableBacklogItem;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.persistence.rowmapping.BacklogRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
@@ -45,7 +44,7 @@ public class BacklogJdbcDao implements BacklogDao {
 
 		try {
 			int itemId = jdbcInsert.executeAndReturnKey(args).intValue();
-			return PersistableBacklogItem.builder()
+			return BacklogItem.builder()
 					.title(title)
 					.description(description)
 					.backlogItemId(itemId)
@@ -92,24 +91,18 @@ public class BacklogJdbcDao implements BacklogDao {
 	}
 
 	@Override
-	public BacklogItem updateTitle(BacklogItem backlogItem, String title) {
+	public void updateTitle(BacklogItem backlogItem, String title) {
 		try {
-			PersistableBacklogItem persistableItem = (PersistableBacklogItem) backlogItem;
-			persistableItem.setTitle(title);
 			jdbcTemplate.update("UPDATE backlog SET title = ? WHERE item_id = ?", title, backlogItem.backlogItemId());
-			return persistableItem;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update backlog item title");
         }
 	}
 
 	@Override
-	public BacklogItem updateDescription(BacklogItem backlogItem, Optional<String> description) {
+	public void updateDescription(BacklogItem backlogItem, Optional<String> description) {
 		try {
-			PersistableBacklogItem persistableItem = (PersistableBacklogItem) backlogItem;
-			persistableItem.setDescription(description);
 			jdbcTemplate.update("UPDATE backlog SET description = ? WHERE item_id = ?", description, backlogItem.backlogItemId());
-			return persistableItem;
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to update backlog item description");
         }
@@ -118,7 +111,7 @@ public class BacklogJdbcDao implements BacklogDao {
 	@Override
 	public Project getParent(BacklogItem backlogItem) {
 		try {
-			return jdbcTemplate.queryForObject("SELECT * FROM project WHERE project_id = ?", projectRowMapper, backlogItem.projectId());
+			return jdbcTemplate.queryForObject("SELECT * FROM project WHERE project_id = ?", projectRowMapper, backlogItem.project().projectId());
 		} catch (DataAccessException exception) {
         	throw new IllegalStateException("Database failed to get task parent ID");
         }

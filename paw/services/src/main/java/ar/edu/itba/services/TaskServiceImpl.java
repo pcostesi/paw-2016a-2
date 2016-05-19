@@ -120,8 +120,9 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}		
 		
-		return taskDao.updateOwner(task, user);
+		taskDao.updateOwner(task, user);
 		
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
@@ -142,12 +143,13 @@ public class TaskServiceImpl implements TaskService{
 			return task;
 		}		
 		
-		return taskDao.updateStatus(task, status);
+		taskDao.updateStatus(task, status);
 
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
-	public List<? extends Task> getTasksForStory(Story story) {
+	public List<Task> getTasksForStory(Story story) {
 		if (story == null) {
 			throw new IllegalArgumentException("Story can't be null");
 		}
@@ -169,7 +171,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		return storyDao.getStoryById(task.storyId());
+		return taskDao.getParent(task);
 	}
 
 	@Override
@@ -190,8 +192,8 @@ public class TaskServiceImpl implements TaskService{
 			return task;
 		}
 		
-		return taskDao.updatePriority(task, priority);
-		
+		taskDao.updatePriority(task, priority);
+		return taskDao.getTaskById(task.taskId());		
 	}
 
 	@Override
@@ -212,7 +214,9 @@ public class TaskServiceImpl implements TaskService{
 			return task;
 		}
 				
-		return taskDao.updateScore(task, score);
+		taskDao.updateScore(task, score);
+		
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
@@ -245,7 +249,9 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
 		}		
 		
-		return taskDao.updateTitle(task, title);
+		taskDao.updateTitle(task, title);
+		
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override
@@ -258,7 +264,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalArgumentException("Description can't be empty");
 		}
 		
-		if (description != null && description.get().length() > 500) {
+		if (description.isPresent() && description.get().length() > 500) {
 			throw new IllegalArgumentException("Description can't be longer than 500 characters");
 		}
 		
@@ -270,7 +276,9 @@ public class TaskServiceImpl implements TaskService{
 			return task;
 		}
 		
-		return taskDao.updateDescription(task, description);
+		taskDao.updateDescription(task, description);
+		
+		return taskDao.getTaskById(task.taskId());
 	}
 
 	@Override

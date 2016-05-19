@@ -20,11 +20,11 @@ public interface IterationDao {
 
 	public boolean iterationExists(final Iteration iteration);
 
-	public Iteration updateStartDate(final Iteration iteration, final LocalDate startDate);
+	public void updateStartDate(final Iteration iteration, final LocalDate startDate);
 
-	public Iteration updateEndDate(final Iteration iteration, final LocalDate endDate);
+	public void updateEndDate(final Iteration iteration, final LocalDate endDate);
 
-	public List<? extends Iteration> getIterationsForProject(final Project project);
+	public List<Iteration> getIterationsForProject(final Project project);
 
 	public void updateNumbersAfterDelete(final Iteration iteration, final int number);
 

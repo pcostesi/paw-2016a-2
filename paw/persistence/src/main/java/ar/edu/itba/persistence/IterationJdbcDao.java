@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.PersistableIteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.persistence.rowmapping.IterationRowMapper;
 import ar.edu.itba.persistence.rowmapping.ProjectRowMapper;
@@ -71,7 +70,7 @@ public class IterationJdbcDao implements IterationDao {
 		
         try {        
 	        int iterationId = jdbcInsert.executeAndReturnKey(args).intValue();	        
-			return PersistableIteration.builder()
+			return Iteration.builder()
 					.iterationId(iterationId)
 					.number(nextIterationNumber)
 					.startDate(beginDate)
@@ -123,24 +122,18 @@ public class IterationJdbcDao implements IterationDao {
 	}
 
 	@Override
-	public Iteration updateStartDate(Iteration iteration, LocalDate startDate) {
+	public void updateStartDate(Iteration iteration, LocalDate startDate) {
 		try {
-			PersistableIteration persistableIteration = (PersistableIteration) iteration;
-			persistableIteration.setStartDate(startDate);
 			jdbcTemplate.update("UPDATE iteration SET date_start = ? WHERE iteration_id = ?", Date.valueOf(startDate), iteration.iterationId());
-			return persistableIteration;
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to update begin date");
 	    }
 	}
 
 	@Override
-	public Iteration updateEndDate(Iteration iteration, LocalDate endDate) {
+	public void updateEndDate(Iteration iteration, LocalDate endDate) {
 		try {
-			PersistableIteration persistableIteration = (PersistableIteration) iteration;
-			persistableIteration.setEndDate(endDate);
 			jdbcTemplate.update("UPDATE iteration SET date_end = ? WHERE iteration_id = ?", Date.valueOf(endDate), iteration.iterationId());
-			return persistableIteration;
 		} catch (DataAccessException exception) {
 	    	throw new IllegalStateException("Database failed to update end date");
 	    }
@@ -158,7 +151,7 @@ public class IterationJdbcDao implements IterationDao {
 	@Override
 	public void updateNumbersAfterDelete(Iteration iteration, int number) {
 		try {
-			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ? AND project_id = ?", number, iteration.projectId());
+			jdbcTemplate.update("UPDATE iteration SET number = (number-1) WHERE number > ? AND project_id = ?", number, iteration.project().projectId());
 		} catch (DataAccessException exception) {
 			
 	    	throw new IllegalStateException("Database failed to update iterations number");

@@ -17,7 +17,7 @@ public interface StoryService {
 	
 	public void deleteStory(final Story story);
 
-	public Map<Story, List<? extends Task>> getStoriesWithTasksForIteration(final Iteration iteration);
+	public Map<Story, List<Task>> getStoriesWithTasksForIteration(final Iteration iteration);
 	
 	public Iteration getParent(final Story story);
 

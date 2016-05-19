@@ -7,7 +7,7 @@ import ar.edu.itba.models.Story;
 
 public interface StoryDao {
 
-	public List<? extends Story> getStoriesForIteration(final Iteration iteration);
+	public List<Story> getStoriesForIteration(final Iteration iteration);
 
 	public boolean storyExists(final Story story);
 
@@ -15,7 +15,7 @@ public interface StoryDao {
 
 	public Story getStoryById(final int storyId);
 
-	public Story updateTitle(final Story story, final String title);
+	public void updateTitle(final Story story, final String title);
 
 	public void deleteStory(final Story story);
 

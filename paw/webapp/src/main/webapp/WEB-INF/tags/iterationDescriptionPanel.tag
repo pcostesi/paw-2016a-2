@@ -6,7 +6,7 @@
 <t:staticPanel panelId="${iteration.iterationId()}-description">
 	<jsp:attribute name="title">Iteration details</jsp:attribute>
 	<jsp:body>
-		<b>Start date</b> ${iteration.formattedStartDate()}<br>
-	    <b>End date:</b> ${iteration.formattedEndDate()}
+		<b>Start date</b> ${iteration.startDate()}<br>
+	    <b>End date:</b> ${iteration.endDate()}
 	</jsp:body>
 </t:staticPanel>
