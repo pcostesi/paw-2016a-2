@@ -7,12 +7,7 @@
 <t:staticPanel panelId="${iteration.iterationId()}-description">
 	<jsp:attribute name="title"><spring:message code="iterationDescription.title"/></jsp:attribute>
 	<jsp:body>
-<<<<<<< HEAD
-		<b>Start date</b> ${iteration.startDate()}<br>
-	    <b>End date:</b> ${iteration.endDate()}
-=======
-		<p><strong><spring:message code="iterationDescription.start_date"/></strong> ${iteration.formattedStartDate()}</p>
-	    <p><strong><spring:message code="iterationDescription.end_date"/></strong> ${iteration.formattedEndDate()}</p>
->>>>>>> master
+		<strong><spring:message code="iterationDescription.start_date"/></strong> ${iteration.startDate()}<br>
+	    <strong><spring:message code="iterationDescription.end_date"/></strong> ${iteration.endDate()}
 	</jsp:body>
 </t:staticPanel>
