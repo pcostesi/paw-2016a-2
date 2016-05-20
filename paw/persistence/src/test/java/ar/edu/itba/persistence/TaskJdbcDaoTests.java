@@ -62,7 +62,7 @@ public class TaskJdbcDaoTests {
 	private final Status status = Status.getByValue(1);
 	private final Score score = Score.getByValue(1);
 	private final Priority priority = Priority.getByValue(1);
-	private final JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+	private JdbcTemplate jdbcTemplate;
 	
 	private Story testStory;
 	private Iteration testIteration;
@@ -73,6 +73,7 @@ public class TaskJdbcDaoTests {
 	@Before
 	@Transactional
 	public void setUp() throws Exception {
+		jdbcTemplate = new JdbcTemplate(ds);
 		testProject = projectDao.createProject(pName, "Best Project EVAR", pCode);
 		LocalDate beginDate = LocalDate.now();
 		LocalDate endDate = LocalDate.now().plusDays(15);
