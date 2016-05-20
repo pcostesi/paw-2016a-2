@@ -33,9 +33,7 @@
 	                <a class="navbar-brand" href="${pageContext.request.contextPath}/">Scrumlr</a>
 	            </div>	            
 	            <nav class="collapse navbar-collapse" id="nav-1">
-	                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="?language=en"><spring:message code="locale.en"/></a></li>
-                    <li><a href="?language=es"><spring:message code="locale.es"/></a></li>
+	                <ul class="nav navbar-nav navbar-right">                    
 	                	<c:if test="${not empty user}">
 			     		<li>
 			     			<a href="${pageContext.request.contextPath}/me">
@@ -48,6 +46,15 @@
 			     			</a>
 			     		</li>	
 			     		</c:if>
+			     		<li class="dropdown">
+				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<span class="glyphicon glyphicon-globe" aria-hidden="true"></span> <spring:message code="locale.language"/><span class="caret"></span>
+						  </a>
+				          <ul class="dropdown-menu">
+				            <li><a href="?language=en"><spring:message code="locale.en"/></a></li>
+	                   		<li><a href="?language=es"><spring:message code="locale.es"/></a></li>
+				          </ul>
+				        </li>
 			        </ul>				
 	            </nav>
 	            <!-- /.navbar-collapse -->
