@@ -63,13 +63,12 @@ public class Story{
 	}
 
 	public Status status() {
-		Hibernate.initialize(storyTasks);
 		boolean foundCompletedTasks = false;
 		boolean foundNotStartedTasks = false;
 		for (Task task: storyTasks) {
-			if (task.status().equals(Status.STARTED)) {
+			if (task.status() == Status.STARTED) {
 				return Status.STARTED;
-			} else if (task.status().equals(Status.COMPLETED)) {
+			} else if (task.status() == Status.COMPLETED) {
 				foundCompletedTasks = true;
 				if (foundNotStartedTasks) {
 					return Status.STARTED;

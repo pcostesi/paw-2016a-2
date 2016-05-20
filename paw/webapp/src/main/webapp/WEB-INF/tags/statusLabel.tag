@@ -3,7 +3,7 @@
 <%@attribute name="status" required="true" type="ar.edu.itba.models.Status" %>
 
 <c:choose>
-	<c:when test="${status.value == 0}"><span class="label label-danger"><spring:message code="taskStatus.${status}"/></span></c:when>
-	<c:when test="${status.value == 1}"><span class="label label-primary"><spring:message code="taskStatus.${status}"/></span></c:when>
-	<c:when test="${statuss.value == 2}"><span class="label label-success"><spring:message code="taskStatus.${status}"/></span></c:when>
+	<c:when test="${status.getValue() == 0}"><span class="label label-danger">NOT STARTED</span></c:when>
+	<c:when test="${status.getValue() == 1}"><span class="label label-primary">STARTED</span></c:when>
+	<c:when test="${status.getValue() == 2}"><span class="label label-success">COMPLETED</span></c:when>
 </c:choose>
