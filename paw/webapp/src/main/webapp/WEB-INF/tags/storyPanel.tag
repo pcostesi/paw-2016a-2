@@ -12,6 +12,10 @@
 	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}" var="storyLink"/>
 
 <t:collapsiblePanel panelId="story-${story.storyId()}">
+	<jsp:attribute name="titleInfo">
+		<span class="label label-default">${story.totalScore()}</span> <t:statusLabel status="${task.status()}"/> 
+	</jsp:attribute>
+	
 	<jsp:attribute name="title">${story.title()}</jsp:attribute>
 
 	<jsp:attribute name="actions">
