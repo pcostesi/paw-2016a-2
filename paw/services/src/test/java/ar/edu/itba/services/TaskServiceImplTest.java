@@ -206,6 +206,18 @@ public class TaskServiceImplTest {
 	public void changeOwnerWithNullTask() {
 		ts.changeOwnership(null, null);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@Transactional
+	public void changePriorityToNull() {
+		ts.changePriority(testTask, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@Transactional
+	public void changePriorityToNullTask() {
+		ts.changePriority(null, Priority.CRITICAL);
+	}
 
 	@Test
 	@Transactional
