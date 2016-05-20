@@ -59,9 +59,9 @@ public class TaskJdbcDaoTests {
 	private final String pCode = "Test";
 	private final String tName = "Test Task";
 	private final String tDesc = "The tester's life is a tough one";
-	private final Status status = Status.getByValue(1);
-	private final Score score = Score.getByValue(1);
-	private final Priority priority = Priority.getByValue(1);
+	private final Status status = Status.NOT_STARTED;
+	private final Score score = Score.EASY;
+	private final Priority priority = Priority.NORMAL;
 	private final JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 	
 	private Story testStory;

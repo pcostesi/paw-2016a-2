@@ -2,9 +2,9 @@ package ar.edu.itba.models;
 
 public enum Status {
 
-	NOT_STARTED(0, "Not started"), 
-	STARTED(1, "Started"), 
-	COMPLETED(2, "Completed");
+	NOT_STARTED(0, "NOT_STARTED"), 
+	STARTED(1, "STARTED"), 
+	COMPLETED(2, "COMPLETED");
 
 	private final int value;
 	private final String label;
@@ -24,19 +24,6 @@ public enum Status {
 
 	public final String getLabel() {
 		return label;
-	}
-
-	public final static Status getByValue(int value) {
-		switch(value) {
-		case 0:
-			return Status.NOT_STARTED;
-		case 1:
-			return Status.STARTED;
-		case 2:
-			return Status.COMPLETED;
-		default:
-			return null;
-		}
 	}
 
 }
