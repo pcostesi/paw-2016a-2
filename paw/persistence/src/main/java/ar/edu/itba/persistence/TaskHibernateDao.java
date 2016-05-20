@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -120,9 +121,9 @@ public class TaskHibernateDao implements TaskDao{
 		try{
 			final Task persistableTask = Task.builder()
 					.title(title)
-					.description(description)
+					.description(Optional.ofNullable(description))	
 					.status(status)
-					.owner(user)
+					.owner(Optional.ofNullable(user))
 					.score(score)
 					.priority(priority)
 					.story(story)

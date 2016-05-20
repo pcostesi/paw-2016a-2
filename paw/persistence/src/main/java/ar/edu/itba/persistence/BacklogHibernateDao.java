@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,7 +28,7 @@ public class BacklogHibernateDao implements BacklogDao{
 	public BacklogItem createBacklogItem(String title, String description, Project project) {
 		final BacklogItem backlogItem = BacklogItem.builder()
 				.title(title)
-				.description(description)
+				.description(Optional.ofNullable(description))
 				.project(project)
 				.build();
 		em.persist(backlogItem);
