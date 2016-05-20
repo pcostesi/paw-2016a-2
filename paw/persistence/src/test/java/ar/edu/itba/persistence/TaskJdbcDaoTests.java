@@ -147,8 +147,8 @@ public class TaskJdbcDaoTests {
 	public void updateOwnerTest() {
 		String newName = "newname";
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
-		userDao.createUser(newName, "pw", newName + "@test.com");
-		taskDao.updateOwner(testTask, owner);
+		User newOwner = userDao.createUser(newName, "pw", newName + "@test.com");
+		taskDao.updateOwner(testTask, newOwner);
 		assertTrue(JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "task",
 				"task_id = " + testTask.taskId() + " AND owner = \'" + newName + "\'") == 1);
 	}
@@ -168,7 +168,7 @@ public class TaskJdbcDaoTests {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		taskDao.updateStatus(testTask, newStatus);
 		assertTrue(JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "task",
-				"task_id = " + testTask.taskId() + " AND status = " + newStatus) == 1);
+				"task_id = " + testTask.taskId() + " AND status = " + newStatus.getValue()) == 1);
 	}
 
 	@Test
@@ -200,10 +200,11 @@ public class TaskJdbcDaoTests {
 	@Test
 	@Transactional
 	public void updatePriorityTest() {
+		Priority newPriority = Priority.CRITICAL;
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
-		taskDao.updatePriority(testTask, priority);
+		taskDao.updatePriority(testTask, newPriority);
 		assertTrue(JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "task",
-				"task_id = " + testTask.taskId() + " AND priority = " + priority) == 1);
+				"task_id = " + testTask.taskId() + " AND priority = " + newPriority.getValue()) == 1);
 	}
 
 	@Test
