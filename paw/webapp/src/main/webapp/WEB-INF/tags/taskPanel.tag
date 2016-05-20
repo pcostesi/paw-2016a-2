@@ -12,9 +12,9 @@
 
 <t:collapsiblePanel panelId="task-${task.taskId()}" panelParent="${panelParent}">
 	<jsp:attribute name="titleInfo">
-		<t:priorityLabel priority="${task.priority()}"/> 
-		<span class="label label-default">${task.score().value}</span> 
 		<t:statusLabel status="${task.status()}"/> 
+		<span class="label label-default">${task.score().value}</span> 
+		<t:priorityLabel priority="${task.priority()}"/>  
 	</jsp:attribute>
 
 	<jsp:attribute name="title">

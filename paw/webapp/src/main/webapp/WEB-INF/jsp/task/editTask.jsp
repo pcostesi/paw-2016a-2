@@ -9,9 +9,8 @@
     	<spring:message code="task.edit.title"/>
 	</jsp:attribute>
 
-	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/${task.taskId()}/edit" var="formUrl" />
-
 	<jsp:body>
+		<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/${task.taskId()}/edit" var="formUrl" />
 		<form:form modelAttribute="taskForm" action="${formUrl}" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
@@ -20,7 +19,7 @@
 						<form:hidden path="storyId" value="${story.storyId()}"/>
 						<bs:input path="title" label="Title" />
 						<bs:input path="description" label="Description" />
-						<bs:select path="status" label="Task Status" /
+						<bs:select path="status" label="Task Status" />
 						<bs:select path="score" label="Task Score" />
 						<bs:select path="priority" label="Task Priority" />
 						<bs:filledSelect path="owner" label="Task Owner" items="${users}"/>

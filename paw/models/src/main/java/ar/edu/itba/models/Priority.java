@@ -20,10 +20,6 @@ public enum Priority {
         return value;
     }
     
-    public String toString() {
-    	return getLabel();
-    }
-    
     public String getLabel() {
     	return this.label;
     }

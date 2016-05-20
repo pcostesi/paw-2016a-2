@@ -13,8 +13,8 @@
 
 <t:collapsiblePanel panelId="story-${story.storyId()}">
 	<jsp:attribute name="titleInfo"> 
-		<span class="label label-default">${story.totalScore()}</span> 
 		<t:statusLabel status="${story.status()}"/> 
+		<span class="label label-default">${story.totalScore()}</span> 
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">${story.title()}</jsp:attribute>

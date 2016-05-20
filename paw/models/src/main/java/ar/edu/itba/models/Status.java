@@ -14,15 +14,11 @@ public enum Status {
 		this.label = label;
 	}
 
-	public final int getValue() {
+	public int getValue() {
 		return value;
 	}
 
-	public final String toString() {
-		return getLabel();
-	}
-
-	public final String getLabel() {
+	public String getLabel() {
 		return label;
 	}
 

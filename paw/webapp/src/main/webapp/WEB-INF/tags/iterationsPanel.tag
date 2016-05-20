@@ -13,24 +13,7 @@
 	</c:when>    
 	<c:otherwise>
 		<c:forEach items="${iterations}" var="iteration">
-				<t:collapsiblePanel panelId="iteration-${iteration.number()}">
-					<jsp:attribute name="title">Iteration #${iteration.number()}</jsp:attribute>	
-						<jsp:attribute name="actions">
-							<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}" var="iterationUrl"/>
-							<a href="${iterationUrl}" class="btn btn-default btn-xs" >
-								<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> <spring:message code="iterationsPanel.iteration_link"/>
-							</a>
-							<t:dropdownEditDelete url="${iterationUrl}"/>
-						</jsp:attribute>
-						<jsp:body>
-							<div class="row">
-						        <div class="col-sm-12">
-						            <strong><spring:message code="iterationsPanel.start_date"/></strong> ${iteration.startDate()}<br>
-						            <strong><spring:message code="iterationsPanel.end_date"/></strong> ${iteration.endDate()}
-						        </div>
-						    </div>
-						</jsp:body>
-				</t:collapsiblePanel>
+				<t:iterationPanel iteration="${iteration}"/>
 			</c:forEach>
 	</c:otherwise>
 </c:choose>
