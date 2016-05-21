@@ -57,6 +57,7 @@ public class IterationController extends BaseController {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
+			logger.debug(result.toString());
 			mav = new ModelAndView("iteration/newIteration");
 			mav.addObject("project", project);
 		} else {			
@@ -91,6 +92,7 @@ public class IterationController extends BaseController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		iterationForm.setBeginDate(iteration.startDate());
 		iterationForm.setEndDate(iteration.endDate());
+		iterationForm.setProjectId(project.projectId());
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		return mav;

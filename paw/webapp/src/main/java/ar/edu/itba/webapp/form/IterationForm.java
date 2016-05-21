@@ -7,8 +7,10 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import ar.edu.itba.webapp.form.constraint.DateRange;
+import ar.edu.itba.webapp.form.constraint.DateRangeFree;
 
-@DateRange(first="beginDate", second="endDate")
+@DateRange(start="beginDate", end="endDate")
+@DateRangeFree(start="beginDate", end="endDate")
 public class IterationForm {
 	
 	@NotNull
@@ -18,6 +20,16 @@ public class IterationForm {
 	@NotNull
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate endDate;
+	
+	private int projectId;
+
+	public int getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
 
 	public LocalDate getBeginDate() {
 		return beginDate;
