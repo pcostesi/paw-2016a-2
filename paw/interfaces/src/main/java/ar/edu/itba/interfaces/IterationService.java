@@ -23,5 +23,7 @@ public interface IterationService {
 	public List<Iteration> getIterationsForProject(final Project project);
 	
 	public Project getParent(final Iteration iteration);
+
+	boolean isValidDateRangeInProject(final Project project, final LocalDate startDate, final LocalDate endDate);
 	
 }
