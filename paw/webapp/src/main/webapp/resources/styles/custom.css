@@ -55,17 +55,17 @@
 }
 
 .status-not-started {
-	border: 1px #bc2e29 solid !important;
-	background-color: #d9534f !important;
+	border: 1px #d7c6a8 solid !important;
+	background-color: #e7ddcb !important;
 }
 
 .status-started {
-	border: 1px #294d70 solid !important;
-	background-color: #325d88 !important;
+	border: 1px #7dad38 solid !important;
+	background-color: #93c54b !important;
 }
 
 .status-done {
-	border: 1px #7dad38 solid !important;
-	background-color: #93c54b !important;
+	border: 1px #bc2e29 solid !important;
+	background-color: #d9534f !important;
 }
 
