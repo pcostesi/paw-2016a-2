@@ -23,13 +23,13 @@
 	     <div class="col-sm-12">
 	     	<c:choose>
 			    <c:when test="${iteration.status().getValue() == 0}">
-			    	<div class="alert alert-warning" role="alert">
+			    	<div class="alert alert-info" role="alert">
 						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> <spring:message code="iteration.not.started" />
 					</div>
 			    </c:when>    
 			     <c:when test="${iteration.status().getValue() == 2}">
 			    	<div class="alert alert-danger" role="alert">
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> <spring:message code="iteration.has.finished" />
+						<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> <spring:message code="iteration.has.finished" />
 					</div>
 			    </c:when>  
 			</c:choose>

@@ -33,19 +33,28 @@
 	                <a class="navbar-brand" href="${pageContext.request.contextPath}/">Scrumlr</a>
 	            </div>	            
 	            <nav class="collapse navbar-collapse" id="nav-1">
-	                <ul class="nav navbar-nav navbar-right">                    
-	                	<c:if test="${not empty user}">
-			     		<li>
-			     			<a href="${pageContext.request.contextPath}/me">
-			     				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${user.username()}
-			     			</a>
-			     		</li>	
-			     		<li>
-			     			<a href="${pageContext.request.contextPath}/logout">
-			     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <spring:message code="login.logout"/>
-			     			</a>
-			     		</li>	
-			     		</c:if>
+	                <ul class="nav navbar-nav navbar-right"> 
+	                	<c:choose>                   
+		                	<c:when test="${not empty user}">
+					     		<li>
+					     			<a href="${pageContext.request.contextPath}/me">
+					     				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${user.username()}
+					     			</a>
+					     		</li>	
+					     		<li>
+					     			<a href="${pageContext.request.contextPath}/logout">
+					     				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <spring:message code="login.logout"/>
+					     			</a>
+					     		</li>	
+				     		</c:when>
+				     		<c:otherwise>
+				     			<li>
+				     				<a href="${pageContext.request.contextPath}/user/new">
+				     					<spring:message code="navbar.register"/>
+				     				</a>
+				     			</li>
+				     		</c:otherwise>
+				     	</c:choose>
 			     		<li class="dropdown">
 				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 							<span class="glyphicon glyphicon-globe" aria-hidden="true"></span> <spring:message code="locale.language"/><span class="caret"></span>
