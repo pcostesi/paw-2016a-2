@@ -21,6 +21,8 @@ public class IterationForm {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate endDate;
 	
+	private String inheritedIteration;
+	
 	private int projectId;
 
 	public int getProjectId() {
@@ -45,6 +47,14 @@ public class IterationForm {
 
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getInheritedIteration() {
+		return inheritedIteration;
+	}
+
+	public void setInheritedIteration(String inheritedIteration) {
+		this.inheritedIteration = inheritedIteration;
 	}
 
 }

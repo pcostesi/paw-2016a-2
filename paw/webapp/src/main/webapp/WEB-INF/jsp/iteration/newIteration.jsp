@@ -18,6 +18,7 @@
 						<form:hidden path="projectId" value="${project.projectId()}"/>
 						<bs:input path="beginDate" label="Begin date" dateClass="dateInput"/>
 						<bs:input path="endDate" label="End date" dateClass="dateInput"/>
+						<bs:filledSelect path="inheritedIteration" label="Inherit unfinished tasks from" items="${possibleIterations}"/>
 					</fieldset>
 				</div>
 			</div>

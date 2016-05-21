@@ -27,5 +27,7 @@ public interface IterationService {
 	public Project getParent(final Iteration iteration);
 
 	boolean isValidDateRangeInProject(final Project project, final LocalDate startDate, final LocalDate endDate);
+
+	public int getMaxIterationNumber(final Project project);
 	
 }

@@ -306,4 +306,17 @@ public class IterationServiceImpl implements IterationService{
 		
 		return iteration;
 	}
+
+	@Override
+	public int getMaxIterationNumber(Project project) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+		
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}	
+		
+		return iterationDao.getMaxNumber(project);
+	}
 }

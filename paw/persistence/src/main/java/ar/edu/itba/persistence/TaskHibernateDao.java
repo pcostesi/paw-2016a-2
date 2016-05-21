@@ -199,6 +199,7 @@ public class TaskHibernateDao implements TaskDao{
 	}
 
 	@Override
+	@Transactional
 	public List<Task> getUnfinishedTasks(Story oldStory) {
 		try{
 			final TypedQuery<Task> query = em.createQuery("from Task task where task.story = :story and (task.status = :notStarted or task.status = :started)", Task.class);
@@ -212,6 +213,7 @@ public class TaskHibernateDao implements TaskDao{
 	}
 
 	@Override
+	@Transactional
 	public void cloneTaskToStory(Task task, Story story) {
 		try {
 			final Task newTask = Task.builder()
