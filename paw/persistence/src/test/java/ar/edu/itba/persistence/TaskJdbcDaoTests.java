@@ -76,8 +76,7 @@ public class TaskJdbcDaoTests {
 		testProject = projectDao.createProject(pName, "Best Project EVAR", pCode);
 		LocalDate beginDate = LocalDate.now();
 		LocalDate endDate = LocalDate.now().plusDays(15);
-		testIteration = iterDao.createIteration(testProject,
-				iterDao.getNextIterationNumber(testProject), beginDate, endDate);
+		testIteration = iterDao.createIteration(testProject, 1, beginDate, endDate);
 		testStory = storyDao.createStory(testIteration,
 				"A sad story about extreme unhappyness while testing");
 		if (!userDao.userNameExists("testuser")) {

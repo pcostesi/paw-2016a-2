@@ -26,12 +26,12 @@ public class IterationServiceImpl implements IterationService{
 	StoryDao storyDao;
 
 	@Override
-	public Iteration createIteration(Project project, LocalDate beginDate, LocalDate endDate) {
+	public Iteration createIteration(Project project, LocalDate startDate, LocalDate endDate) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}
 		
-		if (beginDate == null) {
+		if (startDate == null) {
 			throw new IllegalArgumentException("Begin date can't be null");
 		}
 		
@@ -39,15 +39,31 @@ public class IterationServiceImpl implements IterationService{
 			throw new IllegalArgumentException("End date can't be null");
 		}
 		
-		if (endDate.compareTo(beginDate) < 0) {
+		if (endDate.compareTo(startDate) < 0) {
 			throw new IllegalArgumentException("End date cannot be sooner than begin date");
 		}
 		
-		if (projectDao.projectExists(project)) {
-			return iterationDao.createIteration(project, iterationDao.getNextIterationNumber(project), beginDate, endDate);
-		} else {
-			throw new IllegalStateException("Project "+ project.name() +" doesn't exist");
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project "+ project.name() +" doesn't exist");			
 		}
+		
+		List<Iteration> iterations = iterationDao.getIterationsForProject(project);
+		int iterationNumber = 1;
+		
+		for (Iteration iteration: iterations) {
+			if (iteration.endDate().compareTo(startDate) < 0) {
+				iterationNumber++;
+			}
+		}
+		
+		int maxNumber = iterationDao.getMaxNumber(project);
+		
+		while (maxNumber >= iterationNumber) {
+			iterationDao.increaseNumberOfIterationNumbered(project, maxNumber);
+			maxNumber--;
+		}
+		
+		return iterationDao.createIteration(project, iterationNumber, startDate, endDate);
 	}
 
 	@Override
@@ -61,7 +77,15 @@ public class IterationServiceImpl implements IterationService{
 		}
 		
 		iterationDao.deleteIteration(iteration);
-		iterationDao.updateNumbersAfterDelete(iteration, iteration.number());
+		
+		Project project = iterationDao.getParent(iteration);	
+		int curNumber = iteration.number()+1;
+		int maxNumber = iterationDao.getMaxNumber(project);
+		
+		while (curNumber <= maxNumber) {
+			iterationDao.decreaseNumberOfIterationNumbered(project, curNumber);
+			curNumber++;
+		}
 	}
 
 	@Override
