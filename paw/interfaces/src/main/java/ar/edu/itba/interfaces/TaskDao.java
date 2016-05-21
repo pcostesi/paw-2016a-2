@@ -36,5 +36,9 @@ public interface TaskDao {
 	public void updateTitle(final Task task, final String title);
 
 	public void updateDescription(final Task task, final String description);
+
+	public List<Task> getUnfinishedTasks(final Story oldStory);
+
+	public void cloneTaskToStory(final Task task, final Story story);
 	
 }

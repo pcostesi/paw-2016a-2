@@ -10,20 +10,26 @@ import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.StoryDao;
+import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.Story;
+import ar.edu.itba.models.Task;
 
 @Service
 public class IterationServiceImpl implements IterationService{
 
 	@Autowired
-	IterationDao iterationDao;
+	private IterationDao iterationDao;
 
 	@Autowired
-	ProjectDao projectDao;
+	private ProjectDao projectDao;
 
 	@Autowired
-	StoryDao storyDao;
+	private StoryDao storyDao;
+	
+	@Autowired
+	private TaskDao taskDao;
 
 	@Override
 	public Iteration createIteration(Project project, LocalDate startDate, LocalDate endDate) {
@@ -258,5 +264,46 @@ public class IterationServiceImpl implements IterationService{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Iteration createIteration(Project project, LocalDate startDate, LocalDate endDate,
+			int inheritIterationNumber) {
+		if (startDate == null) {
+			throw new IllegalArgumentException("Begin date can't be null");
+		}
+
+		if (endDate == null) {
+			throw new IllegalArgumentException("End date can't be null");
+		}
+
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+		
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}		
+		
+		Iteration oldIteration = iterationDao.getIteration(project, inheritIterationNumber);
+		
+		if (oldIteration == null) {
+			throw new IllegalStateException("Old iteration doesn't exist");
+		}
+		
+		List<Story> oldStories = storyDao.getStoriesForIteration(oldIteration);
+		Iteration iteration = createIteration(project, startDate, endDate);
+		
+		for (Story oldStory: oldStories) {
+			List<Task> unfinishedTasks = taskDao.getUnfinishedTasks(oldStory);
+			if (!unfinishedTasks.isEmpty()) {
+				Story inheritedStory = storyDao.createStory(iteration, oldStory.title());
+				for (Task unfinishedTask: unfinishedTasks) {
+					taskDao.cloneTaskToStory(unfinishedTask, inheritedStory);			
+				}
+			}
+		}
+		
+		return iteration;
 	}
 }
