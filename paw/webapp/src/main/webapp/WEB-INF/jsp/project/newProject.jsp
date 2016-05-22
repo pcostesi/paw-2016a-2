@@ -20,7 +20,7 @@
 						<bs:input path="name" label="Name" />
 						<bs:input path="code" label="Code" />
 						<bs:input path="description" label="Description" />
-						<bs:filledSelect path="members" label="Members" items="${usernames}" multiple="true"/>
+						<bs:filledSelect path="members" label="Members" items="${usernames}" multiple="true" tokenize="tokenize"/>
 					</fieldset>
 				</div>
 			</div>
