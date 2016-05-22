@@ -3,6 +3,7 @@ package ar.edu.itba.interfaces;
 import java.util.List;
 
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
 
 public interface ProjectDao {
 
@@ -10,7 +11,7 @@ public interface ProjectDao {
 
 	public boolean projectNameExists(final String name);
 
-	public Project createProject(final String name, final String description, final String code);
+	public Project createProject(final User admin, final String name, final String description, final String code);
 
 	public boolean projectCodeExists(String code);
 
@@ -24,8 +25,14 @@ public interface ProjectDao {
 
 	public Project getProjectById(final int projectId);
 
-	public List<Project> getProjects();
+	public List<Project> getProjectsForUser(final User user);
 
 	public Project getProjectByCode(final String code);
+
+	public void addProjectMember(final Project project, final User user);
+
+	public List<User> getProjectMembers(final Project project);
+
+	void deleteProjectUser(final Project project);
 
 }

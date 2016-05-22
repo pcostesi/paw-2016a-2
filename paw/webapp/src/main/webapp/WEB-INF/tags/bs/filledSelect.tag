@@ -8,6 +8,7 @@
 <%@attribute name="label" required="false" type="java.lang.String"%>
 <%@attribute name="required" required="false" type="java.lang.Boolean"%>
 <%@attribute name="items" required="false" type="java.util.List"%>
+<%@attribute name="multiple" required="true" type="java.lang.Boolean"%>
 
 <jsp:doBody var="body"/>
 <c:if test="${not empty body}">
@@ -20,7 +21,7 @@
 <spring:bind path="${path}">
 	<div class="form-group ${status.error ? 'has-error' : '' } ${cssClass}">
         <label for="${path}">${label}<c:if test="${required}"><span class="required">*</span></c:if></label>
-        <form:select path="${path}" class="form-control" items="${items}">
+        <form:select path="${path}" class="form-control" items="${items}" multiple="${multiple}">
         	<form:options itemLabel="label"/>
         </form:select>
 	    <c:if test="${status.error}">

@@ -1,9 +1,12 @@
 package ar.edu.itba.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "account")
-public class User{
+public class User implements Serializable {
 
 	@Id
 	@Column(length = 100, nullable = false, unique = true)
@@ -25,8 +28,14 @@ public class User{
 	@Column(length = 100, nullable = false, unique = true)
 	private String mail;
 	
+	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<ProjectUser> projects;
+	
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-	private List<Task> tasks;
+	private Set<Task> tasks;
+	
+	@OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
+	private Set<Project> adminsProjects;
 	
 	private User() {
 		// Just for hibernate
