@@ -133,4 +133,13 @@ public class UserServiceImpl implements UserService{
     	
     }
 
+	@Override
+	public List<String> getUsernamesExcept(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("User to be excluded can't be null");
+		}
+		
+		return userDao.getAllUsernamesExcept(user);
+	}
+
 }

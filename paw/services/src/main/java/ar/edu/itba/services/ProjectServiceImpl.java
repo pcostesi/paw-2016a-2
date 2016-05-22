@@ -81,6 +81,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 		Project project = projectDao.createProject(admin, name, description, code);
 
+		projectDao.addProjectMember(project, admin);
 		for (User user: members) {
 			projectDao.addProjectMember(project, user);
 		}

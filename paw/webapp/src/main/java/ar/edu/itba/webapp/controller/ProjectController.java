@@ -46,7 +46,7 @@ public class ProjectController extends BaseController {
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public ModelAndView getNewResource(@ModelAttribute("projectForm") ProjectForm projectForm) {
 		final ModelAndView mav = new ModelAndView("project/newProject");
-		final List<String> usernames = us.getUsernames();
+		final List<String> usernames = us.getUsernamesExcept(super.user());
 		mav.addObject("usernames", usernames);
 		return mav;
 	}
@@ -57,12 +57,15 @@ public class ProjectController extends BaseController {
 		if (result.hasErrors()) {
 			mav = new ModelAndView("project/newProject");
 		} else {
+			final User me = super.user();
 			final List<String> usernames = projectForm.getMembers();
 			final Set<User> members = new HashSet<User>();
-			for (String username: usernames) {
-				members.add(us.getByUsername(username));
-			}
-			ps.createProject(super.user(), members, projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
+			if (usernames != null) {
+				for (String username: usernames) {
+					members.add(us.getByUsername(username));
+				}
+			}			
+			ps.createProject(me, members, projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"),"project.list").build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
@@ -75,9 +78,11 @@ public class ProjectController extends BaseController {
 		final Project project = ps.getProjectByCode(projectCode);
 		final List<Iteration> iterations = is.getIterationsForProject(project);
 		final List<BacklogItem> backlog = bs.getBacklogForProject(project);
+		final boolean isAdmin = super.user().equals(project.admin());
 		mav.addObject("iterations", iterations);
 		mav.addObject("project", project);
 		mav.addObject("backlog", backlog);
+		mav.addObject("isAdmin", isAdmin);
 		return mav;
 	}
 
