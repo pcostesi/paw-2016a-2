@@ -50,7 +50,8 @@ public class Project implements Serializable {
 	@JoinColumn(name = "admin", nullable = false)
 	private User admin;
 	
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<ProjectUser> members;
 	
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

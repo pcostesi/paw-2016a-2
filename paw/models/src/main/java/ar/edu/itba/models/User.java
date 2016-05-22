@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "account")
 public class User implements Serializable {
@@ -28,7 +31,7 @@ public class User implements Serializable {
 	@Column(length = 100, nullable = false, unique = true)
 	private String mail;
 	
-	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
 	private Set<ProjectUser> projects;
 	
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
