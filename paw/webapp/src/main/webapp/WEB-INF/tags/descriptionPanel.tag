@@ -9,5 +9,6 @@
 	<jsp:body>
 		<p><strong><spring:message code="descriptionPanel.start_date"/></strong> ${project.startDate()}</p>
 	    <p><strong><spring:message code="descriptionPanel.description"/></strong> ${project.description()}</p>
+		<p><strong><spring:message code="descriptionPanel.admin"/></strong> ${project.admin().username()}</p>
 	</jsp:body>
 </t:staticPanel>

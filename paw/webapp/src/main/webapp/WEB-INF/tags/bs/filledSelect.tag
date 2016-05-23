@@ -8,6 +8,8 @@
 <%@attribute name="label" required="false" type="java.lang.String"%>
 <%@attribute name="required" required="false" type="java.lang.Boolean"%>
 <%@attribute name="items" required="false" type="java.util.List"%>
+<%@attribute name="multiple" required="true" type="java.lang.Boolean"%>
+<%@attribute name="tokenize" required="false" type="java.lang.String"%>
 
 <jsp:doBody var="body"/>
 <c:if test="${not empty body}">
@@ -19,10 +21,9 @@
 </c:if>
 <spring:bind path="${path}">
 	<div class="form-group ${status.error ? 'has-error' : '' } ${cssClass}">
-        <label for="${path}">${label}<c:if test="${required}"><span class="required">*</span></c:if></label>
-        <form:select path="${path}" class="form-control" items="${items}">
-        	<form:options itemLabel="label"/>
-        </form:select>
+	<div class="input-group">
+  		<span for="${path}" class="input-group-addon">${label}<c:if test="${required}"><span class="required">*</span></c:if></span>
+        <form:select path="${path}" class="form-control ${tokenize}" items="${items}" multiple="${multiple}"/>
 	    <c:if test="${status.error}">
             <span class="help-block">${status.errorMessage}</span>
         </c:if>

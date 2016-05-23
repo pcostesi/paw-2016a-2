@@ -1,10 +1,12 @@
 package ar.edu.itba.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
@@ -23,7 +27,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "project")
-public class Project{
+public class Project implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_project_id_seq")
@@ -43,6 +47,14 @@ public class Project{
 	@Column(nullable = false)
 	private LocalDate startDate;
 	
+	@ManyToOne	
+	@JoinColumn(name = "admin", nullable = false)
+	private User admin;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Set<ProjectUser> members;
+	
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Iteration> projectIterations;
@@ -55,12 +67,13 @@ public class Project{
 		// Just for Hibernate
 	}
 	
-	private Project(int projectId, String name, String code, String description, LocalDate startDate) {
+	private Project(int projectId, String name, String code, String description, User admin, LocalDate startDate) {
 		this.projectId = projectId;
 		this.name = name;
 		this.code = code;
 		this.description = description;
 		this.startDate = startDate;
+		this.admin = admin;
 	}
 
 	public int projectId() {
@@ -83,6 +96,10 @@ public class Project{
 		return startDate;
 	}
 	
+	public User admin() {
+		return admin;
+	}
+	
 	public List<Iteration> geIterations() {
 		return projectIterations;
 	}
@@ -102,7 +119,8 @@ public class Project{
 				&& name.equals(another.name)
 				&& code.equals(another.code)
 				&& description.equals(another.description)
-				&& startDate.equals(another.startDate);
+				&& startDate.equals(another.startDate)
+				&& admin.equals(another.admin);
 	}
 
 	public int hashCode() {
@@ -112,6 +130,7 @@ public class Project{
 		h = h * 17 + code.hashCode();
 		h = h * 17 + description.hashCode();
 		h = h * 17 + startDate.hashCode();
+		h = h * 17 + admin.hashCode();
 		return h;
 	}
 
@@ -121,6 +140,7 @@ public class Project{
 				+ ", name=" + name
 				+ ", code=" + code
 				+ ", description=" + description
+				+ ", admin=" + admin
 				+ ", startDate=" + startDate
 				+ "}";
 	}
@@ -134,13 +154,15 @@ public class Project{
 		private static final long INIT_BIT_CODE = 0x2L;
 		private static final long INIT_BIT_DESCRIPTION = 0x4L;
 		private static final long INIT_BIT_START_DATE = 0x8L;
-		private long initBits = 0xf;
+		private static final long INIT_BIT_ADMIN = 0x10L;
+		private long initBits = 0x1f;
 
 		private int projectId;
 		private String name;
 		private String code;
 		private String description;
 		private LocalDate startDate;
+		private User admin;
 
 		private Builder() {
 		}
@@ -152,6 +174,7 @@ public class Project{
 			code(instance.code());
 			description(instance.description());
 			startDate(instance.startDate());
+			admin(instance.admin());
 			return this;
 		}
 
@@ -188,12 +211,18 @@ public class Project{
 			initBits &= ~INIT_BIT_START_DATE;
 			return this;
 		}
+		
+		public Builder admin(User admin) {
+			this.admin = Objects.requireNonNull(admin, "admin");
+			initBits &= ~INIT_BIT_ADMIN;
+			return this;
+		}
 
 		public Project build() {
 			if (initBits != 0) {
 				throw new IllegalStateException(formatRequiredAttributesMessage());
 			}
-			return new Project(projectId, name, code, description, startDate);
+			return new Project(projectId, name, code, description, admin, startDate);
 		}
 
 		private String formatRequiredAttributesMessage() {
@@ -202,7 +231,9 @@ public class Project{
 			if ((initBits & INIT_BIT_CODE) != 0) attributes.add("code");
 			if ((initBits & INIT_BIT_DESCRIPTION) != 0) attributes.add("description");
 			if ((initBits & INIT_BIT_START_DATE) != 0) attributes.add("startDate");
+			if ((initBits & INIT_BIT_ADMIN) != 0) attributes.add("startDate");
 			return "Cannot build Project, some of required attributes are not set " + attributes;
 		}
+		
 	}
 }

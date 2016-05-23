@@ -15,5 +15,7 @@ public interface UserDao {
 	public User createUser(final String name, final String password, final String mail);
 
 	public List<String> getAllUsernames();
+
+	public List<String> getAllUsernamesExcept(final User user);
     
 }

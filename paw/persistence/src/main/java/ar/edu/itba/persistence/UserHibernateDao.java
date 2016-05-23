@@ -18,49 +18,81 @@ import ar.edu.itba.models.User;
 public class UserHibernateDao implements UserDao{
 
 	@PersistenceContext
-    private EntityManager em;
-	
+	private EntityManager em;
+
 	@Override
 	@Transactional
 	public User getByUsername(String username) {
-        return em.find(User.class, username);
+		try {
+			return em.find(User.class, username);
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to get user by username");
+		}
 	}
 
 	@Override
 	@Transactional
 	public boolean userNameExists(String username) {
-		final TypedQuery<User> query = em.createQuery("from User user where user.username = :username", User.class);
-        query.setParameter("username", username);
-        final List<User> list = query.getResultList();
-        return list.isEmpty() ? false : true;
+		try {
+			final TypedQuery<User> query = em.createQuery("from User user where user.username = :username", User.class);
+			query.setParameter("username", username);
+			final List<User> list = query.getResultList();
+			return list.isEmpty() ? false : true;
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to check username exists");
+		}
 	}
 
 	@Override
 	@Transactional
 	public boolean userMailExists(String mail) {
-		final TypedQuery<User> query = em.createQuery("from User user where user.mail = :mail", User.class);
-        query.setParameter("mail", mail);
-        final List<User> list = query.getResultList();
-        return list.isEmpty() ? false : true;
+		try {
+			final TypedQuery<User> query = em.createQuery("from User user where user.mail = :mail", User.class);
+			query.setParameter("mail", mail);
+			final List<User> list = query.getResultList();
+			return list.isEmpty() ? false : true;
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to check mail is used");
+		}
 	}
 
 	@Override
 	@Transactional
 	public User createUser(String name, String password, String mail) {
-		final User persistableUser = User.builder()
-				.username(name)
-				.password(password)
-				.mail(mail)
-				.build();
-		em.persist(persistableUser);
-		return persistableUser;
+		try {
+			final User persistableUser = User.builder()
+					.username(name)
+					.password(password)
+					.mail(mail)
+					.build();
+			em.persist(persistableUser);
+			return persistableUser;
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to create user");
+		}
 	}
 
 	@Override
 	@Transactional
 	public List<String> getAllUsernames() {
-		final TypedQuery<String> query = em.createQuery("select user.username from User user", String.class);
-        return query.getResultList();
+		try {
+			final TypedQuery<String> query = em.createQuery("select user.username from User user", String.class);
+			return query.getResultList();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to get all usernames");
+		}
+	}
+
+	@Override
+	@Transactional
+	public List<String> getAllUsernamesExcept(User user) {
+		try {
+			final TypedQuery<String> query = em.createQuery("select user.username from User user where user != :user", String.class);
+			query.setParameter("user", user);
+			return query.getResultList();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to get all usernames except one");
+		}
 	}
 
 }
