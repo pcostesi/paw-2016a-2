@@ -15,7 +15,6 @@
 	 	</a>
      </jsp:attribute>
         
-        
      <jsp:body>
 	     <c:choose>
 			<c:when test="${projects.isEmpty()}">
@@ -25,7 +24,7 @@
 			</c:when>    
 			<c:otherwise>
 				<c:forEach items="${projects}" var="project">
-						<t:projectPanel project="${project}" />
+						<t:projectPanel project="${project}" user="${user}"/>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>

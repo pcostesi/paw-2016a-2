@@ -5,15 +5,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-
 <t:page>
 	<jsp:attribute name="title">
 		<spring:message code="item.new.title" arguments="${project.name()}" />
 	</jsp:attribute>
 
-	<c:url value="/project/${project.code()}/backlog/new" var="formUrl"/>
-
 	<jsp:body>
+		<c:url value="/project/${project.code()}/backlog/new" var="formUrl"/>
 		<form:form modelAttribute="backlogForm" action="${formUrl}" method="POST">
 			<div class="row">
 				<div class="col-sm-6">

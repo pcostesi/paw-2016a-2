@@ -39,7 +39,7 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'styles', 'bootlint', 'swal', 'think-twice', 'calendar'], function($, _, bootlint, swal, thinkTwice) {
+requirejs(['jquery', 'styles', 'bootlint', 'swal', 'think-twice', 'calendar', 'jquery.tokenize'], function($, _, bootlint, swal, thinkTwice) {
 	bootlint.lintCurrentDocument(console.error.bind(console), []);
 	thinkTwice();
 	window.swal = swal;

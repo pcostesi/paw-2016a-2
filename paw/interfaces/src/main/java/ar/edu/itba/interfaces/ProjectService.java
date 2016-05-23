@@ -1,29 +1,33 @@
 package ar.edu.itba.interfaces;
 
 import java.util.List;
+import java.util.Set;
 
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
 
 public interface ProjectService {
 
-	public Project createProject(final String name, final String description, final String code);
+	public Project createProject(final User admin, final Set<User> members, final String name, final String description, final String code);
 	
-	public void deleteProject(final Project project);
+	public void deleteProject(final User user, final Project project);
 	
 	public Project getProjectById(final int projectId);
 	
-	public Project setName(final Project project, final String name);
+	public Project setName(final User user, final Project project, final String name);
 
-	public Project setDescription(final Project project, final String description);
+	public Project setDescription(final User user, final Project project, final String description);
 
-	public Project setCode(final Project project, final String code);
+	public Project setCode(final User user, final Project project, final String code);
 	
-	public List<Project> getProjects();
+	public List<Project> getProjectsForUser(final User user);
 
 	public Project getProjectByCode(final String code);
 
 	public boolean projectCodeExists(final String code);
 
 	public boolean projectNameExists(final String name);
+	
+	public List<User> getProjectMembers(final Project project);
 	
 }

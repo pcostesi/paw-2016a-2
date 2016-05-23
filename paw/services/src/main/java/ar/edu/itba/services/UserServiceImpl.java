@@ -144,5 +144,15 @@ public class UserServiceImpl implements UserService {
 		throw new UnsupportedOperationException("Method not implemented due to migration to Hibernate  (userDao.editPassword())");
 		//userDao.setPassword(username, newPassword);
 	}
+	
+	@Override
+	public List<String> getUsernamesExcept(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("User to be excluded can't be null");
+		}
+		
+		return userDao.getAllUsernamesExcept(user);
+
+	}
 
 }

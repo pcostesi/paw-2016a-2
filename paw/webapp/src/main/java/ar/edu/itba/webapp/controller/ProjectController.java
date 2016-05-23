@@ -1,6 +1,8 @@
 package ar.edu.itba.webapp.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -18,9 +20,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ar.edu.itba.interfaces.BacklogService;
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
 import ar.edu.itba.webapp.form.ProjectForm;
 
 @Controller
@@ -36,9 +40,14 @@ public class ProjectController extends BaseController {
 	@Autowired
 	private BacklogService bs;
 	
+	@Autowired
+	private UserService us;
+	
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public ModelAndView getNewResource(@ModelAttribute("projectForm") ProjectForm projectForm) {
 		final ModelAndView mav = new ModelAndView("project/newProject");
+		final List<String> usernames = us.getUsernamesExcept(super.user());
+		mav.addObject("usernames", usernames);
 		return mav;
 	}
 	
@@ -48,7 +57,15 @@ public class ProjectController extends BaseController {
 		if (result.hasErrors()) {
 			mav = new ModelAndView("project/newProject");
 		} else {
-			ps.createProject(projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
+			final User me = super.user();
+			final List<String> usernames = projectForm.getMembers();
+			final Set<User> members = new HashSet<User>();
+			if (usernames != null) {
+				for (String username: usernames) {
+					members.add(us.getByUsername(username));
+				}
+			}			
+			ps.createProject(me, members, projectForm.getName(), projectForm.getDescription(), projectForm.getCode());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"),"project.list").build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
@@ -61,9 +78,11 @@ public class ProjectController extends BaseController {
 		final Project project = ps.getProjectByCode(projectCode);
 		final List<Iteration> iterations = is.getIterationsForProject(project);
 		final List<BacklogItem> backlog = bs.getBacklogForProject(project);
+		final boolean isAdmin = super.user().equals(project.admin());
 		mav.addObject("iterations", iterations);
 		mav.addObject("project", project);
 		mav.addObject("backlog", backlog);
+		mav.addObject("isAdmin", isAdmin);
 		return mav;
 	}
 
@@ -83,13 +102,14 @@ public class ProjectController extends BaseController {
 			@PathVariable String projectCode) {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
+		final User user = super.user();
 		if (result.hasErrors()) {
 			mav = new ModelAndView("project/editProject");
 			mav.addObject("project", project);
 		} else {
-			ps.setCode(project, projectForm.getCode());
-			ps.setDescription(project, projectForm.getDescription());
-			ps.setName(project, projectForm.getName());
+			ps.setCode(user, project, projectForm.getCode());
+			ps.setDescription(user, project, projectForm.getDescription());
+			ps.setName(user, project, projectForm.getName());
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.list").build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
@@ -98,8 +118,9 @@ public class ProjectController extends BaseController {
 
 	@RequestMapping(value = "/{projectCode}/delete", method = RequestMethod.POST)
 	public ModelAndView deleteResource(@PathVariable String projectCode) {
-		Project project = ps.getProjectByCode(projectCode);
-		ps.deleteProject(project);
+		final Project project = ps.getProjectByCode(projectCode);
+		final User user = super.user();
+		ps.deleteProject(user, project);
 		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.list").build();
 		return new ModelAndView("redirect:" + resourceUrl);
 	}

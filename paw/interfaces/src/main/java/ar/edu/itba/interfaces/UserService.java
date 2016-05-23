@@ -12,10 +12,12 @@ public interface UserService {
     
     public List<String> getUsernames();
 
-	public boolean usernameExists(String user);
-
-	public boolean emailExists(String user);
+	public boolean usernameExists(final String user);
 
 	public void editPassword(String username, String newPassword);
+
+	public boolean emailExists(final String user);
+
+	public List<String> getUsernamesExcept(final User user);
   
 }

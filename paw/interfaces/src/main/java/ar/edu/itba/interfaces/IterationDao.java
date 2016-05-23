@@ -8,9 +8,7 @@ import ar.edu.itba.models.Project;
 
 public interface IterationDao {
 
-	public int getNextIterationNumber(final Project project);
-
-	public Iteration createIteration(final Project project, final int nextIterationNumber, final LocalDate startDate, final LocalDate endDate);
+	public Iteration createIteration(final Project project, final int iterationNumber, final LocalDate startDate, final LocalDate endDate);
 
 	public void deleteIteration(final Iteration iteration);
 
@@ -26,8 +24,12 @@ public interface IterationDao {
 
 	public List<Iteration> getIterationsForProject(final Project project);
 
-	public void updateNumbersAfterDelete(final Iteration iteration, final int number);
+	public void increaseNumberOfIterationNumbered(final Project project, final int number);
+	
+	public void decreaseNumberOfIterationNumbered(final Project project, final int number);
 
 	public Project getParent(final Iteration iteration);
+
+	public int getMaxNumber(final Project project);
 
 }
