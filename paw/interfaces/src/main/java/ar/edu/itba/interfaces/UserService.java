@@ -17,5 +17,7 @@ public interface UserService {
 	public boolean emailExists(final String user);
 
 	public List<String> getUsernamesExcept(final User user);
+
+	void editPassword(User user, String newPassword);
   
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.webapp.form.EditPasswordForm;
 import ar.edu.itba.webapp.form.UserForm;
 
 
@@ -48,6 +49,22 @@ public class UserController extends BaseController {
 	
 	@RequestMapping(value = "/me", method = RequestMethod.GET)
 	public ModelAndView me() {
+		return new ModelAndView("user/profile");
+	}
+	
+	@RequestMapping(value = "/me/edit/password", method = RequestMethod.GET)
+	public ModelAndView getEditPasswordForm(@ModelAttribute("editPasswordForm") EditPasswordForm editPasswordForm ) {
+		return new ModelAndView("user/editPassword");
+	}
+
+	@RequestMapping(value = "/me/edit/password", method = RequestMethod.POST)
+	public ModelAndView editPasswordForm(@Valid @ModelAttribute("editPasswordForm") EditPasswordForm editPasswordForm, BindingResult result) {
+		if(result.hasErrors()) {
+			return new ModelAndView("user/editPassword");
+		}
+		else {
+			us.editPassword(user(), editPasswordForm.getPassword());
+		}
 		return new ModelAndView("user/profile");
 	}
 }
