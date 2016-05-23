@@ -100,8 +100,8 @@ public class UserHibernateDao implements UserDao{
 	@Transactional
 	public void setPassword(User user, String newPassword) {
 		try {
-			final Query query = em.createQuery("update User set password = :password where user = :user");
-			query.setParameter("user", user);
+			final Query query = em.createQuery("update User set password = :password where username = :username");
+			query.setParameter("username", user.username());
 			query.setParameter("password", newPassword);
 			query.executeUpdate();
 		} catch (Exception exception) {
