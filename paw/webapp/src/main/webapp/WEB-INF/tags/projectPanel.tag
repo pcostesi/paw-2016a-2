@@ -28,6 +28,7 @@
 	        <div class="col-sm-12">
 	        	<p><strong><spring:message code="projectPanel.start_date"/></strong> ${project.startDate()}</p>
 	            <p><strong><spring:message code="projectPanel.description"/></strong> ${project.description()}</p>
+	            <p><strong><spring:message code="projectPanel.admin"/></strong> ${project.admin().username()}</p>
 	        </div>
 	    </div>
 	</jsp:body>

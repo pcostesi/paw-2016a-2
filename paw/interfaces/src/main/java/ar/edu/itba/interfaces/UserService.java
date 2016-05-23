@@ -2,6 +2,7 @@ package ar.edu.itba.interfaces;
 
 import java.util.List;
 
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
 public interface UserService {
@@ -18,6 +19,8 @@ public interface UserService {
 
 	public List<String> getUsernamesExcept(final User user);
 
-	void editPassword(User user, String newPassword);
+	void editPassword(final User user, final String newPassword);
+
+	public List<String> getUsernamesForProject(final Project project);
   
 }
