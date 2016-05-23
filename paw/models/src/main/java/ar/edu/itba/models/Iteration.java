@@ -83,9 +83,10 @@ public class Iteration{
 	}
 	
 	public Status status() {
-		if (LocalDate.now().compareTo(startDate) < 0) {
+		final LocalDate now = LocalDate.now();
+		if (now.compareTo(startDate) < 0) {
 			return Status.NOT_STARTED;
-		} else if (LocalDate.now().compareTo(endDate) < 0) {
+		} else if (now.compareTo(endDate) <= 0) {
 			return Status.STARTED;
 		} else {
 			return Status.COMPLETED;

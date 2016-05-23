@@ -3,6 +3,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <t:page>
 	<jsp:attribute name="title">

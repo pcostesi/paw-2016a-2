@@ -55,7 +55,9 @@ public class ProjectController extends BaseController {
 	public ModelAndView postNewResource(@Valid @ModelAttribute("projectForm") ProjectForm projectForm, BindingResult result) {
 		final ModelAndView mav;
 		if (result.hasErrors()) {
+			final List<String> usernames = us.getUsernamesExcept(super.user());
 			mav = new ModelAndView("project/newProject");
+			mav.addObject("usernames", usernames);
 		} else {
 			final User me = super.user();
 			final List<String> usernames = projectForm.getMembers();
