@@ -13,10 +13,10 @@ import javax.validation.Payload;
 
 @Target({TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = DateRangeValidator.class)
+@Constraint(validatedBy = DateRangeFreeValidator.class)
 @Documented
-public @interface DateRange {
-    String message() default "Can't end before begin date";
+public @interface DateRangeFree {
+    String message() default "Dates collide with another iteration";
 
     Class<?>[] groups() default {};
 
@@ -30,6 +30,6 @@ public @interface DateRange {
     @Retention(RUNTIME)
     @Documented
     @interface List {
-        DateRange[] value();
+        DateRangeFree[] value();
     }
 }

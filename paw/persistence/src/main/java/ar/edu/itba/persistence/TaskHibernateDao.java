@@ -119,7 +119,7 @@ public class TaskHibernateDao implements TaskDao{
 	public Task createTask(Story story, String title, String description, Status status, User user,
 			Score score, Priority priority) {
 		try{
-			final Task persistableTask = Task.builder()
+			final Task newTask = Task.builder()
 					.title(title)
 					.description(Optional.ofNullable(description))	
 					.status(status)
@@ -128,9 +128,9 @@ public class TaskHibernateDao implements TaskDao{
 					.priority(priority)
 					.story(story)
 					.build();
-			em.persist(persistableTask);
+			em.persist(newTask);
 			em.flush();
-			return persistableTask;
+			return newTask;
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to create task");
 		}	
@@ -196,6 +196,40 @@ public class TaskHibernateDao implements TaskDao{
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to update task description");
 		}	
+	}
+
+	@Override
+	@Transactional
+	public List<Task> getUnfinishedTasks(Story oldStory) {
+		try{
+			final TypedQuery<Task> query = em.createQuery("from Task task where task.story = :story and (task.status = :notStarted or task.status = :started)", Task.class);
+			query.setParameter("story", oldStory);
+			query.setParameter("notStarted", Status.NOT_STARTED);
+			query.setParameter("started", Status.STARTED);
+			return query.getResultList();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to get unfinished tasks");
+		}
+	}
+
+	@Override
+	@Transactional
+	public void cloneTaskToStory(Task task, Story story) {
+		try {
+			final Task newTask = Task.builder()
+					.title(task.title())
+					.description(task.description())	
+					.status(task.status())
+					.owner(task.owner())
+					.score(task.score())
+					.priority(task.priority())
+					.story(story)
+					.build();
+			em.persist(newTask);
+			em.flush();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to clone task ");
+		}
 	}
 
 }
