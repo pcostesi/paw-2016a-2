@@ -22,32 +22,20 @@ public class IterationHibernateDao implements IterationDao{
 
 	@PersistenceContext
     private EntityManager em;
-	
-	@Override
-	@Transactional
-	public int getNextIterationNumber(Project project) {
-		try {
-			final TypedQuery<Integer> query = em.createQuery("select coalesce(max(iteration.number), 0) from Iteration iteration where iteration.project = :project", Integer.class);
-	        query.setParameter("project", project);
-	        return query.getSingleResult() + 1;
-		} catch (Exception exception) {
-			throw new IllegalStateException("Database failed to get next iteration number");
-		}
-	}
 
 	@Override
 	@Transactional
-	public Iteration createIteration(Project project, int nextIterationNumber, LocalDate startDate, LocalDate endDate) {
+	public Iteration createIteration(Project project, int iterationNumber, LocalDate startDate, LocalDate endDate) {
 		try {
-			final Iteration iteration = Iteration.builder()
+			final Iteration newIteration = Iteration.builder()
 					.project(project)
-					.number(nextIterationNumber)
+					.number(iterationNumber)
 					.startDate(startDate)
 					.endDate(endDate)
 					.build();
-			em.persist(iteration);
+			em.persist(newIteration);
 			em.flush();
-			return iteration;
+			return newIteration;
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to create iteration");
 		}		
@@ -132,24 +120,11 @@ public class IterationHibernateDao implements IterationDao{
 	@Transactional
 	public List<Iteration> getIterationsForProject(Project project) {
 		try {
-			final TypedQuery<Iteration> query = em.createQuery("from Iteration iteration where iteration.project = :project", Iteration.class);
+			final TypedQuery<Iteration> query = em.createQuery("from Iteration iteration where iteration.project = :project order by iteration.number desc", Iteration.class);
 	        query.setParameter("project", project);
 	        return query.getResultList();
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get iterations for project");
-		}
-	}
-
-	@Override
-	@Transactional
-	public void updateNumbersAfterDelete(Iteration iteration, int number) {
-		try {
-			final Query query = em.createQuery("update Iteration set number = (number-1) where (number > :number) and (project = :project)");
-			query.setParameter("number", number);
-			query.setParameter("project", iteration.project());
-			query.executeUpdate();
-		} catch (Exception exception) {
-			throw new IllegalStateException("Da");
 		}
 	}
 
@@ -161,6 +136,37 @@ public class IterationHibernateDao implements IterationDao{
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get parent for iteration");
 		}
+	}
+
+	@Override
+	@Transactional
+	public void increaseNumberOfIterationNumbered(Project project, int number) {
+			final Query query = em.createQuery("update Iteration set number = (number+1) where number = :number and project = :project");
+			query.setParameter("number", number);
+			query.setParameter("project", project);
+			query.executeUpdate();
+		
+	}
+	
+	@Override
+	@Transactional
+	public void decreaseNumberOfIterationNumbered(Project project, int number) {
+		try {
+			final Query query = em.createQuery("update Iteration set number = (number-1) where number = :number and project = :project");
+			query.setParameter("number", number);
+			query.setParameter("project", project);
+			query.executeUpdate();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed while decreasing iteration number");
+		}		
+	}
+
+	@Override
+	@Transactional
+	public int getMaxNumber(Project project) {
+			final TypedQuery<Integer> query = em.createQuery("select coalesce(max(number),0) from Iteration iteration where iteration.project = :project", Integer.class);
+			query.setParameter("project", project);
+			return query.getSingleResult();
 	}
 
 }

@@ -26,8 +26,8 @@
 	<jsp:body>
 		<div class="row">
 	        <div class="col-sm-12">
-	        	<strong><spring:message code="projectPanel.start_date"/></strong> ${project.startDate()}<br>
-	            <strong><spring:message code="projectPanel.description"/></strong> ${project.description()}
+	        	<p><strong><spring:message code="projectPanel.start_date"/></strong> ${project.startDate()}</p>
+	            <p><strong><spring:message code="projectPanel.description"/></strong> ${project.description()}</p>
 	        </div>
 	    </div>
 	</jsp:body>

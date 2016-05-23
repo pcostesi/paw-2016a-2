@@ -8,7 +8,9 @@ import ar.edu.itba.models.Project;
 
 public interface IterationService {
 
-	public Iteration createIteration(final Project project, LocalDate beginDate, LocalDate endDate);
+	public Iteration createIteration(final Project project, final LocalDate beginDate, final LocalDate endDate);
+	
+	public Iteration createIteration(final Project project, final LocalDate beginDate, final LocalDate endDate, final int inheritIterationNumber);
 	
 	public void deleteIteration(final Iteration iteration);
 	
@@ -23,5 +25,9 @@ public interface IterationService {
 	public List<Iteration> getIterationsForProject(final Project project);
 	
 	public Project getParent(final Iteration iteration);
+
+	boolean isValidDateRangeInProject(final Project project, final LocalDate startDate, final LocalDate endDate);
+
+	public int getMaxIterationNumber(final Project project);
 	
 }

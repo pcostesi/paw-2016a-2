@@ -59,9 +59,9 @@ public class TaskJdbcDaoTests {
 	private final String pCode = "Test";
 	private final String tName = "Test Task";
 	private final String tDesc = "The tester's life is a tough one";
-	private final Status status = Status.getByValue(1);
-	private final Score score = Score.getByValue(1);
-	private final Priority priority = Priority.getByValue(1);
+	private final Status status = Status.NOT_STARTED;
+	private final Score score = Score.EASY;
+	private final Priority priority = Priority.NORMAL;
 	private final JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 	
 	private Story testStory;
@@ -76,8 +76,7 @@ public class TaskJdbcDaoTests {
 		testProject = projectDao.createProject(pName, "Best Project EVAR", pCode);
 		LocalDate beginDate = LocalDate.now();
 		LocalDate endDate = LocalDate.now().plusDays(15);
-		testIteration = iterDao.createIteration(testProject,
-				iterDao.getNextIterationNumber(testProject), beginDate, endDate);
+		testIteration = iterDao.createIteration(testProject, 1, beginDate, endDate);
 		testStory = storyDao.createStory(testIteration,
 				"A sad story about extreme unhappyness while testing");
 		if (!userDao.userNameExists("testuser")) {
