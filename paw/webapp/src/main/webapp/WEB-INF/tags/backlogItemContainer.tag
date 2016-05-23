@@ -28,7 +28,7 @@
 	<jsp:body><c:if test="${items.isEmpty()}">
 		<div class="row">
             <div class="col-sm-12">
-				<spring:message code="backlogItemContainer.empty_list"/>
+				<p><spring:message code="backlogItemContainer.empty_list"/></p>
             </div>
         </div>
 	</c:if></jsp:body>
