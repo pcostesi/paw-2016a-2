@@ -63,7 +63,7 @@ public class UserController extends BaseController {
 			return new ModelAndView("user/editPassword");
 		}
 		else {
-			us.editPassword(user().username(), editPasswordForm.getPassword());
+			us.editPassword(user(), editPasswordForm.getPassword());
 		}
 		return new ModelAndView("user/profile");
 	}

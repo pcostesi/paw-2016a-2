@@ -134,15 +134,14 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
-	public void editPassword(String username, String newPassword) {
-		if(username == null){
+	public void editPassword(User user, String newPassword) {
+		if(user == null){
 			throw new IllegalArgumentException("Username cannot be null");
 		}
 		if(newPassword == null){
 			throw new IllegalArgumentException("Password cannot be null");
 		}
-		throw new UnsupportedOperationException("Method not implemented due to migration to Hibernate  (userDao.editPassword())");
-		//userDao.setPassword(username, newPassword);
+		userDao.setPassword(user, newPassword);
 	}
 	
 	@Override

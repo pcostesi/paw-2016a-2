@@ -17,5 +17,7 @@ public interface UserDao {
 	public List<String> getAllUsernames();
 
 	public List<String> getAllUsernamesExcept(final User user);
+
+	void setPassword(User user, String newPassword);
     
 }

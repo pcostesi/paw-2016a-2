@@ -14,10 +14,10 @@ public interface UserService {
 
 	public boolean usernameExists(final String user);
 
-	public void editPassword(String username, String newPassword);
-
 	public boolean emailExists(final String user);
 
 	public List<String> getUsernamesExcept(final User user);
+
+	void editPassword(User user, String newPassword);
   
 }

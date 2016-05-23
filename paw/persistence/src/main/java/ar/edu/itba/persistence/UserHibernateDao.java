@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.context.annotation.Primary;
@@ -93,6 +94,19 @@ public class UserHibernateDao implements UserDao{
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get all usernames except one");
 		}
+	}
+	
+	@Override
+	@Transactional
+	public void setPassword(User user, String newPassword) {
+		try {
+			final Query query = em.createQuery("update User set password = :password where user = :user");
+			query.setParameter("user", user);
+			query.setParameter("password", newPassword);
+			query.executeUpdate();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to update user password");
+		}		
 	}
 
 }
