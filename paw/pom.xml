@@ -51,6 +51,13 @@
             <id>snapshot-repository.java.net</id>
             <name>Java.net Snapshot Repository for Maven</name>
             <url>https://maven.java.net/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
             <layout>default</layout>
         </repository>
     </repositories>
@@ -63,17 +70,17 @@
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.glassfish.jersey-core</groupId>
+                <groupId>org.glassfish.jersey.core</groupId>
                 <artifactId>jersey-server</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.glassfish.jersey-ext</groupId>
+                <groupId>org.glassfish.jersey.ext</groupId>
                 <artifactId>jersey-spring4</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.glassfish.jersey-containers</groupId>
+                <groupId>org.glassfish.jersey.containers</groupId>
                 <artifactId>jersey-container-servlet-core</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
