@@ -44,7 +44,7 @@ public class Project implements Serializable {
 	@Column(length = 500, nullable = false)
 	private String description;
 	
-	@Column(nullable = false)
+	@Column(name = "date_start", nullable = false)
 	private LocalDate startDate;
 	
 	@ManyToOne	
