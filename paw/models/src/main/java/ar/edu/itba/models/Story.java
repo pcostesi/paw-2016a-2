@@ -19,7 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.Formula;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -36,17 +36,11 @@ public class Story{
 	@Column(length = 100, nullable = false)
 	private String title;
 	
-	@Formula("(select coalesce(min(task.status),0) from task where task.story_id = story_id)")
-	private Status status;
-	
-	@Formula("(select coalesce(sum(task.score),0) from task where task.story_id = story_id)")
-	private int totalScore;
-	
 	@ManyToOne
 	@JoinColumn(name = "iteration_id", nullable = false)
 	private Iteration iteration;
 	
-	@OneToMany(mappedBy ="story", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy ="story", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Task> storyTasks;
 	
@@ -69,11 +63,37 @@ public class Story{
 	}
 
 	public Status status() {
-		return status;
+		boolean foundCompletedTasks = false;
+		boolean foundNotStartedTasks = false;
+		for (Task task: storyTasks) {
+			if (task.status() == Status.STARTED) {
+				return Status.STARTED;
+			} else if (task.status() == Status.COMPLETED) {
+				foundCompletedTasks = true;
+				if (foundNotStartedTasks) {
+					return Status.STARTED;
+				}
+			} else {
+				foundNotStartedTasks = true;
+				if (foundCompletedTasks) {
+					return Status.STARTED;
+				}
+			}
+		}
+		if (!foundCompletedTasks) {
+			return Status.NOT_STARTED;
+		} else {
+			return Status.COMPLETED;
+		}
 	}
 
 	public int totalScore() {
-		return totalScore;
+		Hibernate.initialize(storyTasks);
+		int score = 0;
+		for (Task task: storyTasks) {
+			score += task.score().getValue();
+		}
+		return score;
 	}
 
 	public Iteration iteration() {
@@ -93,8 +113,6 @@ public class Story{
 	private boolean equalTo(Story another) {
 		return storyId == another.storyId
 				&& title.equals(another.title)
-				&& status.equals(another.status)
-				&& totalScore == another.totalScore
 				&& iteration.equals(another.iteration);
 	}
 
@@ -102,8 +120,6 @@ public class Story{
 		int h = 31;
 		h = h * 17 + storyId;
 		h = h * 17 + title.hashCode();
-		h = h * 17 + status.hashCode();
-		h = h * 17 + totalScore;
 		h = h * 17 + iteration.hashCode();
 		return h;
 	}
@@ -112,8 +128,8 @@ public class Story{
 		return "Story{"
 				+ "storyId=" + storyId
 				+ ", title=" + title
-				+ ", status=" + status
-				+ ", totalScore=" + totalScore
+				+ ", status=" + status()
+				+ ", totalScore=" + totalScore()
 				+ ", iteration=" + iteration
 				+ "}";
 	}

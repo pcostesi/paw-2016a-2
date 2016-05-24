@@ -50,9 +50,9 @@ public class TaskServiceImplTest {
 	@Mock
 	private User testUser;
 
-	private final Status status = Status.getByValue(1);
-	private final Score score = Score.getByValue(1);
-	private final Priority priority = Priority.getByValue(1);
+	private final Status status = Status.NOT_STARTED;
+	private final Score score = Score.EASY;
+	private final Priority priority = Priority.NORMAL;
 	private final String name = "Epic tests";
 	private final String description = "The life of a tester is hard";
 	private final String veryLongString = "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
@@ -209,6 +209,18 @@ public class TaskServiceImplTest {
 	@Transactional
 	public void changeOwnerWithNullTask() {
 		ts.changeOwnership(null, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@Transactional
+	public void changePriorityToNull() {
+		ts.changePriority(testTask, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@Transactional
+	public void changePriorityToNullTask() {
+		ts.changePriority(null, Priority.CRITICAL);
 	}
 
 	@Test

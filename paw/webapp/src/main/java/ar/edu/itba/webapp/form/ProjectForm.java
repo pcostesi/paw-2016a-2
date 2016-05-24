@@ -1,9 +1,12 @@
 package ar.edu.itba.webapp.form;
 
+import java.util.List;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import ar.edu.itba.webapp.form.constraint.*;
+import ar.edu.itba.webapp.form.constraint.ProjectCodeFree;
+import ar.edu.itba.webapp.form.constraint.ProjectNameFree;
 
 @ProjectNameFree(markedField="name")
 @ProjectCodeFree(markedField="code")
@@ -18,6 +21,8 @@ public class ProjectForm {
 
 	@Size(min=1, max=500)
 	private String description;	
+	
+	private List<String> members;
 	
 	private String oldName;
 	private String oldCode;
@@ -60,6 +65,14 @@ public class ProjectForm {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public List<String> getMembers() {
+		return members;
+	}
+	
+	public void setMembers(List<String> members) {
+		this.members = members;
 	}
 	
 }

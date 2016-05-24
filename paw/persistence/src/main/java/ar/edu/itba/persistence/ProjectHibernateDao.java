@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.ProjectUser;
+import ar.edu.itba.models.User;
 
 @Primary
 @Repository
@@ -48,13 +50,14 @@ public class ProjectHibernateDao implements ProjectDao{
 
 	@Override
 	@Transactional
-	public Project createProject(String title, String description, String code) {
+	public Project createProject(User admin, String title, String description, String code) {
 		try {
 			final Project persistableProject = Project.builder()
 					.name(title)
 					.description(description)
 					.code(code)
 					.startDate(LocalDate.now())
+					.admin(admin)
 					.build();
 			em.persist(persistableProject);
 			em.flush();
@@ -85,6 +88,18 @@ public class ProjectHibernateDao implements ProjectDao{
 			query.executeUpdate();
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to delete project");
+		}	
+	}
+
+	@Override
+	@Transactional
+	public void deleteProjectUser(Project project) {
+		try {
+			final Query query = em.createQuery("delete from ProjectUser where project = :project");
+			query.setParameter("project", project);
+			query.executeUpdate();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to delete projectuser");
 		}	
 	}
 
@@ -141,9 +156,10 @@ public class ProjectHibernateDao implements ProjectDao{
 
 	@Override
 	@Transactional
-	public List<Project> getProjects() {
+	public List<Project> getProjectsForUser(User user) {
 		try {
-			final TypedQuery<Project> query = em.createQuery("from Project", Project.class);
+			final TypedQuery<Project> query = em.createQuery("select projectUser.project from ProjectUser projectUser where projectUser.user = :user", Project.class);
+			query.setParameter("user", user);
 			return query.getResultList();
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get projects list");
@@ -160,6 +176,33 @@ public class ProjectHibernateDao implements ProjectDao{
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get project by code");
 		}	
+	}
+
+	@Override
+	@Transactional
+	public void addProjectMember(Project project, User user) {
+		try {
+			final ProjectUser projectUser = ProjectUser.builder()
+					.project(project)
+					.user(user)
+					.build();
+			em.persist(projectUser);
+			em.flush();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to add project member");
+		}	
+	}
+
+	@Override
+	@Transactional
+	public List<User> getProjectMembers(Project project) {
+		try {
+			final TypedQuery<User> query = em.createQuery("from ProjectUser where project = :project", User.class);
+			query.setParameter("project", project);
+			return query.getResultList();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to get project members");
+		}
 	}
 
 }

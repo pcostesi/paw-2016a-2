@@ -1,5 +1,6 @@
 package ar.edu.itba.webapp.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,15 @@ public class IterationController extends BaseController {
 	public ModelAndView getNewResource(@ModelAttribute("iterationForm") IterationForm iterationForm, @PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("iteration/newIteration");
 		final Project project = ps.getProjectByCode(projectCode);
+		final int maxIterationNumber = is.getMaxIterationNumber(project);
+		
+		final List<String> possibleIterations = new LinkedList<String>();
+		possibleIterations.add("None");
+		for (int i = 1; i <= maxIterationNumber; i++) {
+			possibleIterations.add("Iteration #"+i);
+		}
+		
+		mav.addObject("possibleIterations", possibleIterations);
 		mav.addObject("project", project);
 		return mav;
 	}
@@ -57,10 +67,17 @@ public class IterationController extends BaseController {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
+			logger.debug(result.toString());
 			mav = new ModelAndView("iteration/newIteration");
 			mav.addObject("project", project);
-		} else {			
-			is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());
+		} else {
+			String inheritedIterationString = iterationForm.getInheritedIteration();
+			if (inheritedIterationString.equals("None")) {
+				is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());				
+			} else {
+				int inheritedIterationNumber = Integer.valueOf(inheritedIterationString.replace("Iteration #", ""));
+				is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate(), inheritedIterationNumber);
+			}
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
 					.arg(0, projectCode).build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
@@ -91,6 +108,7 @@ public class IterationController extends BaseController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		iterationForm.setBeginDate(iteration.startDate());
 		iterationForm.setEndDate(iteration.endDate());
+		iterationForm.setProjectId(project.projectId());
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
 		return mav;

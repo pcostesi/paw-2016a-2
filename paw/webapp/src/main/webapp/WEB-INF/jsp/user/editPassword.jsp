@@ -5,26 +5,22 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<t:page>
+<t:page user="${user}">
 	<jsp:attribute name="title">
-    	<spring:message code="project.new.title"/>
+    	Edit Password
 	</jsp:attribute>
 	
 	<jsp:body>
-		<form:form modelAttribute="projectForm" action="${pageContext.request.contextPath}/project/new" method="POST">
+		<form:form modelAttribute="editPasswordForm" action="${pageContext.request.contextPath}/me/edit/password" method="POST">
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<form:hidden path="oldName"/>
-						<form:hidden path="oldCode"/>
-						<bs:input path="name" label="Name" />
-						<bs:input path="code" label="Code" />
-						<bs:input path="description" label="Description" />
-						<bs:filledSelect path="members" label="Members" items="${usernames}" multiple="true" tokenize="tokenize"/>
+						<bs:input type="password" path="password" label="New Password" />
+						<bs:input type="password" path="verifyPassword" label="Repeat password" />
 					</fieldset>
 				</div>
 			</div>
-			<bs:submit/>
+			<button type="submit" class="btn btn-primary">Submit Changes</button>
 
 		</form:form>
     </jsp:body>

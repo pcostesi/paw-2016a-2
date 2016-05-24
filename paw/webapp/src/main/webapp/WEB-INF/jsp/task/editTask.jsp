@@ -3,6 +3,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <t:page>
 	<jsp:attribute name="title">
@@ -22,7 +23,7 @@
 						<bs:select path="status" label="Task Status" />
 						<bs:select path="score" label="Task Score" />
 						<bs:select path="priority" label="Task Priority" />
-						<bs:filledSelect path="owner" label="Task Owner" items="${users}"/>
+						<bs:filledSelect path="owner" label="Task Owner" items="${users}" multiple="false"/>
 					</fieldset>
 				</div>
 			</div>

@@ -81,6 +81,17 @@ public class Iteration{
 	public Project project() {
 		return project;
 	}
+	
+	public Status status() {
+		final LocalDate now = LocalDate.now();
+		if (now.compareTo(startDate) < 0) {
+			return Status.NOT_STARTED;
+		} else if (now.compareTo(endDate) <= 0) {
+			return Status.STARTED;
+		} else {
+			return Status.COMPLETED;
+		}
+	}
 
 	public List<Story>getStories() {
 		return iterationStories;

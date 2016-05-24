@@ -45,3 +45,32 @@
 	border-bottom-right-radius: 3px !important;
 }
 
+.status {
+	padding: 14px 5px 16.5px !important;
+	margin-left: -15px !important;
+	margin-right: 10px;
+	display: inline !important;
+	border-radius: 2px 0px 0px 2px;
+	border-left: 0.1em  #dfd7ca solid !important;
+}
+
+.status-brown {
+	border: 1px #d7c6a8 solid !important;
+	background-color: #e7ddcb !important;
+}
+
+.status-green {
+	border: 1px #7dad38 solid !important;
+	background-color: #93c54b !important;
+}
+
+.status-red {
+	border: 1px #bc2e29 solid !important;
+	background-color: #d9534f !important;
+}
+
+.status-blue {
+	border: 1px #294d70 solid !important;
+	background-color: #325d88 !important;
+}
+

@@ -1,28 +1,25 @@
 package ar.edu.itba.webapp.form.constraint;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-import ar.edu.itba.webapp.form.IterationForm;
-
-public class DateRangeValidator implements ConstraintValidator<DateRange, IterationForm> {
+public class DateRangeValidator implements ConstraintValidator<DateRange, Object> {
 	
     private String firstFieldName;
     private String secondFieldName;
 
     @Override
     public void initialize(final DateRange constraintAnnotation) {
-        firstFieldName = constraintAnnotation.first();
-        secondFieldName = constraintAnnotation.second();
+        firstFieldName = constraintAnnotation.start();
+        secondFieldName = constraintAnnotation.end();
     }
 
     @Override
-    public boolean isValid(final IterationForm value, final ConstraintValidatorContext context) {
+    public boolean isValid(final Object value, final ConstraintValidatorContext context) {
         try {
             final LocalDate firstDate = (LocalDate) PropertyUtils.getProperty(value, firstFieldName);
             final LocalDate secondDate = (LocalDate) PropertyUtils.getProperty(value, secondFieldName);

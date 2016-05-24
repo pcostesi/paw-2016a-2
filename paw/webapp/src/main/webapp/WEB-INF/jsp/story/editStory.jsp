@@ -7,11 +7,10 @@
 <t:page>
 	<jsp:attribute name="title">
     	<spring:message code="story.edit.title" />
-	</jsp:attribute>
-	
-	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/edit" var="formUrl"/>
+	</jsp:attribute>	
 	
 	<jsp:body>
+		<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/edit" var="formUrl"/>
 		<form:form modelAttribute="storyForm" action="${formUrl}" method="POST">
 			<div class="row">
 				<div class="col-sm-6">

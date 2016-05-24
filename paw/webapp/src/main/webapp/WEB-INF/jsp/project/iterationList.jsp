@@ -15,16 +15,20 @@
      </jsp:attribute>
      
      <jsp:body>
-     	<div class="row">
-     		<div class="col-sm-12">
-				<t:descriptionPanel project="${project}"/>
-			</div>
-		</div>
 		<div class="row">
-			<div class="col-sm-6">
-				<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
+			<div class="col-sm-4">
+				<div class="row">
+			     	<div class="col-sm-12">
+						<t:descriptionPanel project="${project}"/>
+					</div>
+				</div>
+				<div class="row">
+			     	<div class="col-sm-12">
+						<t:backlogItemContainer items="${backlog}"></t:backlogItemContainer>
+					</div>
+				</div>				
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-8">
 				<t:iterationsPanel project="${project}" iterations="${iterations}"/>
 			</div>
 		</div>

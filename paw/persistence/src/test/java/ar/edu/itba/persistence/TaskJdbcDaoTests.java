@@ -59,11 +59,11 @@ public class TaskJdbcDaoTests {
 	private final String pCode = "Test";
 	private final String tName = "Test Task";
 	private final String tDesc = "The tester's life is a tough one";
-	private final Status status = Status.getByValue(1);
-	private final Score score = Score.getByValue(1);
-	private final Priority priority = Priority.getByValue(1);
-	private JdbcTemplate jdbcTemplate;
+	private final Status status = Status.NOT_STARTED;
+	private final Score score = Score.EASY;
+	private final Priority priority = Priority.NORMAL;
 	
+	private JdbcTemplate jdbcTemplate;
 	private Story testStory;
 	private Iteration testIteration;
 	private Project testProject;
@@ -73,17 +73,14 @@ public class TaskJdbcDaoTests {
 	@Before
 	@Transactional
 	public void setUp() throws Exception {
+		owner = userDao.createUser("testuser", "test", "testerr@gmail.com");
 		jdbcTemplate = new JdbcTemplate(ds);
-		testProject = projectDao.createProject(pName, "Best Project EVAR", pCode);
+		testProject = projectDao.createProject(owner, pName, "Best Project EVAR", pCode);
 		LocalDate beginDate = LocalDate.now();
 		LocalDate endDate = LocalDate.now().plusDays(15);
-		testIteration = iterDao.createIteration(testProject,
-				iterDao.getNextIterationNumber(testProject), beginDate, endDate);
+		testIteration = iterDao.createIteration(testProject, 1, beginDate, endDate);
 		testStory = storyDao.createStory(testIteration,
 				"A sad story about extreme unhappyness while testing");
-		if (!userDao.userNameExists("testuser")) {
-			owner = userDao.createUser("testuser", "test", "testerr@gmail.com");
-		}
 	}
 
 	@After
@@ -158,7 +155,8 @@ public class TaskJdbcDaoTests {
 	public void updateOwnerWithNull() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		taskDao.updateOwner(testTask, null);
-		assertFalse(taskDao.getTaskById(testTask.taskId()).owner().isPresent());
+		assertTrue(JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "task",
+				"task_id = " + testTask.taskId() + " AND owner IS NULL") == 1);
 	}
 
 	@Test

@@ -6,7 +6,7 @@
 
 <c:url value="/project/${project.code()}/backlog/new" var="newLink"/>
 
-<t:collapsiblePanel panelId="backlog">
+<t:staticPanel panelId="backlog">
 	<jsp:attribute name="title">
 		<spring:message code="backlogItemContainer.title"/>
 	</jsp:attribute>
@@ -28,9 +28,9 @@
 	<jsp:body><c:if test="${items.isEmpty()}">
 		<div class="row">
             <div class="col-sm-12">
-				<spring:message code="backlogItemContainer.empty_list"/>
+				<p><spring:message code="backlogItemContainer.empty_list"/></p>
             </div>
         </div>
 	</c:if></jsp:body>
 	
-</t:collapsiblePanel>
+</t:staticPanel>
