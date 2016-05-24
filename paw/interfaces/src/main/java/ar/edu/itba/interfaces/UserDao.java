@@ -2,6 +2,7 @@ package ar.edu.itba.interfaces;
 
 import java.util.List;
 
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
 public interface UserDao {
@@ -19,5 +20,7 @@ public interface UserDao {
 	public List<String> getAllUsernamesExcept(final User user);
 
 	void setPassword(User user, String newPassword);
+
+	public List<String> getAllUsernamesOfProject(Project project);
     
 }

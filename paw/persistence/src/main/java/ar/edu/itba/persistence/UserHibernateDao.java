@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
 @Primary
@@ -107,6 +108,17 @@ public class UserHibernateDao implements UserDao{
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to update user password");
 		}		
+	}
+
+	@Override
+	public List<String> getAllUsernamesOfProject(Project project) {
+		try {
+			final TypedQuery<String> query = em.createQuery("select pj.user.username from ProjectUser pj where project = :project ", String.class);
+			query.setParameter("project", project);
+			return query.getResultList();
+		} catch (Exception exception) {
+			throw new IllegalStateException("Database failed to get all usernames of project");
+		}
 	}
 
 }

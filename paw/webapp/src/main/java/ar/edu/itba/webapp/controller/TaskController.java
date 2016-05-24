@@ -56,7 +56,7 @@ public class TaskController extends BaseController {
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
-		final List<String> users = us.getUsernames();
+		final List<String> users = us.getUsernamesForProject(project);
 		users.add(0, "None");
 		mav.addObject("users",users);
 		mav.addObject("project", project);
@@ -77,7 +77,7 @@ public class TaskController extends BaseController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		if (result.hasErrors()) {
-			final List<String> users = us.getUsernames();
+			final List<String> users = us.getUsernamesForProject(project);
 			users.add(0, "None");
 			mav = new ModelAndView("task/newTask");
 			mav.addObject("project", project);
@@ -110,7 +110,7 @@ public class TaskController extends BaseController {
 		final Task task = ts.getTaskById(taskId);
 		final Optional<User> owner = task.owner();
 		final String ownerUsername = (!owner.isPresent())? "None": owner.get().username();
-		final List<String> users = us.getUsernames();
+		final List<String> users = us.getUsernamesForProject(project);
 		users.add(0, "None");
 		taskForm.setDescription(task.description().isPresent()? task.description().get() : null);
 		taskForm.setOwner(ownerUsername);
@@ -138,7 +138,7 @@ public class TaskController extends BaseController {
 		final Task task = ts.getTaskById(taskId);
 		if (result.hasErrors()) {
 			final Story story = ss.getById(storyId);
-			final List<String> users = us.getUsernames();
+			final List<String> users = us.getUsernamesForProject(project);
 			users.add(0, "None");
 			mav = new ModelAndView("task/editTask");
 			mav.addObject("project", project);

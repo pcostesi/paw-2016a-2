@@ -21,11 +21,12 @@
 </c:if>
 <spring:bind path="${path}">
 	<div class="form-group ${status.error ? 'has-error' : '' } ${cssClass}">
-	<div class="input-group">
-  		<span for="${path}" class="input-group-addon">${label}<c:if test="${required}"><span class="required">*</span></c:if></span>
-        <form:select path="${path}" class="form-control ${tokenize}" items="${items}" multiple="${multiple}"/>
-	    <c:if test="${status.error}">
-            <span class="help-block">${status.errorMessage}</span>
-        </c:if>
-    </div>
+		<div class="input-group">
+	  		<span for="${path}" class="input-group-addon">${label}<c:if test="${required}"><span class="required">*</span></c:if></span>
+	        <form:select path="${path}" class="form-control ${tokenize}" items="${items}" multiple="${multiple}"/>
+		    <c:if test="${status.error}">
+	            <span class="help-block">${status.errorMessage}</span>
+	        </c:if>
+	    </div>
+	</div>
 </spring:bind>
