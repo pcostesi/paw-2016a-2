@@ -2,14 +2,12 @@ package ar.edu.itba.webapp.form;
 
 import javax.validation.constraints.Size;
 
-import ar.edu.itba.webapp.form.constraint.UserDoesntBelongToProject;
-import ar.edu.itba.webapp.form.constraint.UserExists;
+import ar.edu.itba.webapp.form.constraint.UserCanJoinProject;
 
-@UserDoesntBelongToProject(markedField="member")
+@UserCanJoinProject(markedField="member")
 public class AddMemberForm {
 
 	@Size(min=1, max=100)
-	@UserExists
 	private String member;
 
 	private String projectCode;
