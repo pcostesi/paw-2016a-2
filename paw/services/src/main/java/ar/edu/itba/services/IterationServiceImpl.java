@@ -13,6 +13,7 @@ import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 
@@ -318,5 +319,28 @@ public class IterationServiceImpl implements IterationService{
 		}	
 		
 		return iterationDao.getMaxNumber(project);
+	}
+
+	@Override
+	public int getLastFinishedIterationNumber(Project project) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+		
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}
+		
+		List<Iteration> iterations = iterationDao.getIterationsForProject(project);
+		
+		int itNumber = Integer.MAX_VALUE;
+		
+		for (Iteration iteration: iterations) {
+			if (iteration.status() == Status.COMPLETED && iteration.number() < itNumber) {
+				itNumber = iteration.number();
+			}
+		}
+		
+		return itNumber == Integer.MAX_VALUE? 0 : itNumber;
 	}
 }

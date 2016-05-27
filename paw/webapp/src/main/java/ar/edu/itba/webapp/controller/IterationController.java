@@ -48,12 +48,12 @@ public class IterationController extends BaseController {
 	public ModelAndView getNewResource(@ModelAttribute("iterationForm") IterationForm iterationForm, @PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("iteration/newIteration");
 		final Project project = ps.getProjectByCode(projectCode);
-		final int maxIterationNumber = is.getMaxIterationNumber(project);
+		final int iterationNumber = is.getLastFinishedIterationNumber(project);
 		
 		final List<String> possibleIterations = new LinkedList<String>();
 		possibleIterations.add("None");
-		for (int i = 1; i <= maxIterationNumber; i++) {
-			possibleIterations.add("Iteration #"+i);
+		if (iterationNumber > 0) {
+			possibleIterations.add("Iteration #"+iterationNumber);			
 		}
 		
 		mav.addObject("possibleIterations", possibleIterations);
