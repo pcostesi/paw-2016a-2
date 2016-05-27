@@ -106,13 +106,24 @@ public class ProjectController extends BaseController {
 		final Project project = ps.getProjectByCode(projectCode);
 		final List<User> members = ps.getProjectMembers(project);
 		final User me = super.user();
-		final List<String> usernames = us.getUsernamesExcept(me);
+		final List<String> usernames = us.getAvailableUsers(project);
 		mav.addObject("user", me);
-		mav.addObject("usernames", usernames);
+		mav.addObject("usernames", toJSONFormat(usernames));
 		mav.addObject("project", project);
 		mav.addObject("members", members);
 		return mav;
-	}	
+	}
+	
+	private String toJSONFormat(List<String> usernames) {
+		String formattedString = "[";
+		for (int i = 0; i < usernames.size(); i++) {
+			formattedString = formattedString +"\""+ usernames.get(i) + "\"";
+			if (i+1 < usernames.size()) {
+				formattedString = formattedString +",";
+			}
+		}
+		return formattedString + "]";
+	}
 	
 	@RequestMapping(value = "/{projectCode}/members/new", method = RequestMethod.POST)
 	public ModelAndView addNewMember(@Valid @ModelAttribute("addMemberForm") AddMemberForm addMemberForm, BindingResult result, @PathVariable String projectCode) {
