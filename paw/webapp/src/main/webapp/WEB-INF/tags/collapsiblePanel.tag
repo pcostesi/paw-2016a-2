@@ -13,14 +13,14 @@
 
 <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="panel-heading-${panelId}">
+    	<div class="pull-right">
+			<jsp:invoke fragment="actions"/>
+		</div>  
         <h2 class="panel-title clearfix">
         	<jsp:invoke fragment="titleInfo"/> 
             <a role="button" data-toggle="collapse" data-parent="${panelParent}" href="#panel-collapse-${panelId}" aria-expanded="true" aria-controls="panel-collapse-${panelId}">
                 <jsp:invoke fragment="title"/>
-            </a>
-			<div class="pull-right">
-			  	<jsp:invoke fragment="actions"/>
-			</div>            
+            </a>			          
         </h2>
     </div>
     <div id="panel-collapse-${panelId}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-${panelId}">

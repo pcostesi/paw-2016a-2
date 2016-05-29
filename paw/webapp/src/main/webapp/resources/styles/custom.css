@@ -74,3 +74,13 @@
 	background-color: #325d88 !important;
 }
 
+.panel-heading {
+	height: 45px;
+}
+
+.panel-title {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
