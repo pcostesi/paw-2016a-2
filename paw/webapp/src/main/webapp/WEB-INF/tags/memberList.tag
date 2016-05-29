@@ -9,7 +9,7 @@
 
 <div class="row">
 	<div class="col-sm-12">
-	<p><strong>${admin.username()}</strong> <span class="label label-default">ADMIN</span></p>
+	<p><strong>${admin.username()}</strong> <span class="label label-info">ADMIN</span></p>
 	<p><a href="mailto:${admin.mail()}">${admin.mail()}</a></p>
 	</div>
 </div>
