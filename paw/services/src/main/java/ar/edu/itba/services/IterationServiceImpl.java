@@ -333,14 +333,14 @@ public class IterationServiceImpl implements IterationService{
 		
 		List<Iteration> iterations = iterationDao.getIterationsForProject(project);
 		
-		int itNumber = Integer.MAX_VALUE;
+		int itNumber = 0;
 		
 		for (Iteration iteration: iterations) {
-			if (iteration.status() == Status.COMPLETED && iteration.number() < itNumber) {
+			if (iteration.status() == Status.COMPLETED && iteration.number() > itNumber) {
 				itNumber = iteration.number();
 			}
 		}
 		
-		return itNumber == Integer.MAX_VALUE? 0 : itNumber;
+		return itNumber;
 	}
 }

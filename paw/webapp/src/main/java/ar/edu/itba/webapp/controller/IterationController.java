@@ -67,8 +67,14 @@ public class IterationController extends BaseController {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
-			logger.debug(result.toString());
 			mav = new ModelAndView("iteration/newIteration");
+			final int iterationNumber = is.getLastFinishedIterationNumber(project);			
+			final List<String> possibleIterations = new LinkedList<String>();
+			possibleIterations.add("None");
+			if (iterationNumber > 0) {
+				possibleIterations.add("Iteration #"+iterationNumber);			
+			}
+			mav.addObject("possibleIterations", possibleIterations);
 			mav.addObject("project", project);
 		} else {
 			String inheritedIterationString = iterationForm.getInheritedIteration();
