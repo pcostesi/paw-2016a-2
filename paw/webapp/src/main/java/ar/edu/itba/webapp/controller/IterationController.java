@@ -1,6 +1,5 @@
 package ar.edu.itba.webapp.controller;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,15 +47,8 @@ public class IterationController extends BaseController {
 	public ModelAndView getNewResource(@ModelAttribute("iterationForm") IterationForm iterationForm, @PathVariable String projectCode) {
 		final ModelAndView mav = new ModelAndView("iteration/newIteration");
 		final Project project = ps.getProjectByCode(projectCode);
-		final int iterationNumber = is.getLastFinishedIterationNumber(project);
-		
-		final List<String> possibleIterations = new LinkedList<String>();
-		possibleIterations.add("None");
-		if (iterationNumber > 0) {
-			possibleIterations.add("Iteration #"+iterationNumber);			
-		}
-		
-		mav.addObject("possibleIterations", possibleIterations);
+		final Integer iterationToInheritFrom = is.getLastFinishedIterationNumber(project);		
+		mav.addObject("iterationToInheritFrom", iterationToInheritFrom);
 		mav.addObject("project", project);
 		return mav;
 	}
@@ -67,22 +59,15 @@ public class IterationController extends BaseController {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
-			mav = new ModelAndView("iteration/newIteration");
-			final int iterationNumber = is.getLastFinishedIterationNumber(project);			
-			final List<String> possibleIterations = new LinkedList<String>();
-			possibleIterations.add("None");
-			if (iterationNumber > 0) {
-				possibleIterations.add("Iteration #"+iterationNumber);			
-			}
-			mav.addObject("possibleIterations", possibleIterations);
+			mav = new ModelAndView("iteration/newIteration");	
+			final Integer iterationToInheritFrom = is.getLastFinishedIterationNumber(project);		
+			mav.addObject("iterationToInheritFrom", iterationToInheritFrom);
 			mav.addObject("project", project);
 		} else {
-			String inheritedIterationString = iterationForm.getInheritedIteration();
-			if (inheritedIterationString.equals("None")) {
+			if (!iterationForm.getInheritIteration()) {
 				is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate());				
 			} else {
-				int inheritedIterationNumber = Integer.valueOf(inheritedIterationString.replace("Iteration #", ""));
-				is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate(), inheritedIterationNumber);
+				is.createIteration(project, iterationForm.getBeginDate(), iterationForm.getEndDate(), iterationForm.getIterationNumberToInherit());
 			}
 			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
 					.arg(0, projectCode).build();

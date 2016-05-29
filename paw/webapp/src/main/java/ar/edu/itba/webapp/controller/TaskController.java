@@ -57,7 +57,6 @@ public class TaskController extends BaseController {
 		final Iteration iteration = is.getIterationById(iterationId);
 		final Story story = ss.getById(storyId);
 		final List<String> users = us.getUsernamesForProject(project);
-		users.add(0, "None");
 		mav.addObject("users",users);
 		mav.addObject("project", project);
 		mav.addObject("iteration", iteration);
