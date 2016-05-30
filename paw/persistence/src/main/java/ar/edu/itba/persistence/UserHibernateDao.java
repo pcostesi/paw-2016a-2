@@ -111,6 +111,7 @@ public class UserHibernateDao implements UserDao{
 	}
 
 	@Override
+	@Transactional
 	public List<String> getAllUsernamesOfProject(Project project) {
 		try {
 			final TypedQuery<String> query = em.createQuery("select pj.user.username from ProjectUser pj where project = :project ", String.class);
@@ -119,6 +120,14 @@ public class UserHibernateDao implements UserDao{
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get all usernames of project");
 		}
+	}
+
+	@Override
+	@Transactional
+	public List<String> getAvailableUsers(Project project) {
+		final TypedQuery<String> query = em.createQuery("select user.username from User user where user not in (select pu.user from ProjectUser pu where pu.project = :project)", String.class);
+		query.setParameter("project", project);
+		return query.getResultList();
 	}
 
 }
