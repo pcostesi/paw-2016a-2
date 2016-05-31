@@ -25,6 +25,7 @@ import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import ar.edu.itba.webapp.form.AddMemberForm;
 import ar.edu.itba.webapp.form.ProjectForm;
 
 @Controller
@@ -98,6 +99,67 @@ public class ProjectController extends BaseController {
 		mav.addObject("project", project);
 		return mav;
 	}
+	
+	@RequestMapping(value = "/{projectCode}/members", method = RequestMethod.GET, name = "project.members")
+	public ModelAndView getMembersList(@ModelAttribute("addMemberForm") AddMemberForm addMemberForm, @PathVariable String projectCode) {
+		final ModelAndView mav = new ModelAndView("project/membersList");
+		final Project project = ps.getProjectByCode(projectCode);
+		final List<User> members = ps.getProjectMembers(project);
+		final User me = super.user();
+		final List<String> usernames = us.getAvailableUsers(project);
+		mav.addObject("user", me);
+		mav.addObject("usernames", toJSONFormat(usernames));
+		mav.addObject("project", project);
+		mav.addObject("members", members);
+		return mav;
+	}
+	
+	private String toJSONFormat(List<String> usernames) {
+		String formattedString = "[";
+		for (int i = 0; i < usernames.size(); i++) {
+			formattedString = formattedString +"\""+ usernames.get(i) + "\"";
+			if (i+1 < usernames.size()) {
+				formattedString = formattedString +",";
+			}
+		}
+		return formattedString + "]";
+	}
+	
+	@RequestMapping(value = "/{projectCode}/members/new", method = RequestMethod.POST)
+	public ModelAndView addNewMember(@Valid @ModelAttribute("addMemberForm") AddMemberForm addMemberForm, BindingResult result, @PathVariable String projectCode) {
+		final Project project = ps.getProjectByCode(projectCode);
+		final ModelAndView mav;
+		if (result.hasErrors()) {
+			mav = new ModelAndView("project/membersList");
+			final List<String> usernames = us.getAvailableUsers(project);
+			final List<User> members = ps.getProjectMembers(project);
+			mav.addObject("usernames", toJSONFormat(usernames));
+			mav.addObject("members", members);
+			mav.addObject("project", project);
+		} else {
+			final User me = super.user();
+			final User user = us.getByUsername(addMemberForm.getMember());
+			ps.addUserToProject(me, project, user);
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.members")
+					.arg(1, projectCode).build();
+			mav = new ModelAndView("redirect:" + resourceUrl);
+		}
+		return mav;
+	}	
+	
+	@RequestMapping(value = "/{projectCode}/members/{username}/delete", method = RequestMethod.POST)
+	public ModelAndView deleteMember(@PathVariable String projectCode, @PathVariable String username) {
+		final ModelAndView mav;
+		final Project project = ps.getProjectByCode(projectCode);
+		final User me = super.user();
+		final User userToDelete = us.getByUsername(username);
+		ps.deleteUserFromProject(me, project, userToDelete);
+		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.members")
+				.arg(1, projectCode).build();
+		System.out.println(resourceUrl);
+		mav = new ModelAndView("redirect:" + resourceUrl);
+		return mav;
+	}	
 	
 	@RequestMapping(value = "/{projectCode}/edit", method = RequestMethod.POST)
 	public ModelAndView modifyResource(@Valid @ModelAttribute("projectForm") ProjectForm projectForm, BindingResult result,

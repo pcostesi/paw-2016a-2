@@ -46,31 +46,54 @@
 }
 
 .status {
-	padding: 14px 5px 16.5px !important;
-	margin-left: -15px !important;
-	margin-right: 10px;
-	display: inline !important;
+	height: 46px;
+	width: 10px;
+	margin: -11px 10px 0 -15px;
+	display: inline;
 	border-radius: 2px 0px 0px 2px;
-	border-left: 0.1em  #dfd7ca solid !important;
+	border-left: 0.1em  #dfd7ca solid;
+	float: left;
 }
 
 .status-brown {
-	border: 1px #d7c6a8 solid !important;
-	background-color: #e7ddcb !important;
+	border: 1px #d7c6a8 solid;
+	background-color: #e7ddcb;
 }
 
 .status-green {
-	border: 1px #7dad38 solid !important;
-	background-color: #93c54b !important;
+	border: 1px #7dad38 solid;
+	background-color: #93c54b;
 }
 
 .status-red {
-	border: 1px #bc2e29 solid !important;
-	background-color: #d9534f !important;
+	border: 1px #bc2e29 solid;
+	background-color: #d9534f;
 }
 
 .status-blue {
-	border: 1px #294d70 solid !important;
-	background-color: #325d88 !important;
+	border: 1px #294d70 solid;
+	background-color: #325d88;
 }
 
+.panel-heading {
+	height: 45px;
+}
+
+.panel-title {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.title-info {
+	margin-right: 5px;
+}
+
+.smaller-margins {
+	margin-top: 5px !important;
+	margin-bottom: 10px !imporant;
+}
+
+.panel .panel-heading, .panel .panel-title {
+	font-size: 12px !important;
+}

@@ -8,28 +8,25 @@
 
 <c:url value="/project/${project.code()}" var="projectUrl"/>
 
-<t:collapsiblePanel panelId="project-${project.code()}">
-	<jsp:attribute name="title">${project.name()}</jsp:attribute>	
+<t:staticPanel panelId="project-${project.code()}">
+	<jsp:attribute name="title">
+	<c:if test="${user eq project.admin()}">
+			<span class="label label-warning">ADMIN</span>
+	</c:if> ${project.name()}</jsp:attribute>	
 	<jsp:attribute name="actions">
 		<a href="${projectUrl}" class="btn btn-default btn-xs">
 			<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> <spring:message code="projectPanel.project_link"/>
 		</a>
-		<c:choose>
-			<c:when test="${user eq project.admin()}">
-				<t:dropdownEditDelete url="${projectUrl}"/>
-			</c:when>
-			<c:otherwise>
-				<t:dropdownEditDelete url="${projectUrl}" disabled="disabled"/>
-			</c:otherwise>
-		</c:choose>		
+		<c:if test="${user eq project.admin()}">
+			<t:dropdownEditDelete url="${projectUrl}"/>
+		</c:if>
 	</jsp:attribute>
 	<jsp:body>
 		<div class="row">
 	        <div class="col-sm-12">
 	        	<p><strong><spring:message code="projectPanel.start_date"/></strong> ${project.startDate()}</p>
 	            <p><strong><spring:message code="projectPanel.description"/></strong> ${project.description()}</p>
-	            <p><strong><spring:message code="projectPanel.admin"/></strong> ${project.admin().username()}</p>
 	        </div>
 	    </div>
 	</jsp:body>
-</t:collapsiblePanel>
+</t:staticPanel>

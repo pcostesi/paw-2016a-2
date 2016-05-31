@@ -35,4 +35,8 @@ public interface ProjectDao {
 
 	void deleteProjectUser(final Project project);
 
+	public void deleteProjectMember(final Project project, final User userToDelete);
+
+	public boolean userBelongsToProject(final Project project, final User user);
+
 }

@@ -20,7 +20,7 @@ div.Tokenize ul.TokensContainer {
     cursor: text;
     padding: 0 5px 5px 0;
     height: 32px;
-    overflow-y: auto;
+    overflow: hidden;
     background-color: white;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
