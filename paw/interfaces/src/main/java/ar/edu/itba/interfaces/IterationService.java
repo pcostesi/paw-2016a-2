@@ -28,6 +28,6 @@ public interface IterationService {
 
 	boolean isValidDateRangeInProject(final Project project, final LocalDate startDate, final LocalDate endDate);
 
-	public int getMaxIterationNumber(final Project project);
+	public Integer getLastFinishedIterationNumber(final Project project);
 	
 }
