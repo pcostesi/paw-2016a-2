@@ -68,6 +68,7 @@ public class UserHibernateDao implements UserDao{
 					.mail(mail)
 					.build();
 			em.persist(persistableUser);
+			em.flush();
 			return persistableUser;
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to create user");

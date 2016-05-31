@@ -160,15 +160,20 @@ public class IterationServiceImpl implements IterationService{
 
 		Project project = iterationDao.getParent(iteration);
 		
-		if (!isValidDateRangeInProject(project, beginDate, iteration.endDate())) {
-			throw new IllegalStateException("Overlaps another iteration");
+		if (isInsideIteration(iteration, beginDate) || isValidDateRangeInProject(project, beginDate, iteration.endDate())) {
+			iterationDao.updateStartDate(iteration, beginDate);
+			return iterationDao.getIterationById(iteration.iterationId());
+		} else {
+			throw new IllegalStateException("Overlaps another iteration");			
 		}
 		
-		iterationDao.updateStartDate(iteration, beginDate);
-
-		return iterationDao.getIterationById(iteration.iterationId());
+		
 	}
 
+	private boolean isInsideIteration(Iteration iteration, LocalDate date) {
+		return date.compareTo(iteration.startDate()) >= 0 && date.compareTo(iteration.endDate()) <= 0;
+	}
+	
 	@Override
 	public Iteration setEndDate(Iteration iteration, LocalDate endDate) {
 		if (iteration == null) {
@@ -191,13 +196,12 @@ public class IterationServiceImpl implements IterationService{
 		
 		Project project = iterationDao.getParent(iteration);
 		
-		if (!isValidDateRangeInProject(project, iteration.startDate(), endDate)) {
-			throw new IllegalStateException("Overlaps another iteration");
-		}
-
-		iterationDao.updateEndDate(iteration, endDate);
-
-		return iterationDao.getIterationById(iteration.iterationId());
+		if (isInsideIteration(iteration, endDate) || isValidDateRangeInProject(project, iteration.startDate(), endDate)) {
+			iterationDao.updateEndDate(iteration, endDate);
+			return iterationDao.getIterationById(iteration.iterationId());
+		} else {
+			throw new IllegalStateException("Overlaps another iteration");			
+		}		
 	}
 
 	@Override
@@ -255,10 +259,10 @@ public class IterationServiceImpl implements IterationService{
 	}
 
 	private boolean isValidRangeAgainstIteration(Iteration iteration, LocalDate startDate, LocalDate endDate) {
-		if (startDate.compareTo(iteration.startDate()) >= 0 && startDate.compareTo(iteration.endDate()) < 0) {
+		if (startDate.compareTo(iteration.startDate()) > 0 && startDate.compareTo(iteration.endDate()) < 0) {
 			return false;
 		}
-		if (endDate.compareTo(iteration.startDate()) > 0 && endDate.compareTo(iteration.endDate()) <= 0) {
+		if (endDate.compareTo(iteration.startDate()) > 0 && endDate.compareTo(iteration.endDate()) < 0) {
 			return false;
 		}
 		if (startDate.compareTo(iteration.startDate()) < 0 && endDate.compareTo(iteration.endDate()) > 0) {
