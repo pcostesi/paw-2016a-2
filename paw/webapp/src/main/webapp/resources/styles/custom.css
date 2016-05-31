@@ -89,3 +89,7 @@
 	margin-right: 5px;
 }
 
+.smaller-margins {
+	margin-top: 5px !important;
+	margin-bottom: 10px !imporant;
+}

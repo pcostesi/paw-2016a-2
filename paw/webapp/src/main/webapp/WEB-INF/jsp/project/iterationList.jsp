@@ -9,6 +9,9 @@
     </jsp:attribute>
      
     <jsp:attribute name="actions">
+		<a href="${pageContext.request.contextPath}/project/${project.code()}/members" class="btn btn-primary btn-sm">
+			<span class="glyphicon glyphicon-user" aria-hidden="true"></span> <spring:message code="iteration.list.members"/>
+	 	</a>
 	    <a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/new" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="iteration.list.new_iteration"/>
 		</a>

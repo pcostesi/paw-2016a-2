@@ -19,8 +19,10 @@ public interface UserDao {
 
 	public List<String> getAllUsernamesExcept(final User user);
 
-	void setPassword(User user, String newPassword);
+	void setPassword(final User user, final String newPassword);
 
-	public List<String> getAllUsernamesOfProject(Project project);
+	public List<String> getAllUsernamesOfProject(final Project project);
+
+	public List<String> getAvailableUsers(final Project project);
     
 }

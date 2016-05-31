@@ -30,4 +30,10 @@ public interface ProjectService {
 	
 	public List<User> getProjectMembers(final Project project);
 	
+	public void addUserToProject(final User user, final Project project, final User userToAdd);
+
+	public void deleteUserFromProject(final User user, final Project project, final User userToDelete);
+	
+	public boolean userBelongsToProject(final Project project, final User user);
+	
 }
