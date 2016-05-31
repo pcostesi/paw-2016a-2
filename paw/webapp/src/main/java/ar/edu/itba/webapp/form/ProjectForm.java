@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import ar.edu.itba.webapp.form.constraint.ProjectCodeFree;
 import ar.edu.itba.webapp.form.constraint.ProjectNameFree;
 
@@ -22,6 +24,7 @@ public class ProjectForm {
 	@Size(min=1, max=500)
 	private String description;	
 	
+	@NotEmpty
 	private List<String> members;
 	
 	private String oldName;
