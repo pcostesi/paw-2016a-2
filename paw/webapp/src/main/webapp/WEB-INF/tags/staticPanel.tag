@@ -9,11 +9,11 @@
 
 <div class="panel panel-default" id="${panelId}">
     <div class="panel-heading" role="tab">
+	    <div class="pull-right">
+		  	<jsp:invoke fragment="actions"/>
+		</div>
         <h2 class="panel-title">
-            <jsp:invoke fragment="title"/>
-            <div class="pull-right">
-			  	<jsp:invoke fragment="actions"/>
-			</div>
+            <jsp:invoke fragment="title"/>            
         </h2>
     </div>
     

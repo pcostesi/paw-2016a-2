@@ -12,6 +12,7 @@ import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 
@@ -58,6 +59,10 @@ public class StoryServiceImpl implements StoryService{
 		
 		if (storyDao.storyExists(iteration, title)) {
 			throw new IllegalStateException("There is another story with this title in this iteration");
+		}
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't add stories to a closed iteration");
 		}
 		
 		return storyDao.createStory(iteration, title);
@@ -126,6 +131,12 @@ public class StoryServiceImpl implements StoryService{
 			throw new IllegalStateException("There is another story with this title in this iteration");
 		}
 
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't edit stories from a closed iteration");
+		}
+		
 		storyDao.updateTitle(story, title);
 		
 		return storyDao.getStoryById(story.storyId());
@@ -139,6 +150,12 @@ public class StoryServiceImpl implements StoryService{
 		
 		if (!storyDao.storyExists(story)) {
 			throw new IllegalStateException("Story doesn't exist");
+		}
+		
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't delete stories from a closed iteration");
 		}
 		
 		storyDao.deleteStory(story);

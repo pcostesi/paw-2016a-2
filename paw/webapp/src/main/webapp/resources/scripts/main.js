@@ -14,7 +14,8 @@ requirejs.config({
 		'bootstrap-toggle-css': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.1/css/bootstrap-toggle.min',
 		'moment': 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min',
 		'datetimepicker-js': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min',
-		'datetimepicker-css': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min'
+		'datetimepicker-css': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min',
+		'bootstrap-3-typeahead-js': 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min'
     },
     
     shim: {
@@ -39,7 +40,7 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'styles', 'bootlint', 'swal', 'think-twice', 'calendar', 'jquery.tokenize'], function($, _, bootlint, swal, thinkTwice) {
+requirejs(['jquery', 'styles', 'bootlint', 'swal', 'think-twice', 'calendar', 'tokenize', 'bootstrap-3-typeahead-js'], function($, _, bootlint, swal, thinkTwice) {
 	bootlint.lintCurrentDocument(console.error.bind(console), []);
 	thinkTwice();
 	window.swal = swal;

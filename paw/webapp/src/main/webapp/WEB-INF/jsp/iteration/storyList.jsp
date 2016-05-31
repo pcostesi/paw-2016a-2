@@ -3,6 +3,14 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<c:choose>
+	<c:when test="${iteration.status().getValue() == 2}">
+		<c:set var="iterationFinished" value="${true}"/>
+	</c:when>
+	<c:otherwise>
+		<c:set var="iterationFinished" value="${false}"/>
+	</c:otherwise>
+</c:choose>
 
 <t:page>
 	<jsp:attribute name="title">
@@ -13,9 +21,11 @@
     </jsp:attribute>
     
     <jsp:attribute name="actions">
-		<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/new" class="btn btn-primary btn-sm">
-			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="story.list.new_story"/>
-	 	</a>
+    	<c:if test="${not iterationFinished}">
+			<a href="${pageContext.request.contextPath}/project/${project.code()}/iteration/${iteration.iterationId()}/story/new" class="btn btn-primary btn-sm">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="story.list.new_story"/>
+		 	</a>
+	 	</c:if>
      </jsp:attribute>
 
      <jsp:body>
@@ -29,7 +39,7 @@
 			    </c:when>    
 			     <c:when test="${iteration.status().getValue() == 2}">
 			    	<div class="alert alert-danger" role="alert">
-						<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> <spring:message code="iteration.has.finished" />
+						<span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <spring:message code="iteration.has.finished" />
 					</div>
 			    </c:when>  
 			</c:choose>
@@ -57,7 +67,7 @@
 			    </c:when>    
 			    <c:otherwise>
 						<c:forEach items="${stories}" var="story">
-								<t:storyPanel project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}"/>
+								<t:storyPanel project="${project}" iteration="${iteration}" story="${story.key}" tasks="${story.value}" iterationFinished="${iterationFinished}"/>
 						</c:forEach>
 			    </c:otherwise>
 			</c:choose>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
@@ -18,6 +19,9 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Autowired
 	private ProjectDao projectDao;
+	
+	@Autowired
+	private UserDao userDao;
 
 	private CodeValidator codeValidator = new CodeValidator();
 
@@ -338,6 +342,101 @@ public class ProjectServiceImpl implements ProjectService{
 			return matcher.matches();
 		}
 
+	}
+
+	@Override
+	public void addUserToProject(User user, Project project, User userToAdd) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+		
+		if (user == null) {
+			throw new IllegalArgumentException("User can't be null");
+		}
+		
+		if (userToAdd == null) {
+			throw new IllegalArgumentException("User to add can't be null");
+		}
+
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}
+		
+		if (!project.admin().equals(user)) {
+			throw new IllegalStateException("You dont have permission to add users");
+		}
+		
+		if (projectDao.userBelongsToProject(project, userToAdd)) {
+			throw new IllegalStateException("The user to add already belongs to the project");
+		}
+		
+		if (!userDao.userNameExists(userToAdd.username())) {
+			throw new IllegalStateException("User to add doesn't exist");
+		}
+		
+		if (!userDao.userNameExists(user.username())) {
+			throw new IllegalStateException("User doesn't exist");
+		}
+		
+		projectDao.addProjectMember(project, userToAdd);
+	}
+
+	@Override
+	public void deleteUserFromProject(User user, Project project, User userToDelete) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+		
+		if (user == null) {
+			throw new IllegalArgumentException("User can't be null");
+		}
+		
+		if (userToDelete == null) {
+			throw new IllegalArgumentException("User to delete can't be null");
+		}
+
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}
+		
+		if (!project.admin().equals(user)) {
+			throw new IllegalStateException("You dont have permission to delete users");
+		}
+		
+		if (user.equals(userToDelete)) {
+			throw new IllegalStateException("Can't delete yourself from project");
+		}
+		
+		if (!userDao.userNameExists(userToDelete.username())) {
+			throw new IllegalStateException("User to delete doesn't exist");
+		}
+		
+		if (!userDao.userNameExists(user.username())) {
+			throw new IllegalStateException("User doesn't exist");
+		}
+		
+		projectDao.deleteProjectMember(project, userToDelete);
+	}
+
+	@Override
+	public boolean userBelongsToProject(Project project, User user) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+		
+		if (user == null) {
+			throw new IllegalArgumentException("User can't be null");
+		}
+
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}
+		
+		if (!userDao.userNameExists(user.username())) {
+			throw new IllegalStateException("User doesn't exist");
+		}
+		
+		return projectDao.userBelongsToProject(project, user);
 	}
 
 }

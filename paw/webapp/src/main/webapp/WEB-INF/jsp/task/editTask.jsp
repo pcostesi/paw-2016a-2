@@ -23,7 +23,7 @@
 						<bs:select path="status" label="Task Status" />
 						<bs:select path="score" label="Task Score" />
 						<bs:select path="priority" label="Task Priority" />
-						<bs:filledSelect path="owner" label="Task Owner" items="${users}" multiple="false"/>
+						<bs:filledSelect path="owner" label="Task Owner" items="${users}" nullOption="None"/>
 					</fieldset>
 				</div>
 			</div>

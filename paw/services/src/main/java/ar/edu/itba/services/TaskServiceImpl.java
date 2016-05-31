@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
@@ -78,6 +79,12 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
 		}
 		
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't add tasks to a finished iteration");
+		}
+		
 		return taskDao.createTask(story, title, description, status, user, score, priority);
 	}
 
@@ -106,6 +113,13 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
+		Story story = taskDao.getParent(task);
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't delete a task from a finished iteration");
+		}
+		
 		taskDao.deleteTask(task);
 	}
 
@@ -118,6 +132,13 @@ public class TaskServiceImpl implements TaskService{
 		if (!taskDao.taskExists(task)) {
 			throw new IllegalStateException("Task doesn't exist");
 		}		
+		
+		Story story = taskDao.getParent(task);
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't edit a task from a finished iteration");
+		}
 		
 		taskDao.updateOwner(task, user);
 		
@@ -141,6 +162,13 @@ public class TaskServiceImpl implements TaskService{
 		if (task.status().equals(status)) {
 			return task;
 		}		
+		
+		Story story = taskDao.getParent(task);
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't edit a task from a finished iteration");
+		}
 		
 		taskDao.updateStatus(task, status);
 
@@ -191,6 +219,13 @@ public class TaskServiceImpl implements TaskService{
 			return task;
 		}
 		
+		Story story = taskDao.getParent(task);
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't edit a task from a finished iteration");
+		}
+		
 		taskDao.updatePriority(task, priority);
 		return taskDao.getTaskById(task.taskId());		
 	}
@@ -213,6 +248,13 @@ public class TaskServiceImpl implements TaskService{
 			return task;
 		}
 				
+		Story story = taskDao.getParent(task);
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't edit a task from a finished iteration");
+		}
+		
 		taskDao.updateScore(task, score);
 		
 		return taskDao.getTaskById(task.taskId());
@@ -248,6 +290,13 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task with name "+ title +" already exists in this story");
 		}		
 		
+		Story story = taskDao.getParent(task);
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't edit a task from a finished iteration");
+		}
+		
 		taskDao.updateTitle(task, title);
 		
 		return taskDao.getTaskById(task.taskId());
@@ -273,6 +322,13 @@ public class TaskServiceImpl implements TaskService{
 		
 		if (task.description().equals(description)) {
 			return task;
+		}
+		
+		Story story = taskDao.getParent(task);
+		Iteration iteration = storyDao.getParent(story);
+		
+		if(iteration.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't edit a task from a finished iteration");
 		}
 		
 		taskDao.updateDescription(task, description);

@@ -175,4 +175,17 @@ public class UserServiceImpl implements UserService {
 		return userDao.getAllUsernamesOfProject(project);
 	}
 
+	@Override
+	public List<String> getAvailableUsers(Project project) {
+		if (project == null) {
+			throw new IllegalArgumentException("Project can't be null");
+		}
+
+		if (!projectDao.projectExists(project)) {
+			throw new IllegalStateException("Project doesn't exist");
+		}
+		
+		return userDao.getAvailableUsers(project);
+	}
+
 }

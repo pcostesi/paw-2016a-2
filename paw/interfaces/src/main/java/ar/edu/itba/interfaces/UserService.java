@@ -22,5 +22,7 @@ public interface UserService {
 	void editPassword(final User user, final String newPassword);
 
 	public List<String> getUsernamesForProject(final Project project);
+
+	public List<String> getAvailableUsers(final Project project);
   
 }
