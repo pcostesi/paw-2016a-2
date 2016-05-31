@@ -131,9 +131,9 @@ public class ProjectController extends BaseController {
 		final ModelAndView mav;
 		if (result.hasErrors()) {
 			mav = new ModelAndView("project/membersList");
-			final List<String> usernames = us.getUsernamesExcept(super.user());
+			final List<String> usernames = us.getAvailableUsers(project);
 			final List<User> members = ps.getProjectMembers(project);
-			mav.addObject("usernames", usernames);
+			mav.addObject("usernames", toJSONFormat(usernames));
 			mav.addObject("members", members);
 			mav.addObject("project", project);
 		} else {

@@ -11,7 +11,7 @@
 <t:staticPanel panelId="project-${project.code()}">
 	<jsp:attribute name="title">
 	<c:if test="${user eq project.admin()}">
-			<span class="label label-info">ADMIN</span>
+			<span class="label label-warning">ADMIN</span>
 	</c:if> ${project.name()}</jsp:attribute>	
 	<jsp:attribute name="actions">
 		<a href="${projectUrl}" class="btn btn-default btn-xs">

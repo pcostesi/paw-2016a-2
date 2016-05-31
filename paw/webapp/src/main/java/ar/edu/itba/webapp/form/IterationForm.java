@@ -21,7 +21,9 @@ public class IterationForm {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate endDate;
 	
-	private String inheritedIteration;
+	private boolean inheritIteration;
+	
+	private int iterationNumberToInherit;
 	
 	private int projectId;
 
@@ -49,12 +51,20 @@ public class IterationForm {
 		this.endDate = endDate;
 	}
 
-	public String getInheritedIteration() {
-		return inheritedIteration;
+	public boolean getInheritIteration() {
+		return inheritIteration;
 	}
 
-	public void setInheritedIteration(String inheritedIteration) {
-		this.inheritedIteration = inheritedIteration;
+	public void setInheritIteration(boolean inheritIteration) {
+		this.inheritIteration = inheritIteration;
+	}
+
+	public int getIterationNumberToInherit() {
+		return iterationNumberToInherit;
+	}
+
+	public void setIterationNumberToInherit(int iterationNumberToInherit) {
+		this.iterationNumberToInherit = iterationNumberToInherit;
 	}
 
 }

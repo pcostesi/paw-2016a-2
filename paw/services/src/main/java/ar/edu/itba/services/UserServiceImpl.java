@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<String> getMembersUsernames(Project project) {
+	public List<String> getUsernamesForProject(Project project) {
 		if (project == null) {
 			throw new IllegalArgumentException("Project can't be null");
 		}

@@ -5,11 +5,12 @@
 <%@attribute name="iteration" required="true" type="ar.edu.itba.models.Iteration"%>
 <%@attribute name="story" required="true" type="ar.edu.itba.models.Story"%>
 <%@attribute name="tasks" required="true" type="java.util.List"%>
+<%@attribute name="iterationFinished" required="true" type="java.lang.Boolean"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 
-	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/new" var="newTaskLink"/>
-	<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}" var="storyLink"/>
+<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/new" var="newTaskLink"/>
+<c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}" var="storyLink"/>
 
 <t:collapsiblePanel panelId="story-${story.storyId()}">
 	<jsp:attribute name="titleInfo"> 
@@ -20,16 +21,18 @@
 	<jsp:attribute name="title">${story.title()}</jsp:attribute>
 
 	<jsp:attribute name="actions">
-	 	<a href="${newTaskLink}" class="btn btn-primary btn-xs dropdown-toggle">
-		    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="storyPanel.new_task"/>
-		</a>
-		<t:dropdownEditDelete url="${storyLink}"/>
+		<c:if test="${not iterationFinished}">
+		 	<a href="${newTaskLink}" class="btn btn-primary btn-xs dropdown-toggle">
+			    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <spring:message code="storyPanel.new_task"/>
+			</a>
+			<t:dropdownEditDelete url="${storyLink}"/>
+		</c:if>
 	</jsp:attribute>
 
 	<jsp:attribute name="list"><c:if test="${not items.isEmpty()}">	
 		<c:forEach items="${tasks}" var="task">	
 			<li class="list-group-item">	
-				<t:taskPanel panelParent="#story-group-${story.storyId()}" project="${project}" iteration="${iteration}" story="${story}" task="${task}"/>	
+				<t:taskPanel panelParent="#story-group-${story.storyId()}" project="${project}" iteration="${iteration}" story="${story}" task="${task}" iterationFinished="${iterationFinished}"/>	
 			</li>
 		</c:forEach>	 		
 	</c:if></jsp:attribute>
