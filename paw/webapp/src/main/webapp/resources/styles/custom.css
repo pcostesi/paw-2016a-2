@@ -97,3 +97,7 @@
 .panel .panel-heading, .panel .panel-title {
 	font-size: 12px !important;
 }
+
+.extra-left-margin {
+	margin-left: 10px;
+}
