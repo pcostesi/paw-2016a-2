@@ -9,10 +9,14 @@
 <c:url value="/project/${project.code()}" var="projectUrl"/>
 
 <t:staticPanel panelId="project-${project.code()}">
-	<jsp:attribute name="title">
-	<c:if test="${user eq project.admin()}">
+	<jsp:attribute name="titleInfo">
+		<c:if test="${user eq project.admin()}">
 			<span class="label label-warning">ADMIN</span>
-	</c:if> ${project.name()}</jsp:attribute>	
+		</c:if>
+	</jsp:attribute>
+	<jsp:attribute name="title">
+	 ${project.name()}
+	</jsp:attribute>	
 	<jsp:attribute name="actions">
 		<a href="${projectUrl}" class="btn btn-default btn-xs">
 			<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> <spring:message code="projectPanel.project_link"/>
