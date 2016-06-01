@@ -251,7 +251,7 @@ public class IterationServiceImpl implements IterationService{
 		List<Iteration> iterations = iterationDao.getIterationsForProject(project);
 
 		for(Iteration iteration: iterations) {
-			if (!isValidRangeAgainstIteration(iteration, startDate, endDate)) {
+			if (!isInsideIteration(iteration, startDate) && !isInsideIteration(iteration, endDate) && !isValidRangeAgainstIteration(iteration, startDate, endDate)) {
 				return false;
 			}
 		}
