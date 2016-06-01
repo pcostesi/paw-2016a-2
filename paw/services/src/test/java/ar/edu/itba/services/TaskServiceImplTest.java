@@ -90,6 +90,7 @@ public class TaskServiceImplTest {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(taskDao.createTask(testStory, name, description, status, testUser, score, priority))
 				.thenReturn(testTask);
+		Mockito.when(testUser.username()).thenReturn("A user name");
 		Task newTask = ts.createTask(testStory, name, description, status, testUser, score, priority);
 		verify(taskDao, atLeastOnce()).createTask(testStory, name, description, status, testUser, score, priority);
 		assertNotNull(newTask);
@@ -109,6 +110,7 @@ public class TaskServiceImplTest {
 	@Transactional
 	public void createTaskWithInexistentStory() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
+		Mockito.when(testUser.username()).thenReturn("A user name");
 		ts.createTask(testStory, name, description, status, testUser, score, priority);
 	}
 
@@ -123,6 +125,7 @@ public class TaskServiceImplTest {
 	@Transactional
 	public void createTaskWithInexistenStringDescription() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
+		Mockito.when(testUser.username()).thenReturn("A user name");
 		ts.createTask(testStory, name, "", status, testUser, score, priority);
 	}
 
@@ -140,6 +143,7 @@ public class TaskServiceImplTest {
 		Mockito.when(taskDao.createTask(testStory, name, description, status, testUser, score, priority))
 				.thenReturn(testTask);
 		Mockito.when(taskDao.taskExists(testStory, name)).thenReturn(true);
+		Mockito.when(testUser.username()).thenReturn("A user name");
 
 		Task newTask = ts.createTask(testStory, name, description, status, testUser, score, priority);
 		verify(taskDao, atLeastOnce()).createTask(testStory, name, description, status, testUser, score, priority);

@@ -17,10 +17,10 @@
     	<div class="title-info pull-left">
 			<jsp:invoke fragment="titleInfo"/>
 		</div> 
-    	<div class="pull-right">
+    	<div class="extra-left-margin pull-right">
 			<jsp:invoke fragment="actions"/>
 		</div>  
-        <h2 class="panel-title clearfix">
+        <h2 class="panel-title clearfix" title="<jsp:invoke fragment="title"/>">
             <a role="button" data-toggle="collapse" data-parent="${panelParent}" href="#panel-collapse-${panelId}" aria-expanded="true" aria-controls="panel-collapse-${panelId}">
                 <jsp:invoke fragment="title"/>
             </a>			          

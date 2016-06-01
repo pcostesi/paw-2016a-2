@@ -11,7 +11,7 @@
 
 <c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/${story.storyId()}/task/${task.taskId()}" var="taskUrl"/>
 
-<t:collapsiblePanel panelId="task-${task.taskId()}" panelParent="${panelParent}">
+<t:collapsiblePanel panelId="task-${task.taskId()}" panelParent="${panelParent}" >
 	<jsp:attribute name="titleInfo">
 		<t:taskStatusBadge status="${task.status()}"/> 
 		<span class="label label-default">${task.score().value}</span> 

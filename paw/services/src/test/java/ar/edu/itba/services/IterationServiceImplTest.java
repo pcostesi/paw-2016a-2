@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -31,6 +35,9 @@ public class IterationServiceImplTest {
 
 	@Autowired
 	private ProjectService ps;
+	
+	@Autowired
+	private UserService us;
 
 	private Project project;
 	private String pName = "IterationTest";
@@ -40,10 +47,14 @@ public class IterationServiceImplTest {
 	private LocalDate endDate;
 	private Iteration iter;
 
+	private User admin;
+	private Set<User> members = new HashSet<User>();
+	
 	@Before
 	@Transactional
 	public void setup() {
-		project = ps.createProject(pName, pDesc, pCode);
+		admin = us.create("testName", "testPass", "test@mail.com");
+		project = ps.createProject(admin, members, pName, pDesc, pCode);
 		endDate = LocalDate.now();
 		beginDate = endDate.minusDays(15);
 		iter = is.createIteration(project, beginDate, endDate);
@@ -58,7 +69,7 @@ public class IterationServiceImplTest {
 				
 				list.forEach(iteration -> is.deleteIteration(iteration));
 			}
-			ps.deleteProject(ps.getProjectByCode(pCode));
+			ps.deleteProject(admin, ps.getProjectByCode(pCode));
 		}
 		
 	}
@@ -79,7 +90,7 @@ public class IterationServiceImplTest {
 	@Test(expected = IllegalStateException.class)
 	@Transactional
 	public void createIterationWithNonExistingProject() {
-		ps.deleteProject(project);
+		ps.deleteProject(admin, project);
 		is.createIteration(project, beginDate, endDate);
 	}
 	
@@ -213,7 +224,7 @@ public class IterationServiceImplTest {
 	@Test(expected = IllegalStateException.class)
 	@Transactional
 	public void getIterationsForProjectWithDeletedProject() {
-		ps.deleteProject(project);
+		ps.deleteProject(admin, project);
 		is.getIterationsForProject(project);
 	}
 	
