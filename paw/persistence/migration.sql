@@ -6,12 +6,13 @@ CREATE TABLE IF NOT EXISTS project_user (
     project_id integer NOT NULL
 );
 
-INSERT INTO account(username, password, mail) (SELECT name, code, code || '@scrumlr.com' FROM project);
+ALTER TABLE project ADD COLUMN admin varchar(100) DEFAULT 'default';
 
 INSERT INTO project_user(username, project_id) (SELECT DISTINCT owner_story.owner, iteration.project_id FROM (SELECT task.owner, story.iteration_id FROM task JOIN story ON task.story_id = story.story_id) as owner_story JOIN iteration ON owner_story.iteration_id = iteration.iteration_id WHERE owner IS NOT NULL);
 
-INSERT INTO project_user(username, project_id) (SELECT name, project_id FROM project);
+UPDATE project SET admin = COALESCE((SELECT pu.username FROM project_user as pu WHERE pu.project_id = project.project_id LIMIT 1), 'default');
 
-ALTER TABLE project ADD COLUMN admin varchar(100) DEFAULT 'default';
+INSERT INTO account(username, password, mail) SELECT project.name, project.code, project.code || '@scrumlr.com' FROM project WHERE project.admin = 'default';
+INSERT INTO project_user(username, project_id) SELECT name, project_id FROM project WHERE project.admin = 'default';
 
-UPDATE project SET admin = project.name;
+UPDATE project SET admin = name WHERE admin = 'default';
