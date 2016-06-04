@@ -1,3 +1,5 @@
+ALTER TABLE account ADD PRIMARY KEY (username);
+
 UPDATE task SET score = 3 WHERE score = 4;
 UPDATE task SET score = 4 WHERE score = 8;
 
