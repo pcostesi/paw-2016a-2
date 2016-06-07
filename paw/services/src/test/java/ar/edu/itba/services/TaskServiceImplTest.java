@@ -17,11 +17,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
@@ -49,6 +49,9 @@ public class TaskServiceImplTest {
 	
 	@Mock
 	private User testUser;
+	
+	@Mock
+	private Iteration testIteration;
 
 	private final Status status = Status.NOT_STARTED;
 	private final Score score = Score.EASY;
@@ -70,14 +73,12 @@ public class TaskServiceImplTest {
 			+ "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 ";
 
 	@Before
-	@Transactional
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		ts = new TaskServiceImpl(taskDao, storyDao);
 	}
 
 	@Test
-	@Transactional
 	public void testDeleteTask() {
 		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
 		ts.deleteTask(testTask);
@@ -85,7 +86,6 @@ public class TaskServiceImplTest {
 	}
 
 	@Test
-	@Transactional
 	public void CreateTaskWithValidParameters() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(taskDao.createTask(testStory, name, description, status, testUser, score, priority))
@@ -97,7 +97,6 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = Exception.class)
-	@Transactional
 	public void createTaskWithInfiniteName() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(taskDao.createTask(testStory, name, description, status, testUser, score, priority))
@@ -107,7 +106,6 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void createTaskWithInexistentStory() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		Mockito.when(testUser.username()).thenReturn("A user name");
@@ -115,14 +113,12 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void createTaskWithInexistenStringName() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		ts.createTask(testStory, "", description, status, testUser, score, priority);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void createTaskWithInexistenStringDescription() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(testUser.username()).thenReturn("A user name");
@@ -130,14 +126,12 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void createTaskWithNullString() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		ts.createTask(testStory, null, null, status, testUser, score, priority);
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void createExistingTask() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		Mockito.when(taskDao.createTask(testStory, name, description, status, testUser, score, priority))
@@ -151,7 +145,6 @@ public class TaskServiceImplTest {
 	}
 
 	@Test
-	@Transactional
 	public void getTaskByIdwithCorrect() {
 		Mockito.when(taskDao.getTaskById(1)).thenReturn(testTask);
 
@@ -161,22 +154,22 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void getTaskByIdwithIncorrect() {
 		Mockito.when(taskDao.getTaskById(1)).thenReturn(null);
 		ts.getTaskById(1);
 	}
 
 	@Test
-	@Transactional
 	public void deleteExistingTask() {
 		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
 		ts.deleteTask(testTask);
 		verify(taskDao, atLeastOnce()).deleteTask(testTask);
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void deleteNonExistingTask() {
 		Mockito.when(taskDao.taskExists(testTask)).thenReturn(false);
 		ts.deleteTask(testTask);
@@ -184,20 +177,17 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void deleteNullTask() {
 		ts.deleteTask(null);
 		verify(taskDao, never()).deleteTask(testTask);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void changeStatusWithNullTask() {
 		ts.changeStatus(null, status);
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void changeOwnerWithFakeTask() {
 		Mockito.when(taskDao.taskExists(testTask)).thenReturn(false);
 
@@ -206,25 +196,21 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void changeOwnerWithNullTask() {
 		ts.changeOwnership(null, null);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void changePriorityToNull() {
 		ts.changePriority(testTask, null);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void changePriorityToNullTask() {
 		ts.changePriority(null, Priority.CRITICAL);
 	}
 
 	@Test
-	@Transactional
 	public void testGetTaskForStoryWithCorrectParams() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
 		List<? extends Task> list = ts.getTasksForStory(testStory);
@@ -232,14 +218,12 @@ public class TaskServiceImplTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void testGetTaskForStoryWithFakeStory() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
 		ts.getTasksForStory(testStory);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Transactional
 	public void testGetTaskForStoryWithNullStory() {
 		ts.getTasksForStory(null);
 	}
