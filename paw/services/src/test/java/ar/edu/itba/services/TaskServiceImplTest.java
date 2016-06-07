@@ -81,6 +81,9 @@ public class TaskServiceImplTest {
 	@Test
 	public void testDeleteTask() {
 		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
 		ts.deleteTask(testTask);
 		verify(taskDao, atLeastOnce()).deleteTask(testTask);
 	}
@@ -91,6 +94,8 @@ public class TaskServiceImplTest {
 		Mockito.when(taskDao.createTask(testStory, name, description, status, testUser, score, priority))
 				.thenReturn(testTask);
 		Mockito.when(testUser.username()).thenReturn("A user name");
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
 		Task newTask = ts.createTask(testStory, name, description, status, testUser, score, priority);
 		verify(taskDao, atLeastOnce()).createTask(testStory, name, description, status, testUser, score, priority);
 		assertNotNull(newTask);

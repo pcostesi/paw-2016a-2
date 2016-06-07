@@ -35,8 +35,9 @@ public class UserServiceImplTest {
 	public void setup() {
 		if (!us.usernameExists(name)) {
 			user = us.create(name, password, mail);
+		} else {
+			user = us.getByUsername(name);			
 		}
-		user = us.getByUsername(name);
 	}
 
 	@Test
@@ -117,10 +118,11 @@ public class UserServiceImplTest {
 	@Test
 	public void getUsernamesTest(){
 		int i;
+		int usersBefore = us.getUsernames().size();
 		for(i = 100; i < 1100; i++){
 			us.create(String.valueOf(i), password, String.valueOf(i) + "@" + String.valueOf(i) + ".com");
 		}
-		assertTrue(us.getUsernames().size() == 1001); //+1 due to @Before
+		assertTrue(usersBefore+1000 == us.getUsernames().size()); //+1 due to @Before
 	}
 	
 	@Test
