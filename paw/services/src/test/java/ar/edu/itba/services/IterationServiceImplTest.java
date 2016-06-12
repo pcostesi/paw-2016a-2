@@ -1,12 +1,16 @@
 package ar.edu.itba.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -19,9 +23,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ar.edu.itba.interfaces.IterationService;
 import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.StoryService;
+import ar.edu.itba.interfaces.TaskService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
+import ar.edu.itba.models.Story;
+import ar.edu.itba.models.Task;
 import ar.edu.itba.models.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,6 +47,12 @@ public class IterationServiceImplTest {
 	
 	@Autowired
 	private UserService us;
+	
+	@Autowired
+	private TaskService ts;
+	
+	@Autowired
+	private StoryService ss;
 
 	private Project project;
 	private String pName = "IterationTest";
@@ -225,4 +242,149 @@ public class IterationServiceImplTest {
 		is.getParent(iter);
 	}
 	
+	@Test(expected = IllegalStateException.class)
+	public void createOverlappingIteration() {
+		is.createIteration(project, LocalDate.now(), LocalDate.now().plusDays(10));
+		is.createIteration(project, LocalDate.now().plusDays(5), LocalDate.now().plusDays(15));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void getIterationByNumberFromInexistentProject() {
+		is.getIteration(project, 50);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void getIterationByNumberForInexistentIteration() {
+		is.deleteIteration(iter);
+		is.getIteration(project, iter.number());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void setBeginDateToNullIteration() {
+		is.setBeginDate(iter, null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void setBeginDateToInexistentIteration() {
+		is.deleteIteration(iter);
+		is.setBeginDate(iter, LocalDate.now());
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void setBeginDateToOverlapAnIteration() {
+		is.createIteration(project, beginDate.minusDays(5), beginDate);
+		is.setBeginDate(iter, beginDate.minusDays(2));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void setEndDateToNullIteration() {
+		is.setEndDate(iter, null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void setEnDateToInexistentIteration() {
+		is.deleteIteration(iter);
+		is.setEndDate(iter, LocalDate.now());
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void setEndDateToOverlapIteration() {
+		is.createIteration(project, endDate, endDate.plusDays(5));
+		is.setEndDate(iter, endDate.plusDays(2));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidDateRangeBecauseStartDateIsNull() {
+		is.isValidDateRangeInProject(project, null, endDate);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidDateRangeBecauseEndDateIsNull() {
+		is.isValidDateRangeInProject(project, beginDate, null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void invalidDateRangeBecauseProjectDoesntExist() {
+		ps.deleteProject(admin, project);
+		is.isValidDateRangeInProject(project, beginDate.plusDays(20), endDate.plusDays(20));
+	}
+
+	@Test
+	public void invalidDateRangeCauseCauseEndDateOverlaps() {
+		is.createIteration(project, endDate.plusDays(1), endDate.plusDays(5));
+		assertFalse(is.isValidDateRangeInProject(project, beginDate, endDate.plusDays(2)));
+	}
+
+	@Test
+	public void invalidDateRangeCauseCauseStartDateOverlaps() {
+		is.createIteration(project, beginDate.minusDays(5), beginDate.minusDays(1));
+		assertFalse(is.isValidDateRangeInProject(project, beginDate.minusDays(2), endDate));
+	}
+
+	@Test
+	public void invalidDateRangeCauseCauseDateContainsIteration() {
+		is.createIteration(project, endDate, endDate.plusDays(5));
+		assertFalse(is.isValidDateRangeInProject(project, beginDate, endDate.plusDays(10)));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void createIterationOnNullStartDateOnInherit() {
+		is.createIteration(project, null, endDate, 1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void createIterationOnNullEndDateOnInherit() {
+		is.createIteration(project, beginDate, null, 1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void createIterationOnNullProjectOnInherit() {
+		is.createIteration(null, beginDate, endDate, 1);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void createIterationOnInexistentProjectOnInherit() {
+		ps.deleteProject(admin, project);
+		is.createIteration(project, beginDate, endDate, 1);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void inheritTasksFromInexistentIteration() {
+		is.deleteIteration(iter);
+		is.createIteration(project, beginDate, endDate, 1);
+	}
+
+	@Test
+	public void inheritTasksSuccesfully() {
+		Story testStory = ss.create(iter, "Test story");
+		ts.createTask(testStory, "Test task", null, Status.NOT_STARTED, admin, Score.NORMAL, Priority.NORMAL);
+		Iteration inheritedIt = is.createIteration(project, beginDate.plusDays(20), endDate.plusDays(20), 1);
+		Map<Story, List<Task>> inherTasks = ss.getStoriesWithTasksForIteration(inheritedIt);
+		for (Story story: inherTasks.keySet()) {
+			assertTrue(ts.taskNameExists(story, "Test task"));			
+		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getLastFinishedIterationNumberFromNullProject() {
+		is.getLastFinishedIterationNumber(null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void getLastFinishedIterationNumberFromInexistentProject() {
+		ps.deleteProject(admin, project);
+		is.getLastFinishedIterationNumber(project);
+	}
+
+	@Test
+	public void getLastFinishedIterationNumberForEmptyProject() {
+		assertNull(is.getLastFinishedIterationNumber(project));
+	}
+
+	@Test
+	public void getLastFinishedIterationNumberSuccesfully() {
+		is.createIteration(project, beginDate.minusDays(50), endDate.minusDays(50));
+		assertEquals(1, (int)is.getLastFinishedIterationNumber(project));
+	}
+
 }

@@ -2,6 +2,7 @@ package ar.edu.itba.services;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -218,7 +219,7 @@ public class TaskServiceImplTest {
 	@Test
 	public void testGetTaskForStoryWithCorrectParams() {
 		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
-		List<? extends Task> list = ts.getTasksForStory(testStory);
+		List<Task> list = ts.getTasksForStory(testStory);
 		assertNotNull(list);
 	}
 
@@ -231,6 +232,156 @@ public class TaskServiceImplTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetTaskForStoryWithNullStory() {
 		ts.getTasksForStory(null);
+	}
+
+	@Test
+	public void changeOwnershipToCompletedTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeOwnershipSuccesfully() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeStatusToNull() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeStatusToInexistentTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeStatusToCompletedTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeStatusSuccesfully() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changePriorityToInexistentTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changePriorirtyToCompleteTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changePrioritySuccesfully() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeScoreToNullTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeScoreToNull() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeScoreToInexistentTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeScoreToCompletedTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeScoreSuccesfully() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeTaskTitleToNullTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeTaskTitleToEmpty() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeTaskTitleToLongTitle() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeTaskTitleToInexistentTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeTaskTitleToUsedTitle() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeTaskTitleToCompletedTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeTaskTitleSuccesfully() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeDescriptionToNull() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeDescriptionToWayTooLongString() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeDescriptionToInexistentTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeDescriptionToCompletedTask() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void changeDescriptionSuccesfully() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void verifyTaskNameIsUsedForNullTitle() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void verifyTaskNameForInexistentStory() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void verifyTaskNameForNullStory() {
+		fail("Test not implemented yet");
+	}
+
+	@Test
+	public void verifyTaskNameIsUsedSuccesfully() {
+		fail("Test not implemented yet");
 	}
 
 }

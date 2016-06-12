@@ -1,7 +1,10 @@
 package ar.edu.itba.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.HashSet;
@@ -30,20 +33,28 @@ public class ProjectServiceImplTest {
 	@Autowired
 	private UserService us;
 
-	private String pName = "Test Project";
-	private String pDesc = "This project was created for testing purpouses";
-	private String pCode = "tp";
+	private final String pName = "Test Project";
+	private final String pDesc = "This project was created for testing purpouses";
+	private final String pCode = "tp";
+	private final String adminName = "adminName";
+	private final String auxUserName = "auxUserName";
 	private User admin;
+	private User auxUser;
 	private Set<User> members;
 	
 	private Project testProject;
 
 	@Before
 	public void setup() {
-		if (us.usernameExists("testName")) {
-			admin = us.getByUsername("testName");
+		if (us.usernameExists(adminName)) {
+			admin = us.getByUsername(adminName);
 		} else {
-			admin = us.create("testName", "testPass", "test@mail.com");			
+			admin = us.create(adminName, "testPass", "testAdmin@mail.com");			
+		}
+		if (us.usernameExists(auxUserName)) {
+			auxUser = us.getByUsername(auxUserName);
+		} else {
+			auxUser = us.create(auxUserName, "testPass", "testAux@mail.com");			
 		}
 		members = new HashSet<User>();
 		testProject = ps.createProject(admin, members, pName, pDesc, pCode);
@@ -51,8 +62,8 @@ public class ProjectServiceImplTest {
 	
 	@After
 	public void endingSetup(){
-		if(ps.projectCodeExists(pCode)){
-			ps.deleteProject(admin, ps.getProjectByCode(pCode));
+		if (ps.projectCodeExists(pCode)) {
+			ps.deleteProject(admin, ps.getProjectByCode(pCode));			
 		}
 	}
 
@@ -246,5 +257,160 @@ public class ProjectServiceImplTest {
 		} catch (Exception e) {
 		}
 		assertNotNull("project should not be null", ps.getProjectByCode(pCode));
+	}
+	
+	@Test
+	public void getProjectsForExistingUser() {
+		assertTrue(ps.getProjectsForUser(admin).contains(testProject));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void projectNameExistsIsNull() {
+		ps.projectNameExists(null);
+	}
+	
+	@Test
+	public void projectNameExistsActuallyExists() {
+		assertTrue(ps.projectNameExists(pName));
+	}
+	
+	@Test
+	public void projectNameExistsDoesntExists() {
+		assertFalse(ps.projectNameExists("No existo"));
+	}
+	
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getProjectMembersForNullProject() {
+		ps.getProjectMembers(null);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void getProjectMembersForInexistentProject() {
+		ps.deleteProject(admin, testProject);
+		ps.getProjectMembers(testProject);
+	}
+	
+	@Test
+	public void getProjectMembersForExistentProject() {
+		assertEquals(ps.getProjectMembers(testProject).get(0), admin);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void makeNullAdminAddUser() {
+		ps.addUserToProject(null, testProject, auxUser);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void makeAdminAddUserToInexistentProject() {
+		ps.deleteProject(admin, testProject);
+		ps.addUserToProject(admin, testProject, auxUser);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void makeAdminAddUserToOtherProject() {
+		Project testProject2 = ps.createProject(auxUser, new HashSet<User>(), "NewMemberProject", "description", "codeTest");
+		ps.addUserToProject(admin, testProject2, auxUser);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void unauthorizedUserAddMember() {
+		ps.addUserToProject(auxUser, testProject, admin);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void addMemberTwice() {
+		User newMember = us.create("New Member", "password", "a@a.com");
+		ps.addUserToProject(admin, testProject, newMember);
+		ps.addUserToProject(admin, testProject, newMember);
+	}
+	
+	@Test
+	public void addUserToProject() {
+		User newMember = us.create("anotherUser", "password", "a@a.com");
+		ps.addUserToProject(admin, testProject, newMember);
+		assertTrue(ps.getProjectMembers(testProject).contains(newMember));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void removeUserFromInexistentProject() {
+		ps.addUserToProject(admin, testProject, auxUser);
+		ps.deleteProject(admin, testProject);
+		ps.deleteUserFromProject(admin, testProject, auxUser);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void removeNullUser() {
+		ps.deleteUserFromProject(admin, testProject, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void nullAdminRemoveMember() {
+		ps.addUserToProject(admin, testProject, auxUser);
+		ps.deleteUserFromProject(null, testProject, auxUser);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void removeUserFromNullProject() {
+		ps.addUserToProject(admin, null, auxUser);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void unauthorizedMembershipRemoval() {
+		ps.addUserToProject(admin, testProject, auxUser);
+		ps.deleteUserFromProject(auxUser, testProject, admin);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void removeMyselfFromProject() {
+		ps.deleteUserFromProject(admin, testProject, admin);
+	}
+	
+	@Test
+	public void removeUserFromProject() {
+		ps.addUserToProject(admin, testProject, auxUser);
+		boolean addedUser = ps.getProjectMembers(testProject).contains(auxUser);
+		ps.deleteUserFromProject(admin, testProject, auxUser);
+		assertTrue(addedUser && !ps.getProjectMembers(testProject).contains(auxUser));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void userBelongsToNullProject() {
+		ps.userBelongsToProject(null, admin);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void nullUserBelongsToProject() {
+		ps.userBelongsToProject(testProject, null);
+	}
+	
+	@Test
+	public void userBelongsToInexistentProject() {
+		assertFalse(ps.userBelongsToProject(testProject, auxUser));
+	}
+	
+	@Test
+	public void userBelongsToProject() {
+		assertTrue(ps.getProjectMembers(testProject).contains(admin));
+	}
+	
+	@Test
+	public void userDoesntBelongToProject() {
+		assertFalse(ps.getProjectMembers(testProject).contains(auxUser));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getProjectsForNullUser() {
+		ps.getProjectsForUser(null);
+	}
+	
+	@Test
+	public void getProjectForUser() {
+		assertEquals(testProject, ps.getProjectsForUser(admin).get(0));
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void getProjectByRandomId() {
+		ps.getProjectById(2500);
 	}
 }

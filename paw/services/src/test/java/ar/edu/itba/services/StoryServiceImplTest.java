@@ -5,6 +5,9 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +22,7 @@ import ar.edu.itba.interfaces.StoryDao;
 import ar.edu.itba.interfaces.StoryService;
 import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.models.Iteration;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -216,4 +220,60 @@ public class StoryServiceImplTest {
 		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(true);
 		ss.storyExists(testIteration, storyTitle);
 	}
+
+	@Test(expected = IllegalStateException.class)
+	public void addStoryToClosedIteration() {
+		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(false);
+		Mockito.when(storyDao.storyExists(testIteration, storyTitle)).thenReturn(false);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ss.create(testIteration, storyTitle);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getStoriesWithTaskForNullIteration() {
+		ss.getStoriesWithTasksForIteration(null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void getStoriesWithTaskForInexistentIteration() {
+		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(false);
+		ss.getStoriesWithTasksForIteration(testIteration);
+	}
+
+	@Test
+	public void getStoriesWithTaskSuccesfully() {
+		Mockito.when(iterationDao.iterationExists(testIteration)).thenReturn(true);
+		List<Story> storyList = new LinkedList<Story>();
+		storyList.add(testStory); 
+		Mockito.when(storyDao.getStoriesForIteration(testIteration)).thenReturn(storyList);
+		ss.getStoriesWithTasksForIteration(testIteration);
+		verify(taskDao, times(1)).getTasksForStory(testStory);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void changeStoryTitleToAnUsedTitle() {
+		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
+		Mockito.when(testStory.title()).thenReturn(storyTitle);
+		Mockito.when(storyDao.storyExists(storyDao.getParent(testStory), "Used title")).thenReturn(true);
+		ss.setName(testStory, "Used title");
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void changeStoryTitleToAFinishedIteration() {
+		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
+		Mockito.when(testStory.title()).thenReturn(storyTitle);
+		Mockito.when(storyDao.storyExists(storyDao.getParent(testStory), "Unused title")).thenReturn(true);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ss.setName(testStory, "Unused title");
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void deleteStoryFromCompletedIteration() {
+		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ss.deleteStory(testStory);
+	}
+
 }

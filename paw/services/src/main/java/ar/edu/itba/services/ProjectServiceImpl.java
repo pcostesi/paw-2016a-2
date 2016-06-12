@@ -19,9 +19,6 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Autowired
 	private ProjectDao projectDao;
-	
-	@Autowired
-	private UserDao userDao;
 
 	private CodeValidator codeValidator = new CodeValidator();
 
@@ -370,14 +367,6 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("The user to add already belongs to the project");
 		}
 		
-		if (!userDao.userNameExists(userToAdd.username())) {
-			throw new IllegalStateException("User to add doesn't exist");
-		}
-		
-		if (!userDao.userNameExists(user.username())) {
-			throw new IllegalStateException("User doesn't exist");
-		}
-		
 		projectDao.addProjectMember(project, userToAdd);
 	}
 
@@ -407,14 +396,6 @@ public class ProjectServiceImpl implements ProjectService{
 			throw new IllegalStateException("Can't delete yourself from project");
 		}
 		
-		if (!userDao.userNameExists(userToDelete.username())) {
-			throw new IllegalStateException("User to delete doesn't exist");
-		}
-		
-		if (!userDao.userNameExists(user.username())) {
-			throw new IllegalStateException("User doesn't exist");
-		}
-		
 		projectDao.deleteProjectMember(project, userToDelete);
 	}
 
@@ -430,10 +411,6 @@ public class ProjectServiceImpl implements ProjectService{
 
 		if (!projectDao.projectExists(project)) {
 			throw new IllegalStateException("Project doesn't exist");
-		}
-		
-		if (!userDao.userNameExists(user.username())) {
-			throw new IllegalStateException("User doesn't exist");
 		}
 		
 		return projectDao.userBelongsToProject(project, user);
