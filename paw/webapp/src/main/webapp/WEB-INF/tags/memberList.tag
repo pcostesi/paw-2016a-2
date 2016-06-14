@@ -9,8 +9,8 @@
 
 <div class="row">
 	<div class="col-sm-12">
-	<p><strong>${admin.username()}</strong> <span class="label label-warning">ADMIN</span></p>
-	<p><a href="mailto:${admin.mail()}">${admin.mail()}</a></p>
+	<p><strong>${admin.username()}</strong> <span class="label label-warning">ADMIN</span><br>
+	<a href="mailto:${admin.mail()}">${admin.mail()}</a></p>
 	</div>
 </div>
 <c:forEach items="${members}" var="member">
@@ -18,8 +18,8 @@
 		<hr class="smaller-margins">				
 		<div class="row">	
 			<div class="col-sm-8">
-				<p><strong>${member.username()}</strong></p>
-				<p><a href="mailto:${member.mail()}">${member.mail()}</a></p>
+				<p><strong>${member.username()}</strong><br>
+				<a href="mailto:${member.mail()}">${member.mail()}</a></p>
 			</div>
 			<div class="col-sm-4">
 				<div class="pull-right">

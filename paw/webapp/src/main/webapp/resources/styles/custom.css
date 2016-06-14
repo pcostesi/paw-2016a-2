@@ -27,22 +27,40 @@
 	outline: 0 !important;
 }
 
+.panel > .list-group > .list-group-item {
+	border-width: 0px !important;
+}
+
+.panel-collapse > .list-group > .list-group-item {
+	border-width: 0px !important;
+}
+
 .list-group-item > .panel {
 	margin: -16px -24px !important;
 	border: none !important;
 }
 
-
-.list-group-item > .panel > .panel-heading{
+.list-group-item > .panel > .panel-heading {
 	border-radius: 0;
-	border: none;
+	border-top: 1px solid #DFD7CA;
+	border-bottom: 1px solid #DFD7CA;
+	background: #ffffff;
+	height: 46px;
 }
 
+.list-group-item > .panel > .panel-heading > h2{
+	color: #3e3f3a;
+	text-transform: none;
+	font-size: 14px !important;
+	font-weight: normal;
+}
+
+.list-group-item:first-child > .panel > .panel-heading{
+	border-top: 1px solid #ffffff;
+}
 .list-group-item:last-child > .panel > .panel-heading{
-	border-top-left-radius: 0 !important;
-	border-top-right-radius: 0 !important;
-	border-bottom-left-radius: 3px !important;
-	border-bottom-right-radius: 3px !important;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
 }
 
 .status {
