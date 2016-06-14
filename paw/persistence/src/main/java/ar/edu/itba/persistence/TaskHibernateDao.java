@@ -31,7 +31,7 @@ public class TaskHibernateDao implements TaskDao{
 	@Transactional
 	public List<Task> getTasksForStory(Story story) {
 		try {
-			final TypedQuery<Task> query = em.createQuery("from Task task where task.story = :story", Task.class);
+			final TypedQuery<Task> query = em.createQuery("from Task task where task.story = :story order by task.priority desc", Task.class);
 			query.setParameter("story", story);
 			return query.getResultList();
 		} catch (Exception exception) {
