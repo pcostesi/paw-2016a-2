@@ -1,8 +1,11 @@
 package ar.edu.itba.services;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import ar.edu.itba.interfaces.ProjectService;
 import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,6 +35,9 @@ public class UserServiceImplTest {
 
 	@Autowired
 	private UserService us;
+	
+	@Autowired
+	private ProjectService ps;
 
 	@Before
 	public void setup() {
@@ -145,6 +153,71 @@ public class UserServiceImplTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void emailExistsWithNull(){
 		us.usernameExists(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void getAvailableUsersForNullProject() {
+		us.getAvailableUsers(null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void getAvailableUsersForInexistentProject() {
+		Project testProject = ps.createProject(user, new HashSet<User>(), "Test Project2", "Test description", "Coderino");
+		ps.deleteProject(user, testProject);
+		us.getAvailableUsers(testProject);
+	}
+
+	@Test
+	public void getAvailableUsersSuccesfully() {
+		User testUser = us.create("Testerino3", "passwordio", "mail@abs2.com");
+		Project testProject = ps.createProject(user, new HashSet<User>(), "projectino", "laralala", "codienso");
+		assertTrue(us.getAvailableUsers(testProject).contains(testUser.username()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getUsernamesForNullProject() {
+		us.getUsernamesForProject(null);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void getUsernamesForInexistentProject() {
+		Project testProject = ps.createProject(user, new HashSet<User>(), "Test Project2", "Test description", "Coderino");
+		ps.deleteProject(user, testProject);
+		us.getUsernamesForProject(testProject);
+	}
+
+	@Test
+	public void getUserNamesForProjectSuccesfully() {
+		Project testProject = ps.createProject(user, new HashSet<User>(), "Test Project", "Test description", "Coderino");
+		assertTrue(us.getUsernamesForProject(testProject).contains(user.username()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getUsernamesExceptNullUser() {
+		us.getUsernamesExcept(null);
+	}
+
+	@Test
+	public void getUsernamesExceptMyselfSuccesfully() {
+		User testUser = us.create("Testerino2", "passwordio", "mail@a.com");
+		assertTrue(us.getUsernamesExcept(user).contains(testUser.username()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void editPasswordForNullUser() {
+		us.editPassword(null, "newPassword");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void editPasswordToNull() {
+		us.editPassword(user, null);
+	}
+
+	@Test
+	public void editPasswordSuccesfully() {
+		String newPassword = "EuCuliaoh";
+		us.editPassword(user, newPassword);
+		assertEquals(newPassword, us.getByUsername(name).password());
 	}
 	
 }

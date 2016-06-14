@@ -160,7 +160,7 @@ public class IterationServiceImpl implements IterationService{
 
 		Project project = iterationDao.getParent(iteration);
 		
-		if (isInsideIteration(iteration, beginDate) || isValidDateRangeInProject(project, beginDate, iteration.endDate())) {
+		if (isValidDateRangeInProjectExcludingIteration(project, iteration, beginDate, iteration.endDate())) {
 			iterationDao.updateStartDate(iteration, beginDate);
 			return iterationDao.getIterationById(iteration.iterationId());
 		} else {
@@ -168,10 +168,6 @@ public class IterationServiceImpl implements IterationService{
 		}
 		
 		
-	}
-
-	private boolean isInsideIteration(Iteration iteration, LocalDate date) {
-		return date.compareTo(iteration.startDate()) >= 0 && date.compareTo(iteration.endDate()) <= 0;
 	}
 	
 	@Override
@@ -196,7 +192,7 @@ public class IterationServiceImpl implements IterationService{
 		
 		Project project = iterationDao.getParent(iteration);
 		
-		if (isInsideIteration(iteration, endDate) || isValidDateRangeInProject(project, iteration.startDate(), endDate)) {
+		if (isValidDateRangeInProjectExcludingIteration(project, iteration, iteration.startDate(), endDate)) {
 			iterationDao.updateEndDate(iteration, endDate);
 			return iterationDao.getIterationById(iteration.iterationId());
 		} else {
@@ -230,8 +226,7 @@ public class IterationServiceImpl implements IterationService{
 		return iterationDao.getParent(iteration);
 	}
 
-	@Override
-	public boolean isValidDateRangeInProject(Project project, LocalDate startDate, LocalDate endDate) {
+	private boolean isValidDateRangeInProjectExcludingIteration(Project project, Iteration iterationToExclude, LocalDate startDate, LocalDate endDate) {
 		if (startDate == null) {
 			throw new IllegalArgumentException("Begin date can't be null");
 		}
@@ -249,26 +244,29 @@ public class IterationServiceImpl implements IterationService{
 		}
 
 		List<Iteration> iterations = iterationDao.getIterationsForProject(project);
-
+		iterations.remove(iterationToExclude);
+		
 		for(Iteration iteration: iterations) {
-			if (!isInsideIteration(iteration, startDate) && !isInsideIteration(iteration, endDate) && !isValidRangeAgainstIteration(iteration, startDate, endDate)) {
+			if (!isValidRangeAgainstIteration(iteration, startDate, endDate)) {
 				return false;
 			}
 		}
 		return true;
 	}
-
+	
+	@Override
+	public boolean isValidDateRangeInProject(Project project, LocalDate startDate, LocalDate endDate) {
+		return isValidDateRangeInProjectExcludingIteration(project, null, startDate, endDate);
+	}
+	
 	private boolean isValidRangeAgainstIteration(Iteration iteration, LocalDate startDate, LocalDate endDate) {
-		if (startDate.compareTo(iteration.startDate()) > 0 && startDate.compareTo(iteration.endDate()) < 0) {
-			return false;
+		if (startDate.compareTo(iteration.startDate()) < 0 && endDate.compareTo(iteration.startDate()) <= 0) {
+			return true;
 		}
-		if (endDate.compareTo(iteration.startDate()) > 0 && endDate.compareTo(iteration.endDate()) < 0) {
-			return false;
+		if (startDate.compareTo(iteration.endDate()) >= 0 && endDate.compareTo(iteration.endDate()) > 0) {
+			return true;
 		}
-		if (startDate.compareTo(iteration.startDate()) < 0 && endDate.compareTo(iteration.endDate()) > 0) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	@Override
