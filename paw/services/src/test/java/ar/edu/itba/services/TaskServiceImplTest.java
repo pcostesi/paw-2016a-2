@@ -2,13 +2,13 @@ package ar.edu.itba.services;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -234,154 +234,251 @@ public class TaskServiceImplTest {
 		ts.getTasksForStory(null);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeOwnershipToCompletedTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		ts.changeOwnership(testTask, testUser);
 	}
 
 	@Test
 	public void changeOwnershipSuccesfully() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
+		Mockito.when(testTask.status()).thenReturn(Status.NOT_STARTED);
+		ts.changeStatus(testTask, Status.STARTED);
+		verify(taskDao, times(1)).updateStatus(testTask, Status.STARTED);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void changeStatusToNull() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
+		Mockito.when(testTask.status()).thenReturn(Status.NOT_STARTED);
+		ts.changeStatus(testTask, null);
+		verify(taskDao, times(1)).updateStatus(testTask, null);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeStatusToInexistentTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(false);
+		ts.changeStatus(testTask, Status.STARTED);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeStatusToCompletedTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testTask.status()).thenReturn(Status.STARTED);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ts.changeStatus(testTask, Status.COMPLETED);
 	}
 
 	@Test
 	public void changeStatusSuccesfully() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
+		Mockito.when(testTask.status()).thenReturn(Status.NOT_STARTED);
+		ts.changeStatus(testTask, Status.STARTED);
+		verify(taskDao, times(1)).updateStatus(testTask, Status.STARTED);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changePriorityToInexistentTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(false);
+		ts.changePriority(testTask, Priority.CRITICAL);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changePriorirtyToCompleteTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.priority()).thenReturn(Priority.NORMAL);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ts.changePriority(testTask, Priority.CRITICAL);
 	}
 
 	@Test
 	public void changePrioritySuccesfully() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.priority()).thenReturn(Priority.NORMAL);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
+		ts.changePriority(testTask, Priority.CRITICAL);
+		verify(taskDao, times(1)).updatePriority(testTask, Priority.CRITICAL);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void changeScoreToNullTask() {
-		fail("Test not implemented yet");
+		ts.changeScore(null, Score.VERY_EASY);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void changeScoreToNull() {
-		fail("Test not implemented yet");
+		ts.changeScore(testTask, null);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeScoreToInexistentTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(false);
+		ts.changeScore(testTask, Score.EPIC);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeScoreToCompletedTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.score()).thenReturn(score);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ts.changeScore(testTask, Score.EPIC);
 	}
 
 	@Test
 	public void changeScoreSuccesfully() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.score()).thenReturn(score);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.STARTED);
+		ts.changeScore(testTask, Score.EPIC);
+		verify(taskDao, times(1)).updateScore(testTask, Score.EPIC);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void changeTaskTitleToNullTask() {
-		fail("Test not implemented yet");
+		ts.changeTitle(null, "Hola");
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void changeTaskTitleToEmpty() {
-		fail("Test not implemented yet");
+		ts.changeTitle(testTask, "");
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void changeTaskTitleToLongTitle() {
-		fail("Test not implemented yet");
+		ts.changeTitle(testTask, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeTaskTitleToInexistentTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(false);
+		ts.changeTitle(testTask, "Hello");
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeTaskTitleToUsedTitle() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.title()).thenReturn("Tituleeeeeh");
+		Mockito.when(taskDao.taskExists(taskDao.getParent(testTask), "Titulo usado")).thenReturn(true);
+		ts.changeTitle(testTask, "Titulo usado");
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeTaskTitleToCompletedTask() {
-		fail("Test not implemented yet");
+		String newTitle = "Holas";
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.title()).thenReturn("Tituleeeeeh");
+		Mockito.when(taskDao.taskExists(taskDao.getParent(testTask), newTitle)).thenReturn(false);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ts.changeTitle(testTask, newTitle);
 	}
 
 	@Test
 	public void changeTaskTitleSuccesfully() {
-		fail("Test not implemented yet");
+		String newTitle = "Holas";
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.title()).thenReturn("Tituleeeeeh");
+		Mockito.when(taskDao.taskExists(taskDao.getParent(testTask), newTitle)).thenReturn(false);
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.STARTED);
+		ts.changeTitle(testTask, newTitle);
+		verify(taskDao, times(1)).updateTitle(testTask, newTitle);
 	}
 
-	@Test
-	public void changeDescriptionToNull() {
-		fail("Test not implemented yet");
+	@Test(expected = IllegalArgumentException.class)
+	public void changeDescriptionToNullTask() {
+		ts.changeDescription(null, "New description");
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void changeDescriptionToWayTooLongString() {
-		fail("Test not implemented yet");
+		ts.changeDescription(testTask, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeDescriptionToInexistentTask() {
-		fail("Test not implemented yet");
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(false);
+		ts.changeDescription(testTask, "New description");
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void changeDescriptionToCompletedTask() {
-		fail("Test not implemented yet");
+		String newDescription = "New description";
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.description()).thenReturn(Optional.of("Old description"));
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.COMPLETED);
+		ts.changeDescription(testTask, newDescription);
 	}
 
 	@Test
 	public void changeDescriptionSuccesfully() {
-		fail("Test not implemented yet");
+		String newDescription = "New description";
+		Mockito.when(taskDao.taskExists(testTask)).thenReturn(true);
+		Mockito.when(testTask.description()).thenReturn(Optional.of("Old description"));
+		Mockito.when(taskDao.getParent(testTask)).thenReturn(testStory);
+		Mockito.when(storyDao.getParent(testStory)).thenReturn(testIteration);
+		Mockito.when(testIteration.status()).thenReturn(Status.NOT_STARTED);
+		ts.changeDescription(testTask, newDescription);
+		verify(taskDao, times(1)).updateDescription(testTask, newDescription);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void verifyTaskNameIsUsedForNullTitle() {
-		fail("Test not implemented yet");
+		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
+		ts.taskNameExists(testStory, null);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void verifyTaskNameForInexistentStory() {
-		fail("Test not implemented yet");
+		Mockito.when(storyDao.storyExists(testStory)).thenReturn(false);
+		ts.taskNameExists(testStory, "Titulin");
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void verifyTaskNameForNullStory() {
-		fail("Test not implemented yet");
+		ts.taskNameExists(null, "Titulin");
 	}
 
 	@Test
 	public void verifyTaskNameIsUsedSuccesfully() {
-		fail("Test not implemented yet");
+		Mockito.when(storyDao.storyExists(testStory)).thenReturn(true);
+		ts.taskNameExists(testStory, "Titulo");
+		verify(taskDao, times(1)).taskExists(testStory, "Titulo");
 	}
 
 }

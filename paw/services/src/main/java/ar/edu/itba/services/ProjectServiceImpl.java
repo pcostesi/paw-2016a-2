@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.ProjectDao;
 import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
