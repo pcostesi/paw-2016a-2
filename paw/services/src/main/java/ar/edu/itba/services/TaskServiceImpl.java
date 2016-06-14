@@ -320,7 +320,7 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Task doesn't exist");
 		}
 		
-		if (task.description().equals(description)) {
+		if (task.description().isPresent() && task.description().get().equals(description)) {
 			return task;
 		}
 		
@@ -339,7 +339,7 @@ public class TaskServiceImpl implements TaskService{
 	@Override
 	public boolean taskNameExists(Story story, String title) {
 		if (story == null) {
-			throw new IllegalStateException("Story can't be null");
+			throw new IllegalArgumentException("Story can't be null");
 		}
 		
 		if (!storyDao.storyExists(story)) {

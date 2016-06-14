@@ -17,7 +17,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.ProjectDao;
@@ -71,9 +70,12 @@ public class TaskJdbcDaoTests {
 	private User owner;
 
 	@Before
-	@Transactional
 	public void setUp() throws Exception {
-		owner = userDao.createUser("testuser", "test", "testerr@gmail.com");
+		if (userDao.userNameExists("testuser")) {
+			owner = userDao.getByUsername("testuser");
+		} else {
+			owner = userDao.createUser("testuser", "test", "testerr@gmail.com");			
+		}
 		jdbcTemplate = new JdbcTemplate(ds);
 		testProject = projectDao.createProject(owner, pName, "Best Project EVAR", pCode);
 		LocalDate beginDate = LocalDate.now();
@@ -84,20 +86,17 @@ public class TaskJdbcDaoTests {
 	}
 
 	@After
-	@Transactional
 	public void after() {
 		projectDao.deleteProject(testProject);
 	}
 
 	@Test
-	@Transactional
 	public void CreateTaskWithCorrectParametersTest() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "task") == 1);
 	}
 
 	@Test
-	@Transactional
 	public void getTest() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		testTask = taskDao.getTaskById(testTask.taskId());
@@ -109,7 +108,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void createCreatedTask() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
@@ -117,13 +115,11 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void createTaskWithNullName() {
 		testTask = taskDao.createTask(testStory, null, tDesc, status, owner, score, priority);
 	}
 
 	@Test
-	@Transactional
 	public void deleteTask() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		taskDao.deleteTask(testTask);
@@ -131,7 +127,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void deleteDeletedTask() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		taskDao.deleteTask(testTask);
@@ -140,7 +135,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void updateOwnerTest() {
 		String newName = "newname";
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
@@ -151,7 +145,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void updateOwnerWithNull() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		taskDao.updateOwner(testTask, null);
@@ -160,7 +153,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void updateStatusTest() {
 		Status newStatus = Status.COMPLETED;
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
@@ -170,7 +162,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void theMassiveCreator() {
 		int i;
 		for (i = 0; i < 150; i++) {
@@ -181,14 +172,12 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void taskExistsTest() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		assertTrue(taskDao.taskExists(testTask));
 	}
 
 	@Test
-	@Transactional
 	public void taskExistsNOT() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		taskDao.deleteTask(testTask);
@@ -196,7 +185,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void updatePriorityTest() {
 		Priority newPriority = Priority.CRITICAL;
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
@@ -206,14 +194,12 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test
-	@Transactional
 	public void getParentTest() {
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
 		assertTrue(taskDao.getParent(testTask) == testStory);
 	}
 	
 	@Test
-	@Transactional
 	public void updateTitleTest(){
 		String newTitle = "epic title";
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
@@ -223,7 +209,6 @@ public class TaskJdbcDaoTests {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	@Transactional
 	public void updateTitleToExistingTitle(){
 		String newTitle = "epic title";
 		testTask = taskDao.createTask(testStory, newTitle, tDesc, status, owner, score, priority);
@@ -232,7 +217,6 @@ public class TaskJdbcDaoTests {
 	}
 	
 	@Test
-	@Transactional
 	public void updateDescriptionTest(){
 		String newDesc = "epic description";
 		testTask = taskDao.createTask(testStory, tName, tDesc, status, owner, score, priority);
