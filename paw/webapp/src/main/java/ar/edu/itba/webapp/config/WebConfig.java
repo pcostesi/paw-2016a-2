@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -34,6 +35,10 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import ar.edu.itba.webapp.i18n.PriorityEnumFormatter;
+import ar.edu.itba.webapp.i18n.ScoreEnumFormatter;
+import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
+
 @EnableWebMvc
 @ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence" })
 @Configuration
@@ -43,64 +48,71 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Value("classpath:schema.sql")
     private Resource schemaSql;
-	
-	@Bean
-	public ViewResolver viewResolver() {
-		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/jsp/");
-		viewResolver.setSuffix(".jsp");
 
-		return viewResolver;
-	}
-	
-	@Bean
-	public DataSource dataSource() {
-		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-		ds.setDriverClass(org.postgresql.Driver.class);
+    @Bean
+    public ViewResolver viewResolver() {
+        final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setViewClass(JstlView.class);
+        viewResolver.setPrefix("/WEB-INF/jsp/");
+        viewResolver.setSuffix(".jsp");
+
+        return viewResolver;
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        final SimpleDriverDataSource ds = new SimpleDriverDataSource();
+        ds.setDriverClass(org.postgresql.Driver.class);
         //ds.setUrl("jdbc:postgresql://10.16.1.110/grupo2");
         //ds.setUsername("grupo2");
         //ds.setPassword("shiufi7T");
         ds.setUrl("jdbc:postgresql://localhost/paw");
         ds.setUsername("test");
         ds.setPassword("test");
-		return ds;
-	}
-	
-    @Bean
-    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
-         return new JpaTransactionManager(emf);
+        return ds;
     }
 
-	@Bean
-	public MessageSource messageSource() {
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("classpath:/i18n/messages");
-		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
-		return messageSource;
-	}
+    @Bean
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
+    }
 
-	@Bean
-	public LocaleResolver localeResolver() {
-		CookieLocaleResolver resolver = new CookieLocaleResolver();
-		resolver.setDefaultLocale(Locale.ENGLISH);
-		resolver.setCookieName("app-locale");
-		resolver.setCookieMaxAge(4800);
-		return resolver;
-	}
-	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-	    LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-	    interceptor.setParamName("language");
-	    registry.addInterceptor(interceptor);
-	} 
+    @Override
+    public void addFormatters(final FormatterRegistry formatterRegistry) {
+        formatterRegistry.addFormatter(new PriorityEnumFormatter());
+        formatterRegistry.addFormatter(new ScoreEnumFormatter());
+        formatterRegistry.addFormatter(new StatusEnumFormatter());
+    }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/**").addResourceLocations("/resources/");
-	}
-	
+    @Bean
+    public MessageSource messageSource() {
+        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:/i18n/messages");
+        messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
+        return messageSource;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        final CookieLocaleResolver resolver = new CookieLocaleResolver();
+        resolver.setDefaultLocale(Locale.ENGLISH);
+        resolver.setCookieName("app-locale");
+        resolver.setCookieMaxAge(4800);
+        return resolver;
+    }
+
+    @Override
+    public void addInterceptors(final InterceptorRegistry registry) {
+        final LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+        interceptor.setParamName("language");
+        registry.addInterceptor(interceptor);
+    }
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("/resources/");
+    }
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();

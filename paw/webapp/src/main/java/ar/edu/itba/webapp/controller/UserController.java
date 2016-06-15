@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.webapp.form.EditPasswordForm;
 import ar.edu.itba.webapp.form.UserForm;
 

@@ -13,10 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ar.edu.itba.interfaces.IterationService;
-import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.interfaces.StoryService;
-import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.interfaces.service.IterationService;
+import ar.edu.itba.interfaces.service.ProjectService;
+import ar.edu.itba.interfaces.service.StoryService;
+import ar.edu.itba.interfaces.service.TaskService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;

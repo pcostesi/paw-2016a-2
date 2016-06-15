@@ -5,8 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.edu.itba.interfaces.BacklogService;
-import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.service.BacklogService;
+import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.webapp.form.BacklogForm;
 

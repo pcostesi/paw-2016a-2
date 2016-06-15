@@ -7,8 +7,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.edu.itba.interfaces.IterationService;
-import ar.edu.itba.interfaces.ProjectService;
+import ar.edu.itba.interfaces.service.IterationService;
+import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.webapp.form.IterationForm;
 

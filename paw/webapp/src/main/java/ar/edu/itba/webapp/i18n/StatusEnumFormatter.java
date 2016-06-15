@@ -7,27 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.Formatter;
 
-import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Status;
 
 public class StatusEnumFormatter implements Formatter<Status> {
 
-	@Autowired
-	private MessageSource messageSource; 
-	
-	@Override
-	public String print(Status object, Locale locale) {
-		return messageSource.getMessage("models.status." + object.name().toLowerCase(), null, locale);
-	}
+    @Autowired
+    private MessageSource messageSource;
 
-	@Override
-	public Status parse(String text, Locale locale) throws ParseException {    	
-	    for(Status test : Status.values()) {
-	    	if(test.name().equalsIgnoreCase(text)) {
-	    		return test;
-	    	}
-	    }
-	    return null;
-	}
+    @Override
+    public String print(final Status object, final Locale locale) {
+        final String message = messageSource.getMessage("models.status." + object.name().toLowerCase(), null, locale);
+        if (message == null) {
+            return object.toString();
+        }
+        return message;
+    }
+
+    @Override
+    public Status parse(final String text, final Locale locale) throws ParseException {
+        for(final Status test : Status.values()) {
+            if(test.name().equalsIgnoreCase(text)) {
+                return test;
+            }
+        }
+        return null;
+    }
 
 }

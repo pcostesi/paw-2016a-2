@@ -30,7 +30,9 @@
 				  	<form:select id="${path}" path="${path}" class="form-control" items="${items}"/>
 		  		</c:when>
 		  		<c:otherwise>
-				  	<form:select id="${path}" path="${path}" class="form-control"/>
+				  	<form:select id="${path}" path="${path}" class="form-control">
+						<form:options/>
+			        </form:select>
 		  		</c:otherwise>
 		  	</c:choose>
 		    <c:if test="${status.error}">
