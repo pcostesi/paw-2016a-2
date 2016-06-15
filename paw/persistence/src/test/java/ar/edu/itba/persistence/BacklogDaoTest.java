@@ -170,15 +170,15 @@ public class BacklogDaoTest {
 		assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "backlog") == 150);
 		assertEquals(bd.getBacklogForProject(project).size(), 150);
 	}
-	
+
 	@Test
-	public void getParent(){
+	public void getParent() {
 		item = bd.createBacklogItem(title, description, project);
 		assertEquals(bd.getParent(item), project);
 	}
 
 	@Test
-	public void getBacklogItemById(){
+	public void getBacklogItemById() {
 		item = bd.createBacklogItem(title, description, project);
 		assertEquals(bd.getBacklogItemById(item.backlogItemId()), item);
 	}
