@@ -15,9 +15,9 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<bs:input path="user" label="User" />
-						<bs:input type="password" path="password" label="Password" />
-						<bs:input type="password" path="verifyPassword" label="Repeat password" />
+						<bs:input path="user" label="User" placeholder="Johnn Doe"/>
+						<bs:input type="password" path="password" label="Password" placeholder="Super secret password"/>
+						<bs:input type="password" path="verifyPassword" label="Repeat password" placeholder="Super secret password"/>
 						<bs:input path="mail" label="E-mail" />
 					</fieldset>
 				</div>

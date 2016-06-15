@@ -17,8 +17,8 @@
 				<div class="col-sm-6">
 					<fieldset>
 						<form:hidden path="projectId" value="${project.projectId()}"/>
-						<bs:input path="title" label="Title" />
-						<bs:input path="description" label="Description" />
+						<bs:input path="title" label="Title" placeholder="Awesome idea" />
+						<bs:input path="description" label="Description" placeholder="As a user I want to do cool stuff"/>
 					</fieldset>
 				</div>
 			</div>

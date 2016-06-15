@@ -18,8 +18,8 @@
 					<fieldset>
 						<form:hidden path="oldTitle" value="${task.title()}"/>
 						<form:hidden path="storyId" value="${story.storyId()}"/>
-						<bs:input path="title" label="Title" />
-						<bs:input path="description" label="Description" />
+						<bs:input path="title" label="Title" placeholder="Vaccumm the room"/>
+						<bs:input path="description" label="Description" placeholder="The room is nasty"/>
 						<bs:select path="status" label="Task Status" />
 						<bs:select path="score" label="Task Score" />
 						<bs:select path="priority" label="Task Priority" />

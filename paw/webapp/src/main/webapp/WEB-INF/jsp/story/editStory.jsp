@@ -17,7 +17,7 @@
 					<fieldset>
 						<form:hidden path="oldTitle" value="${story.title()}"/>
 						<form:hidden path="iterationId" value="${iteration.iterationId()}"/>
-						<bs:input path="title" label="Title" />
+						<bs:input path="title" label="Title" placeholder="As a user I want cookies"/>
 					</fieldset>
 				</div>
 			</div>

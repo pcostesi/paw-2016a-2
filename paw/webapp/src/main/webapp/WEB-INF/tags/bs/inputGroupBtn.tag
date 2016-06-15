@@ -11,6 +11,7 @@
 <%@attribute name="type" required="false" type="java.lang.String"%>
 <%@attribute name="disabled" required="false" type="java.lang.String"%>
 <%@attribute name="typeahead" required="false" type="java.lang.String"%>
+<%@attribute name="placeholder" required="false" type="java.lang.String"%>
 
 <jsp:doBody var="body"/>
 <c:if test="${not empty body}">
@@ -25,7 +26,7 @@
 <spring:bind path="${path}">
 	<div class="form-group ${status.error ? 'has-error' : '' }">
 		<div class="input-group ${cssClass}">
-			<form:input path="${path}" class="form-control ${dateClass}" type="${type}" data-provide="typeahead" data-source="${typeahead}" autocomplete="off"/>
+			<form:input placeholder="${placeholder}" path="${path}" class="form-control ${dateClass}" type="${type}" data-provide="typeahead" data-source="${typeahead}" autocomplete="off"/>
 			<div class="input-group-btn">
 				<button type="submit" class="btn btn-primary" ${disabled}>${label}<c:if test="${required}"><span class="required">*</span></c:if></button>
 			 </div>
