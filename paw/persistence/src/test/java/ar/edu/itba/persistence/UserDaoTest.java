@@ -86,23 +86,7 @@ public class UserDaoTest {
 		@Test
 		public void inexistingUserMail(){
 			assertFalse(ud.userMailExists(mail + "a little something"));
-		}
-		
-		@Test
-		public void getAllUsernamesGetAllUsernamesExcept(){
-			int i;
-			for (i = 0; i < 149; i++) {
-				ud.createUser("generic user " + String.valueOf(i), "generic description " + String.valueOf(i), "generic mail " + String.valueOf(i) + "@gmail.com");
-			}
-			assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "account") == 150);
-			assertEquals(ud.getAllUsernames().size(), 150);
-			
-			final List<String> list = ud.getAllUsernamesExcept(user);
-			assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "account") == 150);
-			assertEquals(list.size(), 149);
-			assertFalse(list.contains(name));
-		}
-		
+		}		
 		
 		@Test
 		public void setPasswordTest(){
