@@ -42,6 +42,7 @@ import ar.edu.itba.webapp.i18n.PriorityEnumFormatter;
 import ar.edu.itba.webapp.i18n.ScoreEnumFormatter;
 import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 
+
 @EnableWebMvc
 @ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence" })
 @Configuration
@@ -83,9 +84,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(final FormatterRegistry formatterRegistry) {
         super.addFormatters(formatterRegistry);
-        formatterRegistry.addFormatterForFieldType(Priority.class, new PriorityEnumFormatter());
-        formatterRegistry.addFormatterForFieldType(Score.class, new ScoreEnumFormatter());
-        formatterRegistry.addFormatterForFieldType(Status.class, new StatusEnumFormatter());
+        final MessageSource messageSource = messageSource();
+        final PriorityEnumFormatter priority = new PriorityEnumFormatter(messageSource);
+        final ScoreEnumFormatter score = new ScoreEnumFormatter(messageSource);
+        final StatusEnumFormatter status = new StatusEnumFormatter(messageSource);
+        formatterRegistry.addFormatterForFieldType(Priority.class, priority);
+        formatterRegistry.addFormatterForFieldType(Score.class, score);
+        formatterRegistry.addFormatterForFieldType(Status.class, status);
     }
 
     @Bean

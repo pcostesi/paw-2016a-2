@@ -30,6 +30,10 @@ requirejs.config({
     	},
     	'bootstrap-toggle': ['bs', 'css!bootstrap-toggle-css'],
     	'moment': ['jquery'],
+    	'jquery.tokenize': {
+			deps: ['jquery'],
+			exports: 'jquery-tokenize'
+		},
     	'datetimepicker-js': ['jquery', 'moment']
     },
 	
