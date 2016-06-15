@@ -26,9 +26,9 @@
 <spring:bind path="${path}">
 	<div class="form-group ${status.error ? 'has-error' : '' }">
 		<div class="input-group ${cssClass}">
-			<form:input path="${path}" class="form-control ${dateClass}" type="${type}" data-provide="typeahead" data-source="${typeahead}" autocomplete="off"/>
+			<form:input placeholder="${placeholder}" path="${path}" class="form-control ${dateClass}" type="${type}" data-provide="typeahead" data-source="${typeahead}" autocomplete="off"/>
 			<div class="input-group-btn">
-				<button type="submit" class="btn btn-primary" ${disabled} placeholder="${placeholder}>${label}<c:if test="${required}"><span class="required">*</span></c:if></button>
+				<button type="submit" class="btn btn-primary" ${disabled}>${label}<c:if test="${required}"><span class="required">*</span></c:if></button>
 			 </div>
 		</div>
 	    <c:if test="${status.error}">
