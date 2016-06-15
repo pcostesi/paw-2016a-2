@@ -52,7 +52,7 @@ public class TaskJdbcDaoTests {
 	private UserDao userDao;
 	
 	@Autowired
-	DataSource ds;
+	private DataSource ds;
 
 	private final String pName = "TesterProject";
 	private final String pCode = "Test";
