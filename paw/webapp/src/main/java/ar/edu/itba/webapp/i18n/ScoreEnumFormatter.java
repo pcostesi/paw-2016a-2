@@ -7,27 +7,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.Formatter;
 
-import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 
 public class ScoreEnumFormatter implements Formatter<Score> {
 
-	@Autowired
-	private MessageSource messageSource; 
-	
-	@Override
-	public String print(Score object, Locale locale) {
-		return messageSource.getMessage("models.score." + object.name().toLowerCase(), null, locale);
-	}
+    @Autowired
+    public MessageSource messageSource;
 
-	@Override
-	public Score parse(String text, Locale locale) throws ParseException {    	
-	    for(Score test : Score.values()) {
-	    	if(test.name().equalsIgnoreCase(text)) {
-	    		return test;
-	    	}
-	    }
-	    return null;
-	}
+    public ScoreEnumFormatter(final MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    @Override
+    public String print(final Score object, final Locale locale) {
+        final String message = messageSource.getMessage("models.score." + object.name().toLowerCase(), null, locale);
+        if (message == null) {
+            return object.toString().replace('_', ' ');
+        }
+        return message;
+    }
+
+    @Override
+    public Score parse(final String text, final Locale locale) throws ParseException {
+        for(final Score test : Score.values()) {
+            if(test.name().equalsIgnoreCase(text)) {
+                return test;
+            }
+        }
+        return null;
+    }
 
 }

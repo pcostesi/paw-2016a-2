@@ -24,7 +24,6 @@ public class ProjectForm {
 	@Size(min=1, max=500)
 	private String description;	
 	
-	@NotEmpty
 	private List<String> members;
 	
 	private String oldName;

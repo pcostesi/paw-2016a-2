@@ -12,13 +12,17 @@ import ar.edu.itba.models.Status;
 public class StatusEnumFormatter implements Formatter<Status> {
 
     @Autowired
-    private MessageSource messageSource;
+    public MessageSource messageSource;
+
+    public StatusEnumFormatter(final MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @Override
     public String print(final Status object, final Locale locale) {
         final String message = messageSource.getMessage("models.status." + object.name().toLowerCase(), null, locale);
         if (message == null) {
-            return object.toString();
+            return object.toString().replace('_', ' ');
         }
         return message;
     }

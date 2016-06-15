@@ -11,22 +11,30 @@ import ar.edu.itba.models.Priority;
 
 public class PriorityEnumFormatter implements Formatter<Priority> {
 
-	@Autowired
-	private MessageSource messageSource; 
-	
-	@Override
-	public String print(Priority object, Locale locale) {
-		return messageSource.getMessage("models.priority." + object.name().toLowerCase(), null, locale);
-	}
+    @Autowired
+    public MessageSource messageSource;
 
-	@Override
-	public Priority parse(String text, Locale locale) throws ParseException {    	
-	    for(Priority test : Priority.values()) {
-	    	if(test.name().equalsIgnoreCase(text)) {
-	    		return test;
-	    	}
-	    }
-	    return null;
-	}
+    public PriorityEnumFormatter(final MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    @Override
+    public String print(final Priority object, final Locale locale) {
+        final String message = messageSource.getMessage("models.priority." + object.name().toLowerCase(), null, locale);
+        if (message == null) {
+            return object.toString().replace('_', ' ');
+        }
+        return message;
+    }
+
+    @Override
+    public Priority parse(final String text, final Locale locale) throws ParseException {
+        for(final Priority test : Priority.values()) {
+            if(test.name().equalsIgnoreCase(text)) {
+                return test;
+            }
+        }
+        return null;
+    }
 
 }
