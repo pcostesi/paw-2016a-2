@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import javax.sql.DataSource;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.UserDao;
@@ -52,20 +52,15 @@ public class ProjectDaoTests {
 		}		
 	}
 	
-	@After
-	public void after() {
-		if (projectDao.projectNameExists(projectName)) {
-			projectDao.deleteProject(projectDao.getProjectByCode(projectCode));
-		}
-	}
-	
 	@Test
+	@Transactional
 	public void checkProjectExist() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		assertTrue(projectDao.projectExists(proj));		
 	}
 	
 	@Test
+	@Transactional
 	public void checkProjectDoesntExist() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.deleteProject(proj);
@@ -73,12 +68,14 @@ public class ProjectDaoTests {
 	}
 	
 	@Test
+	@Transactional
 	public void checkProjectNameExists() {
 		projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		assertTrue(projectDao.projectNameExists(projectName));
 	}
 	
 	@Test
+	@Transactional
 	public void checkProjectNameDoesntExists() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.deleteProject(proj);
@@ -86,12 +83,14 @@ public class ProjectDaoTests {
 	}
 	
 	@Test
+	@Transactional
 	public void checkProjectCreates() {
 		projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "project") == 1);		
 	}
 	
 	@Test
+	@Transactional
 	public void checkProjectDelete() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.deleteProject(proj);
@@ -99,6 +98,7 @@ public class ProjectDaoTests {
 	}
 	
 	@Test
+	@Transactional
 	public void removeProjectFromProjectUser() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.addProjectMember(proj, user);
@@ -107,6 +107,7 @@ public class ProjectDaoTests {
 	}
 	
 	@Test
+	@Transactional
 	public void updateName() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.updateName(proj, "newName");
@@ -114,20 +115,7 @@ public class ProjectDaoTests {
 	}
 	
 	@Test
-	public void updateDescrp() {
-		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
-		projectDao.updateDescription(proj, "newDescrp");
-		assertTrue(projectDao.getProjectById(proj.projectId()).description().equals("newDescrp"));
-	}
-	
-	@Test
-	public void updateCode() {
-		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
-		projectDao.updateCode(proj, "newCode");
-		assertTrue(projectDao.getProjectById(proj.projectId()).code().equals("newCode"));
-	}
-	
-	@Test
+	@Transactional
 	public void getProjectForUser() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.addProjectMember(proj, user);
@@ -135,18 +123,21 @@ public class ProjectDaoTests {
 	}
 	
 	@Test
+	@Transactional
 	public void getProjectByCode() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		assertTrue(projectDao.getProjectByCode(projectCode).equals(proj));
 	}
 	
 	@Test
+	@Transactional
 	public void getProjectById() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		assertTrue(projectDao.getProjectById(proj.projectId()).equals(proj));
 	}
 	
 	@Test
+	@Transactional
 	public void testUserWasAdded() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.addProjectMember(proj, user);
@@ -154,6 +145,7 @@ public class ProjectDaoTests {
 	}
 	
 	@Test
+	@Transactional
 	public void testUserWasDeleted() {
 		Project proj = projectDao.createProject(user, projectName, projectDescrp, projectCode);
 		projectDao.addProjectMember(proj, user);
