@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void editPassword(User user, String newPassword) {
+	public User editPassword(User user, String newPassword) {
 		if(user == null){
 			throw new IllegalArgumentException("Username cannot be null");
 		}
@@ -150,6 +150,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		userDao.setPassword(user, newPassword);
+		return userDao.getByUsername(user.username());
 	}
 
 	@Override
