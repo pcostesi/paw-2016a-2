@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.service.ProjectService;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 

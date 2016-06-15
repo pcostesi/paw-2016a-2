@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.User;
 import ar.edu.itba.webapp.auth.ScrumlrUserDetails;
 

@@ -1,4 +1,4 @@
-package ar.edu.itba.interfaces;
+package ar.edu.itba.interfaces.service;
 
 import ar.edu.itba.models.User;
 

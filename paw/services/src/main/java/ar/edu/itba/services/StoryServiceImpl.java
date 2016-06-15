@@ -7,10 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.itba.interfaces.IterationDao;
-import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.interfaces.StoryService;
-import ar.edu.itba.interfaces.TaskDao;
+import ar.edu.itba.interfaces.dao.IterationDao;
+import ar.edu.itba.interfaces.dao.StoryDao;
+import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.service.StoryService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;

@@ -18,11 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import ar.edu.itba.interfaces.IterationDao;
-import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.interfaces.dao.IterationDao;
+import ar.edu.itba.interfaces.dao.ProjectDao;
+import ar.edu.itba.interfaces.dao.StoryDao;
+import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.dao.UserDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Project;
