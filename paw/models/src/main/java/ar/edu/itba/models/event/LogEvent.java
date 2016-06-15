@@ -26,12 +26,26 @@ public abstract class LogEvent implements Serializable {
         return serialVersionUID;
     }
 
-    public int getEventId() {
-        return eventId;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private User actor;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "event_id", nullable = false, unique = true)
+    private int eventId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private Project project;
+
+    @Column(name = "time", nullable = false)
+    private LocalDateTime time;
 
     public User getActor() {
         return actor;
+    }
+
+    public int getEventId() {
+        return eventId;
     }
 
     public Project getProject() {
@@ -42,17 +56,15 @@ public abstract class LogEvent implements Serializable {
         return time;
     }
 
-    @Id
-    @GeneratedValue
-    @Column(name = "event_id", nullable = false, unique = true)
-    private int eventId;
+    public void setActor(final User actor) {
+        this.actor = actor;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    private User actor;
+    public void setProject(final Project project) {
+        this.project = project;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    private Project project;
-
-    @Column(name = "time", nullable = false)
-    private LocalDateTime time;
+    public void setTime(final LocalDateTime time) {
+        this.time = time;
+    }
 }
