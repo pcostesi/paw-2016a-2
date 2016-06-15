@@ -5,6 +5,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<spring:message code="task.edit.title.placeholder" var = "taskTitlePlaceholder"/>
+<spring:message code="task.edit.description.placeholder" var = "taskDescPlaceholder"/>
+
 <t:page>
 	<jsp:attribute name="title">
     	<spring:message code="task.edit.title"/>
@@ -18,8 +21,8 @@
 					<fieldset>
 						<form:hidden path="oldTitle" value="${task.title()}"/>
 						<form:hidden path="storyId" value="${story.storyId()}"/>
-						<bs:input path="title" label="Title" placeholder="Vaccumm the room"/>
-						<bs:input path="description" label="Description" placeholder="The room is nasty"/>
+						<bs:input path="title" label="Title" placeholder="${taskTitlePlaceholder }"/>
+						<bs:input path="description" label="Description" placeholder="${taskDescPlaceholder}"/>
 						<bs:select path="status" label="Task Status" />
 						<bs:select path="score" label="Task Score" />
 						<bs:select path="priority" label="Task Priority" />

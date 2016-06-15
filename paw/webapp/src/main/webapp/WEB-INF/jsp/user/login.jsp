@@ -5,6 +5,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<spring:message code="login.username.placeholder" var="loginUsernamePlaceholder"/>
+<spring:message code="user.edit.password.placeholder" var="loginPasswordPlaceholder"/>
+
 <t:page user="${user}">
 	<jsp:attribute name="title">
     	<spring:message code="login.title"/>
@@ -21,11 +24,11 @@
                         
                         <div class="form-group input-group">
 		                   	<span class="input-group-addon" for="j_username" id="username-addon"><spring:message code="login.username"/></span>
-							<input class="form-control" type="text" id="j_username" name="j_username" aria-describedby="username-addon" placeholder="Johnn Doe"/>
+							<input class="form-control" type="text" id="j_username" name="j_username" aria-describedby="username-addon" placeholder="${loginUsernamePlaceholder}"/>
 						</div>
 		                <div class="form-group input-group">
 		                   	<span class="input-group-addon" for="j_password" id="password-addon"><spring:message code="login.password"/></span>
-							<input class="form-control" type="password" id="j_password" name="j_password" aria-describedby="password-addon" placeholder="Super secret password"/>
+							<input class="form-control" type="password" id="j_password" name="j_password" aria-describedby="password-addon" placeholder="${loginPasswordPlaceholder}"/>
 						</div>
 						
 						<div class="form-group">

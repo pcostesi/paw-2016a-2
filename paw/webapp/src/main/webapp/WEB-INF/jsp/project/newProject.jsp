@@ -5,6 +5,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<spring:message code="project.edit.name.placeholder" var ="pryectNamePlaceholder"/>
+<spring:message code="project.edit.code.placeholder" var ="proyectCodePlaceholder"/>
+<spring:message code="project.edit.desc.placeholder" var = "proyectDescriptionPlaceholder"/> 
+
 <t:page>
 	<jsp:attribute name="title">
     	<spring:message code="project.new.title"/>
@@ -17,9 +21,9 @@
 					<fieldset>
 						<form:hidden path="oldName"/>
 						<form:hidden path="oldCode"/>
-						<bs:input path="name" label="Name" placeholder="Super project"/>
-						<bs:input path="code" label="Code" placeholder="super.proj"/>
-						<bs:input path="description" label="Description" placeholder="This project is super"/>
+						<bs:input path="name" label="Name" placeholder="${pryectNamePlaceholder}"/>
+						<bs:input path="code" label="Code" placeholder="${proyectCodePlaceholder}"/>
+						<bs:input path="description" label="Description" placeholder="${proyectDescriptionPlaceholder}"/>
 						<bs:filledSelect path="members" label="Members" items="${usernames}" multiple="true" tokenize="tokenize"/>
 					</fieldset>
 				</div>

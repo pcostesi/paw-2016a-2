@@ -4,10 +4,13 @@
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<spring:message code="project.edit.name.placeholder" var ="namePlaceholder"/>
+<spring:message code="project.edit.code.placeholder" var ="codePlaceholder"/>
+<spring:message code="project.edit.desc.placeholder" var ="descriptionPlaceholder"/>
+
 <t:page>
 	<jsp:attribute name="title">
 		<spring:message code="project.edit.title" arguments="${project.name()}"/>
-    	Edit project 
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -18,9 +21,9 @@
 					<fieldset>
 						<form:hidden path="oldName" value ="${project.name()}"/>
 						<form:hidden path="oldCode" value="${project.code()}"/>
-						<bs:input path="name" label="Name" placeholder="Super project"/>
-						<bs:input path="code" label="Code" placeholder="super.proj"/>
-						<bs:input path="description" label="Description" placeholder="This project is super"/>
+						<bs:input path="name" label="Name" placeholder="${namePlaceholder}"/>
+						<bs:input path="code" label="Code" placeholder="${codePlaceholder}"/>
+						<bs:input path="description" label="Description" placeholder="${descriptionPlaceholder}"/>
 					</fieldset>
 				</div>
 			</div>

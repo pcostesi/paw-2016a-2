@@ -4,6 +4,8 @@
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<spring:message code="project.members.add.placeholder" var="proyectAddMemberPlaceholder"/>
+
 <t:page>
 	<jsp:attribute name="title">
 		<spring:message code="project.list.title"/>
@@ -15,7 +17,7 @@
 				<form:form modelAttribute="addMemberForm" action="${url}/new" method="POST">
 					<c:if test="${user eq project.admin()}">
 						<form:hidden path="projectCode" value ="${project.code()}"/>
-						<bs:inputGroupBtn path="member" label="Add as member" typeahead="${usernames}" placeholder="Adding dudes to the project might be a good idea"/>	
+						<bs:inputGroupBtn path="member" label="Add as member" typeahead="${usernames}" placeholder="${proyectAddMemberPlaceholder}"/>	
 					</c:if>			
 				</form:form>
 			<t:staticPanel panelId="members">			
