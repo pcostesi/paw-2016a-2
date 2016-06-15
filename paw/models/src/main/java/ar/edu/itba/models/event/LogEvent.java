@@ -48,17 +48,33 @@ public abstract class LogEvent implements Serializable {
         return eventId;
     }
 
+    public void setActor(final User actor) {
+        this.actor = actor;
+    }
+
     public Project getProject() {
         return project;
+    }
+
+    public void setProject(final Project project) {
+        this.project = project;
     }
 
     public LocalDateTime getTime() {
         return time;
     }
 
-    public void setActor(final User actor) {
-        this.actor = actor;
+    public void setTime(final LocalDateTime time) {
+        this.time = time;
     }
+
+    @Id
+    @GeneratedValue
+    @Column(name = "event_id", nullable = false, unique = true)
+    private int eventId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private User actor;
 
     public void setProject(final Project project) {
         this.project = project;
