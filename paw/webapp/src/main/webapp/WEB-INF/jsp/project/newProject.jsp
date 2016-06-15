@@ -17,9 +17,9 @@
 					<fieldset>
 						<form:hidden path="oldName"/>
 						<form:hidden path="oldCode"/>
-						<bs:input path="name" label="Name" />
-						<bs:input path="code" label="Code" />
-						<bs:input path="description" label="Description" />
+						<bs:input path="name" label="Name" placeholder="Super project"/>
+						<bs:input path="code" label="Code" placeholder="super.proj"/>
+						<bs:input path="description" label="Description" placeholder="This project is super"/>
 						<bs:filledSelect path="members" label="Members" items="${usernames}" multiple="true" tokenize="tokenize"/>
 					</fieldset>
 				</div>

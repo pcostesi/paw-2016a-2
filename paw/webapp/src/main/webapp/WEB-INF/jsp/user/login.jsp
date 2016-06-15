@@ -21,18 +21,16 @@
                         
                         <div class="form-group input-group">
 		                   	<span class="input-group-addon" for="j_username" id="username-addon"><spring:message code="login.username"/></span>
-							<input class="form-control" type="text" id="j_username" name="j_username" aria-describedby="username-addon"/>
+							<input class="form-control" type="text" id="j_username" name="j_username" aria-describedby="username-addon" placeholder="Johnn Doe"/>
 						</div>
 		                <div class="form-group input-group">
 		                   	<span class="input-group-addon" for="j_password" id="password-addon"><spring:message code="login.password"/></span>
-							<input class="form-control" type="password" id="j_password" name="j_password" aria-describedby="password-addon"/>
+							<input class="form-control" type="password" id="j_password" name="j_password" aria-describedby="password-addon" placeholder="Super secret password"/>
 						</div>
 						
 						<div class="form-group">
-							<input name="j_rememberme" id="j_rememberme" type="checkbox" checked="checked"
-							data-on="<spring:message code='login.remember_me'/>" 
-							data-off="<spring:message code='login.remember_me_not'/>" 
-							data-toggle="toggle" />
+							<input name="j_rememberme" id="j_rememberme" type="checkbox" checked="checked">
+							<spring:message code='login.remember_me'/>
 						</div>
 							
 					</fieldset>

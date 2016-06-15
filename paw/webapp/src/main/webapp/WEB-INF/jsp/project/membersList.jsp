@@ -15,7 +15,7 @@
 				<form:form modelAttribute="addMemberForm" action="${url}/new" method="POST">
 					<c:if test="${user eq project.admin()}">
 						<form:hidden path="projectCode" value ="${project.code()}"/>
-						<bs:inputGroupBtn path="member" label="Add as member" typeahead="${usernames}"/>	
+						<bs:inputGroupBtn path="member" label="Add as member" typeahead="${usernames}" placeholder="Adding dudes to the project might be a good idea"/>	
 					</c:if>			
 				</form:form>
 			<t:staticPanel panelId="members">			
