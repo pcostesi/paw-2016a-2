@@ -17,10 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ar.edu.itba.interfaces.BacklogService;
-import ar.edu.itba.interfaces.IterationService;
-import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.service.BacklogService;
+import ar.edu.itba.interfaces.service.IterationService;
+import ar.edu.itba.interfaces.service.ProjectService;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;

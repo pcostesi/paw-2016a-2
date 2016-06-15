@@ -15,7 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.User;
 
 @Component

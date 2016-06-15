@@ -19,9 +19,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.interfaces.dao.StoryDao;
+import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.service.TaskService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;

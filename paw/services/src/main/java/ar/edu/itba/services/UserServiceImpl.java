@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.interfaces.UserDao;
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.dao.ProjectDao;
+import ar.edu.itba.interfaces.dao.UserDao;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void editPassword(User user, String newPassword) {
+	public User editPassword(User user, String newPassword) {
 		if(user == null){
 			throw new IllegalArgumentException("Username cannot be null");
 		}
@@ -150,6 +150,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		userDao.setPassword(user, newPassword);
+		return userDao.getByUsername(user.username());
 	}
 
 	@Override

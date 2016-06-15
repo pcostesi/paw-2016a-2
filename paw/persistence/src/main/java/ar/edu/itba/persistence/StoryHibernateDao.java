@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.StoryDao;
+import ar.edu.itba.interfaces.dao.StoryDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Story;
 

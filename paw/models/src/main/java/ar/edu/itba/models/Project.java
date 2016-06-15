@@ -2,6 +2,7 @@ package ar.edu.itba.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +19,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -92,6 +92,11 @@ public class Project implements Serializable {
 		return description;
 	}
 
+	public String formattedStartDate(String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return startDate.format(formatter);
+	}
+	
 	public LocalDate startDate() {
 		return startDate;
 	}

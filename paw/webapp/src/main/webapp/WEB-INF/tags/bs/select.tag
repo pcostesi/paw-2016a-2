@@ -26,8 +26,13 @@
 		  		<c:when test="${not empty map}">
 				  	<form:select id="${path}" path="${path}" class="form-control" items="${map}"/>
 		  		</c:when>
-		  		<c:otherwise>
+		  		<c:when test="${not empty items}">
 				  	<form:select id="${path}" path="${path}" class="form-control" items="${items}"/>
+		  		</c:when>
+		  		<c:otherwise>
+				  	<form:select id="${path}" path="${path}" class="form-control">
+						<form:options/>
+			        </form:select>
 		  		</c:otherwise>
 		  	</c:choose>
 		    <c:if test="${status.error}">

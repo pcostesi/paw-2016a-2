@@ -1,6 +1,7 @@
 package ar.edu.itba.models;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -70,6 +71,16 @@ public class Iteration{
 		return number;
 	}
 
+	public String formattedStartDate(String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return startDate.format(formatter);
+	}
+	
+	public String formattedEndDate(String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return endDate.format(formatter);
+	}
+	
 	public LocalDate startDate() {
 		return startDate;
 	}
