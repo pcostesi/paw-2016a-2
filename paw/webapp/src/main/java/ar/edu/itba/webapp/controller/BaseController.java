@@ -1,6 +1,12 @@
 package ar.edu.itba.webapp.controller;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import ar.edu.itba.interfaces.service.TranslationService;
 import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.User;
 import ar.edu.itba.webapp.auth.ScrumlrUserDetails;
@@ -23,9 +30,22 @@ public abstract class BaseController {
 	@Autowired
 	private UserService us;
 	
+	@Autowired
+	private TranslationService ts;
+	
 	@ModelAttribute
 	public Locale currentLanguage() {
 		return LocaleContextHolder.getLocale();
+	}
+	
+	@ModelAttribute
+	public List<Entry<String, String>> breadcrumb(final HttpServletRequest request) {
+		final List<Entry<String, String>> result = new ArrayList<>();
+		final String tag = ts.getMessage("breadcrumb.home");
+		final String url = request.getContextPath();
+		result.add(new AbstractMap.SimpleEntry<String, String>(tag, url));
+		logger.debug("Home called, {}", result);
+		return result;
 	}
 	
 	@ModelAttribute
@@ -46,7 +66,7 @@ public abstract class BaseController {
 		try {
 			return us.getByUsername(username);
 
-		} catch (IllegalStateException e) {
+		} catch (final IllegalStateException e) {
 			logger.debug("No username {}.", username, e);
 			return null;
 		}
