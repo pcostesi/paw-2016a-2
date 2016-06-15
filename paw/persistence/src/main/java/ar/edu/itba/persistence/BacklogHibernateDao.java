@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.service.BacklogDao;
+import ar.edu.itba.interfaces.dao.BacklogDao;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
 

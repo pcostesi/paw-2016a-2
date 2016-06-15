@@ -1,4 +1,4 @@
-package ar.edu.itba.interfaces.service;
+package ar.edu.itba.interfaces.dao;
 
 import java.util.List;
 

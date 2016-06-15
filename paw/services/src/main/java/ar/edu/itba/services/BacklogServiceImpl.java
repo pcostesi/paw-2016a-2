@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.itba.interfaces.dao.BacklogDao;
 import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.StoryDao;
 import ar.edu.itba.interfaces.dao.TaskDao;
-import ar.edu.itba.interfaces.service.BacklogDao;
 import ar.edu.itba.interfaces.service.BacklogService;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
