@@ -22,6 +22,26 @@ public abstract class LogEvent implements Serializable {
 
     private static final long serialVersionUID = -1185577548660797492L;
 
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public User getActor() {
+        return actor;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "event_id", nullable = false, unique = true)

@@ -17,5 +17,5 @@ public interface LogEventDao {
 
     public List<LogEvent> getEventsForActor(User user);
 
-    public List<LogEvent> getEventsForDate(LocalDate date);
+    public List<LogEvent> getEventsForRange(final LocalDate start, final LocalDate end);
 }
