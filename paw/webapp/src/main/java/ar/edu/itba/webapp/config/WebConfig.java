@@ -35,6 +35,9 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import ar.edu.itba.models.Priority;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
 import ar.edu.itba.webapp.i18n.PriorityEnumFormatter;
 import ar.edu.itba.webapp.i18n.ScoreEnumFormatter;
 import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
@@ -79,9 +82,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addFormatters(final FormatterRegistry formatterRegistry) {
-        formatterRegistry.addFormatter(new PriorityEnumFormatter());
-        formatterRegistry.addFormatter(new ScoreEnumFormatter());
-        formatterRegistry.addFormatter(new StatusEnumFormatter());
+        super.addFormatters(formatterRegistry);
+        formatterRegistry.addFormatterForFieldType(Priority.class, new PriorityEnumFormatter());
+        formatterRegistry.addFormatterForFieldType(Score.class, new ScoreEnumFormatter());
+        formatterRegistry.addFormatterForFieldType(Status.class, new StatusEnumFormatter());
     }
 
     @Bean
