@@ -1,4 +1,4 @@
-package ar.edu.itba.interfaces;
+package ar.edu.itba.interfaces.service;
 
 import java.time.LocalDate;
 import java.util.List;

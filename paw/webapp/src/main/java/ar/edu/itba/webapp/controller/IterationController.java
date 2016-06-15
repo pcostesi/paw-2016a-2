@@ -18,11 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ar.edu.itba.interfaces.BacklogService;
-import ar.edu.itba.interfaces.IterationService;
-import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.interfaces.StoryService;
-import ar.edu.itba.interfaces.TranslationService;
+import ar.edu.itba.interfaces.service.BacklogService;
+import ar.edu.itba.interfaces.service.IterationService;
+import ar.edu.itba.interfaces.service.ProjectService;
+import ar.edu.itba.interfaces.service.StoryService;
+import ar.edu.itba.interfaces.service.TranslationService;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
@@ -50,7 +50,7 @@ public class IterationController extends BaseController {
 	private TranslationService ts;
 	
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
-	public ModelAndView getNewResource(@ModelAttribute("iterationForm") IterationForm iterationForm, @PathVariable String projectCode) {
+	public ModelAndView getNewResource(@ModelAttribute("iterationForm") final IterationForm iterationForm, @PathVariable final String projectCode) {
 		final ModelAndView mav = new ModelAndView("iteration/newIteration");
 		final Project project = ps.getProjectByCode(projectCode);
 		final Integer iterationToInheritFrom = is.getLastFinishedIterationNumber(project);
@@ -64,7 +64,7 @@ public class IterationController extends BaseController {
 	
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
 	public ModelAndView postNewResource(@PathVariable("projectCode") final String projectCode,
-			@Valid @ModelAttribute("iterationForm") IterationForm iterationForm, BindingResult result) {
+			@Valid @ModelAttribute("iterationForm") final IterationForm iterationForm, final BindingResult result) {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		if (result.hasErrors()) {
@@ -97,8 +97,8 @@ public class IterationController extends BaseController {
 		return durationTranslation;
 	}
 	@RequestMapping(value = "/{iterationId}", method = RequestMethod.GET, name="iteration.details")
-	public ModelAndView getResource(@PathVariable String projectCode,
-			@PathVariable("iterationId") int iterationId) {
+	public ModelAndView getResource(@PathVariable final String projectCode,
+			@PathVariable("iterationId") final int iterationId) {
 		final ModelAndView mav = new ModelAndView("iteration/storyList");
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
@@ -112,8 +112,8 @@ public class IterationController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{iterationId}/edit", method = RequestMethod.GET)
-	public ModelAndView getModifyResource(@PathVariable String projectCode, @PathVariable int iterationId,
-			@ModelAttribute("iterationForm") IterationForm iterationForm) {
+	public ModelAndView getModifyResource(@PathVariable final String projectCode, @PathVariable final int iterationId,
+			@ModelAttribute("iterationForm") final IterationForm iterationForm) {
 		final ModelAndView mav = new ModelAndView("iteration/editIteration");
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
@@ -126,8 +126,8 @@ public class IterationController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{iterationId}/edit", method = RequestMethod.POST)
-	public ModelAndView postModifyResource(@PathVariable String projectCode, @PathVariable int iterationId,
-			@Valid @ModelAttribute("iterationForm") IterationForm iterationForm, BindingResult result) {
+	public ModelAndView postModifyResource(@PathVariable final String projectCode, @PathVariable final int iterationId,
+			@Valid @ModelAttribute("iterationForm") final IterationForm iterationForm, final BindingResult result) {
 		final ModelAndView mav;
 		final Project project = ps.getProjectByCode(projectCode);
 		final Iteration iteration = is.getIterationById(iterationId);
@@ -137,7 +137,7 @@ public class IterationController extends BaseController {
 			mav.addObject("iteration", iteration);
 		} else {
 			is.setDates(iteration, iterationForm.getBeginDate(), iterationForm.getEndDate());
-			String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
+			final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")
 					.arg(0, projectCode).build();
 			mav = new ModelAndView("redirect:" + resourceUrl);
 		}
@@ -145,7 +145,7 @@ public class IterationController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{iterationId}/delete", method = RequestMethod.POST)
-	public ModelAndView deleteResource(@PathVariable String projectCode, @PathVariable int iterationId) {
+	public ModelAndView deleteResource(@PathVariable final String projectCode, @PathVariable final int iterationId) {
 		final Iteration iteration = is.getIterationById(iterationId);
 		is.deleteIteration(iteration);
 		final String resourceUrl = MvcUriComponentsBuilder.fromMappingName(UriComponentsBuilder.fromPath("/"), "project.details")

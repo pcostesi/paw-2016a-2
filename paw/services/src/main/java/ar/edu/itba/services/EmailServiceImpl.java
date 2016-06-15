@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ar.edu.itba.interfaces.EmailService;
+import ar.edu.itba.interfaces.service.EmailService;
 import ar.edu.itba.models.User;
 
 /**

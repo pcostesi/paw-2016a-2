@@ -20,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ar.edu.itba.interfaces.IterationService;
-import ar.edu.itba.interfaces.ProjectService;
-import ar.edu.itba.interfaces.StoryService;
-import ar.edu.itba.interfaces.TaskService;
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.service.IterationService;
+import ar.edu.itba.interfaces.service.ProjectService;
+import ar.edu.itba.interfaces.service.StoryService;
+import ar.edu.itba.interfaces.service.TaskService;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Project;

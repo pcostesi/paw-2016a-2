@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.interfaces.TaskDao;
-import ar.edu.itba.interfaces.TaskService;
+import ar.edu.itba.interfaces.dao.StoryDao;
+import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.service.TaskService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;

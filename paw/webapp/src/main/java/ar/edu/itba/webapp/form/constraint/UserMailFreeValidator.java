@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.interfaces.service.UserService;
 
 public class UserMailFreeValidator implements ConstraintValidator<UserMailFree, String> {
 	
