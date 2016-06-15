@@ -35,8 +35,14 @@ public class DateRangeFreeValidator implements ConstraintValidator<DateRangeFree
             final LocalDate startDate = form.getBeginDate();
             final LocalDate endDate = form.getEndDate();
             final Project project = ps.getProjectById(form.getProjectId());
+            boolean isInvalid = false;
+            if(form.getIterationId() < 0) {
+            	isInvalid = !is.isValidDateRangeInProject(project, null, startDate, endDate);
+            } else {
+            	isInvalid = !is.isValidDateRangeInProject(project, is.getIterationById(form.getIterationId()), startDate, endDate);
+            }
             
-            if (!is.isValidDateRangeInProject(project, startDate, endDate)) {
+            if (isInvalid) {
             	context.disableDefaultConstraintViolation();
             	context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(firstFieldName).addConstraintViolation();
             	context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(secondFieldName).addConstraintViolation();

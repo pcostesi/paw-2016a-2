@@ -17,6 +17,8 @@ public class IterationForm {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")	
 	private LocalDate beginDate;
 	
+	private String duration;
+
 	@NotNull
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate endDate;
@@ -26,7 +28,24 @@ public class IterationForm {
 	private int iterationNumberToInherit;
 	
 	private int projectId;
+	private int iterationId;
 
+	public int getIterationId() {
+		return iterationId;
+	}
+
+	public void setIterationId(int iterationId) {
+		this.iterationId = iterationId;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+	
 	public int getProjectId() {
 		return projectId;
 	}

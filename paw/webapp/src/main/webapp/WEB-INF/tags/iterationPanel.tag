@@ -6,7 +6,7 @@
 
 <t:collapsiblePanel panelId="iteration-${iteration.number()}">
 	<jsp:attribute name="titleInfo"> 
-		<t:iterationStatusBadge status="${iteration.status()}"/> 
+		<t:statusBadge status="${iteration.status()}"/> 
 	</jsp:attribute>
 	<jsp:attribute name="title">Iteration #${iteration.number()}</jsp:attribute>	
 		<jsp:attribute name="actions">

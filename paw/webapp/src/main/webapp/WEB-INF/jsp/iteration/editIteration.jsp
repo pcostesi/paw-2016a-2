@@ -16,6 +16,7 @@
 				<div class="col-sm-6">
 					<fieldset>
 						<form:hidden path="projectId" value="${project.projectId()}"/>
+						<form:hidden path="iterationId" value="${iteration.iterationId()}"/>
 						<bs:input path="beginDate" label="Begin date" dateClass="dateInput" placeholder="dd/MM/YYYY"/>
 						<bs:input path="endDate" label="End date" dateClass="dateInput" placeholder="dd/MM/YYYY"/>
 					</fieldset>
