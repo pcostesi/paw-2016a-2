@@ -11,7 +11,7 @@
 <t:staticPanel panelId="project-${project.code()}">
 	<jsp:attribute name="titleInfo">
 		<c:if test="${user eq project.admin()}">
-			<span class="label label-warning">ADMIN</span>
+			<span class="label label-warning"><spring:message code="admin.title"/></span>
 		</c:if>
 	</jsp:attribute>
 	<jsp:attribute name="title">

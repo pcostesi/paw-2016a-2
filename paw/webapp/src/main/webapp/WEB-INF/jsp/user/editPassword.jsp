@@ -7,7 +7,7 @@
 
 <t:page user="${user}">
 	<jsp:attribute name="title">
-    	Edit Password
+    	<spring:message code="user.edit.password"/>
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -20,7 +20,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit Changes</button>
+			<button type="submit" class="btn btn-primary"><spring:message code="user.button.submit.changes"/></button>
 
 		</form:form>
     </jsp:body>

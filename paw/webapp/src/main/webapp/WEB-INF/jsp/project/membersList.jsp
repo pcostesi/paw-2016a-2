@@ -6,7 +6,7 @@
 
 <t:page>
 	<jsp:attribute name="title">
-		Project members
+		<spring:message code="project.list.title"/>
 	</jsp:attribute>	
 	<jsp:body>
 	<c:url var="url" value="/project/${project.code()}/members"/>
@@ -20,7 +20,7 @@
 				</form:form>
 			<t:staticPanel panelId="members">			
 				<jsp:attribute name="title">
-					Members
+					<spring:message code="project.title"/>
 				</jsp:attribute>				
 				<jsp:body>					
 					<t:memberList admin="${project.admin()}" members="${members}" user="${user}" url="${url}"/>

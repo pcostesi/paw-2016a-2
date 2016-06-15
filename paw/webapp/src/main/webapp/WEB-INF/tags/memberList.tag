@@ -9,7 +9,7 @@
 
 <div class="row">
 	<div class="col-sm-12">
-	<p><strong>${admin.username()}</strong> <span class="label label-warning">ADMIN</span><br>
+	<p><strong>${admin.username()}</strong> <span class="label label-warning"><spring:message code="admin.title"/></span><br>
 	<a href="mailto:${admin.mail()}">${admin.mail()}</a></p>
 	</div>
 </div>
