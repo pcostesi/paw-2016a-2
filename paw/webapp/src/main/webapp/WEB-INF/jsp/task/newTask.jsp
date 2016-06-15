@@ -5,12 +5,12 @@
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<spring:message code="task.edit.title.placeholder" var ="taskTitlePlaceholder"/>
-<spring:message code="task.edit.description.placeholder"var="taskDescPlaceholder"/>
+<spring:message code="task.edit.title.placeholder" var="taskTitlePlaceholder"/>
+<spring:message code="task.edit.description.placeholder" var="taskDescPlaceholder"/>
 
 <t:page>
 	<jsp:attribute name="title">
-		<spring:message code="task.new.title" arguments="${project.name()},${iteration.number()}$" />
+		<spring:message code="task.new.title" arguments="${project.name()},${iteration.number()}" />
 	</jsp:attribute>
 
 	<jsp:body>
