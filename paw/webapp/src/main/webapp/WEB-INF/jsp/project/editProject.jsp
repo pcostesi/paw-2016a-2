@@ -18,9 +18,9 @@
 					<fieldset>
 						<form:hidden path="oldName" value ="${project.name()}"/>
 						<form:hidden path="oldCode" value="${project.code()}"/>
-						<bs:input path="name" label="Name" />
-						<bs:input path="code" label="Code" />
-						<bs:input path="description" label="Description" />
+						<bs:input path="name" label="Name" placeholder="Super project"/>
+						<bs:input path="code" label="Code" placeholder="super.proj"/>
+						<bs:input path="description" label="Description" placeholder="This project is super"/>
 					</fieldset>
 				</div>
 			</div>
