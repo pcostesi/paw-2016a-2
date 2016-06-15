@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.interfaces.dao.ProjectDao;
+import ar.edu.itba.interfaces.dao.UserDao;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
@@ -39,10 +39,10 @@ public class UserDaoTest {
 		
 		private User user;
 		private JdbcTemplate jdbcTemplate;
-		private String name = "Braulius";
-		private String password = "secret password";
-		private String mail = "braulius@braulicus.com";
-		private String fakeName = "fake name used for fails, do no instantiate";
+		private final String name = "Braulius";
+		private final String password = "secret password";
+		private final String mail = "braulius@braulicus.com";
+		private final String fakeName = "fake name used for fails, do no instantiate";
 		
 		@Before
 		public void setup(){
@@ -97,7 +97,7 @@ public class UserDaoTest {
 			assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "account") == 150);
 			assertEquals(ud.getAllUsernames().size(), 150);
 			
-			List<String> list = ud.getAllUsernamesExcept(user);
+			final List<String> list = ud.getAllUsernamesExcept(user);
 			assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "account") == 150);
 			assertEquals(list.size(), 149);
 			assertFalse(list.contains(name));
@@ -114,9 +114,9 @@ public class UserDaoTest {
 		
 		@Test
 		public void getAllUsernamesOfProject(){
-			Project project = pd.createProject(user, "name","description", "code");
+			final Project project = pd.createProject(user, "name","description", "code");
 			pd.addProjectMember(project, ud.createUser("project user", password, "project@mail.com"));
-			List<String> list = ud.getAllUsernamesOfProject(project);
+			final List<String> list = ud.getAllUsernamesOfProject(project);
 			assertEquals(list.size(), 1);
 		}
 		

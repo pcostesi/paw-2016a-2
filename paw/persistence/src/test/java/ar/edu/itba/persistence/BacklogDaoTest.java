@@ -18,9 +18,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import ar.edu.itba.interfaces.BacklogDao;
-import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.interfaces.dao.BacklogDao;
+import ar.edu.itba.interfaces.dao.ProjectDao;
+import ar.edu.itba.interfaces.dao.UserDao;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
@@ -49,10 +49,10 @@ public class BacklogDaoTest {
 
 	private BacklogItem item;
 
-	private String title = "A pretty Title";
-	private String description = "A lovley description";
-	private String newTitle = "This replaces a pretty title";
-	private String newDescription = "This replaces a loveley description";
+	private final String title = "A pretty Title";
+	private final String description = "A lovley description";
+	private final String newTitle = "This replaces a pretty title";
+	private final String newDescription = "This replaces a loveley description";
 
 	@Before
 	public void setup() {

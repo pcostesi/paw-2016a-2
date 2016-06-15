@@ -19,10 +19,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import ar.edu.itba.interfaces.IterationDao;
-import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.interfaces.dao.IterationDao;
+import ar.edu.itba.interfaces.dao.ProjectDao;
+import ar.edu.itba.interfaces.dao.StoryDao;
+import ar.edu.itba.interfaces.dao.UserDao;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
@@ -56,7 +56,7 @@ public class StoryDaoTest {
 	private Project project;
 	private User owner;
 	private int number;
-	private String title = "This story has a wonderfull title";
+	private final String title = "This story has a wonderfull title";
 
 	@Before
 	public void setUp() throws Exception {
@@ -67,8 +67,8 @@ public class StoryDaoTest {
 		}
 		jdbcTemplate = new JdbcTemplate(ds);
 		project = pd.createProject(owner, pName, "Best Project EVAR", pCode);
-		LocalDate beginDate = LocalDate.now();
-		LocalDate endDate = LocalDate.now().plusDays(15);
+		final LocalDate beginDate = LocalDate.now();
+		final LocalDate endDate = LocalDate.now().plusDays(15);
 		iteration = id.createIteration(project, number, beginDate, endDate);
 
 	}
@@ -123,7 +123,7 @@ public class StoryDaoTest {
 
 	@Test
 	public void udpateTitle() {
-		String newTitle = "random";
+		final String newTitle = "random";
 		story = sd.createStory(iteration, title);
 		sd.updateTitle(story, newTitle);
 		story = sd.getStoryById(story.storyId());
