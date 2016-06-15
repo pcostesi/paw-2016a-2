@@ -6,6 +6,10 @@
 <%@attribute name="panelParent" required="false"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
+<c:set var="dateFormat">
+	<spring:message code="project.description.dateFormat"/>
+</c:set>
+
 <c:url value="/project/${project.code()}" var="projectUrl"/>
 
 <t:staticPanel panelId="project-${project.code()}">
@@ -28,7 +32,7 @@
 	<jsp:body>
 		<div class="row">
 	        <div class="col-sm-12">
-	        	<p><strong><spring:message code="projectPanel.start_date"/></strong> ${project.startDate()}</p>
+	        	<p><strong><spring:message code="projectPanel.start_date"/></strong> ${project.formattedStartDate(dateFormat)}</p>
 	            <p><strong><spring:message code="projectPanel.description"/></strong> ${project.description()}</p>
 	        </div>
 	    </div>

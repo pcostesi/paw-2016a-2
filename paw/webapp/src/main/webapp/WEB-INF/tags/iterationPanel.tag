@@ -4,6 +4,10 @@
 <%@attribute name="iteration" required="true" type="ar.edu.itba.models.Iteration" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
+<c:set var="dateFormat">
+	<spring:message code="iteration.description.dateFormat"/>
+</c:set>
+
 <t:collapsiblePanel panelId="iteration-${iteration.number()}">
 	<jsp:attribute name="titleInfo"> 
 		<t:statusBadge status="${iteration.status()}"/> 
@@ -19,8 +23,8 @@
 		<jsp:body>
 			<div class="row">
 		        <div class="col-sm-12">
-		            <p><strong><spring:message code="iterationsPanel.start_date"/></strong> ${iteration.startDate()}</p>
-		            <p><strong><spring:message code="iterationsPanel.end_date"/></strong> ${iteration.endDate()}</p>
+		            <p><strong><spring:message code="iterationsPanel.start_date"/></strong> ${iteration.formattedStartDate(dateFormat)}</p>
+		            <p><strong><spring:message code="iterationsPanel.end_date"/></strong> ${iteration.formattedEndDate(dateFormat)}</p>
 		        </div>
 		    </div>
 		</jsp:body>

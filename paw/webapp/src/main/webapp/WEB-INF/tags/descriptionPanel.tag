@@ -4,10 +4,14 @@
 <%@attribute name="project" required="true" type="ar.edu.itba.models.Project"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
+<c:set var="dateFormat">
+	<spring:message code="project.description.dateFormat"/>
+</c:set>
+
 <t:staticPanel panelId="${project.code()}-description">
 	<jsp:attribute name="title"><spring:message code="descriptionPanel.title"/></jsp:attribute>
 	<jsp:body>
-		<p><strong><spring:message code="descriptionPanel.start_date"/></strong> ${project.startDate()}</p>
+		<p><strong><spring:message code="descriptionPanel.start_date"/></strong>${project.formattedStartDate(dateFormat)}</p>
 	    <p><strong><spring:message code="descriptionPanel.description"/></strong> ${project.description()}</p>
 	</jsp:body>
 </t:staticPanel>
