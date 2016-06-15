@@ -1,6 +1,9 @@
 package ar.edu.itba.persistence;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 
@@ -18,14 +21,9 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import ar.edu.itba.interfaces.IterationDao;
 import ar.edu.itba.interfaces.ProjectDao;
-import ar.edu.itba.interfaces.StoryDao;
-import ar.edu.itba.interfaces.TaskDao;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.models.Iteration;
-import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.Score;
-import ar.edu.itba.models.Status;
 import ar.edu.itba.models.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,11 +44,6 @@ public class IterationDaoTests {
 
 	private final String pName = "TesterProject";
 	private final String pCode = "Test";
-	private final String tName = "Test Task";
-	private final String tDesc = "The tester's life is a tough one";
-	private final Status status = Status.NOT_STARTED;
-	private final Score score = Score.EASY;
-	private final Priority priority = Priority.NORMAL;
 
 	private JdbcTemplate jdbcTemplate;
 	private Iteration iteration;
