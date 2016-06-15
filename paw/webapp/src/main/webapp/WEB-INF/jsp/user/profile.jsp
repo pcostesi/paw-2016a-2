@@ -11,7 +11,7 @@
 	</jsp:attribute>
 		<jsp:attribute name="actions">
 		<a href="${pageContext.request.contextPath}/me/edit/password" class="btn btn-primary btn-sm">
-		    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Edit Password
+		    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <spring:message code="profile.edit.password"/>
 		</a>
 	</jsp:attribute>
 	
