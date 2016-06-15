@@ -58,7 +58,7 @@ public class IterationServiceImpl implements IterationService{
 		int iterationNumber = 1;
 
 		for (Iteration iteration: iterations) {
-			if (iteration.endDate().compareTo(startDate) < 0) {
+			if (iteration.startDate().compareTo(startDate) < 0) {
 				iterationNumber++;
 			}
 			if (!isValidRangeAgainstIteration(iteration, startDate, endDate)) {
