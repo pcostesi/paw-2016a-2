@@ -7,7 +7,7 @@
 
 <c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/new" var="formUrl" />
 
-<spring:message code="story.new.title.placeholder" var ="storyTitlePlaceholder">
+<spring:message code="story.new.title.placeholder" var="storyTitlePlaceholder"/>
 
 <t:page>
 	<jsp:attribute name="title">

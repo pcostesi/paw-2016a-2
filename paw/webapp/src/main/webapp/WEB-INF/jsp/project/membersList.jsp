@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
@@ -8,7 +9,7 @@
 
 <t:page>
 	<jsp:attribute name="title">
-		<spring:message code="project.list.title"/>
+		<spring:message code="project.members.title"/>
 	</jsp:attribute>	
 	<jsp:body>
 	<c:url var="url" value="/project/${project.code()}/members"/>
@@ -22,7 +23,7 @@
 				</form:form>
 			<t:staticPanel panelId="members">			
 				<jsp:attribute name="title">
-					<spring:message code="project.title"/>
+					<spring:message code="project.members"/>
 				</jsp:attribute>				
 				<jsp:body>					
 					<t:memberList admin="${project.admin()}" members="${members}" user="${user}" url="${url}"/>

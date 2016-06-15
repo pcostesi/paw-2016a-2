@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
@@ -8,7 +9,7 @@
 
 <t:page>
 	<jsp:attribute name="title">
-    	<spring:message code="story.edit.title" />
+    	<spring:message code="story.edit.title"/>
 	</jsp:attribute>	
 	
 	<jsp:body>

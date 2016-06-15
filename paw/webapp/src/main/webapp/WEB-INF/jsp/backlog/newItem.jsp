@@ -6,7 +6,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <spring:message code="backlog.newItem.title.placeholder" var="changeTitlePlaceholder"/> 
-<spring:message code=backlog.newItem.description.placeholder" var="descriptionPLaceholder"/>
+<spring:message code="backlog.newItem.description.placeholder" var="descriptionPLaceholder"/>
 
 <t:page>
 	<jsp:attribute name="title">
