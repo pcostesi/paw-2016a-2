@@ -17,17 +17,15 @@ public interface IterationService {
 	public Iteration getIteration(final Project project, int iterationNumber);
 	
 	public Iteration getIterationById(int iterationId);
-	
-	public Iteration setBeginDate(final Iteration iteration, final LocalDate beginDate);
-	
-	public Iteration setEndDate(final Iteration iteration, final LocalDate endDate);
 
 	public List<Iteration> getIterationsForProject(final Project project);
 	
 	public Project getParent(final Iteration iteration);
 
-	boolean isValidDateRangeInProject(final Project project, final LocalDate startDate, final LocalDate endDate);
+	public boolean isValidDateRangeInProject(final Project project, final Iteration iteration, final LocalDate startDate, final LocalDate endDate);
 
 	public Integer getLastFinishedIterationNumber(final Project project);
+
+	public Iteration setDates(final Iteration iteration, final LocalDate beginDate, final LocalDate endDate);
 	
 }

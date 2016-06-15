@@ -10,6 +10,7 @@
 <%@attribute name="dateClass" required="false" type="java.lang.String"%>
 <%@attribute name="type" required="false" type="java.lang.String"%>
 <%@attribute name="placeholder" required="false" type="java.lang.String"%>
+<%@attribute name="id" required="false" type="java.lang.String"%>
 
 <jsp:doBody var="body"/>
 <c:if test="${not empty body}">
@@ -24,7 +25,7 @@
 	<div class="form-group ${status.error ? 'has-error' : '' }">
 	    <div class="input-group ${cssClass}">
 	        <label class="input-group-addon" for="${path}">${label}<c:if test="${required}"><span class="required">*</span></c:if></label>
-	        <form:input path="${path}" class="form-control ${dateClass}" type="${type}" placeholder="${placeholder}"/>
+	        <form:input id="${id}" path="${path}" class="form-control ${dateClass}" type="${type}" placeholder="${placeholder}"/>
 	    </div>
 	    <c:if test="${status.error}">
             <span class="help-block">${status.errorMessage}</span>

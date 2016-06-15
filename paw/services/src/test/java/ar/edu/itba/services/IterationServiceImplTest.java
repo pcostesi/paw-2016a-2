@@ -1,7 +1,6 @@
 package ar.edu.itba.services;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -167,40 +166,6 @@ public class IterationServiceImplTest {
 	}
 	
 	@Test
-	public void setBeginDate() {
-		LocalDate newDate = iter.startDate().plusDays(1);
-		iter = is.setBeginDate(iter, newDate);
-		assertTrue(newDate.equals(iter.startDate()));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void setBeginDateWithBadDate() {
-		is.setBeginDate(iter, iter.endDate().plusDays(1));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void setBeginWithNullDate() {
-		is.setBeginDate(iter, null);
-	}
-	
-	@Test
-	public void setEndDate() {
-		LocalDate newEndDate = iter.endDate().plusDays(1);
-		iter = is.setEndDate(iter, newEndDate);
-		assertTrue(newEndDate.equals(iter.endDate()));		
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void setEndDateWithNullDate() {
-		is.setEndDate(iter, null);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void setEndDateWithInvalidDate() {
-		is.setEndDate(iter, beginDate.minusDays(5));
-	}
-	
-	@Test
 	public void getIterationsForProject() {
 		assertNotNull("List should not be null", is.getIterationsForProject(project));
 	}
@@ -257,74 +222,6 @@ public class IterationServiceImplTest {
 	public void getIterationByNumberForInexistentIteration() {
 		is.deleteIteration(iter);
 		is.getIteration(project, iter.number());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void setBeginDateToNullIteration() {
-		is.setBeginDate(iter, null);
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void setBeginDateToInexistentIteration() {
-		is.deleteIteration(iter);
-		is.setBeginDate(iter, LocalDate.now());
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void setBeginDateToOverlapAnIteration() {
-		is.createIteration(project, beginDate.minusDays(5), beginDate);
-		is.setBeginDate(iter, beginDate.minusDays(2));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void setEndDateToNullIteration() {
-		is.setEndDate(iter, null);
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void setEnDateToInexistentIteration() {
-		is.deleteIteration(iter);
-		is.setEndDate(iter, LocalDate.now());
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void setEndDateToOverlapIteration() {
-		is.createIteration(project, endDate, endDate.plusDays(5));
-		is.setEndDate(iter, endDate.plusDays(2));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void invalidDateRangeBecauseStartDateIsNull() {
-		is.isValidDateRangeInProject(project, null, endDate);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void invalidDateRangeBecauseEndDateIsNull() {
-		is.isValidDateRangeInProject(project, beginDate, null);
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void invalidDateRangeBecauseProjectDoesntExist() {
-		ps.deleteProject(admin, project);
-		is.isValidDateRangeInProject(project, beginDate.plusDays(20), endDate.plusDays(20));
-	}
-
-	@Test
-	public void invalidDateRangeCauseCauseEndDateOverlaps() {
-		is.createIteration(project, endDate.plusDays(1), endDate.plusDays(5));
-		assertFalse(is.isValidDateRangeInProject(project, beginDate, endDate.plusDays(2)));
-	}
-
-	@Test
-	public void invalidDateRangeCauseCauseStartDateOverlaps() {
-		is.createIteration(project, beginDate.minusDays(5), beginDate.minusDays(1));
-		assertFalse(is.isValidDateRangeInProject(project, beginDate.minusDays(2), endDate));
-	}
-
-	@Test
-	public void invalidDateRangeCauseCauseDateContainsIteration() {
-		is.createIteration(project, endDate, endDate.plusDays(5));
-		assertFalse(is.isValidDateRangeInProject(project, beginDate, endDate.plusDays(10)));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

@@ -8,6 +8,7 @@
 <%@attribute name="label" required="false" type="java.lang.String"%>
 <%@attribute name="required" required="false" type="java.lang.Boolean"%>
 <%@attribute name="items" required="false" type="java.util.List"%>
+<%@attribute name="map" required="false" type="java.util.Map"%>
 
 <jsp:doBody var="body"/>
 <c:if test="${not empty body}">
@@ -21,9 +22,14 @@
 	<div class="form-group ${status.error ? 'has-error' : '' } ${cssClass}">
 		<div class="input-group">
 		  	<span for="${path}" class="input-group-addon">${label}<c:if test="${required}"><span class="required">*</span></c:if></span>
-	        <form:select path="${path}" class="form-control">
-	        	<form:options itemLabel="label"/>
-	        </form:select>
+		  	<c:choose>
+		  		<c:when test="${not empty map}">
+				  	<form:select id="${path}" path="${path}" class="form-control" items="${map}"/>
+		  		</c:when>
+		  		<c:otherwise>
+				  	<form:select id="${path}" path="${path}" class="form-control" items="${items}"/>
+		  		</c:otherwise>
+		  	</c:choose>
 		    <c:if test="${status.error}">
 	            <span class="help-block">${status.errorMessage}</span>
 	        </c:if>
