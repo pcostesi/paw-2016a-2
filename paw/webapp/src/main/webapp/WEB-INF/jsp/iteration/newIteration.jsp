@@ -5,6 +5,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<spring:message code="iteration.edit.date.placeholder" var = "beginDatePlaceholder"/>
+<spring:message code="iteration.edit.date.placeholder" var = "endDatePlaceholder"/>
+
 <t:page>
 	<jsp:attribute name="title">
 		<spring:message code="iteration.new.title" arguments="${project.name()}" />
@@ -17,9 +20,9 @@
 					<fieldset>
 						<form:hidden path="projectId" value="${project.projectId()}"/>
 						<form:hidden path="iterationId" value="-1"/>
-						<bs:input id="beginDate" path="beginDate" label="Begin date" dateClass="dateInput" placeholder="dd/MM/YYYY"/>
+						<bs:input id="beginDate" path="beginDate" label="Begin date" dateClass="dateInput" placeholder="${beginDatePlaceholder}"/>
 						<bs:select path="duration" label="Duration" map="${durationOptions}"/>
-						<bs:input id="endDate" path="endDate" label="End date" dateClass="dateInput" placeholder="dd/MM/YYYY"/>
+						<bs:input id="endDate" path="endDate" label="End date" dateClass="dateInput" placeholder="${endDatePlaceholder}"/>
 						<c:if test="${not empty iterationToInheritFrom}">
 							<bs:checkBox path="inheritIteration" label="Inherit unfinished tasks"/>
 							<form:hidden path="iterationNumberToInherit" value="${iterationToInheritFrom}"/>

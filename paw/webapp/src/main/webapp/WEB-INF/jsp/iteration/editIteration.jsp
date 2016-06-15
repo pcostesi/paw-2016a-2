@@ -5,6 +5,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<spring:message code="iteration.edit.date.placeholder" var = "beginDatePlaceholder"/>
+<spring:message code="iteration.edit.date.placeholder" var = "endDatePlaceholder"/>
+
 <t:page>
 	<jsp:attribute name="title">
 		<spring:message code="iteration.edit.title" arguments="${iteration.number()},${project.name()}"/>
@@ -17,8 +20,8 @@
 					<fieldset>
 						<form:hidden path="projectId" value="${project.projectId()}"/>
 						<form:hidden path="iterationId" value="${iteration.iterationId()}"/>
-						<bs:input path="beginDate" label="Begin date" dateClass="dateInput" placeholder="dd/MM/YYYY"/>
-						<bs:input path="endDate" label="End date" dateClass="dateInput" placeholder="dd/MM/YYYY"/>
+						<bs:input path="beginDate" label="Begin date" dateClass="dateInput" placeholder="${beginDatePlaceholder}"/>
+						<bs:input path="endDate" label="End date" dateClass="dateInput" placeholder="${endDatePlaceholder}"/>
 					</fieldset>
 				</div>
 			</div>

@@ -5,6 +5,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<spring:message code="backlog.newItem.title.placeholder" var="changeTitlePlaceholder"/> 
+<spring:message code=backlog.newItem.description.placeholder" var="descriptionPLaceholder"/>
+
 <t:page>
 	<jsp:attribute name="title">
 		<spring:message code="item.new.title" arguments="${project.name()}" />
@@ -17,8 +20,8 @@
 				<div class="col-sm-6">
 					<fieldset>
 						<form:hidden path="projectId" value="${project.projectId()}"/>
-						<bs:input path="title" label="Title" placeholder="Awesome idea" />
-						<bs:input path="description" label="Description" placeholder="As a user I want to do cool stuff"/>
+						<bs:input path="title" label="Title" placeholder="${changeTitlePlaceholder}"/>
+						<bs:input path="description" label="Description" placeholder="${descriptionPLaceholder}"/>
 					</fieldset>
 				</div>
 			</div>

@@ -4,6 +4,8 @@
 <%@taglib prefix="bs" tagdir="/WEB-INF/tags/bs" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<spring:message code="story.edi.title.placeholder" var="storyNamePlaceholder"/>
+
 <t:page>
 	<jsp:attribute name="title">
     	<spring:message code="story.edit.title" />
@@ -17,7 +19,7 @@
 					<fieldset>
 						<form:hidden path="oldTitle" value="${story.title()}"/>
 						<form:hidden path="iterationId" value="${iteration.iterationId()}"/>
-						<bs:input path="title" label="Title" placeholder="As a user I want cookies"/>
+						<bs:input path="title" label="Title" placeholder="${storyNamePlaceholder}"/>
 					</fieldset>
 				</div>
 			</div>

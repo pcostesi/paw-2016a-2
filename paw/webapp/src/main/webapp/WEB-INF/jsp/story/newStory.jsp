@@ -7,6 +7,8 @@
 
 <c:url value="/project/${project.code()}/iteration/${iteration.iterationId()}/story/new" var="formUrl" />
 
+<spring:message code="story.new.title.placeholder" var ="storyTitlePlaceholder">
+
 <t:page>
 	<jsp:attribute name="title">
     	<spring:message code="story.new.title">
@@ -22,7 +24,7 @@
 					<fieldset>
 						<form:hidden path="oldTitle"/>
 						<form:hidden path="iterationId" value="${iteration.iterationId()}"/>
-						<bs:input path="title" label="Title" placeholder="As a user I want cookies"/>
+						<bs:input path="title" label="Title" placeholder="${storyTitlePlaceholder}"/>
 					</fieldset>
 				</div>
 			</div>

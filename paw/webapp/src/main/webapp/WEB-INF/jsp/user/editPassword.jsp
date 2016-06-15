@@ -5,9 +5,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<spring:message code="user.edit.password.placeholder" var="passwordVerifyPlaceholder"/>
+<spring:message code="user.edit.password.placeholder" var="passwordPlaceholder"/>
+
 <t:page user="${user}">
 	<jsp:attribute name="title">
-    	Edit Password
+    	<spring:message code="user.edit.password"/>
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -15,12 +18,12 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<fieldset>
-						<bs:input type="password" path="password" label="New Password" placeholder="Super secret password"/>
-						<bs:input type="password" path="verifyPassword" label="Repeat password" placeholder="Super secret password"/>
+						<bs:input type="password" path="password" label="New Password" placeholder="${passwordPlaceholder}"/>
+						<bs:input type="password" path="verifyPassword" label="Repeat password" placeholder="${passwordVerifyPlaceholder}"/>
 					</fieldset>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit Changes</button>
+			<button type="submit" class="btn btn-primary"><spring:message code="user.button.submit.changes"/></button>
 
 		</form:form>
     </jsp:body>

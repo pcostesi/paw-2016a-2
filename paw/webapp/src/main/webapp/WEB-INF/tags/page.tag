@@ -30,7 +30,7 @@
 	            <div class="navbar-header">
 	                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-1" aria-expanded="false">
 	                </button>
-	                <a class="navbar-brand" href="${pageContext.request.contextPath}/">Scrumlr</a>
+	                <a class="navbar-brand" href="${pageContext.request.contextPath}/"><spring:message code="scrumlr.title"/></a>
 	            </div>	            
 	            <nav class="collapse navbar-collapse" id="nav-1">
 	                <ul class="nav navbar-nav navbar-right"> 
