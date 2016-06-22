@@ -20,7 +20,6 @@
         <apache-beanutils.version>1.9.2</apache-beanutils.version>
         <checkstyle.version>2.17</checkstyle.version>
         <findbugs.version>3.0.1</findbugs.version>
-        <frontend.plugin>1.0</frontend.plugin>
         <greenmail.version>1.5.0</greenmail.version>
         <javax-mail.version>1.5.5</javax-mail.version>
         <javax.validation.version>1.1.0.Final</javax.validation.version>
@@ -210,44 +209,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>${frontend.plugin}</version>
-                <configuration>
-                    <workingDirectory>webapp/src/main/webapp/resources</workingDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>v5.3.0</nodeVersion>
-                            <npmVersion>3.3.12</npmVersion>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>bower install</id>
-                        <goals>
-                            <goal>bower</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "dependencies": {},
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "bower": "^1.7.9",
     "jshint": "^2.9.2",
     "karma": "^0.13.22",
