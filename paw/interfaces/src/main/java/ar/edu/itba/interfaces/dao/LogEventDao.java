@@ -13,9 +13,9 @@ public interface LogEventDao {
 
     public void removeEvent(LogEvent e);
 
-    public List<LogEvent> getEventsForProject(Project project);
+    public List<? extends LogEvent> getEventsForProject(Project project);
 
-    public List<LogEvent> getEventsForActor(User user);
+    public List<? extends LogEvent> getEventsForActor(User user);
 
-    public List<LogEvent> getEventsForRange(final LocalDate start, final LocalDate end);
+    public List<? extends LogEvent> getEventsForRange(final LocalDate start, final LocalDate end);
 }

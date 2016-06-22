@@ -3,10 +3,10 @@ package ar.edu.itba.persistence;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,9 @@ import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.UserDao;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import ar.edu.itba.models.event.LogEvent;
 import ar.edu.itba.models.event.ProjectCreatedEvent;
+import ar.edu.itba.models.event.UserCreatedEvent;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -48,28 +50,74 @@ public class LogEventDaoTest {
 
     @Before
     public void setUp() throws Exception {
+        jdbcTemplate = new JdbcTemplate(ds);
+
         if (userDao.userNameExists("testuser")) {
             owner = userDao.getByUsername("testuser");
         } else {
             owner = userDao.createUser("testuser", "test", "testerr@gmail.com");
         }
-        jdbcTemplate = new JdbcTemplate(ds);
-        testProject = projectDao.createProject(owner, pName, "Best Project EVAR", pCode);
+
+        if (projectDao.projectCodeExists(pCode)) {
+            testProject = projectDao.getProjectByCode(pCode);
+        } else {
+            testProject = projectDao.createProject(owner, pName, "Best Project EVAR", pCode);
+        }
     }
 
-    @After
-    public void after() {
-        projectDao.deleteProject(testProject);
-    }
 
     @Test
     public void persistTaskWithCorrectParametersTest() {
+        final int rows = JdbcTestUtils.countRowsInTable(jdbcTemplate, "event");
+
         final ProjectCreatedEvent event = new ProjectCreatedEvent();
         event.setActor(owner);
         event.setProject(testProject);
         event.setTime(LocalDateTime.now());
 
         logEventDao.insertEvent(event);
-        assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "event") == 1);
+        assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "event") == rows + 1);
+    }
+
+    @Test
+    public void persistTwoDifferentTasksWithCorrectParametersTest() {
+        final int rows = JdbcTestUtils.countRowsInTable(jdbcTemplate, "event");
+        final ProjectCreatedEvent event = new ProjectCreatedEvent();
+        event.setActor(owner);
+        event.setProject(testProject);
+        event.setTime(LocalDateTime.now());
+
+        final UserCreatedEvent event2 = new UserCreatedEvent();
+        event2.setActor(owner);
+        event2.setProject(testProject);
+        event2.setTime(LocalDateTime.now());
+        event2.setCreated(owner);
+
+        logEventDao.insertEvent(event);
+        logEventDao.insertEvent(event2);
+        assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "event") == rows + 2);
+    }
+
+    @Test
+    public void getEventsTest() {
+        final int rows = JdbcTestUtils.countRowsInTable(jdbcTemplate, "event");
+        final ProjectCreatedEvent event = new ProjectCreatedEvent();
+        event.setActor(owner);
+        event.setProject(testProject);
+        event.setTime(LocalDateTime.now());
+
+        final UserCreatedEvent event2 = new UserCreatedEvent();
+        event2.setActor(owner);
+        event2.setProject(testProject);
+        event2.setTime(LocalDateTime.now());
+        event2.setCreated(owner);
+
+        logEventDao.insertEvent(event);
+        logEventDao.insertEvent(event2);
+
+        final List<? extends LogEvent> events = logEventDao.getEventsForActor(owner);
+        assertTrue(events.contains(event));
+
+        assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "event") == rows + 2);
     }
 }
