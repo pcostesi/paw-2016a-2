@@ -6,6 +6,12 @@
   "devDependencies": {},
   "dependencies": {
     "bower": "^1.7.9",
+    "eslint": "^2.13.1",
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-eslint": "^18.1.0",
+    "grunt-tslint": "^3.1.0",
+    "grunt-typescript": "^0.8.0",
     "jshint": "^2.9.2",
     "karma": "^0.13.22",
     "tslint": "^3.11.0",
