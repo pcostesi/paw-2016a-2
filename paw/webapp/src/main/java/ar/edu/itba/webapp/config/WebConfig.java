@@ -9,12 +9,15 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -47,6 +50,7 @@ import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 @ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence" })
 @Configuration
 @EnableTransactionManagement
+@PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 public class WebConfig extends WebMvcConfigurerAdapter {
     private final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
@@ -64,15 +68,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public DataSource dataSource() {
+    @Autowired
+    public DataSource dataSource(final Environment env) {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-//        ds.setUrl("jdbc:postgresql://10.16.1.110/grupo2");
-//        ds.setUsername("grupo2");
-//        ds.setPassword("shiufi7T");
-        ds.setUrl("jdbc:postgresql://localhost/paw");
-        ds.setUsername("test");
-        ds.setPassword("test");
+        //        ds.setUrl("jdbc:postgresql://10.16.1.110/grupo2");
+        //        ds.setUsername("grupo2");
+        //        ds.setPassword("shiufi7T");
+
+        ds.setUrl(env.getProperty("configuration.postgresUrl", "jdbc:postgresql://localhost/paw"));
+        ds.setUsername(env.getProperty("configuration.postgresUser", "test"));
+        ds.setPassword(env.getProperty("configuration.postgresPass", "test"));
         return ds;
     }
 
@@ -123,10 +129,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    @Autowired
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(final Environment env) {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setPackagesToScan("ar.edu.itba.models");
-        factoryBean.setDataSource(dataSource());
+        factoryBean.setDataSource(dataSource(env));
 
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
@@ -135,9 +142,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
-        // Si ponen esto en prod, hay tabla!!!
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("format_sql", "true");
+        properties.setProperty("hibernate.show_sql", env.getProperty("configuration.showSql", "false"));
+        properties.setProperty("format_sql", env.getProperty("configuration.showSql", "false"));
 
         factoryBean.setJpaProperties(properties);
 
