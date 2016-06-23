@@ -226,7 +226,18 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${maven-war-plugin.version}</version>
                 <configuration>
-                    <packageExcludes>**/logback-test.xml</packageExcludes>
+                    <packagingExcludes>
+                        **/logback-test.xml,
+                        /resources/node,
+                        /resources/node/**/*
+                    </packagingExcludes>
+                    <webResources>
+                        <resource>
+                            <directory>${session.executionRootDirectory}/spa/dist</directory>
+                            <targetPath>resources</targetPath>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>
