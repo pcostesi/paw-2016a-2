@@ -19,6 +19,7 @@
     <properties>
         <apache-beanutils.version>1.9.2</apache-beanutils.version>
         <checkstyle.version>2.17</checkstyle.version>
+        <cobertura.version>2.7</cobertura.version>
         <findbugs.version>3.0.1</findbugs.version>
         <greenmail.version>1.5.0</greenmail.version>
         <javax-mail.version>1.5.5</javax-mail.version>
@@ -303,12 +304,30 @@
                     <printFailingErrors>true</printFailingErrors>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
 
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura.version}</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
