@@ -56,12 +56,19 @@ module.exports = function(grunt) {
         src: ['src/scripts/**/*.ts'],
         dest: 'build/scripts/',
         options: {
-          // module: 'amd', //or commonjs 
+          module: 'amd', //or commonjs 
           target: 'es5', //or es3 
           sourceMap: true,
-          declaration: true
+          declaration: true,
+          references: [
+            'typings/**/*.d.ts'
+          ]
         }
       }
+    },
+
+    typings: {
+      install: {}
     },
 
     babel: {
@@ -97,7 +104,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('check', ['eslint', 'tslint']);
-  grunt.registerTask('build', ['typescript', 'babel', 'autoprefixer']);
+  grunt.registerTask('build', ['typings', 'typescript', 'babel', 'autoprefixer']);
   grunt.registerTask('dist', ['clean', 'build', 'uglify', 'cssmin']);
   grunt.registerTask('default', ['check', 'dist']);
 
