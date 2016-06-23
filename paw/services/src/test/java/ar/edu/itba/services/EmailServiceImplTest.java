@@ -42,7 +42,7 @@ public class EmailServiceImplTest extends TestCase {
     
     private User randomUser() {
     	User mockedUser = Mockito.mock(User.class);
-    	Mockito.when(mockedUser.mail()).thenReturn("pcostesi@pcostesi.me");
+    	Mockito.when(mockedUser.mail()).thenReturn("alumno@random.com");
     	Mockito.when(mockedUser.username()).thenReturn("AlumnoAlAzar");
     	Mockito.when(mockedUser.password()).thenReturn("Diaz4Evah");
     	return mockedUser;

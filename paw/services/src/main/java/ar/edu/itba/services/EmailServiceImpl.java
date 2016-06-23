@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.service.EmailService;
 import ar.edu.itba.models.User;
@@ -23,7 +23,7 @@ import ar.edu.itba.models.User;
 /**
  * Sending an email in java is a kilombow
  */
-@Component
+@Service
 public class EmailServiceImpl implements EmailService {
 	private static Logger logger = LoggerFactory.getLogger(EmailService.class);
 	
