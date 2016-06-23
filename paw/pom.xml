@@ -228,9 +228,12 @@
                 <configuration>
                     <packagingExcludes>
                         **/logback-test.xml,
-                        /resources/node,
-                        /resources/node/**/*
+                        /resources/node_modules/**/*,
+                        /resources/bower_components/**/*,
+                        /resources/build/**/*,
+                        /resources/src/**/*
                     </packagingExcludes>
+                    <!--
                     <webResources>
                         <resource>
                             <directory>${session.executionRootDirectory}/spa/dist</directory>
@@ -238,6 +241,7 @@
                             <filtering>true</filtering>
                         </resource>
                     </webResources>
+                    -->
                 </configuration>
             </plugin>
             <plugin>
