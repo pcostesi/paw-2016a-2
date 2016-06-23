@@ -125,7 +125,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/**").addResourceLocations("/resources/dist/", "/resources/build/",
+                "/resources/src/");
     }
 
     @Bean

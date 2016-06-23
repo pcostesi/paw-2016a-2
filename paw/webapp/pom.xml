@@ -11,6 +11,11 @@
     <packaging>war</packaging>
     <name>webapp Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <frontend.plugin>1.0</frontend.plugin>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -96,5 +101,60 @@
     </dependencies>
     <build>
         <finalName>webapp</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>${frontend.plugin}</version>
+                <configuration>
+                    <workingDirectory>src/main/webapp/resources</workingDirectory>
+                    <installDirectory>target</installDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v5.3.0</nodeVersion>
+                            <npmVersion>3.3.12</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>bower install</id>
+                        <goals>
+                            <goal>bower</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>grunt dist</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>dist</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
