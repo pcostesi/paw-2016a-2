@@ -37,7 +37,7 @@
         <org.hsqldb.version>2.3.1</org.hsqldb.version>
         <org.immutables.version>2.1.18</org.immutables.version>
         <org.jboss.logging>3.3.0.Final</org.jboss.logging>
-        <!--<org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>-->
+        <org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>
         <org.slf4j.version>1.7.21</org.slf4j.version>
         <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
         <pmd.version>3.6</pmd.version>
