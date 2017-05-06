@@ -129,8 +129,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("/resources/dist/", "/resources/build/",
-                "/resources/src/");
+        registry.addResourceHandler("/**").addResourceLocations("/scrumlr/dist/");
     }
 
     @Bean
