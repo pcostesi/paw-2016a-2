@@ -35,6 +35,7 @@ public class LogEventHibernateDao implements LogEventDao {
     }
 
     @Override
+    @Transactional
     public void removeEvent(final LogEvent event) {
         final Query query = em.createQuery("delete from Event event where event.eventId = :eventId");
         query.setParameter("eventId", event.getEventId());

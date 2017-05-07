@@ -1,5 +1,6 @@
 package ar.edu.itba.persistence;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
@@ -45,8 +46,8 @@ public class LogEventDaoTest {
     private Project testProject;
     private User owner;
 
-    private final String pName = "TesterProject";
-    private final String pCode = "Test";
+    private final String pName = "ProjectLogEvent";
+    private final String pCode = "PLEvent";
 
     @Before
     public void setUp() throws Exception {
@@ -64,7 +65,6 @@ public class LogEventDaoTest {
             testProject = projectDao.createProject(owner, pName, "Best Project EVAR", pCode);
         }
     }
-
 
     @Test
     public void persistTaskWithCorrectParametersTest() {
@@ -99,7 +99,7 @@ public class LogEventDaoTest {
     }
 
     @Test
-    public void getEventsTest() {
+    public void getEventsForActorTest() {
         final int rows = JdbcTestUtils.countRowsInTable(jdbcTemplate, "event");
         final ProjectCreatedEvent event = new ProjectCreatedEvent();
         event.setActor(owner);
@@ -117,7 +117,8 @@ public class LogEventDaoTest {
 
         final List<? extends LogEvent> events = logEventDao.getEventsForActor(owner);
         assertTrue(events.contains(event));
-
+        assertTrue(events.contains(event2));
         assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "event") == rows + 2);
     }
+
 }
