@@ -139,9 +139,11 @@
     <module name="SuppressionCommentFilter"/>
     <!-- Allow to disable checks with @SuppressWarnings -->
     <module name="SuppressWarningsFilter" />
+    <!--
     <module name="SuppressionFilter">
         <property name="file" value="http://static.monits.com/checkstyle-suppressions.xml"/>
     </module>
+    -->
     <!-- Check for unique properties in property files -->
     <module name="UniqueProperties"/>
     <!-- No triling spaces! -->
