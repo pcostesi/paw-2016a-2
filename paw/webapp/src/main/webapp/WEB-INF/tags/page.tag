@@ -72,6 +72,15 @@
 	    </header>
 	
 	    <div class="container">
+	    	<ol class="breadcrumb">
+	    	
+	    	<c:forEach items="breadcrumb">
+	    		<li><a href="${item.value}">${item.key}</a></li>
+	    	</c:forEach>
+	    	</ol>
+	    	
+	    	
+	    	
 	    	<c:if test="${not empty title}">
 	        <div class="page-header">
 	            <h1><jsp:invoke fragment="title"/>
