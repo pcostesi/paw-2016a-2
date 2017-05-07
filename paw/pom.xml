@@ -25,6 +25,7 @@
         <javax-mail.version>1.5.5</javax-mail.version>
         <javax.validation.version>1.1.0.Final</javax.validation.version>
         <jdk.version>1.8</jdk.version>
+        <jersey.version>3.0-SNAPSHOT</jersey.version>
         <jstl.version>1.2</jstl.version>
         <junit.version>4.12</junit.version>
         <logback.version>1.1.7</logback.version>
@@ -39,15 +40,50 @@
         <org.jboss.logging>3.3.0.Final</org.jboss.logging>
         <org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>
         <org.slf4j.version>1.7.21</org.slf4j.version>
-        <org.slf4j.version>1.7.21</org.slf4j.version>
         <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
         <pmd.version>3.6</pmd.version>
         <servlet-api.version>2.5</servlet-api.version>
         <spring-security.version>4.0.4.RELEASE</spring-security.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>snapshot-repository.java.net</id>
+            <name>Java.net Snapshot Repository for Maven</name>
+            <url>https://maven.java.net/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-moxy</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-spring4</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet-core</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.icegreen</groupId>
                 <artifactId>greenmail</artifactId>
