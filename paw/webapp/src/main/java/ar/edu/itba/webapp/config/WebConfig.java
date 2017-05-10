@@ -54,6 +54,7 @@ import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 @EnableAsync
 @EnableScheduling
 @EnableTransactionManagement
+@PropertySource(value = "file:application.properties", ignoreResourceNotFound = true)
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 public class WebConfig extends WebMvcConfigurerAdapter {
     private final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
@@ -76,13 +77,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public DataSource dataSource(final Environment env) {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-        //        ds.setUrl("jdbc:postgresql://10.16.1.110/grupo2");
-        //        ds.setUsername("grupo2");
-        //        ds.setPassword("shiufi7T");
 
-        ds.setUrl(env.getProperty("configuration.postgresUrl", "jdbc:postgresql://localhost/paw"));
-        ds.setUsername(env.getProperty("configuration.postgresUser", "test"));
-        ds.setPassword(env.getProperty("configuration.postgresPass", "test"));
+        ds.setUrl(env.getProperty("configuration.postgresUrl", "jdbc:postgresql://10.16.1.110/grupo2"));
+        ds.setUsername(env.getProperty("configuration.postgresUser", "grupo2"));
+        ds.setPassword(env.getProperty("configuration.postgresPass", "shiufi7T"));
+        
+        logger.info("Connecting to database at {} with user {}", ds.getUrl(), ds.getUsername());
         return ds;
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project 
+    xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ar.edu.itba</groupId>
     <artifactId>paw</artifactId>
@@ -15,7 +16,6 @@
         <module>services</module>
         <module>persistence</module>
     </modules>
-
     <properties>
         <apache-beanutils.version>1.9.2</apache-beanutils.version>
         <checkstyle.version>2.17</checkstyle.version>
@@ -44,7 +44,6 @@
         <servlet-api.version>2.5</servlet-api.version>
         <spring-security.version>4.0.4.RELEASE</spring-security.version>
     </properties>
-
     <repositories>
         <repository>
             <id>snapshot-repository.java.net</id>
@@ -60,17 +59,12 @@
             <layout>default</layout>
         </repository>
     </repositories>
-
     <dependencyManagement>
         <dependencies>
+            <!-- JERSEY -->
             <dependency>
-                <groupId>org.glassfish.jersey.media</groupId>
-                <artifactId>jersey-media-moxy</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.jersey.core</groupId>
-                <artifactId>jersey-server</artifactId>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet-core</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
@@ -79,8 +73,25 @@
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.glassfish.jersey.containers</groupId>
-                <artifactId>jersey-container-servlet-core</artifactId>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.validation</groupId>
+                        <artifactId>validation-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- JERSEY JSON -->
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-moxy</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-jaxb</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
@@ -241,7 +252,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -254,7 +264,7 @@
                     <findbugsXmlOutput>true</findbugsXmlOutput>
                     <findbugsXmlOutputDirectory>target/site/findbugsreports</findbugsXmlOutputDirectory>
                     <debug>false</debug>
-                </configuration> 
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -345,8 +355,6 @@
             </plugin>
         </plugins>
     </build>
-
-
     <reporting>
         <plugins>
             <plugin>
@@ -378,5 +386,4 @@
             </plugin>
         </plugins>
     </reporting>
-
 </project>
