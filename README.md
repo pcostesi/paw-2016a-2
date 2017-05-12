@@ -21,10 +21,14 @@ Run `npm run-script build` to get a dist copy. If you want to develop
 just use `ng serve`. We use the Angular CLI to develop the frontend:
 (this)[https://github.com/angular/angular-cli]
 
-### Server Side App
+To build all the project, just run `mvn clean package` and Maven will generate
+a `.war` file (`paw/webapp/target/webapp.war`).
 
-### Client Side App
+## Running the project
 
+Use `ng serve` in `paw/webapp/src/main/webapp/scrumlr/`. Then go to
+http://localhost:4200 to see your site in action. The developer tools will take
+care of the hot module reloading and code upgrade in the browser.
 
 
 ## Installation
