@@ -189,4 +189,10 @@ public class UserServiceImpl implements UserService {
 		return userDao.getAvailableUsers(project);
 	}
 
+	@Override
+	public User getByApiKey(String username) {
+		//lazy af lol
+		return getByUsername(username);
+	}
+
 }
