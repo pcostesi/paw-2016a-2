@@ -49,7 +49,7 @@ import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 
 
 @EnableWebMvc
-@ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence", "ar.edu.itba.webapp.i18n" })
+@ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.config.auth", "ar.edu.itba.webapp.config.auth.hmac", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence", "ar.edu.itba.webapp.i18n" })
 @Configuration
 @EnableAsync
 @EnableScheduling
