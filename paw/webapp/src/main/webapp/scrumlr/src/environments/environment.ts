@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
   hmr: true,
-  api_endpoint: "http://localhost:8080/paw"
+  apiEndpoint: "http://localhost:8080/paw",
+  baseUri: '/'
 };
