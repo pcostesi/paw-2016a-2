@@ -15,18 +15,21 @@ export class ApiService extends Http {
   private hasCredentials = false;
 
   request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> {
-    const timestamp = (Date.now() / 1000);
+    const timestamp = Date.now() / 1000;
     if (typeof url === 'string') {
       if (!options) {
         options = { headers: new Headers() };
       }
-      options.headers!.set('Authorization', this.generateTokenFromUri(timestamp, url, options));
       options.headers!.set('Content-Type', 'application/json');
+      options.headers!.set('Authorization', this.generateTokenFromUri(timestamp, url, options));
     } else {
     // we have to add the token to the url object
+      url.headers.set('Content-Type', 'application/json');
       url.headers.set('Authorization', this.generateTokenFromRequest(timestamp, url));
     }
-    return super.request(url, options).catch(this.catchAuthError());
+    return super.request(url, options)
+      .catch(this.catchAuthError())
+      .map(response => response.json());
   }
 
   private catchAuthError () {
@@ -42,13 +45,13 @@ export class ApiService extends Http {
     return `${environment.apiEndpoint}/${endpoint}`;
   }
 
-  public login(username, password) {
+  public setCredentials(username, password) {
     this.username = username;
     this.password = password;
     this.hasCredentials = true;
   }
 
-  public logout() {
+  public clearCredentials() {
     this.username = '';
     this.password = '';
     this.hasCredentials = false;
@@ -64,8 +67,8 @@ export class ApiService extends Http {
   }
 
   public static formatFromRequest(timestamp: number, request: Request) {
-    const method = request.method.valueOf();
-    const contentType = request.detectContentType();
+    const method = request.method.valueOf() || 'GET';
+    const contentType = request.detectContentType() || 'application/json';
     const dateString = timestamp - (timestamp % 30) + 30;
     const bodyDigest = ApiService.getBodyDigest(request.text);
     return btoa(`${method}\n${contentType}\n${dateString}\n${bodyDigest}`);
