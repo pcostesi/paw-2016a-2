@@ -23,6 +23,13 @@ public interface UserService {
 	 */
     public User getByUsername(final String username);
     
+	/**
+	 * Get user instance by a stored api key.
+	 * @param username User username.
+	 * @return Instance of the user.
+	 */
+    public User getByApiKey(final String username);
+    
     /**
      * Get a list of all the users
      * @return List of user instances.

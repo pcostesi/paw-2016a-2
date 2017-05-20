@@ -1,18 +1,29 @@
 package ar.edu.itba.webapp.config;
 
-import java.util.concurrent.TimeUnit;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
-import ar.edu.itba.webapp.auth.ScrumlrAuthenticationProvider;
+import ar.edu.itba.webapp.auth.RestAuthenticationEntryPoint;
 import ar.edu.itba.webapp.auth.ScrumlrUserDetailsService;
+import ar.edu.itba.webapp.auth.hmac.AuthorizationHeaderHMACFilter;
+import ar.edu.itba.webapp.auth.hmac.ScrumlrHMACTokenAuthenticationProvider;
+
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 
 @Configuration
@@ -23,48 +34,41 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     static Logger logger = LoggerFactory.getLogger(WebAuthConfig.class);
     
 	@Autowired
-	ScrumlrAuthenticationProvider authProvider;
+	ScrumlrHMACTokenAuthenticationProvider hmacAuthProvider;
 	
 	@Autowired
 	ScrumlrUserDetailsService userDetailsService;
 	
+	@Autowired
+	RestAuthenticationEntryPoint authenticationEntrypoint;
+	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
-		
-		http.authenticationProvider(authProvider)
-			.userDetailsService(userDetailsService)
-			.sessionManagement()
-				.invalidSessionUrl("/login")
+		// Go full REST and disallow sessions. We no longer need RememberMe
+		// or login forms. Or even /login and /logout because we use HMAC :)
+		AuthenticationManager am = this.authenticationManagerBean();
+		AuthorizationHeaderHMACFilter filter = new AuthorizationHeaderHMACFilter(am, authenticationEntrypoint);
+		http
+			.cors()
+            .and()
+            	.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+            	.authenticationProvider(hmacAuthProvider)
+            	.sessionManagement()
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and().authorizeRequests()
-				.antMatchers("/login").anonymous()
 				.antMatchers("/user/new").anonymous()
-				.antMatchers("/sample").anonymous()
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/**").authenticated()
-			.and().formLogin()
-				.loginPage("/login")
-				.usernameParameter("j_username")
-				.passwordParameter("j_password")
-				.defaultSuccessUrl("/", false)
-			.and().logout()
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login")
-			.and().exceptionHandling()
-				.accessDeniedPage("/403")
-			.and().rememberMe()
-				.rememberMeParameter("j_rememberme")
-				.key("this shouldn't be under version control, 12factorize it!")
-				.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
-				.userDetailsService(userDetailsService)
-			.and().csrf()
-				.disable()
+			//.and().exceptionHandling()
+			//	.authenticationEntryPoint(authenticationEntrypoint)
+
 			;
 		logger.debug("Spring Security configured, up 'n running");
 	}
-	
+
 	@Override
 	public void configure(final WebSecurity http) throws Exception {
 		http.ignoring()
-			.antMatchers("/styles/**", "/scripts/**", "/images/**", "/favicon.ico", "/403", "/500", "/404");
+			.antMatchers("/favicon.ico", "/401", "/403", "/500", "/404", "/error/**");
 	}
 }

@@ -69,3 +69,10 @@ local.properties
  
 # PDT-specific
 .buildpath
+
+
+
+*.iml
+.vscode/
+.idea/
+application.properties

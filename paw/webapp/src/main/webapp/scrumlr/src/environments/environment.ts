@@ -5,5 +5,7 @@
 
 export const environment = {
   production: false,
-  hmr: true
+  hmr: true,
+  apiEndpoint: "http://localhost:8080/paw",
+  baseUri: '/'
 };
