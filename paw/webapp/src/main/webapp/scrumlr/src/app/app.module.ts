@@ -5,15 +5,15 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppHeaderComponent } from './app-header/app-header.component';
-import { AppFooterComponent } from './app-footer/app-footer.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 import { SampleComponent } from './sample/sample.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppHeaderComponent,
-    AppFooterComponent,
+    HeaderComponent,
+    FooterComponent,
     SampleComponent
   ],
   imports: [
