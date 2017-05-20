@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
-import { ApiService } from './api.service';
+import { ApiModule } from './api';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -23,9 +23,10 @@ import { environment } from '../environments/environment';
     BrowserModule,
     FormsModule,
     HttpModule,
+    ApiModule,
     AppRoutingModule
   ],
-  providers: [ApiService, {provide: APP_BASE_HREF, useValue: environment.baseUri}],
+  providers: [{provide: APP_BASE_HREF, useValue: environment.baseUri}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
