@@ -9,12 +9,15 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -22,10 +25,13 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -44,9 +50,13 @@ import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 
 
 @EnableWebMvc
-@ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence" })
+@ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.config.auth", "ar.edu.itba.webapp.config.auth.hmac", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence", "ar.edu.itba.webapp.i18n" })
 @Configuration
+@EnableAsync
+@EnableScheduling
 @EnableTransactionManagement
+@PropertySource(value = "file:application.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 public class WebConfig extends WebMvcConfigurerAdapter {
     private final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
@@ -64,15 +74,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public DataSource dataSource() {
+    @Autowired
+    public DataSource dataSource(final Environment env) {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-//        ds.setUrl("jdbc:postgresql://10.16.1.110/grupo2");
-//        ds.setUsername("grupo2");
-//        ds.setPassword("shiufi7T");
-        ds.setUrl("jdbc:postgresql://localhost/paw");
-        ds.setUsername("test");
-        ds.setPassword("test");
+
+        ds.setUrl(env.getProperty("configuration.postgresUrl", "jdbc:postgresql://10.16.1.110/grupo2"));
+        ds.setUsername(env.getProperty("configuration.postgresUser", "grupo2"));
+        ds.setPassword(env.getProperty("configuration.postgresPass", "shiufi7T"));
+        
+        logger.info("Connecting to database at {} with user {}", ds.getUrl(), ds.getUsername());
         return ds;
     }
 
@@ -119,14 +130,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/**").addResourceLocations("/scrumlr/dist/");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowCredentials(true)
+            ;
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    @Autowired
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(final Environment env) {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setPackagesToScan("ar.edu.itba.models");
-        factoryBean.setDataSource(dataSource());
+        factoryBean.setDataSource(dataSource(env));
 
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
@@ -135,9 +154,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
-        // Si ponen esto en prod, hay tabla!!!
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("format_sql", "true");
+        properties.setProperty("hibernate.show_sql", env.getProperty("configuration.showSql", "false"));
+        properties.setProperty("format_sql", env.getProperty("configuration.showSql", "false"));
 
         factoryBean.setJpaProperties(properties);
 

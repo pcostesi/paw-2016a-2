@@ -27,65 +27,50 @@ public class LogEventHibernateDao implements LogEventDao {
     private EntityManager em;
 
     @Override
+    @Transactional
     public LogEvent insertEvent(final LogEvent event) {
-        try {
-            em.persist(event);
-            em.flush();
-            return event;
-        } catch (final Exception exception) {
-            throw new IllegalStateException("Database failed to persist event");
-        }
-    }
-
-    @Override
-    public void removeEvent(final LogEvent event) {
-        try {
-            final Query query = em.createQuery("delete from Event event where event.eventId = :eventId");
-            query.setParameter("eventId", event.getEventId());
-            query.executeUpdate();
-        } catch (final Exception exception) {
-            throw new IllegalStateException("Database failed to delete event");
-        }
+        em.persist(event);
+        em.flush();
+        return event;
     }
 
     @Override
     @Transactional
-    public List<LogEvent> getEventsForProject(final Project project) {
-        try {
-            final TypedQuery<LogEvent> query = em.createQuery(
-                    "from LogEvent event where event.project = :project order by event.time", LogEvent.class);
-            query.setParameter("project", project);
-            return query.getResultList();
-        } catch (final Exception exception) {
-            throw new IllegalStateException("Database failed to get events for this project");
-        }
+    public void removeEvent(final LogEvent event) {
+        final Query query = em.createQuery("delete from Event event where event.eventId = :eventId");
+        query.setParameter("eventId", event.getEventId());
+        query.executeUpdate();
+
     }
 
     @Override
-    public List<LogEvent> getEventsForActor(final User user) {
-        try {
-            final TypedQuery<LogEvent> query = em.createQuery(
-                    "from LogEvent event where event.actor = :actor order by event.time", LogEvent.class);
-            query.setParameter("actor", user);
-            return query.getResultList();
-        } catch (final Exception exception) {
-            throw new IllegalStateException("Database failed to get events for this actor");
-        }
+    public List<? extends LogEvent> getEventsForProject(final Project project) {
+        final TypedQuery<LogEvent> query = em.createQuery(
+                "from LogEvent event where event.project = :project order by event.time", LogEvent.class);
+        query.setParameter("project", project);
+        return query.getResultList();
+
     }
 
     @Override
-    public List<LogEvent> getEventsForRange(final LocalDate start, final LocalDate end) {
-        try {
-            final TypedQuery<LogEvent> query = em.createQuery(
-                    "from LogEvent event where event.time < :endDate and event.time >= startDate order by event.time",
-                    LogEvent.class);
-            final LocalTime zero = LocalTime.of(0, 0);
-            query.setParameter("startDate", LocalDateTime.of(start, zero));
-            query.setParameter("endDate", LocalDateTime.of(end, zero));
-            return query.getResultList();
-        } catch (final Exception exception) {
-            throw new IllegalStateException("Database failed to get events on this range");
-        }
+    public List<? extends LogEvent> getEventsForActor(final User user) {
+        final TypedQuery<LogEvent> query = em.createQuery(
+                "from LogEvent event where event.actor = :actor order by event.time", LogEvent.class);
+        query.setParameter("actor", user);
+        return query.getResultList();
+
+    }
+
+    @Override
+    public List<? extends LogEvent> getEventsForRange(final LocalDate start, final LocalDate end) {
+        final TypedQuery<LogEvent> query = em.createQuery(
+                "from LogEvent event where event.time < :endDate and event.time >= startDate order by event.time",
+                LogEvent.class);
+        final LocalTime zero = LocalTime.of(0, 0);
+        query.setParameter("startDate", LocalDateTime.of(start, zero));
+        query.setParameter("endDate", LocalDateTime.of(end, zero));
+        return query.getResultList();
+
     }
 
 }

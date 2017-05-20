@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project 
+    xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ar.edu.itba</groupId>
     <artifactId>paw</artifactId>
@@ -15,22 +16,21 @@
         <module>services</module>
         <module>persistence</module>
     </modules>
-
     <properties>
         <apache-beanutils.version>1.9.2</apache-beanutils.version>
         <checkstyle.version>2.17</checkstyle.version>
+        <cobertura.version>2.7</cobertura.version>
         <findbugs.version>3.0.1</findbugs.version>
         <greenmail.version>1.5.0</greenmail.version>
         <javax-mail.version>1.5.5</javax-mail.version>
         <javax.validation.version>1.1.0.Final</javax.validation.version>
         <jdk.version>1.8</jdk.version>
+        <jersey.version>3.0-SNAPSHOT</jersey.version>
         <jstl.version>1.2</jstl.version>
         <junit.version>4.12</junit.version>
         <logback.version>1.1.7</logback.version>
-        <logback.version>1.1.7</logback.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
-        <maven-war-plugin.version>2.6</maven-war-plugin.version>
         <mockito.version>1.10.19</mockito.version>
         <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
         <org.hibernate.version>5.1.0.Final</org.hibernate.version>
@@ -39,15 +39,61 @@
         <org.jboss.logging>3.3.0.Final</org.jboss.logging>
         <org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>
         <org.slf4j.version>1.7.21</org.slf4j.version>
-        <org.slf4j.version>1.7.21</org.slf4j.version>
-        <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.8.RELEASE</org.springframework.version>
         <pmd.version>3.6</pmd.version>
         <servlet-api.version>2.5</servlet-api.version>
-        <spring-security.version>4.0.4.RELEASE</spring-security.version>
+        <spring-security.version>4.2.2.RELEASE</spring-security.version>
     </properties>
-
+    <repositories>
+        <repository>
+            <id>snapshot-repository.java.net</id>
+            <name>Java.net Snapshot Repository for Maven</name>
+            <url>https://maven.java.net/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <layout>default</layout>
+        </repository>
+    </repositories>
     <dependencyManagement>
         <dependencies>
+            <!-- JERSEY -->
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet-core</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-spring4</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.validation</groupId>
+                        <artifactId>validation-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- JERSEY JSON -->
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-moxy</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-jaxb</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.icegreen</groupId>
                 <artifactId>greenmail</artifactId>
@@ -206,7 +252,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -219,14 +264,6 @@
                     <findbugsXmlOutput>true</findbugsXmlOutput>
                     <findbugsXmlOutputDirectory>target/site/findbugsreports</findbugsXmlOutputDirectory>
                     <debug>false</debug>
-                </configuration> 
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
-                <configuration>
-                    <packageExcludes>**/logback-test.xml</packageExcludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -288,12 +325,43 @@
                     <printFailingErrors>true</printFailingErrors>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura.version}</version>
+                <configuration>
+                    <check>
+                        <branchRate>85</branchRate>
+                        <lineRate>85</lineRate>
+                        <haltOnFailure>false</haltOnFailure>
+                        <totalBranchRate>85</totalBranchRate>
+                        <totalLineRate>85</totalLineRate>
+                        <packageLineRate>85</packageLineRate>
+                        <packageBranchRate>85</packageBranchRate>
+                    </check>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura.version}</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
@@ -318,5 +386,4 @@
             </plugin>
         </plugins>
     </reporting>
-
 </project>
