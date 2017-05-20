@@ -9,14 +9,12 @@ public class ScrumlrHMACRequestData {
 	
 	private final Instant date;
 	private final String method;
-	private final String contentType;
 	private final String bodyDigest;
 	
 	
 	public static class ScrumlrHMACRequestDataBuilder {
 		private Instant date;
 		private String method;
-		private String contentType;
 		private String bodyDigest;
 		
 		public final ScrumlrHMACRequestDataBuilder date(Instant date) {
@@ -26,11 +24,6 @@ public class ScrumlrHMACRequestData {
 		
 		public final ScrumlrHMACRequestDataBuilder method(String method) {
 			this.method = method;
-			return this;
-		}
-		
-		public final ScrumlrHMACRequestDataBuilder contentType(String contentType) {
-			this.contentType = contentType;
 			return this;
 		}
 		
@@ -44,21 +37,16 @@ public class ScrumlrHMACRequestData {
 				throw new IllegalArgumentException("date has not been set");
 			} else if (method == null) {
 				throw new IllegalArgumentException("method has not been set");
-			} else if (contentType == null) {
-				throw new IllegalArgumentException("Content-Type has not been set");
 			} else if (bodyDigest == null) {
 				throw new IllegalArgumentException("Body digest has not been set");
 			}
-			return new ScrumlrHMACRequestData(date, method.toUpperCase(),
-					contentType, bodyDigest);
+			return new ScrumlrHMACRequestData(date, method.toUpperCase(), bodyDigest);
 		}
 	}
 	
-	private ScrumlrHMACRequestData(Instant date, String method, String contentType,
-			String bodyDigest) {
+	private ScrumlrHMACRequestData(Instant date, String method, String bodyDigest) {
 		this.date = date;
 		this.method = method;
-		this.contentType = contentType;
 		this.bodyDigest = bodyDigest;
 	}
 	
@@ -76,7 +64,6 @@ public class ScrumlrHMACRequestData {
 	public String toString() {
 		String dateString = epochAdjusted();
 		return Base64.encodeAsString(method + "\n" +
-				contentType + "\n" +
 				dateString + "\n" +
 				bodyDigest);
 	}

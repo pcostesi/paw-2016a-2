@@ -9,6 +9,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
@@ -48,9 +49,14 @@ public class AuthorizationHeaderHMACFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		logger.debug("Attempting Authorization Header HMAC login");
 
+        if (request.getMethod().equals(HttpMethod.OPTIONS)) {
+        	logger.debug("Is OPTIONS");
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
 		final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		final String dateHeader = request.getHeader(HttpHeaders.DATE);
-		final String contentType = request.getHeader(HttpHeaders.CONTENT_TYPE);
 		
 		if (authHeader == null) {
 			logger.debug("Request missing auth ({})", authHeader);
@@ -74,7 +80,6 @@ public class AuthorizationHeaderHMACFilter extends OncePerRequestFilter {
         logger.info("Got auth request for key {} signature {}", apiKey, signature);
         final ScrumlrHMACRequestData data = ScrumlrHMACRequestData.builder()
         		.date(date)
-        		.contentType(contentType)
         		.method(request.getMethod())
         		.bodyDigest(digestBody(request))
         		.build();
