@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -50,18 +51,18 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		AuthorizationHeaderHMACFilter filter = new AuthorizationHeaderHMACFilter(am, authenticationEntrypoint);
 		http
 			.cors()
-            .and()
-            	.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+            .and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
             	.authenticationProvider(hmacAuthProvider)
             	.sessionManagement()
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and().authorizeRequests()
-				.antMatchers("/user/new").anonymous()
+				.antMatchers(HttpMethod.POST, "/user").permitAll()
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/**").authenticated()
-			//.and().exceptionHandling()
-			//	.authenticationEntryPoint(authenticationEntrypoint)
-
+			.and().exceptionHandling()
+				.authenticationEntryPoint(authenticationEntrypoint)
+			.and().csrf()
+				.disable()
 			;
 		logger.debug("Spring Security configured, up 'n running");
 	}

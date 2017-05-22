@@ -22,7 +22,7 @@ import ar.edu.itba.webapp.auth.RestToken;
 
 @Path("sample")
 @Component
-public class RestyController {
+public class RestyController extends BaseController {
 	
 	private static class UsernameList implements Serializable{
 		
