@@ -6,25 +6,32 @@ import ar.edu.itba.webapp.response.UserListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.Serializable;
 import java.text.MessageFormat;
 
 @Component
 @Path("user")
 @Produces(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class UserController {
-	
+public class UserController extends BaseController {
+
 	@Autowired
 	private UserService us;
 	
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @GET
+    @Path("/{username}")
+    public Response getUserByUsername(@PathParam("username") final String username) {
+        final User user = us.getByUsername(username);
+        final String userLink = MessageFormat.format("/user/{0}", username);
+        return Response.ok(user)
+                .link(userLink, "self")
+                .build();
+    }
 
 	@POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -42,7 +49,6 @@ public class UserController {
         logger.debug("user list debug");
         UserListResponse userList = new UserListResponse();
 		return Response.ok(userList)
-			.link("/user", "self")
 			.build();
 	}
 }
