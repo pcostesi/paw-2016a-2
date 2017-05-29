@@ -1,0 +1,5 @@
+export enum LoginEvent {
+  SET_CREDENTIALS,
+  CLEARED_CREDENTIALS,
+  BAD_CREDENTIALS,
+}

@@ -1,0 +1,37 @@
+<div #loginModal class="modal fade" id="login-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <p>Please, log in to access Scrumlr</p>
+                <div [hidden]="!loginError" class="alert alert-danger" role="alert">
+                    <strong>Oh snap!</strong> We couldn't log you in.
+                </div>
+                <form #loginForm="ngForm">
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Username:</label>
+                        <input [(ngModel)]="username" type="text" class="form-control" name="login-username">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="form-control-label">Password:</label>
+                        <input [(ngModel)]="password" type="password" class="form-control" name="login-password" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button (click)="doLogin()" type="button" class="btn btn-primary">Log in</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">
+  Launch demo modal
+</button>

@@ -91,6 +91,7 @@ public class AuthorizationHeaderHMACFilter extends OncePerRequestFilter {
         try {
         	Authentication successfulAuth = am.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(successfulAuth);
+            logger.debug("User auth ok {}", successfulAuth);
             filterChain.doFilter(request, response);
         } catch (AuthenticationException authenticationException) {
             // If it fails clear this threads context and kick off the

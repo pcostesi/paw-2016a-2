@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { ApiService } from './api';
+import { ApiService, LoginComponent } from './api';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [HeaderComponent, FooterComponent, ApiService]
+  providers: [HeaderComponent, FooterComponent, ApiService, LoginComponent]
 })
 export class AppComponent implements OnInit {
 

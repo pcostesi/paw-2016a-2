@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from './api.service';
-
-
+import { FormsModule } from '@angular/forms';
 import {BrowserXhr} from '@angular/http';
 import {JSONPBackend, ConnectionBackend} from '@angular/http';
 import {CookieXSRFStrategy, XHRBackend} from '@angular/http';
@@ -10,6 +8,10 @@ import {BaseRequestOptions, RequestOptions} from '@angular/http';
 import {BaseResponseOptions, ResponseOptions} from '@angular/http';
 import {Http, Jsonp} from '@angular/http';
 import {XSRFStrategy} from '@angular/http';
+
+import { ApiService } from './api.service';
+import { LoginComponent } from './login/login.component';
+
 
 
 export function _createDefaultCookieXSRFStrategy() {
@@ -26,7 +28,8 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [
     {provide: ApiService, useFactory: apiFactory, deps: [XHRBackend, RequestOptions]},
@@ -36,6 +39,7 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
     {provide: ConnectionBackend, useClass: XHRBackend},
     {provide: XSRFStrategy, useFactory: _createDefaultCookieXSRFStrategy},
   ],
-  declarations: []
+  declarations: [LoginComponent],
+  exports: [LoginComponent]
 })
 export class ApiModule { }

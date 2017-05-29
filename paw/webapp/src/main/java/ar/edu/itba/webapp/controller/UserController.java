@@ -46,9 +46,16 @@ public class UserController extends BaseController {
 
 	@GET
 	public Response getAllUsers() {
-        logger.debug("user list debug");
-        UserListResponse userList = new UserListResponse();
+		logger.debug("user list debug");
+		UserListResponse userList = new UserListResponse();
 		return Response.ok(userList)
 			.build();
+	}
+
+	@GET
+	@Path("/me")
+	public Response getMe() {
+		return Response.ok(getLoggedUser())
+				.build();
 	}
 }
