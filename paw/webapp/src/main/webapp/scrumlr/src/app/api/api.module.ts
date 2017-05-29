@@ -11,6 +11,7 @@ import {XSRFStrategy} from '@angular/http';
 
 import { ApiService } from './api.service';
 import { LoginComponent } from './login/login.component';
+import { BadgeComponent } from './badge/badge.component';
 
 
 
@@ -39,7 +40,7 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
     {provide: ConnectionBackend, useClass: XHRBackend},
     {provide: XSRFStrategy, useFactory: _createDefaultCookieXSRFStrategy},
   ],
-  declarations: [LoginComponent],
-  exports: [LoginComponent]
+  declarations: [LoginComponent, BadgeComponent],
+  exports: [LoginComponent, BadgeComponent]
 })
 export class ApiModule { }

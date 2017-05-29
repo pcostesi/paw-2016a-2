@@ -13,14 +13,9 @@ import { ApiService, LoginComponent } from './api';
 export class AppComponent implements OnInit {
 
   ngOnInit(): void {
-    this.getData();
   }
   title = 'app works!';
 
   constructor(private apiService: ApiService) { }
 
-  getData() {
-    this.apiService.setCredentials('test', 'test');
-    //this.apiService.get('/sample').subscribe(response => console.log(response));
-  }
 }

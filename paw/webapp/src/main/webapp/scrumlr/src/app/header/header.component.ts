@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BadgeComponent } from '../api';
 
 @Component({
   selector: 'app-header',

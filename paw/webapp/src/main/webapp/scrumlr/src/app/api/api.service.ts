@@ -54,26 +54,27 @@ export class ApiService extends Http {
   }
 
   request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> {
-    if (!this.hasCredentials) {
-      throw new Error('Missing credentials');
-    }
     const timestamp = Date.now() / 1000;
     if (typeof url === 'string') {
       if (url.startsWith('/')) {
         url = `${environment.apiEndpoint}${url}`;
       }
-      if (!options) {
-        options = { headers: new Headers() };
+      if (this.hasCredentials) {
+        if (!options) {
+          options = { headers: new Headers() };
+        }
+        options.headers!.set('Authorization', this.generateTokenFromUri(timestamp, url, options));
+        options.withCredentials = true;
       }
-      options.headers!.set('Authorization', this.generateTokenFromUri(timestamp, url, options));
-      options.withCredentials = true;
     } else {
     // we have to add the token to the url object
       if (url.url.startsWith('/')) {
         url.url = `${environment.apiEndpoint}${url.url}`;
       }
-      url.headers.set('Authorization', this.generateTokenFromRequest(timestamp, url));
-      url.withCredentials = true;
+      if (this.hasCredentials) {
+        url.headers.set('Authorization', this.generateTokenFromRequest(timestamp, url));
+        url.withCredentials = true;
+      }
     }
     return super.request(url, options)
       .catch(this.catchAuthError())
@@ -108,6 +109,10 @@ export class ApiService extends Http {
     this.hasCredentials = false;
     this.loginStatus.next(LoginEvent.CLEARED_CREDENTIALS);
     return this;
+  }
+
+  public hasCredentialsSet() {
+    return this.hasCredentials;
   }
 
   private generateTokenFromUri(timestamp: number, request: string, options?: RequestOptionsArgs): string {
