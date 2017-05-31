@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {BrowserXhr} from '@angular/http';
@@ -30,7 +31,8 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterModule, // we need it for routerLink
   ],
   providers: [
     {provide: ApiService, useFactory: apiFactory, deps: [XHRBackend, RequestOptions]},
