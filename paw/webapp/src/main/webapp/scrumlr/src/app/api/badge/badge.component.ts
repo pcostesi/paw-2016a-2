@@ -1,51 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService, LoginEvent } from '..';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { AccountService, ApiService, LoginEvent, MaybeUser } from '..';
 
 @Component({
   selector: 'app-badge',
   templateUrl: './badge.component.html',
   styleUrls: ['./badge.component.scss'],
-
 })
 export class BadgeComponent implements OnInit {
   private hasCredentials = false;
-  private username: string;
+  private user: MaybeUser;
 
-  constructor(private api: ApiService) { }
+  constructor(private accountService: AccountService,
+              private api: ApiService) { }
 
   ngOnInit() {
-    this.hasCredentials = this.api.hasCredentialsSet();
-    this.api.loginStatusTopic().subscribe(status => {
-      switch (status) {
-        case LoginEvent.BAD_CREDENTIALS:
-          this.hasCredentials = false;
-          break;
-
-        case LoginEvent.SET_CREDENTIALS:
-          this.verifyCredentials();
-          break;
-
-        case LoginEvent.CLEARED_CREDENTIALS:
-          this.hasCredentials = false;
-          break;
-      }
-    });
+    this.hasCredentials = this.accountService.getLoggedAccount() != null;
+    this.accountService.stream.subscribe(
+      result => {
+        this.user = result;
+        this.hasCredentials = result != null;
+      },
+      error => {
+        this.user = null;
+        this.hasCredentials = false;
+      });
   }
 
   private logOut() {
     this.api.clearCredentials();
   }
-
-  private verifyCredentials() {
-    this.api.get('/user/me').subscribe(success => {
-      this.hasCredentials = true;
-      this.username = success['username'];
-
-    }, error => {
-      if (error.status === 401) {
-        this.hasCredentials = false;
-      }
-    });
+  private logIn() {
+    this.api.requestCredentials();
   }
 
 }

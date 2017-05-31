@@ -14,8 +14,9 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.api.get('/user/me').subscribe(success => {
-      this.username = success['username'];
-      this.mail = success['mail'];
+      const json = success.json();
+      this.username = json['username'];
+      this.mail = json['mail'];
     }, error => {
       this.username = 'oopsie';
       this.mail = 'my@bad.com';

@@ -8,12 +8,12 @@ import { ApiService, LoginComponent } from './api';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [HeaderComponent, FooterComponent, ApiService, LoginComponent]
 })
 export class AppComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
   title = 'app works!';
 
   constructor(private apiService: ApiService) { }

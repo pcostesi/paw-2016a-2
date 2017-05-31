@@ -3,11 +3,11 @@
         <a class="nav-link" routerLink="/signup">Sign Up</a>
     </li>
     <li class="nav-item">
-        <a (click)="verifyCredentials()" class="nav-link">Log In</a>
+        <a (click)="logIn()" class="nav-link">Log In</a>
     </li>
 </ul>
 
 <div *ngIf="hasCredentials" class="navbar-nav">
-    <a class="nav-item nav-link" routerLink="/profile" routerLinkActive="active">Hello, {{username}}</a>
+    <a class="nav-item nav-link" routerLink="/profile" routerLinkActive="active">Hello, {{user.username}}</a>
     <a (click)="logOut()" class="nav-link">Log Out</a>
 </div>

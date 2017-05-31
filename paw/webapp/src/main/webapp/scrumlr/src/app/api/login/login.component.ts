@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { ApiService, LoginEvent } from '..';
+import { ApiService, LoginEvent, AccountService } from '..';
 import 'rxjs/Rx';
 
 declare var $: any;
@@ -15,45 +15,40 @@ export class LoginComponent implements AfterViewInit {
   private password: string;
   private loginError = false;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private account: AccountService) { }
 
   ngAfterViewInit() {
     this.api.loginStatusTopic().subscribe(status => {
       switch (status) {
         case LoginEvent.BAD_CREDENTIALS:
+          this.loginError = true;
           this.promptCredentials();
           break;
 
-        case LoginEvent.SET_CREDENTIALS:
-          this.verifyCredentials();
+        case LoginEvent.REQUEST_CREDENTIALS:
+          this.promptCredentials();
           break;
       }
     });
+
+    this.account.stream.subscribe(user => user && this.closeModal());
   }
 
   private doLogin() {
+    this.loginError = false;
     this.api.setCredentials(this.username, this.password);
   }
 
-  private promptCredentials() {
-    if (!$(this.modal.nativeElement).hasClass('show')) {
-      $(this.modal.nativeElement).modal('show');
+  private closeModal() {
+    if ($(this.modal.nativeElement).hasClass('show')) {
+      $(this.modal.nativeElement).modal('hide');
     }
   }
 
-
-  private verifyCredentials() {
-    this.username = this.password = '';
-    this.api.get('/user/me').subscribe(success => {
-      this.loginError = false;
-      if ($(this.modal.nativeElement).hasClass('show')) {
-        $(this.modal.nativeElement).modal('hide');
-      }
-    }, error => {
-      if (error.status === 401) {
-        this.loginError = true;
-      }
-    });
+  public promptCredentials() {
+    if (!$(this.modal.nativeElement).hasClass('show')) {
+      $(this.modal.nativeElement).modal('show');
+    }
   }
 
 }

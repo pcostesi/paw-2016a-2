@@ -11,6 +11,7 @@ import {Http, Jsonp} from '@angular/http';
 import {XSRFStrategy} from '@angular/http';
 
 import { ApiService } from './api.service';
+import { AccountService } from './account.service';
 import { LoginComponent } from './login/login.component';
 import { BadgeComponent } from './badge/badge.component';
 
@@ -21,7 +22,7 @@ export function _createDefaultCookieXSRFStrategy() {
 }
 
 export function apiFactory(backend: ConnectionBackend, requestOptions: RequestOptions): Http {
-  return new Http(backend, requestOptions);
+  return new ApiService(backend, requestOptions);
 }
 
 export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: RequestOptions): Jsonp {
@@ -41,6 +42,7 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
     {provide: ResponseOptions, useClass: BaseResponseOptions},
     {provide: ConnectionBackend, useClass: XHRBackend},
     {provide: XSRFStrategy, useFactory: _createDefaultCookieXSRFStrategy},
+    AccountService,
   ],
   declarations: [LoginComponent, BadgeComponent],
   exports: [LoginComponent, BadgeComponent]

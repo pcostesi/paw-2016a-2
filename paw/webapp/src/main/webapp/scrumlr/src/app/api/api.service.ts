@@ -18,7 +18,7 @@ export class ApiService extends Http {
   private hasCredentials = false;
   private loginStatus: Subject<LoginEvent> = new Subject<LoginEvent>();
 
-  private static fqdnApiUri(endpoint) {
+  private static fqdnApiUri(endpoint: string) {
     return `${environment.apiEndpoint}/${endpoint}`;
   }
 
@@ -33,11 +33,11 @@ export class ApiService extends Http {
   public static formatFromRequest(timestamp: number, request: Request) {
     const method = request.method.valueOf() || 'GET';
     const dateString = timestamp - (timestamp % 30) + 30;
-    const bodyDigest = ApiService.getBodyDigest(request.text);
+    const bodyDigest = ApiService.getBodyDigest(request.text());
     return btoa(`${method}\n${dateString}\n${bodyDigest}`);
   }
 
-  private static getBodyDigest(body): string {
+  private static getBodyDigest(body: string): string {
     // XXX: Fix this first in java, then here. :(
     // return SHA256(body);
     return 'test';
@@ -77,8 +77,7 @@ export class ApiService extends Http {
       }
     }
     return super.request(url, options)
-      .catch(this.catchAuthError())
-      .map(response => response.json());
+      .catch(this.catchAuthError());
   }
 
   private catchAuthError () {
@@ -93,6 +92,10 @@ export class ApiService extends Http {
 
   public loginStatusTopic(): Observable<LoginEvent> {
     return this.loginStatus.asObservable();
+  }
+
+  public requestCredentials() {
+    this.loginStatus.next(LoginEvent.REQUEST_CREDENTIALS);
   }
 
   public setCredentials(username: string, password: string) {

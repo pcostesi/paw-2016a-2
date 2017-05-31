@@ -5,10 +5,18 @@
         "baseUrl": "src",
         "sourceMap": true,
         "strictNullChecks": true,
-        "declaration": false,
+        "declaration": true,
+        "downlevelIteration": true,
+        "inlineSources": true,
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+
         "target": "es5",
         "typeRoots": [
             "node_modules/@types",
