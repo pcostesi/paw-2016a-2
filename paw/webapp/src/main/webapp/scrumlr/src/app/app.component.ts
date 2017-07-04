@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { ApiService, LoginComponent } from './api';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,11 +7,8 @@ import { ApiService, LoginComponent } from './api';
 })
 export class AppComponent implements OnInit {
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
-  title = 'app works!';
-
-  constructor(private apiService: ApiService) { }
+  constructor() { }
 
 }
