@@ -21,44 +21,47 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+@XmlRootElement
 @Entity
 @Table(name = "project")
 public class Project implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_project_id_seq")
     @SequenceGenerator(sequenceName = "project_project_id_seq", name = "project_project_id_seq", allocationSize = 1)
     @Column(name = "project_id", nullable = false, unique = true)
 	private int projectId;
-	
+
 	@Column(length = 100, nullable = false, unique = true)
 	private String name;
-	
+
 	@Column(length = 10, nullable = false, unique = true)
 	private String code;
-	
+
 	@Column(length = 500, nullable = false)
 	private String description;
-	
+
 	@Column(name = "date_start", nullable = false)
 	private LocalDate startDate;
-	
-	@ManyToOne	
+
+	@ManyToOne
 	@JoinColumn(name = "admin", nullable = false)
 	private User admin;
-	
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<ProjectUser> members;
-	
+
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Iteration> projectIterations;
-	
+
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BacklogItem> projectBacklogItems;
@@ -80,14 +83,17 @@ public class Project implements Serializable {
 		return projectId;
 	}
 
+	@XmlElement
 	public String name() {
 		return name;
 	}
 
+	@XmlElement
 	public String code() {
 		return code;
 	}
 
+	@XmlElement
 	public String description() {
 		return description;
 	}
@@ -96,22 +102,29 @@ public class Project implements Serializable {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return startDate.format(formatter);
 	}
-	
+
+	@XmlElement
 	public LocalDate startDate() {
 		return startDate;
 	}
-	
+
+	@XmlElement
 	public User admin() {
 		return admin;
 	}
-	
+
+	@XmlElement(name = "iterations")
 	public List<Iteration> geIterations() {
 		return projectIterations;
 	}
-	
+
+	@XmlElement(name = "backlog")
 	public List<BacklogItem> getBacklogItems() {
 		return projectBacklogItems;
 	}
+
+	@XmlElement(name = "members")
+	public Set<ProjectUser> getMembers() { return members; }
 
 	public boolean equals(Object another) {
 		if (this == another) return true;
