@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AccountService, ApiService, LoginEvent, MaybeUser } from '..';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-badge',
@@ -11,7 +12,8 @@ export class BadgeComponent implements OnInit {
   private user: MaybeUser;
 
   constructor(private accountService: AccountService,
-              private api: ApiService) { }
+              private api: ApiService,
+              private router: Router) { }
 
   ngOnInit() {
     this.hasCredentials = this.accountService.getLoggedAccount() != null;
@@ -28,7 +30,9 @@ export class BadgeComponent implements OnInit {
 
   private logOut() {
     this.api.clearCredentials();
+    this.router.navigate(['/']);
   }
+
   private logIn() {
     this.api.requestCredentials();
   }
