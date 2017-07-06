@@ -93,10 +93,19 @@ public class StaticLocaleAwareServlet extends HttpServlet {
             }
         }
 
-        return tryFiles(req, paths);
+        LookupResult notFound = new LookupResultError(HttpServletResponse.SC_NOT_FOUND, "Not Found D:");
+        LookupResult defaultResponse = notFound;
+        String defaultPath = getServletConfig().getInitParameter("default-file");
+        if (defaultPath != null) {
+            List<String> prefixes = getLocalizationPrefixes(req);
+            defaultResponse = tryFiles(req, toLocalizedPaths(prefixes, defaultPath)).orElse(notFound);
+        }
+
+        return tryFiles(req, paths)
+                .orElse(defaultResponse);
     }
 
-    protected String[] getLocalizedPaths(HttpServletRequest req) {
+    protected List<String> getLocalizationPrefixes(HttpServletRequest req) {
         final String DEFAULT_LOCALE_FOLDER = getServletConfig().getInitParameter("default-locale-folder");
         List<String> options = new ArrayList<>();
         for (Locale locale : getPreferredLanguages(req)) {
@@ -108,13 +117,22 @@ public class StaticLocaleAwareServlet extends HttpServlet {
             }
         }
         options.add(DEFAULT_LOCALE_FOLDER);
+        return options;
+    }
+
+    protected String[] toLocalizedPaths(List<String> prefixes, String path) {
+        return prefixes.stream()
+                .distinct()
+                .map(localePrefix ->  "/" + localePrefix + path)
+                .toArray(String[]::new);
+    }
+
+    protected String[] getLocalizedPaths(HttpServletRequest req) {
+        List<String> options = getLocalizationPrefixes(req);
         logger.debug("locales are: {}", options);
         String servletPath = req.getServletPath().equals("/") ? "/index.html" : req.getServletPath();
         String pathInfo = req.getPathInfo() != null ? req.getPathInfo() : "";
-        return options.stream()
-                .distinct()
-                .map(localePrefix ->  "/" + localePrefix + servletPath + pathInfo)
-                .toArray(String[]::new);
+        return toLocalizedPaths(options, servletPath + pathInfo);
     }
 
     protected List<Locale> getLocalesFromHeader(HttpServletRequest req) {
@@ -171,13 +189,11 @@ public class StaticLocaleAwareServlet extends HttpServlet {
         return new StaticFile(-1, mimeType, -1, shouldDeflate, url);
     }
 
-    protected LookupResult tryFiles(HttpServletRequest req, final String ...paths) {
-        LookupResult notFound = new LookupResultError(HttpServletResponse.SC_NOT_FOUND, "Not Found D:");
+    protected Optional<LookupResult> tryFiles(HttpServletRequest req, final String ...paths) {
         return Arrays.stream(paths)
                 .map((String path) -> tryFile(req, path))
                 .filter(file -> file != null)
-                .findFirst()
-                .orElse(notFound);
+                .findFirst();
     }
 
     protected LookupResult tryFile(HttpServletRequest req, final String path) {
