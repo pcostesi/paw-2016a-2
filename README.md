@@ -1,6 +1,21 @@
 # **SCRUMLR**
 
-## Developer Tools
+<!-- TOC -->
+
+- [**SCRUMLR**](#scrumlr)
+    - [Developer Tools](#developer-tools)
+        - [Javascript / Typescript Toolchain](#javascript--typescript-toolchain)
+        - [Using the Toolchain](#using-the-toolchain)
+    - [Developing the project](#developing-the-project)
+        - [Front-End](#front-end)
+        - [Back-End](#back-end)
+    - [Building the project](#building-the-project)
+    - [Installation](#installation)
+    - [Migrating from older versions](#migrating-from-older-versions)
+
+<!-- /TOC -->
+
+## Developer Tools
 
 ### Javascript / Typescript Toolchain
 
@@ -34,21 +49,29 @@ Here's a short intro:
 * `ng lint`: run before pushing. Use of `ng lint --fix` is forbidden.
 * `ng xi18n`: extract messages from source code for internationalization.
 
+## Developing the project
+
+### Front-End
+
+Use the npm scripts to develop; *do not use the assets served by the `.war` as they point to production*. First navigate to the frontend folder (`paw/webapp/src/main/webapp/scrumlr/`), and then use `npm run start` to start the server on development mode. The default locale is English, and the language setter will *not* work.
+
+Then go to [localhost:4200](http://localhost:4200) to see your site in action. The toolchain will take
+care of live reloading the browser.
+
+When you are feeling confident, run `npm run maven`. This is the command Maven will use to package the app, so at least you should verify this works. Check for privacy accessors that might break.
+
+### Back-End
+
+Use Eclipse or IntelliJ to run the project using Jetty. Set the context to `/grupo2/` and leave `8080` as the application port.
+
 ## Building the project
 
-Run `npm run-script build` to get a dist copy. If you want to develop
-just use `ng serve`. We use the Angular CLI to develop the frontend:
-(this)[https://github.com/angular/angular-cli]
+Run `npm run-script build` to get a dist copy. *If you want to develop
+just use `ng serve`, as the `.war` contains only the Production assets.* We use the Angular CLI to develop the frontend:
+[follow this for more info](https://github.com/angular/angular-cli).
 
 To build all the project, just run `mvn clean package` and Maven will generate
 a `.war` file (`paw/webapp/target/webapp.war`).
-
-## Running the project
-
-Use `ng serve` in `paw/webapp/src/main/webapp/scrumlr/`. Then go to
-http://localhost:4200 to see your site in action. The developer tools will take
-care of the hot module reloading and code upgrade in the browser.
-
 
 ## Installation
 
