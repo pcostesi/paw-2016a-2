@@ -9,15 +9,13 @@ import { ApiModule } from './api';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { SampleComponent } from './sample/sample.component';
 import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent,
-    SampleComponent
+    FooterComponent
   ],
   imports: [
     BrowserModule,
