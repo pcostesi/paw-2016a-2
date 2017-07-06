@@ -7,8 +7,8 @@ import { ApiService } from '../../api';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
-  private username: string;
-  private mail: string;
+  public username: string;
+  public mail: string;
 
   constructor(private api: ApiService) { }
 

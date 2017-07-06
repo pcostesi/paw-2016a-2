@@ -11,9 +11,9 @@ declare var $: any;
 })
 export class LoginComponent implements AfterViewInit {
   @ViewChild('loginModal') modal: ElementRef;
-  private username: string;
-  private password: string;
-  private loginError = false;
+  public username: string;
+  public password: string;
+  public loginError = false;
 
   constructor(private api: ApiService, private account: AccountService) { }
 
@@ -34,12 +34,12 @@ export class LoginComponent implements AfterViewInit {
     this.account.stream.subscribe(user => user && this.closeModal());
   }
 
-  private doLogin() {
+  public doLogin() {
     this.loginError = false;
     this.api.setCredentials(this.username, this.password);
   }
 
-  private closeModal() {
+  public closeModal() {
     if ($(this.modal.nativeElement).hasClass('show')) {
       $(this.modal.nativeElement).modal('hide');
     }

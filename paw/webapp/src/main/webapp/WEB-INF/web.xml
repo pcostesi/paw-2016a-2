@@ -56,12 +56,59 @@
             <param-name>jersey.config.server.provider.scanning.recursive</param-name>
             <param-value>true</param-value>
         </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>static-servlet</servlet-name>
+        <servlet-class>ar.edu.itba.webapp.servlet.StaticLocaleAwareServlet</servlet-class>
+
+        <init-param>
+            <param-name>locale-cookie</param-name>
+            <param-value>scrumlr-locale</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>assets-route</param-name>
+            <param-value>/scrumlr/dist</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>default-locale-folder</param-name>
+            <param-value>en</param-value>
+        </init-param>
+
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>jersey-servlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
     <filter>
@@ -71,6 +118,6 @@
 
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 </web-app>

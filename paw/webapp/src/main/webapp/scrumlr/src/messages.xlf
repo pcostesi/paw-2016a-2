@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-us" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="Home" datatype="html">
+        <source>Home</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/header/header.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Link to home section</note>
+      </trans-unit>
+      <trans-unit id="WorkingProjects" datatype="html">
+        <source>Projects where this user works</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/detail/detail.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">Working projects</note>
+      </trans-unit>
+      <trans-unit id="WorkingProjectsEmpty" datatype="html">
+        <source>Oh, look at how empty your life is.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/detail/detail.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <note priority="1" from="description">No active / working projects</note>
+      </trans-unit>
+      <trans-unit id="ActiveWorkItems" datatype="html">
+        <source>Active work items</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/detail/detail.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">Active work Items</note>
+      </trans-unit>
+      <trans-unit id="ActiveWorkItemsEmpty" datatype="html">
+        <source>You´re a slacker. Shame 🔔</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/detail/detail.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <note priority="1" from="description">No active work items</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

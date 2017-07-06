@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./badge.component.scss'],
 })
 export class BadgeComponent implements OnInit {
-  private hasCredentials = false;
-  private user: MaybeUser;
+  public hasCredentials = false;
+  public user: MaybeUser;
 
   constructor(private accountService: AccountService,
               private api: ApiService,
@@ -28,12 +28,12 @@ export class BadgeComponent implements OnInit {
       });
   }
 
-  private logOut() {
+  public logOut() {
     this.api.clearCredentials();
     this.router.navigate(['/']);
   }
 
-  private logIn() {
+  public logIn() {
     this.api.requestCredentials();
   }
 

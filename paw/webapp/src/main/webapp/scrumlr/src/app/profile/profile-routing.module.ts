@@ -7,7 +7,7 @@ import { LoginGuard } from '../api';
 
 const routes: Routes = [
   { path: '',  redirectTo: 'me', pathMatch: 'full' },
-  { path: 'me', component: DetailComponent, canActivate: [LoginGuard] }
+  { path: 'me', component: DetailComponent, canActivate: [LoginGuard] },
   { path: 'signup', component: SignupComponent },
 ];
 
