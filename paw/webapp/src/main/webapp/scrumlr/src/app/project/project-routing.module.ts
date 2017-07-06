@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
     { path: ':proj/iteration', loadChildren: '../iteration/iteration.module#IterationModule' },
+    { path: ':proj/backlog', loadChildren: '../backlog/backlog.module#BacklogModule' },
 ];
 
 @NgModule({
