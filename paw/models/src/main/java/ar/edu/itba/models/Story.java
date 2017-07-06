@@ -18,28 +18,35 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@XmlRootElement
 @Table(name = "story", uniqueConstraints = @UniqueConstraint(columnNames = {"iteration_id", "title"}))
 public class Story{
 
+	@XmlElement
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "story_story_id_seq")
     @SequenceGenerator(sequenceName = "story_story_id_seq", name = "story_story_id_seq", allocationSize = 1)
     @Column(name = "story_id", nullable = false, unique = true)
 	private int storyId;
-	
+
+    @XmlElement
 	@Column(length = 100, nullable = false)
 	private String title;
-	
+
+	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "iteration_id", nullable = false)
 	private Iteration iteration;
-	
+
+	@XmlElement
 	@OneToMany(mappedBy ="story", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Task> storyTasks;
