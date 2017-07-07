@@ -31,7 +31,7 @@ public class ProjectController extends BaseController {
 
     @GET
     @Path("/{codename}")
-    public Response getUserByCodename(@PathParam("codename") final String codename) {
+    public Response getProjectByCodename(@PathParam("codename") final String codename) {
         final String projectLink = MessageFormat.format("/project/{0}", codename);
 		final Project project = ps.getProjectByCode(codename);
         return Response.ok(project)
