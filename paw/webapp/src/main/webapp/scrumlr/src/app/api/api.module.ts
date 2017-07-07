@@ -47,6 +47,7 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
     LoginGuard,
   ],
   declarations: [LoginComponent, BadgeComponent],
-  exports: [LoginComponent, BadgeComponent]
+  entryComponents: [LoginComponent],
+  exports: [BadgeComponent]
 })
 export class ApiModule { }

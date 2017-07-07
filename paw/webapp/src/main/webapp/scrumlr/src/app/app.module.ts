@@ -4,6 +4,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AppRoutingModule } from './app-routing.module';
 import { ApiModule } from './api';
 import { AppComponent } from './app.component';
@@ -22,6 +24,7 @@ import { LandingComponent } from './landing/landing.component';
   imports: [
     BrowserModule,
     FormsModule,
+    NgbModule.forRoot(),
     HttpModule,
     ApiModule,
     AppRoutingModule

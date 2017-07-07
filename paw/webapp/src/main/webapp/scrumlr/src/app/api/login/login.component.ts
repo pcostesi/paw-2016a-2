@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { ApiService, LoginEvent, AccountService } from '..';
 import 'rxjs/Rx';
 
-declare var $: any;
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-login',
@@ -15,20 +15,13 @@ export class LoginComponent implements AfterViewInit {
   public password: string;
   public loginError = false;
 
-  constructor(private api: ApiService, private account: AccountService) { }
+  constructor(private api: ApiService,
+              private account: AccountService,
+              private activeModal: NgbActiveModal) { }
 
   ngAfterViewInit() {
     this.api.loginStatusTopic().subscribe(status => {
-      switch (status) {
-        case LoginEvent.BAD_CREDENTIALS:
-          this.loginError = true;
-          this.promptCredentials();
-          break;
-
-        case LoginEvent.REQUEST_CREDENTIALS:
-          this.promptCredentials();
-          break;
-      }
+        this.loginError = status === LoginEvent.BAD_CREDENTIALS;
     });
 
     this.account.stream.subscribe(user => user && this.closeModal());
@@ -40,15 +33,7 @@ export class LoginComponent implements AfterViewInit {
   }
 
   public closeModal() {
-    if ($(this.modal.nativeElement).hasClass('show')) {
-      $(this.modal.nativeElement).modal('hide');
-    }
-  }
-
-  public promptCredentials() {
-    if (!$(this.modal.nativeElement).hasClass('show')) {
-      $(this.modal.nativeElement).modal('show');
-    }
+    this.activeModal.close(this.loginError);
   }
 
 }
