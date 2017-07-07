@@ -18,15 +18,11 @@ export class AccountService {
   private loginSubject = new Subject<MaybeUser>();
 
   constructor(private api: ApiService) {
+    this.doFetch();
     this.api.loginStatusTopic().subscribe(status => {
       switch (status) {
         case LoginEvent.SET_CREDENTIALS:
-          this.fetchLoggedAccount().subscribe(user => {
-            this.user = user;
-            this.loginSubject.next(user);
-          }, error => {
-            this.loginSubject.next(null);
-          });
+          this.doFetch();
           break;
 
         default:
@@ -43,6 +39,17 @@ export class AccountService {
 
   public getLoggedAccount(): MaybeUser {
     return this.user;
+  }
+
+  private doFetch() {
+    if (this.api.hasCredentialsSet()) {
+      this.fetchLoggedAccount().subscribe(user => {
+        this.user = user;
+        this.loginSubject.next(user);
+      }, error => {
+        this.loginSubject.next(null);
+      });
+    }
   }
 
   private fetchLoggedAccount(): Observable<MaybeUser> {

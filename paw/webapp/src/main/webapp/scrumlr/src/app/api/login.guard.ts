@@ -15,6 +15,7 @@ export class LoginGuard implements CanActivate {
     const userHasLoggedIn = this.account.getLoggedAccount() != null;
     if (!userHasLoggedIn) {
       this.api.requestCredentials();
+      return this.account.stream.map(user => !!user);
     }
     return userHasLoggedIn;
   }

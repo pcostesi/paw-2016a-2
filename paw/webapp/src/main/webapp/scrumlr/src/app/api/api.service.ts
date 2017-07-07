@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, XHRBackend, RequestOptions, Request, RequestOptionsArgs,
+import { Http, ConnectionBackend, RequestOptions, Request, RequestOptionsArgs,
   Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -83,9 +83,8 @@ export class ApiService extends Http {
   private catchAuthError () {
     return (res: Response) => {
       if (res.status === 401 || res.status === 403) {
-        // Handle missing credentials as a login window
+        this.loginStatus.next(LoginEvent.BAD_CREDENTIALS);
       }
-      this.loginStatus.next(LoginEvent.BAD_CREDENTIALS);
       return Observable.throw(res);
     };
   }
