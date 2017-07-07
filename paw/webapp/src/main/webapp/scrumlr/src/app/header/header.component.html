@@ -5,7 +5,8 @@
     <a class="navbar-brand" routerLink="/">Scrumlr</a>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" i18n="Link to home section@@Home">Home</a>
+            <a *ngIf="isLoggedIn" class="nav-item nav-link" routerLink="/dashboard" routerLinkActive="active" i18n="Link to dashboard section@@DashboardTitle">Dashboard</a>
+            <!-- <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" i18n="Link to home section@@Home">Home</a> -->
             <!-- <a class="nav-item nav-link" routerLink="/sample" routerLinkActive="active">Sample</a> -->
         </div>
         <app-badge></app-badge>
