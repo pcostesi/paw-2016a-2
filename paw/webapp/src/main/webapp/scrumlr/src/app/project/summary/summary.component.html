@@ -1,0 +1,7 @@
+<div class="card">
+    <div class="card-block">
+        <h4 class="card-title">{{project.name}}</h4>
+        <p class="card-text">{{project.description}}</p>
+        <a [routerLink]="['/project', project.code]" class="btn btn-primary" i18n="@@GoToProjectLink">Go to the project</a>
+    </div>
+</div>
