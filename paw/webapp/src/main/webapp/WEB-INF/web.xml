@@ -92,6 +92,14 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>static-servlet</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
+        <url-pattern>favicon.ico</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>static-servlet</servlet-name>
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

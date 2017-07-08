@@ -58,7 +58,6 @@ public class StaticLocaleAwareServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        logger.debug("Got GET");
         lookup(req).respondGet(resp);
     }
 
@@ -86,6 +85,7 @@ public class StaticLocaleAwareServlet extends HttpServlet {
     }
 
     protected LookupResult lookupNoCache(HttpServletRequest req) {
+        logger.debug("Got {} for {}", req.getMethod(), req.getServletPath());
         String[] paths = getLocalizedPaths(req);
         for (String path : paths) {
             if (isForbidden(path)) {
