@@ -56,6 +56,7 @@ import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 @EnableScheduling
 @EnableTransactionManagement
 @PropertySource(value = "file:application.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "file:${user.home}/.scrumlr.properties", ignoreResourceNotFound = true)
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 public class WebConfig extends WebMvcConfigurerAdapter {
     private final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
