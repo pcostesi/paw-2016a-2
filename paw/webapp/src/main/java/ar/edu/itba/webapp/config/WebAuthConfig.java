@@ -56,7 +56,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             	.sessionManagement()
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and().authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/user").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/user").permitAll()
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/**").authenticated()
 			.and().exceptionHandling()

@@ -83,7 +83,7 @@ public class AuthorizationHeaderHMACFilter extends OncePerRequestFilter {
         		.method(request.getMethod())
         		.bodyDigest(digestBody(request))
         		.build();
-        
+
         final RestCredentials credentials = new RestCredentials(data, signature);
         
         Authentication authentication = new RestToken(apiKey, credentials, date, null);

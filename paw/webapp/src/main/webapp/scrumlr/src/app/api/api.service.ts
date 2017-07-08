@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, ConnectionBackend, RequestOptions, Request, RequestOptionsArgs,
-  Response, Headers } from '@angular/http';
+  Response, Headers, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/catch';
@@ -10,6 +10,9 @@ import { SHA256, HmacSHA256, enc as cryptoEncoding } from 'crypto-js';
 
 import { environment } from '../../environments/environment';
 import { LoginEvent } from '.';
+
+const methods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'];
+
 
 @Injectable()
 export class ApiService extends Http {
@@ -22,8 +25,19 @@ export class ApiService extends Http {
     return `${environment.apiEndpoint}/${endpoint}`;
   }
 
+  private static getRequestMethod(method: string | RequestMethod | undefined | null): string {
+    if (method === undefined || method === null) {
+      return 'GET';
+    }
+   if (typeof method === 'string') {
+      return method.toUpperCase();
+    } else {
+      return methods[method];
+    }
+  }
+
   public static formatFromRequestOptions(timestamp: number, request: string, options?: RequestOptionsArgs) {
-    const method = (options && options.method) || 'GET';
+    const method = ApiService.getRequestMethod(options && options.method);
     const dateString = timestamp - (timestamp % 30) + 30;
     const body = (options && options.body) || '';
     const bodyDigest = ApiService.getBodyDigest(body);
@@ -31,7 +45,7 @@ export class ApiService extends Http {
   }
 
   public static formatFromRequest(timestamp: number, request: Request) {
-    const method = request.method.valueOf() || 'GET';
+    const method = ApiService.getRequestMethod(methods[request.method]);
     const dateString = timestamp - (timestamp % 30) + 30;
     const bodyDigest = ApiService.getBodyDigest(request.text());
     return btoa(`${method}\n${dateString}\n${bodyDigest}`);
@@ -53,7 +67,29 @@ export class ApiService extends Http {
     return `HMAC ${apiKey}:${signature}`;
   }
 
-  request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> {
+  post(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
+    const contentType = 'Content-Type';
+    const value = 'application/x-www-form-urlencoded;charset=utf-8';
+    const headers = new Headers({
+        [contentType]: value});
+
+    if (!options) {
+      options = { headers };
+    } else if (!options.headers) {
+      options.headers = headers;
+    } else if (!options.headers.get(contentType)) {
+      options.headers.set(contentType, value);
+    } else if (options.headers.get(contentType) != value) {
+      return super.post(url, body, options);
+    }
+    let encoded: Array<string> = [];
+    for (const key of Object.getOwnPropertyNames(body)) {
+      encoded.push(`${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`);
+    }
+    return super.post(url, encoded.join('&'), options);
+  }
+
+  request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
     const timestamp = Date.now() / 1000;
     if (typeof url === 'string') {
       if (url.startsWith('/')) {
