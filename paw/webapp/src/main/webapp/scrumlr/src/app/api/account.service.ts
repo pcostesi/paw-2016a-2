@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Headers } from '@angular/http';
+
 
 import { ApiService, LoginEvent } from '.';
 
@@ -41,7 +43,13 @@ export class AccountService {
     return this.user;
   }
 
-  private doFetch() {
+  public signupUser(username: string, password: string, email: string): Observable<boolean> {
+
+    const bodyAsJson = { username, password, email: email };
+    return this.api.post('/user', bodyAsJson).map(response => response.ok);
+  }
+
+  private doFetch(): void {
     if (this.api.hasCredentialsSet()) {
       this.fetchLoggedAccount().subscribe(user => {
         this.user = user;
