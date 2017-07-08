@@ -2,14 +2,188 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-us" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="Home" datatype="html">
-        <source>Home</source>
+      <trans-unit id="LoginTitle" datatype="html">
+        <source>Login</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/api/login/login.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LogInPlease" datatype="html">
+        <source>Please, log in to access Scrumlr</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/api/login/login.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LoginError" datatype="html">
+        <source>
+            <x id="START_TAG_STRONG" ctype="x-strong"/>Oh snap!<x id="CLOSE_TAG_STRONG" ctype="x-strong"/> We couldn&apos;t log you in.
+        </source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/api/login/login.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LoginUsername" datatype="html">
+        <source>Username:</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/api/login/login.component.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LoginPassword" datatype="html">
+        <source>Password:</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/api/login/login.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LogInButton" datatype="html">
+        <source>Log in</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/api/login/login.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LogInCancel" datatype="html">
+        <source>Cancel</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/api/login/login.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LandingTitle" datatype="html">
+        <source>Project Management Made Easy</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">Landing Title</note>
+      </trans-unit>
+      <trans-unit id="LandingSalesPitch" datatype="html">
+        <source>With Scrumlr, tracking every project will feel like a walk in the park. At night.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <note priority="1" from="description">Sales Pitch</note>
+      </trans-unit>
+      <trans-unit id="PricingSection" datatype="html">
+        <source>Pricing</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">Pricing Title</note>
+      </trans-unit>
+      <trans-unit id="FreeTierName" datatype="html">
+        <source>Free</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <note priority="1" from="description">free tier</note>
+      </trans-unit>
+      <trans-unit id="FreeTierDetails" datatype="html">
+        <source>Just the basics for $0.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">About free tier</note>
+      </trans-unit>
+      <trans-unit id="StartupTierName" datatype="html">
+        <source>Startup</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <note priority="1" from="description">startup tier</note>
+      </trans-unit>
+      <trans-unit id="StartupTierDetails" datatype="html">
+        <source>The same, but we charge $99.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <note priority="1" from="description">About startup tier</note>
+      </trans-unit>
+      <trans-unit id="CorporateTierName" datatype="html">
+        <source>Corporate</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <note priority="1" from="description">corporate tier</note>
+      </trans-unit>
+      <trans-unit id="WhoWeAre" datatype="html">
+        <source>Who we are</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+        <note priority="1" from="description">About Us</note>
+      </trans-unit>
+      <trans-unit id="BioSeba" datatype="html">
+        <source>I sailed to Japan and hunt whales.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+        <note priority="1" from="description">About Seba</note>
+      </trans-unit>
+      <trans-unit id="BioBraulio" datatype="html">
+        <source>Heading to Europe next semester.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+        <note priority="1" from="description">About Braulio</note>
+      </trans-unit>
+      <trans-unit id="BioPablo" datatype="html">
+        <source>I jumped from a plane once. On purpose.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/landing/landing.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+        <note priority="1" from="description">About Pablo</note>
+      </trans-unit>
+      <trans-unit id="ProjectsTitle" datatype="html">
+        <source>Projects</source>
         <target/>
         <context-group purpose="location">
           <context context-type="sourcefile">app/header/header.component.ts</context>
           <context context-type="linenumber">8</context>
         </context-group>
-        <note priority="1" from="description">Link to home section</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/project/main/main.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">Link to projects section</note>
       </trans-unit>
       <trans-unit id="WorkingProjects" datatype="html">
         <source>Projects where this user works</source>
@@ -46,6 +220,22 @@
           <context context-type="linenumber">7</context>
         </context-group>
         <note priority="1" from="description">No active work items</note>
+      </trans-unit>
+      <trans-unit id="CreateNewProject" datatype="html">
+        <source>Create a project</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/project/main/main.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="GoToProjectLink" datatype="html">
+        <source>Go to the project</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/project/summary/summary.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
       </trans-unit>
     </body>
   </file>
