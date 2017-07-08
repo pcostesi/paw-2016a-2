@@ -83,7 +83,7 @@ public class AuthorizationHeaderHMACFilter extends OncePerRequestFilter {
         		.method(request.getMethod())
         		.bodyDigest(digestBody(request))
         		.build();
-        
+
         final RestCredentials credentials = new RestCredentials(data, signature);
         
         Authentication authentication = new RestToken(apiKey, credentials, date, null);
@@ -91,6 +91,7 @@ public class AuthorizationHeaderHMACFilter extends OncePerRequestFilter {
         try {
         	Authentication successfulAuth = am.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(successfulAuth);
+            logger.debug("User auth ok {}", successfulAuth);
             filterChain.doFilter(request, response);
         } catch (AuthenticationException authenticationException) {
             // If it fails clear this threads context and kick off the

@@ -13,22 +13,27 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+@XmlRootElement
 @Entity
 @Table(name = "account")
 public class User implements Serializable {
 
 	@Id
 	@Column(length = 100, nullable = false, unique = true)
+	@XmlElement
 	private String username;
 	
 	@Column(length = 100, nullable = false)
 	private String password;
 	
 	@Column(length = 100, nullable = false, unique = true)
+	@XmlElement
 	private String mail;
 	
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)

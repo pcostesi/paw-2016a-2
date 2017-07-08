@@ -17,39 +17,50 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 @Entity
 @Table(name = "task", uniqueConstraints = @UniqueConstraint(columnNames = {"story_id", "title"}))
 public class Task{
-	
+
+	@XmlElement
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_task_id_seq")
     @SequenceGenerator(sequenceName = "task_task_id_seq", name = "task_task_id_seq", allocationSize = 1)
     @Column(name = "task_id", nullable = false, unique = true)
 	private int taskId;
-	
+
+	@XmlElement
 	@Column(length = 100, nullable = false)
 	private String title;
-	
+
+	@XmlElement
 	@Column(length = 500, nullable = true)
 	private String description;
-	
+
+	@XmlElement
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
 	private Status status;
-	
+
+	@XmlElement
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
 	private Priority priority;
-	
+
+	@XmlElement
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
 	private Score score;
-	
+
+	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "owner", nullable = true)
 	private User owner;
-	
+
+	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "story_id", nullable = false)
 	private Story story;

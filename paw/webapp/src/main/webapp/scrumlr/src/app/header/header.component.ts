@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BadgeComponent, AccountService } from '../api';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  public isLoggedIn: boolean;
+  constructor(private acctsrv: AccountService) { }
 
   ngOnInit() {
+    this.acctsrv.stream.subscribe(user => this.isLoggedIn = !!user);
+    this.isLoggedIn = !!this.acctsrv.getLoggedAccount();
   }
 
 }

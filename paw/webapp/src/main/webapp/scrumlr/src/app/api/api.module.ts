@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ApiService } from './api.service';
-
-
+import { FormsModule } from '@angular/forms';
 import {BrowserXhr} from '@angular/http';
 import {JSONPBackend, ConnectionBackend} from '@angular/http';
 import {CookieXSRFStrategy, XHRBackend} from '@angular/http';
@@ -11,13 +10,20 @@ import {BaseResponseOptions, ResponseOptions} from '@angular/http';
 import {Http, Jsonp} from '@angular/http';
 import {XSRFStrategy} from '@angular/http';
 
+import { ApiService } from './api.service';
+import { AccountService } from './account.service';
+import { LoginComponent } from './login/login.component';
+import { BadgeComponent } from './badge/badge.component';
+import { LoginGuard } from './login.guard';
+
+
 
 export function _createDefaultCookieXSRFStrategy() {
   return new CookieXSRFStrategy();
 }
 
 export function apiFactory(backend: ConnectionBackend, requestOptions: RequestOptions): Http {
-  return new Http(backend, requestOptions);
+  return new ApiService(backend, requestOptions);
 }
 
 export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: RequestOptions): Jsonp {
@@ -26,7 +32,9 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    RouterModule, // we need it for routerLink
   ],
   providers: [
     {provide: ApiService, useFactory: apiFactory, deps: [XHRBackend, RequestOptions]},
@@ -35,7 +43,11 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
     {provide: ResponseOptions, useClass: BaseResponseOptions},
     {provide: ConnectionBackend, useClass: XHRBackend},
     {provide: XSRFStrategy, useFactory: _createDefaultCookieXSRFStrategy},
+    AccountService,
+    LoginGuard,
   ],
-  declarations: []
+  declarations: [LoginComponent, BadgeComponent],
+  entryComponents: [LoginComponent],
+  exports: [BadgeComponent]
 })
 export class ApiModule { }

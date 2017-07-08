@@ -4,12 +4,16 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "i18n": "ng xi18n -l en-us",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "maven": "node ./node_modules/.bin/ng build"
+    "maven": "npm run build-i18n",
+    "build-i18n:es": "ng build --output-path=dist/es -prod --i18n-file=src/locale/messages.es.xlf --i18n-format=xlf --locale=es -bh /grupo2/",
+    "build-i18n:en": "ng build --output-path=dist/en -prod --i18n-file=src/locale/messages.en.xlf --i18n-format=xlf --locale=en -bh /grupo2/",
+    "build-i18n": "npm run build-i18n:en && npm run build-i18n:es"
   },
   "private": true,
   "dependencies": {
@@ -21,10 +25,13 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.27",
+    "@types/jquery": "^2.0.45",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "crypto-js": "^3.1.9-1",
     "rxjs": "^5.1.0",
+    "types": "^0.1.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
@@ -32,6 +39,7 @@
     "@angular/compiler-cli": "^4.0.0",
     "@types/crypto-js": "^3.1.33",
     "@types/jasmine": "2.5.38",
+    "@types/jquery": "^2.0.45",
     "@types/node": "~6.0.60",
     "codelyzer": "~2.0.0",
     "jasmine-core": "~2.5.2",

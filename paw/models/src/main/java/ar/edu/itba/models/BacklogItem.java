@@ -15,23 +15,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 @Entity
 @Table(name = "backlog", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "title"}))
 public class BacklogItem{
 
+	@XmlElement
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "backlog_item_id_seq")
 	@SequenceGenerator(sequenceName = "backlog_item_id_seq", name = "backlog_item_id_seq", allocationSize = 1)
 	@Column(name = "item_id", nullable = false)	
 	private int backlogItemId;
 
+	@XmlElement
 	@Column(length = 100, nullable = false)
 	private String title;
 
+	@XmlElement
 	@Column(length = 500, nullable = true)
 	private String description;
 
+	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
 	private Project project;

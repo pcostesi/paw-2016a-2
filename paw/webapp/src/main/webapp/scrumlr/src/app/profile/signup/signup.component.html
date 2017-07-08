@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-md-8 push-md-2">
+        <h1 i18n="@@CTASignup">Sign up to Scrumlr <small class="text-muted">&mdash; It's free!</small></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div [formGroup]="signupForm" class="col-md-4 push-md-4">
+        <form (ngSubmit)="onSubmit(signupForm.value)">
+
+
+            <div class="form-group" [class.has-danger]="!signupForm.controls['email'].valid">
+                <label for="email" i18n="@@emailAddr">Email address</label>
+
+                <input type="email" class="form-control" [class.form-control-danger]="!signupForm.controls['email'].valid" id="email" [formControl]="signupForm.controls['email']" aria-describedby="emailHelp" i18n-placeholder="@@EnterEmail" placeholder="Enter email">
+
+                <div *ngIf="signupForm.controls['email'].hasError('required')" class="form-control-feedback" i18n="@@EmailEmpty">Sorry, the email field can't be empty. Try typing something?</div>
+
+                <small id="emailHelp" class="form-text text-muted" i18n="@@ShareEmailWarning">We'll never share your email with anyone else.</small>
+            </div>
+
+
+            <div class="form-group" [class.has-danger]="!signupForm.controls['username'].valid">
+                <label for="username" i18n="@@Username">Username</label>
+
+                <input type="text" class="form-control" [class.form-control-danger]="!signupForm.controls['username'].valid" id="username" [formControl]="signupForm.controls['username']" ngModel aria-describedby="usernameHelp" i18n-placeholder="@@EnterUsername" placeholder="Choose a username">
+
+                <div *ngIf="signupForm.controls['username'].hasError('required')" class="form-control-feedback" i18n="@@UsernameRequired">Sorry, that username's invalid. Try another?</div>
+
+                <small id="usernameHelp" class="form-text text-muted" i18n="@@UsernameDescription">A short name used to log in.</small>
+            </div>
+
+
+            <div class="form-group" [class.has-danger]="!signupForm.controls['password'].valid">
+                <label for="password" i18n="@@Password">Password</label>
+
+                <input type="password" class="form-control" [class.form-control-danger]="!signupForm.controls['password'].valid" id="password" [formControl]="signupForm.controls['password']" ngModel placeholder="Password">
+
+                <div *ngIf="signupForm.controls['password'].hasError('required')" class="form-control-feedback" i18n="@@PasswordInvalid">Sorry, that password's invalid. Try another?</div>
+            </div>
+            <button type="submit" class="btn btn-primary" i18n="@@Submit">Submit</button>
+
+
+        </form>
+    </div>
+</div>
