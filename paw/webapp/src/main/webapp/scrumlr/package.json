@@ -12,7 +12,7 @@
         "e2e": "node ./node_modules/.bin/ng e2e",
         "maven": "npm run build-i18n",
         "build-i18n:es": "node ./node_modules/.bin/ng build --output-path=dist/es -prod --i18n-file=src/locale/messages.es.xlf --i18n-format=xlf --locale=es -bh /grupo2/",
-        "build-i18n:en": "node ./node_modules/.bin/ng build --output-path=dist/en -prod --i18n-file=src/locale/messages.en.xlf --i18n-format=xlf --locale=en -bh /grupo2/",
+        "build-i18n:en": "node ./node_modules/.bin/ng build --output-path=dist/en -prod -bh /grupo2/",
         "build-i18n": "npm run build-i18n:en && npm run build-i18n:es"
     },
     "private": true,
