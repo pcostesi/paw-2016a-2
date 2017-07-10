@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AccountService } from '../../api';
-import { SignupModel } from '../signup-model';
 
 @Component({
   selector: 'app-signup',
@@ -26,7 +25,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(form: SignupModel): void {
+  onSubmit(form: any): void {
     if (this.signupForm.valid) {
       console.log(form);
       this.acctsrv.signupUser(form.username, form.password, form.email).subscribe(res => {console.log(res)});
