@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-us" datatype="plaintext" original="ng2.template">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="LoginTitle" datatype="html">
         <source>Login</source>
@@ -172,6 +172,24 @@
         </context-group>
         <note priority="1" from="description">About Pablo</note>
       </trans-unit>
+      <trans-unit id="NotFound" datatype="html">
+        <source>Not found!</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/not-found/not-found.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Sorry404" datatype="html">
+        <source>
+    Sorry we couldn&apos;t find it.
+</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/not-found/not-found.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ProjectsTitle" datatype="html">
         <source>Projects</source>
         <target/>
@@ -220,6 +238,102 @@
           <context context-type="linenumber">7</context>
         </context-group>
         <note priority="1" from="description">No active work items</note>
+      </trans-unit>
+      <trans-unit id="CTASignup" datatype="html">
+        <source>Sign up to Scrumlr <x id="START_SMALL_TEXT" ctype="x-small"/>— It&apos;s free!<x id="CLOSE_SMALL_TEXT" ctype="x-small"/></source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="emailAddr" datatype="html">
+        <source>Email address</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="EnterEmail" datatype="html">
+        <source>Enter email</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="EmailEmpty" datatype="html">
+        <source>Sorry, the email field can&apos;t be empty. Try typing something?</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ShareEmailWarning" datatype="html">
+        <source>We&apos;ll never share your email with anyone else.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Username" datatype="html">
+        <source>Username</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="EnterUsername" datatype="html">
+        <source>Choose a username</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="UsernameRequired" datatype="html">
+        <source>Sorry, that username&apos;s invalid. Try another?</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="UsernameDescription" datatype="html">
+        <source>A short name used to log in.</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Password" datatype="html">
+        <source>Password</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PasswordInvalid" datatype="html">
+        <source>Sorry, that password&apos;s invalid. Try another?</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Submit" datatype="html">
+        <source>Submit</source>
+        <target/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile/signup/signup.component.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="CreateNewProject" datatype="html">
         <source>Create a project</source>
