@@ -17,6 +17,7 @@
         <module>persistence</module>
     </modules>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache-beanutils.version>1.9.2</apache-beanutils.version>
         <checkstyle.version>2.17</checkstyle.version>
         <cobertura.version>2.7</cobertura.version>
@@ -39,10 +40,10 @@
         <org.jboss.logging>3.3.0.Final</org.jboss.logging>
         <org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>
         <org.slf4j.version>1.7.21</org.slf4j.version>
-        <org.springframework.version>4.3.8.RELEASE</org.springframework.version>
+        <spring-security.version>4.1.1.RELEASE</spring-security.version>
+        <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
         <pmd.version>3.6</pmd.version>
         <servlet-api.version>2.5</servlet-api.version>
-        <spring-security.version>4.2.2.RELEASE</spring-security.version>
     </properties>
     <repositories>
         <repository>

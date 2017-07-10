@@ -1,5 +1,6 @@
 package ar.edu.itba.webapp.config;
 
+import org.glassfish.jersey.internal.guava.Lists;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -65,6 +66,21 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.disable()
 			;
 		logger.debug("Spring Security configured, up 'n running");
+	}
+
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowCredentials(true);
+		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","HEAD", "OPTIONS"));
+		configuration.addAllowedHeader("Authorization");
+		configuration.addAllowedHeader("Content-Type");
+		configuration.addAllowedHeader("Origin");
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 
 	@Override

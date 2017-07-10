@@ -134,14 +134,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/**").addResourceLocations("/scrumlr/dist/");
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-            .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS")
-            .allowCredentials(true)
-            ;
-    }
-
     @Bean
     @Autowired
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(final Environment env) {
