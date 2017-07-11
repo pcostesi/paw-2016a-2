@@ -18,6 +18,7 @@ const modalOptions: NgbModalOptions = {
 export class BadgeComponent implements OnInit {
   public hasCredentials = false;
   public user: MaybeUser;
+  public isModalOpen = false;
 
   constructor(private accountService: AccountService,
               private api: ApiService,
@@ -39,14 +40,23 @@ export class BadgeComponent implements OnInit {
     this.api.loginStatusTopic().subscribe(status => {
       switch (status) {
         case LoginEvent.BAD_CREDENTIALS:
-          this.modalService.open(LoginComponent, modalOptions);
+          this.promptCredentials();
           break;
 
         case LoginEvent.REQUEST_CREDENTIALS:
-          this.modalService.open(LoginComponent, modalOptions);
+          this.promptCredentials();
           break;
       }
     });
+  }
+
+  public promptCredentials() {
+    if (!this.isModalOpen) {
+      this.modalService.open(LoginComponent, modalOptions).result
+        .then(() => this.isModalOpen = false)
+        .catch(() => this.isModalOpen = false);
+      this.isModalOpen = true;
+    }
   }
 
   public logOut() {
