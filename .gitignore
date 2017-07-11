@@ -76,3 +76,4 @@ local.properties
 .vscode/
 .idea/
 application.properties
+grupo2-*.sql
