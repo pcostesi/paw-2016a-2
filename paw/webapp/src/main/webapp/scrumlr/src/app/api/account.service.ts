@@ -43,10 +43,16 @@ export class AccountService {
     return this.user;
   }
 
-  public signupUser(username: string, password: string, email: string): Observable<boolean> {
+  public signupUser(username: string, password: string, mail: string): Observable<boolean> {
 
-    const bodyAsJson = { username, password, email: email };
+    const bodyAsJson = { username, password, mail };
     return this.api.post('/user', bodyAsJson).map(response => response.ok);
+  }
+
+
+  public updateProfile(username: string, mail: string, password?: string) {
+    return this.api.put(`/user/${username}`, {username, password, mail})
+      .map(result => result.json());
   }
 
   private doFetch(): void {

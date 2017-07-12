@@ -67,28 +67,6 @@ export class ApiService extends Http {
     return `HMAC ${apiKey}:${signature}`;
   }
 
-  post(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
-    const contentType = 'Content-Type';
-    const value = 'application/x-www-form-urlencoded;charset=utf-8';
-    const headers = new Headers({
-        [contentType]: value});
-
-    if (!options) {
-      options = { headers };
-    } else if (!options.headers) {
-      options.headers = headers;
-    } else if (!options.headers.get(contentType)) {
-      options.headers.set(contentType, value);
-    } else if (options.headers.get(contentType) != value) {
-      return super.post(url, body, options);
-    }
-    let encoded: Array<string> = [];
-    for (const key of Object.getOwnPropertyNames(body)) {
-      encoded.push(`${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`);
-    }
-    return super.post(url, encoded.join('&'), options);
-  }
-
   request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
     const timestamp = Date.now() / 1000;
     if (typeof url === 'string') {

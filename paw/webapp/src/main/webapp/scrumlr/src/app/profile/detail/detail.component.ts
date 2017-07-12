@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../api';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { ChangePasswordComponent } from '../change-password/change-password.component';
+import { ChangeEmailComponent } from '../change-email/change-email.component';
+import { AccountService } from '../../api';
 
 @Component({
   selector: 'app-detail',
@@ -9,18 +14,32 @@ import { ApiService } from '../../api';
 export class DetailComponent implements OnInit {
   public username: string;
   public mail: string;
+  public projects: string[];
+  public workItems: string[];
 
-  constructor(private api: ApiService) { }
+  constructor(private modalService: NgbModal,
+              private profileService: AccountService) { }
 
   ngOnInit() {
-    this.api.get('/user/me').subscribe(success => {
-      const json = success.json();
-      this.username = json['username'];
-      this.mail = json['mail'];
-    }, error => {
-      this.username = 'oopsie';
-      this.mail = 'my@bad.com';
-    });
+    const user = this.profileService.getLoggedAccount();
+    if (user) {
+      this.username = user.username;
+      this.mail = user.mail;
+    }
+  }
+
+  private promptModal(component: any) {
+    const modal = this.modalService.open(component);
+    modal.componentInstance.username = this.username;
+    modal.componentInstance.mail = this.mail;
+  }
+
+  changePassword() {
+    return this.promptModal(ChangePasswordComponent);
+  }
+
+  changeEmail() {
+    return this.promptModal(ChangeEmailComponent);
   }
 
 }
