@@ -41,7 +41,7 @@
         <org.postgresql.version>9.3-1102-jdbc41</org.postgresql.version>
         <org.slf4j.version>1.7.21</org.slf4j.version>
         <spring-security.version>4.1.1.RELEASE</spring-security.version>
-        <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.1.RELEASE</org.springframework.version>
         <pmd.version>3.6</pmd.version>
         <servlet-api.version>2.5</servlet-api.version>
     </properties>

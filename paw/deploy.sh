@@ -51,7 +51,7 @@ function main() {
         build)
         build_app;
         ;;
-        deploy)
+        upload)
         upload_app;
         ;;
         *)
