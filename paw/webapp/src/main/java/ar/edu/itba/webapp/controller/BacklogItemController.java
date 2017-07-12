@@ -6,6 +6,8 @@ import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import ar.edu.itba.webapp.request.CreateBacklogItemRequest;
+import ar.edu.itba.webapp.request.UpdateBacklogItemRequest;
 import ar.edu.itba.webapp.response.UserListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +41,26 @@ public class BacklogItemController extends BaseController {
 				.build();
     }
 
-	@POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response postCreateItem(@PathParam("proj") String proj,
-								   @FormParam("title") String title,
-								   @FormParam("description") String desc) {
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response putUpdateItem(UpdateBacklogItemRequest request,
+								  @PathParam("proj") String proj) {
 		Project project = ps.getProjectByCode(proj);
+        BacklogItem item = bs.getBacklogById(request.getId());
+        String title = request.getTitle();
+        String desc = request.getDescription();
+        bs.setBacklogItemDescription(item, desc);
+        bs.setBacklogItemTitle(item, title);
+		return Response.ok(item)
+				.build();
+	}
+	@POST
+    @Consumes(MediaType.APPLICATION_JSON)
+	public Response postCreateItem(CreateBacklogItemRequest request,
+                                   @PathParam("proj") String proj) {
+		Project project = ps.getProjectByCode(proj);
+        String title = request.getTitle();
+        String desc = request.getDescription();
         BacklogItem item = bs.createBacklogItem(project, title, desc);
 		return Response.ok(item)
 				.build();
