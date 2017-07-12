@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { environment } from '../environments/environment';
 import { LandingComponent } from './landing/landing.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LocaleSelectorComponent } from './locale-selector/locale-selector.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HeaderComponent,
     FooterComponent,
     LandingComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LocaleSelectorComponent
   ],
   imports: [
     BrowserModule,

@@ -76,3 +76,5 @@ local.properties
 .vscode/
 .idea/
 application.properties
+dumps/
+dist/

@@ -33,7 +33,7 @@ export class LoginComponent implements AfterViewInit {
   }
 
   public closeModal() {
-    this.activeModal.close(this.loginError);
+    this.activeModal.close();
   }
 
 }

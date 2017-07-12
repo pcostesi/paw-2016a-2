@@ -149,11 +149,12 @@ public class StaticLocaleAwareServlet extends HttpServlet {
             return getLocalesFromHeader(req);
         }
         Optional<Locale> localeIndicator = Arrays.stream(req.getCookies())
-                .filter(cookie -> LOCALE_COOKIE.equals(cookie.getName()))
+                .filter(cookie -> LOCALE_COOKIE.equalsIgnoreCase(cookie.getName()))
                 .map(cookie -> Locale.forLanguageTag(cookie.getValue()))
                 .filter(elem -> elem != null)
                 .findFirst();
         if (localeIndicator.isPresent()) {
+            logger.debug("locale from cookie is {}", localeIndicator.get());
             locales.add(localeIndicator.get());
         }
         locales.addAll(getLocalesFromHeader(req));

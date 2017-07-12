@@ -10,6 +10,8 @@ import {BaseResponseOptions, ResponseOptions} from '@angular/http';
 import {Http, Jsonp} from '@angular/http';
 import {XSRFStrategy} from '@angular/http';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { ApiService } from './api.service';
 import { AccountService } from './account.service';
 import { LoginComponent } from './login/login.component';
@@ -35,6 +37,7 @@ export function jsonpFactory(jsonpBackend: JSONPBackend, requestOptions: Request
     CommonModule,
     FormsModule,
     RouterModule, // we need it for routerLink
+    NgbModule,
   ],
   providers: [
     {provide: ApiService, useFactory: apiFactory, deps: [XHRBackend, RequestOptions]},

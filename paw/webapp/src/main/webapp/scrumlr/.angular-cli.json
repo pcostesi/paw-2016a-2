@@ -16,9 +16,8 @@
         "test": "test.ts",
         "tsconfig": "tsconfig.app.json",
         "testTsconfig": "tsconfig.spec.json",
-        "prefix": "app",
+        "prefix": "scrumlr",
         "styles": [
-            "../node_modules/bootstrap/dist/css/bootstrap.css",
             "styles.scss"
         ],
         "scripts": ["../node_modules/jquery/dist/jquery.js",
