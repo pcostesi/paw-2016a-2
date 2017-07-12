@@ -9,30 +9,32 @@ PAWSERVER="10.16.1.110"
 APPWAR="app.war"
 
 function build_app() {
+    mkdir -p deploy
     mvn clean package
-    cp webapp/target/webapp.war "${APPWAR}"
-    chmod +rwx "${APPWAR}"
+    cp webapp/target/webapp.war "deploy/${APPWAR}"
+    chmod +rwx "deploy/${APPWAR}"
 }
 
 function upload_app() {
     echo "If prompted, password for group ${GROUP} is ${PASS}"
     sftp -o "ProxyJump ${PAMPERO}" "${GROUP}@${PAWSERVER}" <<_EOF
-rm web/tmp-${APPWAR}
+rm tmp-${APPWAR}
+put ./deploy/${APPWAR} web/tmp-${APPWAR}
 rm web/${APPWAR}
-put ${APPWAR} web/tmp-${APPWAR}
 rename web/tmp-${APPWAR} web/${APPWAR}
 bye
 _EOF
 }
 
 function save_db() {
+    mkdir -p dumps
     DATETIME=$(date +%s)
     DUMP="${GROUP}-${DATETIME}.sql"
-    ssh "${PAMPERO}" <<_EOF
+    ssh "${PAMPERO}" << _EOF
     export PGPASSWORD="${PASS}"
     pg_dump -U ${GROUP} -h ${PAWSERVER} > ${DUMP}
 _EOF
-    scp "${PAMPERO}":"${DUMP}" .
+    scp "${PAMPERO}":"${DUMP}" ./dumps
 }
 
 function all() {
@@ -49,10 +51,13 @@ function main() {
         build)
         build_app;
         ;;
+        deploy)
+        upload_app;
+        ;;
         *)
         all;
         ;;
     esac
 }
 
-main $@;
+main "$@";
