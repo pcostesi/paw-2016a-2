@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-login',
+  selector: 'scrumlr-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })

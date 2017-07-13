@@ -11,7 +11,7 @@ const modalOptions: NgbModalOptions = {
 };
 
 @Component({
-  selector: 'app-badge',
+  selector: 'scrumlr-badge',
   templateUrl: './badge.component.html',
   styleUrls: ['./badge.component.scss'],
 })
