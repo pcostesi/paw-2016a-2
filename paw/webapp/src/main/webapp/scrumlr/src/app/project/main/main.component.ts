@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ProjectService } from '../project.service';
+
 @Component({
   selector: 'scrumlr-main',
   templateUrl: './main.component.html',
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class MainComponent implements OnInit {
 
   public projects = [1, 2, 3];
-  constructor() { }
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit() {
   }
