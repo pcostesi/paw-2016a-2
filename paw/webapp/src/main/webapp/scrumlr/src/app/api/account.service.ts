@@ -49,6 +49,15 @@ export class AccountService {
     return this.api.post('/user', bodyAsJson).map(response => response.ok);
   }
 
+  public getUsers(): Observable<string[]> {
+    return this.api.get('/user').map(users => {
+      const response = users.json();
+      if (response.users) {
+        return <string[]>response.users;
+      }
+      return [];
+    });
+  }
 
   public updateProfile(username: string, mail: string, password?: string) {
     return this.api.put(`/user/${username}`, {username, password, mail})

@@ -13,6 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Component
 @Path("user")
@@ -51,6 +52,8 @@ public class UserController extends BaseController {
 	public Response getAllUsers() {
 		logger.debug("user list debug");
 		UserListResponse userList = new UserListResponse();
+        List<String> usernames = us.getUsernames();
+        userList.users = usernames.toArray(new String[usernames.size()]);
 		return Response.ok(userList)
 			.build();
 	}

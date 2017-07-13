@@ -48,7 +48,6 @@ export class CreateProjectComponent implements OnInit {
 
   getUsers(text: Observable<string>) {
     const users = ['pablo', 'braulio', 'maio'];
-
     const eventStream = distinctUntilChanged.call(debounceTime.call(text, 200));
     return map.call(eventStream, (term: string) => {
       return term.length < 2 ? [] : users.filter(v => v.toLowerCase()
@@ -62,6 +61,8 @@ export class CreateProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    //example
+    //this.accountService.getUsers().subscribe(users => console.log(users));
   }
 
 }
