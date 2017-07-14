@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,
+  FormControl, FormArray, AbstractControl } from '@angular/forms';
 
 import {Observable} from 'rxjs/Observable';
 import {map} from 'rxjs/operator/map';
@@ -54,6 +55,11 @@ export class CreateProjectComponent implements OnInit {
         .startsWith(term.toLocaleLowerCase()))
         .splice(0, 10);
     });
+  }
+
+  getUserControls() {
+    const usersControl = <FormArray>this.projectForm.controls.users;
+    return usersControl.controls;
   }
 
   onSubmit(form: any) {

@@ -4,7 +4,7 @@
         "outDir": "./dist/out-tsc",
         "baseUrl": "src",
         "sourceMap": true,
-        "strictNullChecks": true,
+        "strictNullChecks": false,
         "declaration": true,
         "downlevelIteration": true,
         "inlineSources": true,

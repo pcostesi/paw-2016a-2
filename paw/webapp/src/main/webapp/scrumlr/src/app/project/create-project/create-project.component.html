@@ -34,7 +34,6 @@
 
                 <div *ngIf="projectForm.controls['description'].hasError('required')" class="form-control-feedback" i18n="@@PasswordInvalid">Sorry, that description is invalid. Try another?</div>
             </div>
-
             <hr class="my-4">
             <h2 class="d-flex justify-content-between">
                 <span i18n="@@Members">Members</span>
@@ -42,19 +41,21 @@
                     <button class="btn btn-sm btn-primary" (click)="addMember()" i18n="@@Add">Add</button>
                 </div>
             </h2>
-            <div *ngFor="let user of projectForm.controls.users.controls; let i=index" class="form-group" [class.has-danger]="!projectForm.controls['users'].controls[i].valid">
+
+
+            <div *ngFor="let user of getUserControls(); let i=index" class="form-group" [class.has-danger]="!getUserControls()[i].valid">
 
                 <div class="input-group">
                     <label for="username-{{index}}" class="input-group-addon" i18n="@@Username">Username</label>
-                    <input type="text" class="form-control" [class.form-control-danger]="!projectForm.controls.users.controls[i].valid" id="username-{{i}}" [formControl]="projectForm.controls.users.controls[i]" placeholder="username" [ngbTypeahead]="getUsers">
+                    <input type="text" class="form-control" [class.form-control-danger]="!getUserControls()[i].valid" id="username-{{i}}" [formControl]="getUserControls()[i]" placeholder="username" [ngbTypeahead]="getUsers">
 
 
-                    <button *ngIf="projectForm.controls['users'].controls.length > 1" class="btn btn-sm btn-outline-danger input-group-addon" (click)="removeMember(i)" i18n="@@Remove">Remove</button>
+                    <button *ngIf="getUserControls().length > 1" class="btn btn-sm btn-outline-danger input-group-addon" (click)="removeMember(i)" i18n="@@Remove">Remove</button>
                 </div>
 
-                <div *ngIf="projectForm.controls.users.controls[i].hasError('required')" class="form-control-feedback" i18n="@@UsernameInvalid">Sorry, that username is invalid. Try another?</div>
-            </div>
+                <div *ngIf="getUserControls()[i].hasError('required')" class="form-control-feedback" i18n="@@UsernameInvalid">Sorry, that username is invalid. Try another?</div>
 
+            </div>
 
             <button type="submit" class="btn btn-primary" i18n="@@Submit">Submit</button>
 
