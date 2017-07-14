@@ -9,10 +9,14 @@ import { ProjectService } from '../project.service';
 })
 export class MainComponent implements OnInit {
 
-  public projects = [1, 2, 3];
+  public projects = [];
   constructor(private projectService: ProjectService) { }
 
   ngOnInit() {
+    this.projectService.getProjects().subscribe(response => {
+      console.log(response.projects);
+      this.projects = response.projects;
+    });
   }
 
 }
