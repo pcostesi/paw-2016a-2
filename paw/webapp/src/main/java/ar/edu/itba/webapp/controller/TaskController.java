@@ -2,6 +2,7 @@ package ar.edu.itba.webapp.controller;
 
 import ar.edu.itba.interfaces.service.*;
 import ar.edu.itba.models.*;
+import ar.edu.itba.webapp.response.TaskListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,17 +69,13 @@ public class TaskController extends BaseController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response postCreateTask(@PathParam("proj") final String proj,
-								   @PathParam("iter") final int iter,
-								   @PathParam("story") final int storyN,
+	public Response postCreateTask(@PathParam("story") final int storyN,
 								   @FormParam("title") final String title,
 								   @FormParam("description") final String description,
 								   @FormParam("status") final String stat,
 								   @FormParam("owner") final String username,
 								   @FormParam("score") final String scoreN,
 								   @FormParam("priority") final String priorityN) {
-		Project project = ps.getProjectByCode(proj);
-		Iteration iteration = is.getIteration(project, iter);
 		Story story = ss.getById(storyN);
 		Status status = Status.valueOf(stat);
 		User owner = us.getByUsername(username);
@@ -90,14 +87,12 @@ public class TaskController extends BaseController {
 	}
 
 	@GET
-	public Response getTasksForStory(@PathParam("proj") final String proj,
-									 @PathParam("iter") final int iter,
-									 @PathParam("story") final int storyN) {
-		Project project = ps.getProjectByCode(proj);
-		Iteration iteration = is.getIteration(project, iter);
+	public Response getTasksForStory(@PathParam("story") final int storyN) {
 		Story story = ss.getById(storyN);
         List<Task> tasks = ts.getTasksForStory(story);
-		return Response.ok(tasks)
+		TaskListResponse tasksList = new TaskListResponse();
+		tasksList.tasks = tasks.toArray(new Task[tasks.size()]);
+		return Response.ok(tasksList)
 				.build();
 	}
 }
