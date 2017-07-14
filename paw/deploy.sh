@@ -15,6 +15,12 @@ function build_app() {
     chmod +rwx "deploy/${APPWAR}"
 }
 
+function restore_to_docker_db() {
+    LOCAL_DUMP_PATH="./dumps/$(ls ./dumps | sort -r | head -n 1)"   
+    export PGPASSWORD="${GROUP}"
+    docker exec -i pawdb psql -U "${GROUP}" -d "${GROUP}" < "${LOCAL_DUMP_PATH}"
+}
+
 function upload_app() {
     echo "If prompted, password for group ${GROUP} is ${PASS}"
     sftp -o "ProxyJump ${PAMPERO}" "${GROUP}@${PAWSERVER}" <<_EOF
@@ -32,7 +38,7 @@ function save_db() {
     DUMP="${GROUP}-${DATETIME}.sql"
     ssh "${PAMPERO}" << _EOF
     export PGPASSWORD="${PASS}"
-    pg_dump -U ${GROUP} -h ${PAWSERVER} > ${DUMP}
+    pg_dump -U ${GROUP} -h ${PAWSERVER} --clean > ${DUMP}
 _EOF
     scp "${PAMPERO}":"${DUMP}" ./dumps
 }
@@ -50,6 +56,9 @@ function main() {
         ;;
         build)
         build_app;
+        ;;
+        restore_to_docker)
+        restore_to_docker_db       
         ;;
         upload)
         upload_app;
