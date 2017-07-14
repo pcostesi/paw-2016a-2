@@ -7,7 +7,7 @@ import { ChangeEmailComponent } from '../change-email/change-email.component';
 import { AccountService } from '../../api';
 
 @Component({
-  selector: 'app-detail',
+  selector: 'scrumlr-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })

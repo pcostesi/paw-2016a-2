@@ -5,6 +5,8 @@ import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import ar.edu.itba.webapp.request.CreateIterationRequest;
+import ar.edu.itba.webapp.response.IterationListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +48,11 @@ public class IterationController extends BaseController {
     }
 
 	@POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response postCreateIteration(@PathParam("project") final String code,
-									    @FormParam("start") final String start,
-                                        @FormParam("end") final String end) {
+    @Consumes(MediaType.APPLICATION_JSON)
+	public Response postCreateIteration(CreateIterationRequest request,
+                                        @PathParam("project") final String code) {
+        String start = request.getStart();
+        String end = request.getEnd();
         Project proj = ps.getProjectByCode(code);
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
@@ -62,7 +65,9 @@ public class IterationController extends BaseController {
 	public Response getAll(@PathParam("project") final String project) {
         Project proj = ps.getProjectByCode(project);
         List<Iteration> iterations = is.getIterationsForProject(proj);
-		return Response.ok(iterations)
+        IterationListResponse iterationList = new IterationListResponse();
+        iterationList.iterations = iterations.toArray(new Iteration[iterations.size()]);
+		return Response.ok(iterationList)
 			.build();
 	}
 

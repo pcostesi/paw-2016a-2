@@ -2,7 +2,7 @@ import { LOCALE_ID, Inject } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-locale-selector',
+  selector: 'scrumlr-locale-selector',
   templateUrl: './locale-selector.component.html',
   styleUrls: ['./locale-selector.component.scss']
 })

@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../../api';
 
 @Component({
-  selector: 'app-signup',
+  selector: 'scrumlr-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })

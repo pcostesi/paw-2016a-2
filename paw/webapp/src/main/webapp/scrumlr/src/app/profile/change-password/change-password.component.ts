@@ -6,7 +6,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService, AccountService } from '../../api';
 
 @Component({
-  selector: 'app-change-password',
+  selector: 'scrumlr-change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })

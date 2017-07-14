@@ -38,18 +38,23 @@ public class Project implements Serializable {
     @Column(name = "project_id", nullable = false, unique = true)
 	private int projectId;
 
+    @XmlElement
 	@Column(length = 100, nullable = false, unique = true)
 	private String name;
 
+	@XmlElement
 	@Column(length = 10, nullable = false, unique = true)
 	private String code;
 
+	@XmlElement
 	@Column(length = 500, nullable = false)
 	private String description;
 
+	@XmlElement
 	@Column(name = "date_start", nullable = false)
 	private LocalDate startDate;
 
+	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "admin", nullable = false)
 	private User admin;
@@ -83,17 +88,14 @@ public class Project implements Serializable {
 		return projectId;
 	}
 
-	@XmlElement
 	public String name() {
 		return name;
 	}
 
-	@XmlElement
 	public String code() {
 		return code;
 	}
 
-	@XmlElement
 	public String description() {
 		return description;
 	}
@@ -103,27 +105,22 @@ public class Project implements Serializable {
 		return startDate.format(formatter);
 	}
 
-	@XmlElement
 	public LocalDate startDate() {
 		return startDate;
 	}
 
-	@XmlElement
 	public User admin() {
 		return admin;
 	}
 
-	@XmlElement(name = "iterations")
 	public List<Iteration> geIterations() {
 		return projectIterations;
 	}
 
-	@XmlElement(name = "backlog")
 	public List<BacklogItem> getBacklogItems() {
 		return projectBacklogItems;
 	}
 
-	@XmlElement(name = "members")
 	public Set<ProjectUser> getMembers() { return members; }
 
 	public boolean equals(Object another) {
