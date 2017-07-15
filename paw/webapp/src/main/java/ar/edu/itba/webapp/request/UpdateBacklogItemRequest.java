@@ -6,20 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UpdateBacklogItemRequest {
 
-    private int id;
-
     private String title;
 
     private String description;
-
-    @XmlElement
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @XmlElement
     public String getTitle() {
