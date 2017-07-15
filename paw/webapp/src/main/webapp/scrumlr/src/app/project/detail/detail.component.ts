@@ -11,6 +11,7 @@ import { ProjectService } from '../project.service';
 })
 export class DetailComponent implements OnInit {
   public project: any;
+  public backlog: any[];
   private code: string;
 
   constructor(private route: ActivatedRoute,
@@ -25,8 +26,9 @@ export class DetailComponent implements OnInit {
 
 
   fetchProject(code: string) {
-    this.projectService.getProject(code).subscribe(result => {
-      this.project = result;
+    this.projectService.getSummary(code).subscribe(result => {
+      this.project = result.project;
+      this.backlog = result.backlog;
     });
   }
 }

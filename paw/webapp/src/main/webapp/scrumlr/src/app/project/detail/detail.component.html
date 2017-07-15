@@ -21,7 +21,9 @@
     <div class="col-md-9">
         <h2><a [routerLink]="['iteration']" i18n="@@Iteration">Iteration</a></h2>
         <ul *ngIf="iterations?.length" class="list-group">
-            <li *ngFor="let item of iterations" class="list-group-item">{{ item.title }}</li>
+            <li *ngFor="let item of iterations" class="list-group-item">
+                <a [routerLink]="['backlog', item.backlogItemId]">{{ item.title }}</a>
+            </li>
         </ul>
     </div>
 </div>
