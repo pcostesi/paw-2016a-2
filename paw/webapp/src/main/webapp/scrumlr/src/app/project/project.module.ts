@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { BacklogModule } from '../backlog/backlog.module';
+import { IterationModule } from '../iteration/iteration.module';
 import { ProjectRoutingModule } from './project-routing.module';
 import { MainComponent } from './main/main.component';
 import { DetailComponent } from './detail/detail.component';
@@ -21,6 +22,7 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
     ReactiveFormsModule,
     NgbModule,
     BacklogModule,
+    IterationModule,
   ],
   declarations: [MainComponent, DetailComponent, SummaryComponent, CreateProjectComponent, EditProjectComponent],
   providers: [ ProjectService ],

@@ -12,6 +12,7 @@ import { ProjectService } from '../project.service';
 export class DetailComponent implements OnInit {
   public project: any;
   public backlog: any[];
+  public iterations: any[];
   private code: string;
 
   constructor(private route: ActivatedRoute,
@@ -29,6 +30,8 @@ export class DetailComponent implements OnInit {
     this.projectService.getSummary(code).subscribe(result => {
       this.project = result.project;
       this.backlog = result.backlog;
+      this.iterations = result.iterations;
+      console.log(result)
     });
   }
 }
