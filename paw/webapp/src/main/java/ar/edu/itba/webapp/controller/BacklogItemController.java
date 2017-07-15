@@ -47,18 +47,22 @@ public class BacklogItemController extends BaseController {
 
 	@PUT
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-	public Response putUpdateItem(UpdateBacklogItemRequest request,
-								  @PathParam("id") int id) {
-        String title = request.getTitle();
-        String desc = request.getDescription();
-        BacklogItem item = bs.getBacklogById(id);
-		if (!item.title().equalsIgnoreCase(title)) {
-			bs.setBacklogItemTitle(item, title);
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response putUpdateItem(UpdateBacklogItemRequest request, @PathParam("id") int id) {
+		BacklogItem item;
+    	try {
+			item = bs.getBacklogById(id);
+			String title = request.getTitle();
+			String desc = request.getDescription();
+			if (!item.title().equalsIgnoreCase(title)) {
+				bs.setBacklogItemTitle(item, title);
+			}
+			bs.setBacklogItemDescription(item, desc);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
 		}
-		bs.setBacklogItemDescription(item, desc);
-		item = bs.getBacklogById(id);
-		return Response.ok(item)
+        return Response.ok(item)
 				.build();
 	}
 
@@ -82,16 +86,20 @@ public class BacklogItemController extends BaseController {
 
 
 	@GET
-	public Response getAllItems(@PathParam("proj") String proj, @PathVariable("top") int top) {
+	public Response getAllItems(@PathParam("proj") String proj, @PathVariable("top") int top){
+				try {
+
 		Project project = ps.getProjectByCode(proj);
 		List<BacklogItem> items = bs.getBacklogForProject(project);
 		if (top > 0) {
 			items = items.subList(0, top);
 		}
-		BacklogListResponse response = new BacklogListResponse();
-		response.setBacklog(items.toArray(new BacklogItem[items.size()]));
-		return Response.ok(response)
-				.build();
+        return Response.ok(items)
+                .build();
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 	}
 
 	@DELETE
