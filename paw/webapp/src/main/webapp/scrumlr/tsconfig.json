@@ -5,8 +5,6 @@
         "baseUrl": "src",
         "sourceMap": true,
         "strictNullChecks": true,
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": false,
         "declaration": true,
         "downlevelIteration": true,
         "inlineSources": true,
