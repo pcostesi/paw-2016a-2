@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-@XmlRootElement
 @Entity
 @Table(name = "project")
 public class Project implements Serializable {
@@ -38,23 +37,18 @@ public class Project implements Serializable {
     @Column(name = "project_id", nullable = false, unique = true)
 	private int projectId;
 
-    @XmlElement
 	@Column(length = 100, nullable = false, unique = true)
 	private String name;
 
-	@XmlElement
 	@Column(length = 10, nullable = false, unique = true)
 	private String code;
 
-	@XmlElement
 	@Column(length = 500, nullable = false)
 	private String description;
 
-	@XmlElement
 	@Column(name = "date_start", nullable = false)
 	private LocalDate startDate;
 
-	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "admin", nullable = false)
 	private User admin;
@@ -249,6 +243,40 @@ public class Project implements Serializable {
 			if ((initBits & INIT_BIT_ADMIN) != 0) attributes.add("startDate");
 			return "Cannot build Project, some of required attributes are not set " + attributes;
 		}
-		
+	}
+
+	public ProjectDTO toDTO() {
+		return new ProjectDTO(this);
+	}
+
+	@XmlRootElement
+	public class ProjectDTO{
+
+		@XmlElement
+		public String name;
+
+		@XmlElement
+		public String code;
+
+		@XmlElement
+		public String description;
+
+		@XmlElement
+		public LocalDate startDate;
+
+		@XmlElement
+		public User admin;
+
+		@XmlElement
+		public ProjectUser[] members;
+
+		private ProjectDTO(Project proj){
+			name = proj.name();
+			code = proj.code();
+			description = proj.description();
+			startDate = proj.startDate();
+			admin = proj.admin();
+			members = proj.getMembers().toArray(new ProjectUser[proj.getMembers().size()]);
+		}
 	}
 }

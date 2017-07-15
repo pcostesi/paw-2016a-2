@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -34,15 +35,19 @@ public class Iteration{
 	@Column(name = "iteration_id", nullable = false, unique = true)
 	private int iterationId;
 
+	@XmlElement
 	@Column(nullable = false)
 	private int number;
 
+	@XmlElement
 	@Column(name = "date_start", nullable = false)
 	private LocalDate startDate;
 
+	@XmlElement
 	@Column(name = "date_end", nullable = false)
 	private LocalDate endDate;
 
+	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
 	private Project project;

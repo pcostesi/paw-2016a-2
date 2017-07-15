@@ -2,6 +2,7 @@ package ar.edu.itba.webapp.controller;
 
 import ar.edu.itba.interfaces.service.*;
 import ar.edu.itba.models.*;
+import ar.edu.itba.webapp.request.CreateTaskRequest;
 import ar.edu.itba.webapp.response.TaskListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +41,7 @@ public class TaskController extends BaseController {
 
     @GET
     @Path("/{index}")
-    public Response getByNumber(@PathParam("proj") final String proj,
-								@PathParam("iter") final int iter,
-								@PathParam("story") final int storyN,
-								@PathParam("index") final int index) {
-		Project project = ps.getProjectByCode(proj);
-		Iteration iteration = is.getIteration(project, iter);
-		Story story = ss.getById(storyN);
+    public Response getByNumber(@PathParam("index") final int index) {
 		Task task = ts.getTaskById(index);
         return Response.ok(task)
 				.build();
@@ -54,13 +49,7 @@ public class TaskController extends BaseController {
 
     @DELETE
 	@Path("/{index}")
-	public Response deleteByNumber(@PathParam("proj") final String proj,
-								@PathParam("iter") final int iter,
-								@PathParam("story") final int storyN,
-								@PathParam("index") final int index) {
-		Project project = ps.getProjectByCode(proj);
-		Iteration iteration = is.getIteration(project, iter);
-		Story story = ss.getById(storyN);
+	public Response deleteByNumber(@PathParam("index") final int index) {
 		Task task = ts.getTaskById(index);
 		ts.deleteTask(task);
 		return Response.ok(task)
@@ -68,19 +57,16 @@ public class TaskController extends BaseController {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response postCreateTask(@PathParam("story") final int storyN,
-								   @FormParam("title") final String title,
-								   @FormParam("description") final String description,
-								   @FormParam("status") final String stat,
-								   @FormParam("owner") final String username,
-								   @FormParam("score") final String scoreN,
-								   @FormParam("priority") final String priorityN) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response postCreateTask(CreateTaskRequest request,
+								   @PathParam("story") final int storyN) {
+    	String title = request.getTitle();
+    	String description = request.getDescription();
 		Story story = ss.getById(storyN);
-		Status status = Status.valueOf(stat);
-		User owner = us.getByUsername(username);
-		Score score = Score.valueOf(scoreN);
-		Priority priority = Priority.valueOf(priorityN);
+		Status status = Status.valueOf(request.getStat());
+		User owner = us.getByUsername(request.getUsername());
+		Score score = Score.valueOf(request.getScoreN());
+		Priority priority = Priority.valueOf(request.getPriorityN());
 		Task task = ts.createTask(story, title, description, status, owner, score, priority);
 		return Response.ok(task)
 				.build();

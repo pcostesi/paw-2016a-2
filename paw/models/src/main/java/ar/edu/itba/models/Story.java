@@ -46,7 +46,6 @@ public class Story{
 	@JoinColumn(name = "iteration_id", nullable = false)
 	private Iteration iteration;
 
-	@XmlElement
 	@OneToMany(mappedBy ="story", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Task> storyTasks;
