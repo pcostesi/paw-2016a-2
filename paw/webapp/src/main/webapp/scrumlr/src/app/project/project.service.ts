@@ -17,4 +17,13 @@ export class ProjectService {
     });
   }
 
+  public getProject(code: string) {
+    return this.api.get(`/project/${code}`).map(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return null;
+    });
+  }
+
 }
