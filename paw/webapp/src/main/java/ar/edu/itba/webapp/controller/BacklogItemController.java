@@ -36,40 +36,62 @@ public class BacklogItemController extends BaseController {
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") final int id) {
-        BacklogItem backlogItem = bs.getBacklogById(id);
-		return Response.ok(backlogItem)
+		BacklogItem backlogItem;
+    	try {
+        	backlogItem = bs.getBacklogById(id);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
+        return Response.ok(backlogItem)
 				.build();
     }
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response putUpdateItem(UpdateBacklogItemRequest request,
-								  @PathParam("proj") String proj) {
-		Project project = ps.getProjectByCode(proj);
-        BacklogItem item = bs.getBacklogById(request.getId());
-        String title = request.getTitle();
-        String desc = request.getDescription();
-        bs.setBacklogItemDescription(item, desc);
-        bs.setBacklogItemTitle(item, title);
-		return Response.ok(item)
+	public Response putUpdateItem(UpdateBacklogItemRequest request) {
+		BacklogItem item;
+    	try {
+			item = bs.getBacklogById(request.getId());
+			String title = request.getTitle();
+			String desc = request.getDescription();
+			bs.setBacklogItemDescription(item, desc);
+			bs.setBacklogItemTitle(item, title);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
+        return Response.ok(item)
 				.build();
 	}
 	@POST
     @Consumes(MediaType.APPLICATION_JSON)
 	public Response postCreateItem(CreateBacklogItemRequest request,
                                    @PathParam("proj") String proj) {
-		Project project = ps.getProjectByCode(proj);
-        String title = request.getTitle();
-        String desc = request.getDescription();
-        BacklogItem item = bs.createBacklogItem(project, title, desc);
+		BacklogItem item;
+		try {
+			Project project = ps.getProjectByCode(proj);
+			String title = request.getTitle();
+			String desc = request.getDescription();
+			item = bs.createBacklogItem(project, title, desc);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok(item)
-				.build();
+			.build();
 	}
 
 	@GET
 	public Response getAllItems(@PathParam("proj") String proj) {
-        Project project = ps.getProjectByCode(proj);
-		List<BacklogItem> items = bs.getBacklogForProject(project);
+		List<BacklogItem> items;
+    	try {
+			Project project = ps.getProjectByCode(proj);
+			items = bs.getBacklogForProject(project);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok(items)
 				.build();
 	}
@@ -77,9 +99,15 @@ public class BacklogItemController extends BaseController {
 	@DELETE
 	@Path("/{id}")
 	public Response deleteItem(@PathParam("id") int id) {
-		BacklogItem item = bs.getBacklogById(id);
-        bs.deleteBacklogItem(item);
-		return Response.ok(item)
-				.build();
+		BacklogItem item;
+    	try { 
+			item = bs.getBacklogById(id);
+        	bs.deleteBacklogItem(item);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
+        return Response.ok(item)
+			.build();
 	}
 }

@@ -53,21 +53,33 @@ public class IterationController extends BaseController {
                                         @PathParam("project") final String code) {
         String start = request.getStart();
         String end = request.getEnd();
-        Project proj = ps.getProjectByCode(code);
-        LocalDate startDate = LocalDate.parse(start);
-        LocalDate endDate = LocalDate.parse(end);
-        Iteration iteration = is.createIteration(proj, startDate, endDate);
-		return Response.ok(iteration)
+        Iteration iteration;
+        try {
+            Project proj = ps.getProjectByCode(code);
+            LocalDate startDate = LocalDate.parse(start);
+            LocalDate endDate = LocalDate.parse(end);
+            iteration = is.createIteration(proj, startDate, endDate);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+                    .build();
+        }
+        return Response.ok(iteration)
 	    		.build();
 	}
 
 	@GET
 	public Response getAll(@PathParam("project") final String project) {
-        Project proj = ps.getProjectByCode(project);
-        List<Iteration> iterations = is.getIterationsForProject(proj);
-        IterationListResponse iterationList = new IterationListResponse();
-        iterationList.iterations = iterations.toArray(new Iteration[iterations.size()]);
-		return Response.ok(iterationList)
+        IterationListResponse iterationList;
+        try{
+            Project proj = ps.getProjectByCode(project);
+            List<Iteration> iterations = is.getIterationsForProject(proj);
+            iterationList = new IterationListResponse();
+            iterationList.iterations = iterations.toArray(new Iteration[iterations.size()]);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+                    .build();
+        }
+        return Response.ok(iterationList)
 			.build();
 	}
 
@@ -75,9 +87,14 @@ public class IterationController extends BaseController {
     @Path("/{index}")
     public Response deleteIteration(@PathParam("project") final String project,
                                     @PathParam("index") final int index) {
-        Project proj = ps.getProjectByCode(project);
-        Iteration iteration = is.getIteration(proj, index);
-        is.deleteIteration(iteration);
+        try{
+            Project proj = ps.getProjectByCode(project);
+            Iteration iteration = is.getIteration(proj, index);
+            is.deleteIteration(iteration);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+                    .build();
+        }
         return Response.ok()
                 .build();
     }

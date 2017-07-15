@@ -10,12 +10,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 public abstract class BaseController {
 	final static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
 	@Autowired
 	private UserService us;
-	
+
 	public User getLoggedUser() {
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		final String username;
@@ -36,6 +39,21 @@ public abstract class BaseController {
 		} catch (final IllegalStateException e) {
 			logger.debug("No username {}.", username, e);
 			return null;
+		}
+	}
+
+	@XmlRootElement
+	protected static class ErrorMessage {
+		@XmlElement
+		public String message;
+
+		@XmlElement
+		public String status;
+
+		protected ErrorMessage(String status, String desc){
+			this.status = status;
+			this.message = desc;
+			return;
 		}
 	}
 }
