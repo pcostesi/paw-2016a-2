@@ -22,40 +22,59 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService us;
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @GET
-    @Path("/{username}")
-    public Response getUserByUsername(@PathParam("username") final String username) {
-        final User user = us.getByUsername(username);
-        final String userLink = MessageFormat.format("/user/{0}", username);
-        return Response.ok(user)
-                .link(userLink, "self")
-                .build();
-    }
-
-	@POST
-    @Consumes(MediaType.APPLICATION_JSON)
-	public Response postCreateUser(UserUpdateDetailsRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
-        String email = request.getMail();
-        User user = us.create(username, password, email);
+	@GET
+	@Path("/{username}")
+	public Response getUserByUsername(@PathParam("username") final String username) {
+		User user;
+		try {
+			user = us.getByUsername(username);
+		}catch (IllegalArgumentException| IllegalStateException a){
+			ErrorMessage msg;
+			if(a.getClass() == IllegalArgumentException.class){
+				msg = new ErrorMessage("400", "Bad request, invalid or empty username");
+			}
+			else{
+				msg = new  ErrorMessage("400", "Username already exists");
+			}
+			return Response.serverError().entity(msg)
+					.build();
+		}
 		final String userLink = MessageFormat.format("/user/{0}", username);
 		return Response.ok(user)
 				.link(userLink, "self")
-	    		.build();
+				.build();
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response postCreateUser(UserUpdateDetailsRequest request) {
+		final String username = request.getUsername();
+		final String password = request.getPassword();
+		final String email = request.getMail();
+		User user;
+		try {
+			user = us.create(username, password, email);
+		}catch(IllegalArgumentException | IllegalStateException e){
+			return Response.serverError().entity(new ErrorMessage("400", e.getMessage()))
+					.build();
+		}
+		final String userLink = MessageFormat.format("/user/{0}", username);
+		return Response.ok(user)
+				.link(userLink, "self")
+				.build();
 	}
 
 	@GET
 	public Response getAllUsers() {
 		logger.debug("user list debug");
 		UserListResponse userList = new UserListResponse();
-        List<String> usernames = us.getUsernames();
-        userList.users = usernames.toArray(new String[usernames.size()]);
+		List<String> usernames = us.getUsernames();
+		userList.users = usernames.toArray(new String[usernames.size()]);
 		return Response.ok(userList)
-			.build();
+				.build();
 	}
 
 	@GET
@@ -71,9 +90,15 @@ public class UserController extends BaseController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postUpdateUser(UserUpdateDetailsRequest request, @PathParam("id") String id) {
 		User loggedUser = getLoggedUser();
-        User user = us.getByUsername(id);
-        String password = request.getPassword();
-        String username = request.getUsername();
+		User user;
+		try{
+			user = us.getByUsername(id);
+		}catch (IllegalArgumentException | IllegalStateException a) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.build();
+		}
+		String password = request.getPassword();
+		String username = request.getUsername();
 
 		if (!loggedUser.username().equalsIgnoreCase(user.username())) {
 			return Response.status(Response.Status.BAD_REQUEST)

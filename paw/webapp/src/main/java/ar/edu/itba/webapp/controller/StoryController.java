@@ -40,8 +40,14 @@ public class StoryController extends BaseController {
 									 @PathParam("index") final int index) {
         final String projectLink = MessageFormat.format("/project/{0}/iteration/{1}/story/{2}",
 				proj, iter, index);
-		final Story story = ss.getById(index);
-        return Response.ok(story)
+		Story story;
+        try {
+			story = ss.getById(index);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
+		return Response.ok(story)
                 .link(projectLink, "self")
                 .build();
     }
@@ -49,9 +55,15 @@ public class StoryController extends BaseController {
 	@GET
 	public Response getAll(@PathParam("proj") final String proj,
 						   @PathParam("iter") final int iter) {
-		final Project project = ps.getProjectByCode(proj);
-		final Iteration iteration = is.getIteration(project, iter);
-		Map<Story, List<Task>> result = ss.getStoriesWithTasksForIteration(iteration);
+		Map<Story, List<Task>> result;
+    	try {
+			final Project project = ps.getProjectByCode(proj);
+			final Iteration iteration = is.getIteration(project, iter);
+			result = ss.getStoriesWithTasksForIteration(iteration);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok(result)
 				.build();
 	}
@@ -61,10 +73,16 @@ public class StoryController extends BaseController {
 	public Response postCreateStory(CreateStoryRequest request,
 									@PathParam("proj") final String proj,
 									@PathParam("iter") final int iter) {
-		final Project project = ps.getProjectByCode(proj);
-		final Iteration iteration = is.getIteration(project, iter);
-       	String title = request.getTitle();
-		final Story story = ss.create(iteration, title);
+		Story story;
+    	try{
+			final Project project = ps.getProjectByCode(proj);
+			final Iteration iteration = is.getIteration(project, iter);
+			String title = request.getTitle();
+			story = ss.create(iteration, title);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok(story)
 				.build();
 	}
@@ -72,8 +90,13 @@ public class StoryController extends BaseController {
 	@DELETE
 	@Path("/{index}")
 	public Response deleteStory(@PathParam("index") final int index) {
-		final Story story = ss.getById(index);
-		ss.deleteStory(story);
+    	try {
+			final Story story = ss.getById(index);
+			ss.deleteStory(story);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok().build();
 	}
 }

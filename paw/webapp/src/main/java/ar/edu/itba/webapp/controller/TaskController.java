@@ -42,16 +42,27 @@ public class TaskController extends BaseController {
     @GET
     @Path("/{index}")
     public Response getByNumber(@PathParam("index") final int index) {
-		Task task = ts.getTaskById(index);
-        return Response.ok(task)
-				.build();
-    }
+    	try{
+			Task task = ts.getTaskById(index);
+			return Response.ok(task)
+					.build();
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
+	}
 
     @DELETE
 	@Path("/{index}")
 	public Response deleteByNumber(@PathParam("index") final int index) {
-		Task task = ts.getTaskById(index);
-		ts.deleteTask(task);
+		Task task;
+		try {
+			task = ts.getTaskById(index);
+			ts.deleteTask(task);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok(task)
 				.build();
 	}
@@ -60,24 +71,36 @@ public class TaskController extends BaseController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postCreateTask(CreateTaskRequest request,
 								   @PathParam("story") final int storyN) {
-    	String title = request.getTitle();
-    	String description = request.getDescription();
-		Story story = ss.getById(storyN);
-		Status status = Status.valueOf(request.getStat());
-		User owner = us.getByUsername(request.getUsername());
-		Score score = Score.valueOf(request.getScoreN());
-		Priority priority = Priority.valueOf(request.getPriorityN());
-		Task task = ts.createTask(story, title, description, status, owner, score, priority);
+    	final String title = request.getTitle();
+    	final String description = request.getDescription();
+		Task task;
+		try {
+			Story story = ss.getById(storyN);
+			Status status = Status.valueOf(request.getStat());
+			User owner = us.getByUsername(request.getUsername());
+			Score score = Score.valueOf(request.getScoreN());
+			Priority priority = Priority.valueOf(request.getPriorityN());
+			task = ts.createTask(story, title, description, status, owner, score, priority);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok(task)
 				.build();
 	}
 
 	@GET
 	public Response getTasksForStory(@PathParam("story") final int storyN) {
-		Story story = ss.getById(storyN);
-        List<Task> tasks = ts.getTasksForStory(story);
-		TaskListResponse tasksList = new TaskListResponse();
-		tasksList.tasks = tasks.toArray(new Task[tasks.size()]);
+		TaskListResponse tasksList;
+    	try {
+			Story story = ss.getById(storyN);
+			List<Task> tasks = ts.getTasksForStory(story);
+			tasksList = new TaskListResponse();
+			tasksList.tasks = tasks.toArray(new Task[tasks.size()]);
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+					.build();
+		}
 		return Response.ok(tasksList)
 				.build();
 	}
