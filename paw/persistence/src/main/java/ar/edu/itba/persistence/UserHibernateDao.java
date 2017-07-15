@@ -26,7 +26,11 @@ public class UserHibernateDao implements UserDao{
 	@Transactional
 	public User getByUsername(String username) {
 		try {
-			return em.find(User.class, username);
+			if (userNameExists(username)) {
+				return em.find(User.class, username);
+			} else {
+				return null;
+			}
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get user by username");
 		}
@@ -36,8 +40,8 @@ public class UserHibernateDao implements UserDao{
 	@Transactional
 	public boolean userNameExists(String username) {
 		try {
-			final TypedQuery<User> query = em.createQuery("from User user where user.username = :username", User.class);
-			query.setParameter("username", username);
+			final TypedQuery<User> query = em.createQuery("from User user where lower(user.username) = :username", User.class);
+			query.setParameter("username", username.toLowerCase());
 			final List<User> list = query.getResultList();
 			return list.isEmpty() ? false : true;
 		} catch (Exception exception) {
