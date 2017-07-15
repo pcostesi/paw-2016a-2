@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'scrumlr-summary',
@@ -7,11 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SummaryComponent implements OnInit {
 
-  public project = {
-    name: 'Scrumlr',
-    code: 'scrumlr',
-    description: 'The best project ever'
-  };
+  @Input() project: any;
 
   constructor() { }
 

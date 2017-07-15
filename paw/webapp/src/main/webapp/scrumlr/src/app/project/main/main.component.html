@@ -12,8 +12,8 @@
 <hr class="my-4">
 
 <div class="row">
-    <div class="col-md-4" *ngFor="let project of projects">
-        <scrumlr-summary></scrumlr-summary>
+    <div class="col-md-4 my-1" *ngFor="let project of projects">
+        <scrumlr-summary [project]="project"></scrumlr-summary>
     </div>
     <div class="col-md-12" *ngIf="!projects?.length">
         <div class="card mb-3">
