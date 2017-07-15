@@ -2,22 +2,20 @@ package ar.edu.itba.webapp.controller;
 
 import ar.edu.itba.interfaces.service.BacklogService;
 import ar.edu.itba.interfaces.service.ProjectService;
-import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.User;
 import ar.edu.itba.webapp.request.CreateBacklogItemRequest;
 import ar.edu.itba.webapp.request.UpdateBacklogItemRequest;
-import ar.edu.itba.webapp.response.UserListResponse;
+import ar.edu.itba.webapp.response.BacklogListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -42,18 +40,22 @@ public class BacklogItemController extends BaseController {
     }
 
 	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
 	public Response putUpdateItem(UpdateBacklogItemRequest request,
-								  @PathParam("proj") String proj) {
-		Project project = ps.getProjectByCode(proj);
-        BacklogItem item = bs.getBacklogById(request.getId());
+								  @PathParam("id") int id) {
         String title = request.getTitle();
         String desc = request.getDescription();
-        bs.setBacklogItemDescription(item, desc);
-        bs.setBacklogItemTitle(item, title);
+        BacklogItem item = bs.getBacklogById(id);
+		if (!item.title().equalsIgnoreCase(title)) {
+			bs.setBacklogItemTitle(item, title);
+		}
+		bs.setBacklogItemDescription(item, desc);
+		item = bs.getBacklogById(id);
 		return Response.ok(item)
 				.build();
 	}
+
 	@POST
     @Consumes(MediaType.APPLICATION_JSON)
 	public Response postCreateItem(CreateBacklogItemRequest request,
@@ -66,11 +68,17 @@ public class BacklogItemController extends BaseController {
 				.build();
 	}
 
+
 	@GET
-	public Response getAllItems(@PathParam("proj") String proj) {
-        Project project = ps.getProjectByCode(proj);
+	public Response getAllItems(@PathParam("proj") String proj, @PathVariable("top") int top) {
+		Project project = ps.getProjectByCode(proj);
 		List<BacklogItem> items = bs.getBacklogForProject(project);
-		return Response.ok(items)
+		if (top > 0) {
+			items = items.subList(0, top);
+		}
+		BacklogListResponse response = new BacklogListResponse();
+		response.setBacklog(items.toArray(new BacklogItem[items.size()]));
+		return Response.ok(response)
 				.build();
 	}
 
