@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.dao.StoryDao;
 import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.service.ExperienceService;
 import ar.edu.itba.interfaces.service.TaskService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Priority;
@@ -24,6 +25,9 @@ public class TaskServiceImpl implements TaskService{
 	
 	@Autowired
 	private StoryDao storyDao;
+	
+	@Autowired
+	private ExperienceService experienceService;
 
 	@Autowired TaskServiceImpl(TaskDao newTaskDao, StoryDao newStoryDao){
 		this.taskDao = newTaskDao;
@@ -116,7 +120,11 @@ public class TaskServiceImpl implements TaskService{
 		Story story = taskDao.getParent(task);
 		Iteration iteration = storyDao.getParent(story);
 		
-		if(iteration.status() == Status.COMPLETED) {
+		if (task.status() == Status.COMPLETED) {
+			experienceService.removeExperience(task);
+		}
+		
+		if (iteration.status() == Status.COMPLETED) {
 			throw new IllegalStateException("Can't delete a task from a finished iteration");
 		}
 		
@@ -136,7 +144,11 @@ public class TaskServiceImpl implements TaskService{
 		Story story = taskDao.getParent(task);
 		Iteration iteration = storyDao.getParent(story);
 		
-		if(iteration.status() == Status.COMPLETED) {
+		if (task.status() == Status.COMPLETED) {
+			throw new IllegalStateException("Can't change ownership of a completed task");
+		}
+		
+		if (iteration.status() == Status.COMPLETED) {
 			throw new IllegalStateException("Can't edit a task from a finished iteration");
 		}
 		
@@ -170,7 +182,16 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Can't edit a task from a finished iteration");
 		}
 		
+		Status oldStatus = task.status();
+		
 		taskDao.updateStatus(task, status);
+		
+		if (oldStatus != Status.COMPLETED && status == Status.COMPLETED) {
+			experienceService.addExperience(task);
+		}
+		if (oldStatus == Status.COMPLETED && status != Status.COMPLETED) {
+			experienceService.removeExperience(task);
+		}
 
 		return taskDao.getTaskById(task.taskId());
 	}
@@ -255,7 +276,11 @@ public class TaskServiceImpl implements TaskService{
 			throw new IllegalStateException("Can't edit a task from a finished iteration");
 		}
 		
+		experienceService.removeExperience(task);
 		taskDao.updateScore(task, score);
+		
+		Task updatedTask = Task.builder().from(task).score(score).build();
+		experienceService.addExperience(updatedTask);
 		
 		return taskDao.getTaskById(task.taskId());
 	}
