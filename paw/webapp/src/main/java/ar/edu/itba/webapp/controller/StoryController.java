@@ -44,7 +44,7 @@ public class StoryController extends BaseController {
         try {
 			story = ss.getById(index);
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		return Response.ok(story)
@@ -61,7 +61,7 @@ public class StoryController extends BaseController {
 			final Iteration iteration = is.getIteration(project, iter);
 			result = ss.getStoriesWithTasksForIteration(iteration);
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		return Response.ok(result)
@@ -80,7 +80,7 @@ public class StoryController extends BaseController {
 			String title = request.getTitle();
 			story = ss.create(iteration, title);
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		return Response.ok(story)
@@ -94,7 +94,7 @@ public class StoryController extends BaseController {
 			final Story story = ss.getById(index);
 			ss.deleteStory(story);
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		return Response.ok().build();

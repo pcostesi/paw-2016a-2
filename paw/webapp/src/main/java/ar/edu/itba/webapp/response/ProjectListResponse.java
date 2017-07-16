@@ -1,20 +1,29 @@
 package ar.edu.itba.webapp.response;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.ProjectUser;
+import ar.edu.itba.models.User;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @XmlRootElement
 public class ProjectListResponse {
+    public Project[] getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Project[] projects) {
+        this.projects = projects;
+    }
 
     @XmlElement
-    public Project.ProjectDTO[] projects;
+    private Project[] projects;
 
-    public ProjectListResponse(List<Project> projectList){
-        List<Project.ProjectDTO> projects = new ArrayList<>();
-        projectList.forEach(p -> projects.add(p.toDTO()));
-        this.projects = projects.toArray(new Project.ProjectDTO[]{});
+    public void setProjectsForResponse(List<Project> projectList){
+        this.projects = projectList.toArray(new Project[projectList.size()]);
     }
 }

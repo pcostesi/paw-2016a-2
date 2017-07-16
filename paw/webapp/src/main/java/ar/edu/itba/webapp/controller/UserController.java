@@ -34,10 +34,10 @@ public class UserController extends BaseController {
 		}catch (IllegalArgumentException| IllegalStateException a){
 			ErrorMessage msg;
 			if(a.getClass() == IllegalArgumentException.class){
-				msg = new ErrorMessage("400", "Bad request, invalid or empty username");
+				msg = ErrorMessage.asError("400", "Bad request, invalid or empty username");
 			}
 			else{
-				msg = new  ErrorMessage("400", "Username already exists");
+				msg = ErrorMessage.asError("400", "Username already exists");
 			}
 			return Response.serverError().entity(msg)
 					.build();
@@ -58,7 +58,7 @@ public class UserController extends BaseController {
 		try {
 			user = us.create(username, password, email);
 		}catch(IllegalArgumentException | IllegalStateException e){
-			return Response.serverError().entity(new ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		final String userLink = MessageFormat.format("/user/{0}", username);

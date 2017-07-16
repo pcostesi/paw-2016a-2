@@ -17,5 +17,5 @@ public class BacklogListResponse {
     }
 
     @XmlElement
-    BacklogItem[] backlog;
+    private BacklogItem[] backlog;
 }

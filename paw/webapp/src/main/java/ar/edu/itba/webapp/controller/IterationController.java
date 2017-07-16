@@ -60,7 +60,7 @@ public class IterationController extends BaseController {
             LocalDate endDate = LocalDate.parse(end);
             iteration = is.createIteration(proj, startDate, endDate);
         } catch (IllegalArgumentException | IllegalStateException e) {
-            return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+            return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
                     .build();
         }
         return Response.ok(iteration)
@@ -74,9 +74,9 @@ public class IterationController extends BaseController {
             Project proj = ps.getProjectByCode(project);
             List<Iteration> iterations = is.getIterationsForProject(proj);
             iterationList = new IterationListResponse();
-            iterationList.iterations = iterations.toArray(new Iteration[iterations.size()]);
+            iterationList.setIterations(iterations.toArray(new Iteration[iterations.size()]));
         } catch (IllegalArgumentException | IllegalStateException e) {
-            return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+            return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
                     .build();
         }
         return Response.ok(iterationList)
@@ -92,7 +92,7 @@ public class IterationController extends BaseController {
             Iteration iteration = is.getIteration(proj, index);
             is.deleteIteration(iteration);
         } catch (IllegalArgumentException | IllegalStateException e) {
-            return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+            return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
                     .build();
         }
         return Response.ok()

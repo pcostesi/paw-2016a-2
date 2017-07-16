@@ -17,6 +17,7 @@ import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @Path("project")
@@ -31,17 +32,16 @@ public class ProjectController extends BaseController {
 	@GET
 	@Path("/{codename}")
 	public Response getProjectByCodename(@PathParam("codename") final String codename) {
-		final String projectLink = MessageFormat.format("/project/{0}", codename);
-		Project project;
 		try{
-			project = ps.getProjectByCode(codename);
-		}catch (IllegalArgumentException | IllegalStateException e){
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			final String projectLink = MessageFormat.format("/project/{0}", codename);
+			Project project = ps.getProjectByCode(codename);
+			return Response.ok(project)
+					.link(projectLink, "self")
+					.build();
+		} catch (IllegalArgumentException | IllegalStateException e){
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 				.build();
 		}
-		return Response.ok(project.toDTO())
-			.link(projectLink, "self")
-			.build();
 	}
 
 	@POST
@@ -52,15 +52,14 @@ public class ProjectController extends BaseController {
 		final String description = request.getDescription();
 		final User admin = getLoggedUser();
 		final Set<User> members = new HashSet<>();
-		Project project;
 		try{
-			project = ps.createProject(admin, members, name, description, code);
+			Project project = ps.createProject(admin, members, name, description, code);
+			return Response.ok(project)
+					.build();
 		}catch (IllegalArgumentException | IllegalStateException e){
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
-		return Response.ok(project.toDTO())
-				.build();
 	}
 
 	@GET
@@ -68,12 +67,13 @@ public class ProjectController extends BaseController {
 		List<Project> project;
 		try{
 			project = ps.getProjectsForUser(getLoggedUser());
+			ProjectListResponse projectsList = new ProjectListResponse();
+            projectsList.setProjectsForResponse(project);
+			return Response.ok(projectsList)
+					.build();
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 				.build();
 		}
-		ProjectListResponse projectsList = new ProjectListResponse(project);
-		return Response.ok(projectsList)
-			.build();
 	}
 }

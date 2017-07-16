@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -24,6 +25,7 @@ public class ProjectUser implements Serializable{
 	
 	@Id
 	@ManyToOne
+	@XmlElement
 	@JoinColumn(name = "username", nullable = false)
 	private User user;
 	

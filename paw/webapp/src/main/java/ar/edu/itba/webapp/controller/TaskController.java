@@ -47,7 +47,7 @@ public class TaskController extends BaseController {
 			return Response.ok(task)
 					.build();
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 	}
@@ -60,7 +60,7 @@ public class TaskController extends BaseController {
 			task = ts.getTaskById(index);
 			ts.deleteTask(task);
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		return Response.ok(task)
@@ -82,7 +82,7 @@ public class TaskController extends BaseController {
 			Priority priority = Priority.valueOf(request.getPriorityN());
 			task = ts.createTask(story, title, description, status, owner, score, priority);
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		return Response.ok(task)
@@ -98,7 +98,7 @@ public class TaskController extends BaseController {
 			tasksList = new TaskListResponse();
 			tasksList.tasks = tasks.toArray(new Task[tasks.size()]);
 		} catch (IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(new  ErrorMessage("400", e.getMessage()))
+			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 		return Response.ok(tasksList)

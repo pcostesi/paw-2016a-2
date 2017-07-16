@@ -9,5 +9,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class IterationListResponse {
 
     @XmlElement
-    public Iteration[] iterations;
+    private Iteration[] iterations;
+
+    public Iteration[] getIterations() {
+        return iterations;
+    }
+
+    public void setIterations(Iteration[] iterations) {
+        this.iterations = iterations;
+    }
 }

@@ -50,10 +50,12 @@ public abstract class BaseController {
 		@XmlElement
 		public String status;
 
-		protected ErrorMessage(String status, String desc){
-			this.status = status;
-			this.message = desc;
-			return;
+
+		public static ErrorMessage asError(String status, String desc){
+			ErrorMessage message = new ErrorMessage();
+			message.status = status;
+			message.message = desc;
+			return message;
 		}
 	}
 }
