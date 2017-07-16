@@ -6,6 +6,8 @@ import ar.edu.itba.interfaces.service.StoryService;
 import ar.edu.itba.models.*;
 import ar.edu.itba.webapp.request.CreateStoryRequest;
 import ar.edu.itba.webapp.response.ProjectListResponse;
+import ar.edu.itba.webapp.response.StoryListResponse;
+import org.apache.commons.collections.map.UnmodifiableEntrySet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,17 +57,19 @@ public class StoryController extends BaseController {
 	@GET
 	public Response getAll(@PathParam("proj") final String proj,
 						   @PathParam("iter") final int iter) {
-		Map<Story, List<Task>> result;
     	try {
+			Map<Story, List<Task>> result;
 			final Project project = ps.getProjectByCode(proj);
 			final Iteration iteration = is.getIteration(project, iter);
 			result = ss.getStoriesWithTasksForIteration(iteration);
+			final StoryListResponse response = new StoryListResponse();
+			response.setStories(result.entrySet().stream().map(e -> e.getKey()).toArray(i -> new Story[i]));
+			return Response.ok(response)
+					.build();
 		} catch (IllegalArgumentException | IllegalStateException e) {
 			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
-		return Response.ok(result)
-				.build();
 	}
 
 	@POST

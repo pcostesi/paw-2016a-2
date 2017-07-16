@@ -20,16 +20,6 @@
     </div>
     <div class="col-md-9">
         <h2><a [routerLink]="['iteration']" i18n="@@Iteration">Iteration</a></h2>
-        <ngb-accordion (panelChange)="onPanelSelect($event)" [closeOthers]="true" *ngIf="iterations?.length">
-
-            <ngb-panel *ngFor="let item of iterations" id="iteration-{{item.number}}">
-                <ng-template ngbPanelTitle>
-                    <span i18n="@@IterationNo">Iteration #{{ item.number }}</span>
-                </ng-template>
-                <ng-template ngbPanelContent>
-                    Here goes a story list
-                </ng-template>
-            </ngb-panel>
-        </ngb-accordion>
+        <scrumlr-iteration-list [iterations]="iterations"></scrumlr-iteration-list>
     </div>
 </div>

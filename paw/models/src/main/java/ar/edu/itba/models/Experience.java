@@ -15,7 +15,7 @@ import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlElement;
 
 @Entity
-@Table(name = "experience", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "user_id	"}))
+@Table(name = "experience", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "username"}))
 public class Experience implements Serializable {
 
 	@Id

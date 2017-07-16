@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+
+import { IterationModule } from '../iteration/iteration.module';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { DetailComponent } from './detail/detail.component';
 import { SignupComponent } from './signup/signup.component';
@@ -19,8 +21,9 @@ import { ChangeEmailComponent } from './change-email/change-email.component';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    IterationModule
   ],
-  entryComponents: [ ChangeEmailComponent, ChangePasswordComponent ],
+  entryComponents: [ChangeEmailComponent, ChangePasswordComponent],
   declarations: [
     DetailComponent,
     SignupComponent,

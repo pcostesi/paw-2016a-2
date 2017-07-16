@@ -20,4 +20,13 @@ export class IterationService {
     });
   }
 
+
+  getIteration(project: string, iteration: number): Observable<any | null> {
+    return this.api.get(`/project/${project}/iteration/${iteration}`).map(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return null;
+    });
+  }
 }

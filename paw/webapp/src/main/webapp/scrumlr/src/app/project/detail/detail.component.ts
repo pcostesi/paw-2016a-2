@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-
 import { ProjectService } from '../project.service';
-
 
 @Component({
   selector: 'scrumlr-detail',
@@ -25,10 +22,6 @@ export class DetailComponent implements OnInit {
       this.code = params['proj'];
       this.fetchProject(this.code);
     });
-  }
-
-  onPanelSelect(evt: NgbPanelChangeEvent) {
-    console.log(evt);
   }
 
   fetchProject(code: string) {

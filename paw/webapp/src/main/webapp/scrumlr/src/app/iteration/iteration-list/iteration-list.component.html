@@ -1,0 +1,10 @@
+<ngb-accordion (panelChange)="onPanelSelect($event)" [closeOthers]="true" *ngIf="iterations?.length">
+    <ngb-panel *ngFor="let item of iterations" id="iteration-{{item.number}}">
+        <ng-template ngbPanelTitle>
+            <span i18n="@@IterationNo">Iteration #{{ item.number }}</span>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <scrumlr-iteration-detail [iteration]="item"></scrumlr-iteration-detail>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>
