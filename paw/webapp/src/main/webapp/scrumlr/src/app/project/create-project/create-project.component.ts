@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators,
-  FormControl, FormArray, AbstractControl } from '@angular/forms';
+import {
+  FormBuilder, FormGroup, Validators,
+  FormControl, FormArray, AbstractControl
+} from '@angular/forms';
 
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operator/map';
-import {debounceTime} from 'rxjs/operator/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operator/map';
+import { debounceTime } from 'rxjs/operator/debounceTime';
+import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 
 import { AccountService } from '../../api';
 
@@ -16,6 +18,7 @@ import { AccountService } from '../../api';
 })
 export class CreateProjectComponent implements OnInit {
   public projectForm: FormGroup;
+  public users: string[]
 
   constructor(private formBuilder: FormBuilder,
     private accountService: AccountService) {
@@ -48,10 +51,9 @@ export class CreateProjectComponent implements OnInit {
   }
 
   getUsers(text: Observable<string>) {
-    const users = ['pablo', 'braulio', 'maio'];
     const eventStream = distinctUntilChanged.call(debounceTime.call(text, 200));
     return map.call(eventStream, (term: string) => {
-      return term.length < 2 ? [] : users.filter(v => v.toLowerCase()
+      return term.length < 2 ? [] : this.users.filter(v => v.toLowerCase()
         .startsWith(term.toLocaleLowerCase()))
         .splice(0, 10);
     });
@@ -67,8 +69,9 @@ export class CreateProjectComponent implements OnInit {
   }
 
   ngOnInit() {
-    //example
-    //this.accountService.getUsers().subscribe(users => console.log(users));
+    this.accountService.getUsers().subscribe(users => {
+      this.users = users;
+    });
   }
 
 }

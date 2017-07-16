@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
 import { ProjectService } from '../project.service';
 
 
@@ -16,7 +18,7 @@ export class DetailComponent implements OnInit {
   private code: string;
 
   constructor(private route: ActivatedRoute,
-              private projectService: ProjectService) { }
+    private projectService: ProjectService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -25,13 +27,15 @@ export class DetailComponent implements OnInit {
     });
   }
 
+  onPanelSelect(evt: NgbPanelChangeEvent) {
+    console.log(evt);
+  }
 
   fetchProject(code: string) {
     this.projectService.getSummary(code).subscribe(result => {
       this.project = result.project;
       this.backlog = result.backlog;
       this.iterations = result.iterations;
-      console.log(result)
     });
   }
 }

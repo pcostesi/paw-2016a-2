@@ -47,7 +47,7 @@
 
                 <div class="input-group">
                     <label for="username-{{index}}" class="input-group-addon" i18n="@@Username">Username</label>
-                    <input type="text" class="form-control" [class.form-control-danger]="!getUserControls()[i].valid" id="username-{{i}}" [formControl]="getUserControls()[i]" placeholder="username" [ngbTypeahead]="getUsers">
+                    <input type="text" class="form-control" [class.form-control-danger]="!getUserControls()[i].valid" id="username-{{i}}" [formControl]="getUserControls()[i]" placeholder="username" [ngbTypeahead]="getUsers.bind(this)">
 
 
                     <button *ngIf="getUserControls().length > 1" class="btn btn-sm btn-outline-danger input-group-addon" (click)="removeMember(i)" i18n="@@Remove">Remove</button>

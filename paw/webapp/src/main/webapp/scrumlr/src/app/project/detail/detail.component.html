@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <h1 class="d-flex justify-content-between">{{project?.name}}
             <div class="btn-group">
-                <button class="btn btn-primary" i18n="@@Edit">Edit</button>
+                <button class="btn btn-primary" [routerLink]="['edit']" i18n="@@Edit">Edit</button>
                 <button class="btn btn-danger" i18n="@@Delete">Delete</button>
             </div>
         </h1>
@@ -20,10 +20,16 @@
     </div>
     <div class="col-md-9">
         <h2><a [routerLink]="['iteration']" i18n="@@Iteration">Iteration</a></h2>
-        <ul *ngIf="iterations?.length" class="list-group">
-            <li *ngFor="let item of iterations" class="list-group-item">
-                <a [routerLink]="['iteration', item.number]">Iteration #{{ item.number }}</a>
-            </li>
-        </ul>
+        <ngb-accordion (panelChange)="onPanelSelect($event)" [closeOthers]="true" *ngIf="iterations?.length">
+
+            <ngb-panel *ngFor="let item of iterations" id="iteration-{{item.number}}">
+                <ng-template ngbPanelTitle>
+                    <span i18n="@@IterationNo">Iteration #{{ item.number }}</span>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    Here goes a story list
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
     </div>
 </div>
