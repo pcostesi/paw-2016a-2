@@ -16,8 +16,8 @@ export class CreateComponent implements OnInit {
   public form: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-              private backlogService: BacklogService,
-              private modal: NgbActiveModal) {
+    private backlogService: BacklogService,
+    public modal: NgbActiveModal) {
     this.form = formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
