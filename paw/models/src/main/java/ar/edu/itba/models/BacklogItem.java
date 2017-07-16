@@ -38,7 +38,6 @@ public class BacklogItem{
 	@Column(length = 500, nullable = true)
 	private String description;
 
-	@XmlElement
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
 	private Project project;

@@ -12,6 +12,7 @@ import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProjectServiceImpl implements ProjectService{

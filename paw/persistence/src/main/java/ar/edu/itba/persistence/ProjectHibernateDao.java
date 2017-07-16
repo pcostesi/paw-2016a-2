@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.models.Project;
-import ar.edu.itba.models.ProjectUser;
 import ar.edu.itba.models.User;
 
 @Primary
@@ -95,9 +94,9 @@ public class ProjectHibernateDao implements ProjectDao{
 	@Transactional
 	public void deleteProjectUser(Project project) {
 		try {
-			final Query query = em.createQuery("delete from ProjectUser where project = :project");
-			query.setParameter("project", project);
-			query.executeUpdate();
+            project.getMembers().clear();
+			em.persist(project);
+			em.flush();
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to delete projectuser");
 		}	
@@ -158,12 +157,12 @@ public class ProjectHibernateDao implements ProjectDao{
 	@Transactional
 	public List<Project> getProjectsForUser(User user) {
 		try {
-			final TypedQuery<Project> query = em.createQuery("select projectUser.project from ProjectUser projectUser where projectUser.user = :user", Project.class);
+			final TypedQuery<Project> query = em.createQuery("select p from Project p join p.members u where u = :user", Project.class);
 			query.setParameter("user", user);
 			return query.getResultList();
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to get projects list");
-		}	
+		}
 	}
 
 	@Override
@@ -182,11 +181,8 @@ public class ProjectHibernateDao implements ProjectDao{
 	@Transactional
 	public void addProjectMember(Project project, User user) {
 		try {
-			final ProjectUser projectUser = ProjectUser.builder()
-					.project(project)
-					.user(user)
-					.build();
-			em.persist(projectUser);
+			project.getMembers().add(user);
+			em.persist(project);
 			em.flush();
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to add project member");
@@ -197,7 +193,7 @@ public class ProjectHibernateDao implements ProjectDao{
 	@Transactional
 	public List<User> getProjectMembers(Project project) {
 		try {
-			final TypedQuery<User> query = em.createQuery("select pu.user from ProjectUser pu where pu.project = :project", User.class);
+			final TypedQuery<User> query = em.createQuery("select u from Project p join p.members u where p = :project", User.class);
 			query.setParameter("project", project);
 			return query.getResultList();
 		} catch (Exception exception) {
@@ -209,10 +205,9 @@ public class ProjectHibernateDao implements ProjectDao{
 	@Transactional
 	public void deleteProjectMember(Project project, User userToDelete) {
 		try {
-			final Query query = em.createQuery("delete from ProjectUser where project = :project and user = :user");
-			query.setParameter("project", project);
-			query.setParameter("user", userToDelete);
-			query.executeUpdate();
+            project.getMembers().remove(userToDelete);
+			em.persist(project);
+            em.flush();
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to delete user from project");
 		}
@@ -222,10 +217,7 @@ public class ProjectHibernateDao implements ProjectDao{
 	@Transactional
 	public boolean userBelongsToProject(Project project, User user) {
 		try {
-			final TypedQuery<Long> query = em.createQuery("select count(*) from ProjectUser pu where pu.project = :project and pu.user = :user", Long.class);
-			query.setParameter("project", project);
-			query.setParameter("user", user);
-			return query.getSingleResult() > 0;
+			return project.getMembers().contains(user);
 		} catch (Exception exception) {
 			throw new IllegalStateException("Database failed to check user belongs to project");
 		}	

@@ -9,18 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -59,9 +48,13 @@ public class Project implements Serializable {
 	@JoinColumn(name = "admin", nullable = false)
 	private User admin;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Set<ProjectUser> members;
+	@XmlElement(name = "members")
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "project_user", joinColumns = {
+			@JoinColumn(name = "project_id", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "username",
+					nullable = false, updatable = false) })
+	private Set<User> members;
 
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -121,7 +114,7 @@ public class Project implements Serializable {
 		return projectBacklogItems;
 	}
 
-	public Set<ProjectUser> getMembers() { return members; }
+	public Set<User> getMembers() { return members; }
 
 	public boolean equals(Object another) {
 		if (this == another) return true;
