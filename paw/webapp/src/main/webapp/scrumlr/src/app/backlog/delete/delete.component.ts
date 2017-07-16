@@ -14,8 +14,8 @@ export class DeleteComponent implements OnInit {
   @Input() item: BacklogItem;
   @Input() project: string;
 
-  constructor(private backlogService: BacklogService,
-              private modal: NgbActiveModal) { }
+  constructor(public backlogService: BacklogService,
+    public modal: NgbActiveModal) { }
 
   ngOnInit() {
   }

@@ -14,12 +14,12 @@ import { CreateComponent } from '../create/create.component';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  private backlog: BacklogItem[] = [];
+  public backlog: BacklogItem[] = [];
   public project: string;
 
   constructor(private backlogService: BacklogService,
-              private route: ActivatedRoute,
-              private modalService: NgbModal) { }
+    private route: ActivatedRoute,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
