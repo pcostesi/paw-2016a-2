@@ -38,7 +38,7 @@ function save_db() {
     DUMP="${GROUP}-${DATETIME}.sql"
     ssh "${PAMPERO}" << _EOF
     export PGPASSWORD="${PASS}"
-    pg_dump -U ${GROUP} -h ${PAWSERVER} --clean > ${DUMP}
+    pg_dump -U ${GROUP} -h ${PAWSERVER} -E "UTF-8" -o --clean > ${DUMP}
 _EOF
     scp "${PAMPERO}":"${DUMP}" ./dumps
 }
@@ -56,6 +56,9 @@ function main() {
         ;;
         build)
         build_app;
+        ;;
+        load)
+        restore_to_docker_db       
         ;;
         restore_to_docker)
         restore_to_docker_db       
