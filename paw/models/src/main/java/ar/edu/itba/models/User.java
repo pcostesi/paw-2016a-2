@@ -6,13 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,9 +30,13 @@ public class User implements Serializable {
 	@XmlElement
 	private String mail;
 	
-	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-	private Set<ProjectUser> projects;
-	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "project_user", joinColumns = {
+			@JoinColumn(name = "username", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "project_id",
+					nullable = false, updatable = false) })
+	private Set<Project> projects;
+
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
 	private Set<Task> tasks;
 	
