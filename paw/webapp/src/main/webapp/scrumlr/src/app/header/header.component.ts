@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BadgeComponent, AccountService } from '../api';
 
 @Component({
-  selector: 'scrumlr-header',
+  selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })

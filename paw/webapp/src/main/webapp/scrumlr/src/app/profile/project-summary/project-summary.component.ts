@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'scrumlr-project-summary',
+  selector: 'app-project-summary',
   templateUrl: './project-summary.component.html',
   styleUrls: ['./project-summary.component.scss']
 })

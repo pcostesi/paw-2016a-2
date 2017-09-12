@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../project.service';
 
 @Component({
-  selector: 'scrumlr-main',
+  selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })

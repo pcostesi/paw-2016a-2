@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
   hmr: true,
-  apiEndpoint: "http://localhost:8080/grupo2/api",
+  apiEndpoint: 'http://localhost:8080/grupo2/api',
   baseUri: '/grupo2/'
 };

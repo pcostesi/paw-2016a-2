@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../project.service';
 
 @Component({
-  selector: 'scrumlr-detail',
+  selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })

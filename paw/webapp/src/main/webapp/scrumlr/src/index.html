@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <scrumlr-root>
+    <app-root>
         <style>
             .loading-screen {
                 position: fixed;
@@ -26,11 +26,11 @@
                 align-content: center;
                 justify-content: center;
             }
-            
+
             h1 {
                 text-align: center;
             }
-            
+
             .spinner {
                 width: 40px;
                 height: 40px;
@@ -39,7 +39,7 @@
                 -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
                 animation: sk-rotateplane 1.2s infinite ease-in-out;
             }
-            
+
             @-webkit-keyframes sk-rotateplane {
                 0% {
                     -webkit-transform: perspective(120px)
@@ -51,7 +51,7 @@
                     -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg)
                 }
             }
-            
+
             @keyframes sk-rotateplane {
                 0% {
                     transform: perspective(120px) rotateX(0deg) rotateY(0deg);
@@ -72,7 +72,7 @@
             <div class="spinner">
             </div>
         </div>
-    </scrumlr-root>
+    </app-root>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService, AccountService } from '../../api';
 
 @Component({
-  selector: 'scrumlr-change-password',
+  selector: 'app-change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
@@ -16,10 +16,10 @@ export class ChangePasswordComponent implements OnInit {
   public changePassForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-              private profileService: AccountService,
-              private apiService: ApiService,
-              private activeModal: NgbActiveModal) {
-     this.changePassForm = formBuilder.group({
+    private profileService: AccountService,
+    private apiService: ApiService,
+    private activeModal: NgbActiveModal) {
+    this.changePassForm = formBuilder.group({
       password: ['user@example.com', Validators.required],
       password2: ['user@example.com', Validators.required],
     });
@@ -31,7 +31,7 @@ export class ChangePasswordComponent implements OnInit {
   onSubmit(form: any) {
     const pass1: string = form.password;
     const pass2: string = form.password2;
-    if (pass1 != pass2) { return; }
+    if (pass1 !== pass2) { return; }
     this.profileService.updateProfile(this.username, this.mail, pass1)
       .subscribe(success => {
         this.activeModal.close();

@@ -1,9 +1,9 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import {BaseRequestOptions, ConnectionBackend, Http, RequestOptions, Request} from '@angular/http';
-import {async, fakeAsync, tick} from '@angular/core/testing';
-import {Response, ResponseOptions} from '@angular/http';
-import {MockBackend, MockConnection} from '@angular/http/testing';
+import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions, Request } from '@angular/http';
+import { async, fakeAsync, tick } from '@angular/core/testing';
+import { Response, ResponseOptions } from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { ApiService } from './api.service';
 
@@ -12,15 +12,15 @@ describe('ApiService', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: ApiService,
-          deps: [ConnectionBackend, RequestOptions],
-          useFactory:
-            (backend: ConnectionBackend, defaultOptions: RequestOptions) => {
-                return new ApiService(backend, defaultOptions);
-            }
-         },
-        {provide: ConnectionBackend, useClass: MockBackend},
-        {provide: RequestOptions, useClass: BaseRequestOptions}
+          provide: ApiService,
+          deps: [ConnectionBackend, RequestOptions],
+          useFactory:
+          (backend: ConnectionBackend, defaultOptions: RequestOptions) => {
+            return new ApiService(backend, defaultOptions);
+          }
+        },
+        { provide: ConnectionBackend, useClass: MockBackend },
+        { provide: RequestOptions, useClass: BaseRequestOptions }
       ]
     });
   });
@@ -44,7 +44,6 @@ describe('ApiService', () => {
     expect(digest).toEqual(expectedDigest);
   }));
 
-  
   it('should correctly format from request options', inject([ApiService], (service: ApiService) => {
     const timestamp = 1494995346;
     const expectedDigest = 'R0VUCmFwcGxpY2F0aW9uL2pzb24KMTQ5NDk5NTM3MAp0ZXN0';
@@ -65,27 +64,27 @@ describe('ApiService', () => {
     expect(token).toEqual(expectedToken);
   }));
 
-  it('should add the auth header to a request (async)', async(inject([ApiService, ConnectionBackend], 
-  (service: ApiService, backend: MockBackend) => {
-    const apiKey = 'test-user';
-    const secret = 'zekrit key iz zekrit';
-    const uri = '/users/me';
+  it('should add the auth header to a request (async)', async(inject([ApiService, ConnectionBackend],
+    (service: ApiService, backend: MockBackend) => {
+      const apiKey = 'test-user';
+      const secret = 'zekrit key iz zekrit';
+      const uri = '/users/me';
 
-    const timestamp = Date.now() / 1000;
-    const options = new RequestOptions({
-      method: 'GET'
-    });
+      const timestamp = Date.now() / 1000;
+      const options = new RequestOptions({
+        method: 'GET'
+      });
 
-    const digest = ApiService.formatFromRequestOptions(timestamp, uri, options);
-    const token = ApiService.formatToken(apiKey, secret, digest);
+      const digest = ApiService.formatFromRequestOptions(timestamp, uri, options);
+      const token = ApiService.formatToken(apiKey, secret, digest);
 
 
-    backend.connections.subscribe(connection => {   
-      expect(connection.request).toBeDefined();
-      expect(connection.request.headers.get('Authorization'))
-        .toEqual(token);
-    });
-    service.setCredentials(apiKey, secret);
-    service.request(uri);
-  })));
+      backend.connections.subscribe(connection => {
+        expect(connection.request).toBeDefined();
+        expect(connection.request.headers.get('Authorization'))
+          .toEqual(token);
+      });
+      service.setCredentials(apiKey, secret);
+      service.request(uri);
+    })));
 });

@@ -7,7 +7,7 @@ import { EditComponent } from '../edit/edit.component';
 import { DeleteComponent } from '../delete/delete.component';
 
 @Component({
-  selector: 'scrumlr-compact',
+  selector: 'app-compact',
   templateUrl: './compact.component.html',
   styleUrls: ['./compact.component.scss'],
 })

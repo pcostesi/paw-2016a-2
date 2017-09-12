@@ -11,7 +11,7 @@ const modalOptions: NgbModalOptions = {
 };
 
 @Component({
-  selector: 'scrumlr-badge',
+  selector: 'app-badge',
   templateUrl: './badge.component.html',
   styleUrls: ['./badge.component.scss'],
 })
@@ -21,9 +21,9 @@ export class BadgeComponent implements OnInit {
   public isModalOpen = false;
 
   constructor(private accountService: AccountService,
-              private api: ApiService,
-              private router: Router,
-              private modalService: NgbModal) { }
+    private api: ApiService,
+    private router: Router,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.hasCredentials = this.accountService.getLoggedAccount() != null;

@@ -12,13 +12,13 @@ import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { AccountService } from '../../api';
 
 @Component({
-  selector: 'scrumlr-create-project',
+  selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent implements OnInit {
   public projectForm: FormGroup;
-  public users: string[]
+  public users: string[];
 
   constructor(private formBuilder: FormBuilder,
     private accountService: AccountService) {

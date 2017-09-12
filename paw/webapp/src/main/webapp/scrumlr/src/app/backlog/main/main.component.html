@@ -7,7 +7,7 @@
 <hr class="my-4">
 
 <div *ngIf="backlog?.length" class="list-group">
-    <scrumlr-compact *ngFor="let item of backlog" [project]="project" [item]="item" class="list-group-item list-group-item-action"></scrumlr-compact>
+    <app-compact *ngFor="let item of backlog" [project]="project" [item]="item" class="list-group-item list-group-item-action"></app-compact>
 </div>
 
 <div *ngIf="!backlog?.length" class="">

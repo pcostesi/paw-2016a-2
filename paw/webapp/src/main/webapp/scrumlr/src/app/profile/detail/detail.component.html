@@ -22,7 +22,7 @@
         <p *ngIf="!projects" i18n="No active / working projects@@WorkingProjectsEmpty">Oh, look at how empty your life is.</p>
         <ul *ngIf="projects" class="list-group">
             <li *ngFor="let project of projects">
-                <scrumlr-project-summary [project]="project"></scrumlr-project-summary>
+                <app-project-summary [project]="project"></app-project-summary>
             </li>
         </ul>
     </div>
@@ -31,7 +31,7 @@
         <p *ngIf="!workItems" i18n="No active work items@@ActiveWorkItemsEmpty">You're a slacker. Shame 🔔</p>
         <ul *ngIf="workItems" class="list-group">
             <li *ngFor="let item of workItems">
-                <scrumlr-work-item [work]="{title: 'test', description: 'desc', id: 'fake'}"></scrumlr-work-item>
+                <app-work-item [work]="{title: 'test', description: 'desc', id: 'fake'}"></app-work-item>
             </li>
         </ul>
     </div>

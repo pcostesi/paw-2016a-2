@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'scrumlr-login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -16,12 +16,12 @@ export class LoginComponent implements AfterViewInit {
   public loginError = false;
 
   constructor(private api: ApiService,
-              private account: AccountService,
-              private activeModal: NgbActiveModal) { }
+    private account: AccountService,
+    private activeModal: NgbActiveModal) { }
 
   ngAfterViewInit() {
     this.api.loginStatusTopic().subscribe(status => {
-        this.loginError = status === LoginEvent.BAD_CREDENTIALS;
+      this.loginError = status === LoginEvent.BAD_CREDENTIALS;
     });
 
     this.account.stream.subscribe(user => user && this.closeModal());

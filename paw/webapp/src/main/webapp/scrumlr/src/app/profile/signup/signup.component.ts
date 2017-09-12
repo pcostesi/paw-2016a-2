@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../../api';
 
 @Component({
-  selector: 'scrumlr-signup',
+  selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
@@ -14,8 +14,8 @@ export class SignupComponent implements OnInit {
   public signupError: string;
 
   constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private acctsrv: AccountService) {
+    private router: Router,
+    private acctsrv: AccountService) {
     this.signupForm = formBuilder.group({
       email: ['user@example.com', Validators.compose([Validators.required, Validators.email])],
       username: ['user', Validators.required],

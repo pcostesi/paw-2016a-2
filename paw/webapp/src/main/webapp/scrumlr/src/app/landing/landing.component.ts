@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService, AccountService, UserProfile } from '../api';
 
 @Component({
-  selector: 'scrumlr-landing',
+  selector: 'app-landing',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })

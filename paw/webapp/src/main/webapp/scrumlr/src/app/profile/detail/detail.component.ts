@@ -7,7 +7,7 @@ import { ChangeEmailComponent } from '../change-email/change-email.component';
 import { AccountService } from '../../api';
 
 @Component({
-  selector: 'scrumlr-detail',
+  selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
@@ -18,7 +18,7 @@ export class DetailComponent implements OnInit {
   public workItems: string[];
 
   constructor(private modalService: NgbModal,
-              private profileService: AccountService) { }
+    private profileService: AccountService) { }
 
   ngOnInit() {
     const user = this.profileService.getLoggedAccount();

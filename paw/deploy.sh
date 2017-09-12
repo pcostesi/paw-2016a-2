@@ -15,8 +15,12 @@ function build_app() {
     chmod +rwx "deploy/${APPWAR}"
 }
 
+function build_docker_db() {
+    docker run --name pawdb -e POSTGRES_PASSWORD="${GROUP}" -e POSTGRES_USER="${GROUP}" -e POSTGRES_DB="${GROUP}" -d postgres:9.3
+}
+
 function restore_to_docker_db() {
-    LOCAL_DUMP_PATH="./dumps/$(ls ./dumps | sort -r | head -n 1)"   
+    LOCAL_DUMP_PATH="./dumps/$(ls ./dumps | sort -r | head -n 1)"
     export PGPASSWORD="${GROUP}"
     docker exec -i pawdb psql -U "${GROUP}" -d "${GROUP}" < "${LOCAL_DUMP_PATH}"
 }
@@ -51,6 +55,9 @@ function all() {
 
 function main() {
     case "${1}" in
+        docker)
+        build_docker_db
+        ;;
         dump)
         save_db;
         ;;
@@ -58,10 +65,10 @@ function main() {
         build_app;
         ;;
         load)
-        restore_to_docker_db       
+        restore_to_docker_db
         ;;
         restore_to_docker)
-        restore_to_docker_db       
+        restore_to_docker_db
         ;;
         upload)
         upload_app;

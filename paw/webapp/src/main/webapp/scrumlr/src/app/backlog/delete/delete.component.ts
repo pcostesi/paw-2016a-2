@@ -6,7 +6,7 @@ import { BacklogItem } from '../backlog-item';
 import { BacklogService } from '../backlog.service';
 
 @Component({
-  selector: 'scrumlr-delete',
+  selector: 'app-delete',
   templateUrl: './delete.component.html',
   styleUrls: ['./delete.component.scss']
 })
