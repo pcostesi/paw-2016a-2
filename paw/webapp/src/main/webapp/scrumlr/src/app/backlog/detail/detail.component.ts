@@ -10,7 +10,7 @@ import { BacklogService } from '../backlog.service';
 import { BacklogActivity } from '../backlog-activity.enum';
 
 @Component({
-  selector: 'scrumlr-detail',
+  selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
@@ -21,8 +21,8 @@ export class DetailComponent implements OnInit {
   backlogId: string;
 
   constructor(private modalService: NgbModal,
-              private backlogService: BacklogService,
-              private route: ActivatedRoute) { }
+    private backlogService: BacklogService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {

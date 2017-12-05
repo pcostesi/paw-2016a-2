@@ -14,7 +14,7 @@ import { AccountService, UserProfile } from '../../api';
 import { ProjectService } from '../project.service';
 
 @Component({
-  selector: 'scrumlr-edit-project',
+  selector: 'app-edit-project',
   templateUrl: './edit-project.component.html',
   styleUrls: ['./edit-project.component.scss']
 })

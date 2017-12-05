@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'scrumlr-iteration-list',
+  selector: 'app-iteration-list',
   templateUrl: './iteration-list.component.html',
   styleUrls: ['./iteration-list.component.scss']
 })

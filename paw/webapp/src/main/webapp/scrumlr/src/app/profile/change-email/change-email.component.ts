@@ -6,7 +6,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../api';
 
 @Component({
-  selector: 'scrumlr-change-email',
+  selector: 'app-change-email',
   templateUrl: './change-email.component.html',
   styleUrls: ['./change-email.component.scss']
 })
@@ -16,9 +16,9 @@ export class ChangeEmailComponent implements OnInit {
   @Input() mail: string;
 
   constructor(private formBuilder: FormBuilder,
-              private profileService: AccountService,
-              private activeModal: NgbActiveModal) {
-     this.changeEmailForm = formBuilder.group({
+    private profileService: AccountService,
+    private activeModal: NgbActiveModal) {
+    this.changeEmailForm = formBuilder.group({
       email: ['user@example.com', Validators.compose([Validators.required, Validators.email])],
       email2: ['user@example.com', Validators.compose([Validators.required, Validators.email])],
     });
@@ -32,7 +32,7 @@ export class ChangeEmailComponent implements OnInit {
   onSubmit(form: any) {
     this.profileService.updateProfile(this.username, this.mail)
       .subscribe(success => {
-        this.activeModal.close()
+        this.activeModal.close();
       });
   }
 

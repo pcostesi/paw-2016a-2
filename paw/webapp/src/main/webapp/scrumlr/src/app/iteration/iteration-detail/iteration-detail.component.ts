@@ -4,7 +4,7 @@ import { StoryService } from '../../story/story.service';
 import { IterationService } from '../iteration.service';
 
 @Component({
-  selector: 'scrumlr-iteration-detail',
+  selector: 'app-iteration-detail',
   templateUrl: './iteration-detail.component.html',
   styleUrls: ['./iteration-detail.component.scss']
 })

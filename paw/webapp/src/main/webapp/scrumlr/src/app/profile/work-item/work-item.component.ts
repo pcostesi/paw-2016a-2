@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'scrumlr-work-item',
+  selector: 'app-work-item',
   templateUrl: './work-item.component.html',
   styleUrls: ['./work-item.component.scss']
 })

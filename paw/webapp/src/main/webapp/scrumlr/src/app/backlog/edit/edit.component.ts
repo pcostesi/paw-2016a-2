@@ -7,7 +7,7 @@ import { BacklogService } from '../backlog.service';
 import { BacklogItem } from '../backlog-item';
 
 @Component({
-  selector: 'scrumlr-edit',
+  selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })

@@ -9,7 +9,7 @@ import { BacklogItem } from '../backlog-item';
 import { CreateComponent } from '../create/create.component';
 
 @Component({
-  selector: 'scrumlr-main',
+  selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
