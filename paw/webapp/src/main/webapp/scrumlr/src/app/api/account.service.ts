@@ -3,8 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Headers } from '@angular/http';
 
-
-import { ApiService, LoginEvent } from '.';
+import { ApiService } from './api.service';
+import { LoginEvent } from './login-event.enum';
 
 export interface UserProfile {
   username: string;
@@ -15,7 +15,6 @@ export type MaybeUser = UserProfile | null;
 
 @Injectable()
 export class AccountService {
-
   private user: MaybeUser;
   private loginSubject = new Subject<MaybeUser>();
 
@@ -43,8 +42,11 @@ export class AccountService {
     return this.user;
   }
 
-  public signupUser(username: string, password: string, mail: string): Observable<boolean> {
-
+  public signupUser(
+    username: string,
+    password: string,
+    mail: string
+  ): Observable<boolean> {
     const bodyAsJson = { username, password, mail };
     return this.api.post('/user', bodyAsJson).map(response => response.ok);
   }
@@ -60,18 +62,22 @@ export class AccountService {
   }
 
   public updateProfile(username: string, mail: string, password?: string) {
-    return this.api.put(`/user/${username}`, {username, password, mail})
+    return this.api
+      .put(`/user/${username}`, { username, password, mail })
       .map(result => result.json());
   }
 
   private doFetch(): void {
     if (this.api.hasCredentialsSet()) {
-      this.fetchLoggedAccount().subscribe(user => {
-        this.user = user;
-        this.loginSubject.next(user);
-      }, error => {
-        this.loginSubject.next(null);
-      });
+      this.fetchLoggedAccount().subscribe(
+        user => {
+          this.user = user;
+          this.loginSubject.next(user);
+        },
+        error => {
+          this.loginSubject.next(null);
+        }
+      );
     }
   }
 

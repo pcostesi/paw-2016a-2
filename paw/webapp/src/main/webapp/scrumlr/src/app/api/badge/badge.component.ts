@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
-import { AccountService, ApiService, LoginEvent, MaybeUser, LoginComponent } from '..';
+import { ApiService } from '../api.service';
+import { LoginEvent } from '../login-event.enum';
+import { AccountService, MaybeUser } from '../account.service';
+import { LoginComponent } from '../login/login.component';
 
 const modalOptions: NgbModalOptions = {
   windowClass: 'fade',
@@ -13,17 +16,19 @@ const modalOptions: NgbModalOptions = {
 @Component({
   selector: 'app-badge',
   templateUrl: './badge.component.html',
-  styleUrls: ['./badge.component.scss'],
+  styleUrls: ['./badge.component.scss']
 })
 export class BadgeComponent implements OnInit {
   public hasCredentials = false;
   public user: MaybeUser;
   public isModalOpen = false;
 
-  constructor(private accountService: AccountService,
+  constructor(
+    private accountService: AccountService,
     private api: ApiService,
     private router: Router,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.hasCredentials = this.accountService.getLoggedAccount() != null;
@@ -35,7 +40,8 @@ export class BadgeComponent implements OnInit {
       error => {
         this.user = null;
         this.hasCredentials = false;
-      });
+      }
+    );
 
     this.api.loginStatusTopic().subscribe(status => {
       switch (status) {
@@ -52,9 +58,10 @@ export class BadgeComponent implements OnInit {
 
   public promptCredentials() {
     if (!this.isModalOpen) {
-      this.modalService.open(LoginComponent, modalOptions).result
-        .then(() => this.isModalOpen = false)
-        .catch(() => this.isModalOpen = false);
+      this.modalService
+        .open(LoginComponent, modalOptions)
+        .result.then(() => (this.isModalOpen = false))
+        .catch(() => (this.isModalOpen = false));
       this.isModalOpen = true;
     }
   }
@@ -67,5 +74,4 @@ export class BadgeComponent implements OnInit {
   public logIn() {
     this.api.requestCredentials();
   }
-
 }
