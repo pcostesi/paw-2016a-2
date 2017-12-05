@@ -17,6 +17,18 @@
 
 ## Developer Tools
 
+### Database
+
+In order to have a development database, please download Docker, then download a copy of
+the data in prod and then run the postgres container. Please check the source of the
+deploy.sh script for detailed instructions (i.e.: the actual code).
+
+Just in case you can't read:
+
+1. deploy.sh docker
+2. deploy.sh dump
+2. deploy.sh load 
+
 ### Javascript / Typescript Toolchain
 
 You will need to install the latest current version of node js for your
