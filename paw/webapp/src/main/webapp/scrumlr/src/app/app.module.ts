@@ -34,7 +34,7 @@ import { LocaleSelectorComponent } from './locale-selector/locale-selector.compo
     ApiModule,
     AppRoutingModule
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: environment.baseUri}],
+  providers: [{ provide: APP_BASE_HREF, useValue: environment.baseUri }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
