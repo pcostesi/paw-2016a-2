@@ -14,7 +14,7 @@ export class TaskService {
     return this.api.get(url).map(response => {
       if (response.ok) {
         const json = response.json();
-        return json.stories;
+        return json.tasks;
       }
       return [];
     });
