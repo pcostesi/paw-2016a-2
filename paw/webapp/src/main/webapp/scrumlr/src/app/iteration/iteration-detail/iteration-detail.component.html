@@ -1,7 +1,7 @@
 <div class="iteration">
 
     <h2 class="d-flex justify-content-between">
-        <span>Iteration {{iteration.number}}</span>
+        <span (click)="expand = !expand">Iteration {{iteration.number}}</span>
         <div class="btn-group">
             <button class="btn btn-outline-secondary btn-sm">Edit</button>
             <button class="btn btn-outline-danger btn-sm">Delete</button>

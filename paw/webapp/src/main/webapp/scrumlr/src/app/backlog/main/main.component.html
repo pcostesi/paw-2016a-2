@@ -1,10 +1,12 @@
-<h1 class="d-flex justify-content-between">
-    <ng-container i18n="@@AllBacklogItems">All backlog items</ng-container>
-    <div class="btn btn-group">
-        <button (click)="createItem()" class="btn btn-primary" i18n="@@CreateNewBacklogItem">New item</button>
+<div class="card mt-3 mb-3">
+    <div class="card-block">
+        <p class="card-text" i18n="@@MissingBacklog">
+            <strong>Hey, listen!</strong> You can add a new iteration with this button ->
+            <button (click)="createItem()" class="btn btn-primary" i18n="@@CreateNewBacklogItem">New item</button>
+        </p>
     </div>
-</h1>
-<hr class="my-4">
+</div>
+
 
 <div *ngIf="backlog?.length" class="list-group">
     <app-compact *ngFor="let item of backlog" [project]="project" [item]="item" class="list-group-item list-group-item-action"></app-compact>
@@ -13,7 +15,7 @@
 <div *ngIf="!backlog?.length" class="">
     <div class="card mb-3">
         <div class="card-block">
-            <h3 class="card-title" i18n="@@MissingBacklogTitle">Hey! Nothing else left to do...</h3>
+            <h3 class="card-title text-muted" i18n="@@MissingBacklogTitle">Hey! Nothing else left to do...</h3>
 
             <p class="card-text" i18n="@@MissingBacklog">
                 <strong>Hey!</strong> Congrats, looks you're all set!</p>

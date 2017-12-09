@@ -12,8 +12,8 @@ import { IterationService } from '../iteration/iteration.service';
 export class ProjectService {
 
   constructor(private api: ApiService,
-              private backlogService: BacklogService,
-              private iterationService: IterationService) { }
+    private backlogService: BacklogService,
+    private iterationService: IterationService) { }
 
   public getProjects() {
     return this.api.get('/project').map(response => {
@@ -35,14 +35,12 @@ export class ProjectService {
 
   public getSummary(code: string) {
     const projectObservable = this.getProject(code);
-    const backlogObservable = this.backlogService.getBacklogItems(code, 10);
     const iterationsObservable = this.iterationService.getIterations(code, 10);
 
-    return Observable.zip(projectObservable, backlogObservable, iterationsObservable).map(pair => {
+    return Observable.zip(projectObservable, iterationsObservable).map(pair => {
       return {
         project: pair[0],
-        backlog: pair[1],
-        iterations: pair[2],
+        iterations: pair[1],
       };
     });
   }

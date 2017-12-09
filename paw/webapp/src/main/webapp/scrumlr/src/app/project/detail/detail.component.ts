@@ -27,7 +27,6 @@ export class DetailComponent implements OnInit {
   fetchProject(code: string) {
     this.projectService.getSummary(code).subscribe(result => {
       this.project = result.project;
-      this.backlog = result.backlog;
       this.iterations = result.iterations;
     });
   }

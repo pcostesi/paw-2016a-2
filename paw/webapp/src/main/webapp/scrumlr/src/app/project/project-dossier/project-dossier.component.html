@@ -1,0 +1,19 @@
+<h2 i18n="@@Dossier">Dossier</h2>
+
+<p>This project started in {{project.startDate | date}}, under the direction of our Supreme Leader
+  <strong>{{project.admin.username}}</strong>
+  <span *ngIf="project.description">, who blessed us to carry out the mission of our dream:
+    <strong>{{project.description}}</strong> (or something like that)</span>.
+</p>
+
+<p>The grunts assigned to carry out the master plan of our Supreme Leader
+  <strong>{{project.admin.username}}</strong> are, in no particular order:</p>
+
+<ul>
+  <li *ngFor="let grunt of project.members">{{grunt.username}}</li>
+</ul>
+
+<p>We develop the mighty plan of our Supreme Leader
+  <strong>{{project.admin.username}}</strong> under the codename
+  <strong>{{project.code}}</strong>. Praised be the Leader.
+</p>

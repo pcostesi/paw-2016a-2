@@ -13,13 +13,28 @@
 
 <div class="row">
     <div class="col-md-3">
-        <h2><a [routerLink]="['backlog']" i18n="@@Backlog">Backlog</a></h2>
-        <ul *ngIf="backlog?.length" class="list-group">
-            <li *ngFor="let item of backlog" class="list-group-item">{{ item.title }}</li>
-        </ul>
+        <app-project-dossier [project]="project"></app-project-dossier>
     </div>
     <div class="col-md-9">
-        <h2><a [routerLink]="['iteration']" i18n="@@Iteration">Iteration</a></h2>
-        <app-iteration-list [iterations]="iterations"></app-iteration-list>
+
+        <ngb-tabset>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <span i18n="@@Iterations">Iterations</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <app-iteration-list [iterations]="iterations"></app-iteration-list>
+                </ng-template>
+            </ngb-tab>
+
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <span i18n="@@Backlog">Backlog</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <app-backlog [project]="project"></app-backlog>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
     </div>
 </div>

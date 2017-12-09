@@ -6,12 +6,11 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { EditProjectComponent } from './edit-project/edit-project.component';
 
 const routes: Routes = [
-    { path: '', pathMatch: 'full', component: MainComponent },
-    { path: 'create', pathMatch: 'full', component: CreateProjectComponent },
-    { path: ':proj', pathMatch: 'full', component: DetailComponent },
-    { path: ':proj/edit', pathMatch: 'full', component: EditProjectComponent },
-    { path: ':proj/iteration', loadChildren: '../iteration/iteration.module#IterationModule' },
-    { path: ':proj/backlog', loadChildren: '../backlog/backlog.module#BacklogModule' },
+  { path: '', pathMatch: 'full', component: MainComponent },
+  { path: 'create', pathMatch: 'full', component: CreateProjectComponent },
+  { path: ':proj', pathMatch: 'full', component: DetailComponent },
+  { path: ':proj/edit', pathMatch: 'full', component: EditProjectComponent },
+  { path: ':proj/iteration', loadChildren: '../iteration/iteration.module#IterationModule' },
 ];
 
 @NgModule({

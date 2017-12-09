@@ -10,7 +10,7 @@ import { IterationService } from '../iteration.service';
 })
 export class IterationDetailComponent implements OnInit {
   @Input() iteration: any;
-  @Input() expand?: true;
+  @Input() expand = true;
   public stories: any[];
 
   constructor(private iterationService: IterationService,

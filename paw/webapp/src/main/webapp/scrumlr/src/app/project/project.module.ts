@@ -13,6 +13,7 @@ import { SummaryComponent } from './summary/summary.component';
 import { ProjectService } from './project.service';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { EditProjectComponent } from './edit-project/edit-project.component';
+import { ProjectDossierComponent } from './project-dossier/project-dossier.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
     BacklogModule,
     IterationModule,
   ],
-  declarations: [MainComponent, DetailComponent, SummaryComponent, CreateProjectComponent, EditProjectComponent],
+  declarations: [MainComponent, DetailComponent, SummaryComponent, CreateProjectComponent, EditProjectComponent, ProjectDossierComponent],
   providers: [ ProjectService ],
 })
 export class ProjectModule { }
