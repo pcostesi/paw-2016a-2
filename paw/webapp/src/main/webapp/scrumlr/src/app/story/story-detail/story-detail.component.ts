@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./story-detail.component.scss']
 })
 export class StoryDetailComponent implements OnInit {
-  @Input() story: any[];
+  @Input() story: any;
   constructor() { }
 
   ngOnInit() {
