@@ -51,6 +51,14 @@ export class AccountService {
     return this.api.post('/user', bodyAsJson).map(response => response.ok);
   }
 
+
+  public getUser(username: string): Observable<MaybeUser> {
+    return this.api.get(`/user/${username}`).map(user => {
+      const response = user.json();
+      return <UserProfile>response;
+    });
+  }
+
   public getUsers(): Observable<string[]> {
     return this.api.get('/user').map(users => {
       const response = users.json();

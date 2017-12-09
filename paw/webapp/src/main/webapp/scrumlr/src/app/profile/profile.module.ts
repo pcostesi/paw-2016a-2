@@ -13,6 +13,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ProjectSummaryComponent } from './project-summary/project-summary.component';
 import { WorkItemComponent } from './work-item/work-item.component';
 import { ChangeEmailComponent } from './change-email/change-email.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { ChangeEmailComponent } from './change-email/change-email.component';
     ChangePasswordComponent,
     ProjectSummaryComponent,
     WorkItemComponent,
-    ChangeEmailComponent
+    ChangeEmailComponent,
+    UserProfileComponent
   ],
 })
 export class ProfileModule { }

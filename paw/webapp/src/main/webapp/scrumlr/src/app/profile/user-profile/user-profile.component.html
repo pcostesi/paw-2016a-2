@@ -1,0 +1,39 @@
+<div *ngIf="user | async; let user; else loading">
+  <h1 i18n="@@Username">
+    Dossier of {{user.username}}</h1>
+  <hr class="my-4">
+  <div class="row">
+    <div class="col-md-8">
+      <p i18n="@@EmailAddress">You can spam this drone at
+        <a href="mailto:{{user.mail}}">{{user.mail}}</a>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p i18n="@@Bio">The bio goes here.</p>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h2 i18n="Working projects@@WorkingProjects">Projects where this user works</h2>
+      <p *ngIf="!projects" i18n="No active / working projects@@WorkingProjectsEmpty">Oh, look at how empty your life is.</p>
+      <ul *ngIf="projects" class="list-group">
+        <li *ngFor="let project of projects">
+          <app-project-summary [project]="project"></app-project-summary>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h2 i18n="Active work Items@@ActiveWorkItems">Active work items</h2>
+      <p *ngIf="!workItems" i18n="No active work items@@ActiveWorkItemsEmpty">You're a slacker. Shame 🔔</p>
+      <ul *ngIf="workItems" class="list-group">
+        <li *ngFor="let item of workItems">
+          <app-work-item [work]="{title: 'test', description: 'desc', id: 'fake'}"></app-work-item>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Nothing here...</ng-template>
