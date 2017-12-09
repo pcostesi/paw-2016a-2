@@ -1,1 +1,20 @@
-<app-story-list [stories]="stories"></app-story-list>
+<div class="iteration">
+
+    <h2 class="d-flex justify-content-between">
+        <span>Iteration {{iteration.number}}</span>
+        <div class="btn-group">
+            <button class="btn btn-outline-secondary btn-sm">Edit</button>
+            <button class="btn btn-outline-danger btn-sm">Delete</button>
+            <button (click)="expand = true" *ngIf="!expand" class="btn btn-outline-primary btn-sm"> Show more</button>
+            <button (click)="expand = false" *ngIf="expand" class="btn btn-outline-primary btn-sm"> Show less</button>
+        </div>
+    </h2>
+
+    <div [ngbCollapse]="!expand" id="iteration-list-{{iteration.number}}">
+        <h6 class="mb-2 text-muted">{{iteration.startDate | date}} to {{iteration.endDate | date}}</h6>
+
+        <app-story-list *ngIf="expand" [stories]="stories"></app-story-list>
+    </div>
+</div>
+
+<hr class="my-4">

@@ -1,10 +1,3 @@
-<ul *ngIf="iterations?.length">
-    <li *ngFor="let item of iterations" id="iteration-{{item.number}}">
-        <h5>
-            <span i18n="@@IterationNo">Iteration #{{ item.number }}</span>
-        </h5>
-        <div>
-            <app-iteration-detail [iteration]="item"></app-iteration-detail>
-        </div>
-    </li>
-</ul>
+<div *ngFor="let item of iterations; let isFirst = first" id="iteration-{{item.number}}">
+    <app-iteration-detail [expand]="isFirst" [iteration]="item"></app-iteration-detail>
+</div>
