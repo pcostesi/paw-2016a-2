@@ -1,5 +1,3 @@
-<ul class="list-group list-group-flush">
-  <li class="list-group-item" *ngFor="let task of tasks">
-    <app-task-detail [task]="task"></app-task-detail>
-  </li>
-</ul>
+<div class="row d-flex align-items-stretch">
+  <app-task-detail class="col-md-4 my-1" [task]="task" *ngFor="let task of tasks"></app-task-detail>
+</div>

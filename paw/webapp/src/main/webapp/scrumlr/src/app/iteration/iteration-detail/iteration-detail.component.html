@@ -1,5 +1,4 @@
-<div class="iteration">
-
+<div class="iteration my-4">
     <h2 class="d-flex justify-content-between">
         <span (click)="expand = !expand">Iteration {{iteration.number}}</span>
         <div class="btn-group">
@@ -13,7 +12,7 @@
     <div [ngbCollapse]="!expand" id="iteration-list-{{iteration.number}}">
         <h6 class="mb-2 text-muted">{{iteration.startDate | date}} to {{iteration.endDate | date}}</h6>
 
-        <app-story-list *ngIf="expand" [stories]="stories"></app-story-list>
+        <app-story-list class="mt-2" [stories]="stories | async"></app-story-list>
     </div>
 </div>
 

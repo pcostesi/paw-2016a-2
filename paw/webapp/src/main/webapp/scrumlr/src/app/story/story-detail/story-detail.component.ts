@@ -7,10 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class StoryDetailComponent implements OnInit {
   @Input() story: any;
+  public isOpen = false;
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.story);
-  }
+  ngOnInit() { }
 
 }

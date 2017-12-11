@@ -9,6 +9,7 @@ import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class IterationListComponent implements OnInit {
   @Input() iterations: any[];
+  public a: any;
 
   constructor() { }
 

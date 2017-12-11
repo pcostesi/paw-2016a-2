@@ -1,6 +1,8 @@
-<div class="card story">
+<div class="card story my-2">
   <div class="card-header">
-    <h6 class="card-title">{{story.title}}</h6>
+    <span class="card-title" (click)="isOpen = !isOpen">{{story.title}}</span>
   </div>
-  <app-task-list [story]="story"></app-task-list>
+  <div class="card-block" [hidden]="!isOpen">
+    <app-task-list [story]="story"></app-task-list>
+  </div>
 </div>
