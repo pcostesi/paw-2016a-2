@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "precommit": "npm run lint",
+    "precommit": "lint-staged",
+    "cz": "git-cz",
     "prepush": "npm run test:mvn",
     "test:mvn": "cd ../../../../.. && mvn package -DskipTests",
     "ng": "node ./node_modules/.bin/ng",
@@ -11,7 +12,12 @@
     "start": "node ./node_modules/.bin/ng serve",
     "build": "node ./node_modules/.bin/ng build",
     "test": "node ./node_modules/.bin/ng test",
-    "lint": "node ./node_modules/.bin/ng lint",
+    "lint": "npm run lint:ng && npm run lint:md && npm run lint:css && npm run lint:scss && npm run lint:json",
+    "lint:md": "remark .",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint:scss": "stylelint src/**/*.scss --syntax scss",
+    "lint:ng": "node ./node_modules/.bin/ng lint",
+    "lint:json": "node ./node_modules/.bin/jsonlint",
     "e2e": "node ./node_modules/.bin/ng e2e",
     "maven": "mkdir -p dist/en; mkdir -p dist/es; npm run build-i18n",
     "build-i18n:es": "node ./node_modules/.bin/ng build --output-path=dist/es -prod --i18n-file=src/locale/messages.es.xlf --i18n-format=xlf --locale=es -bh /grupo2/",
@@ -52,20 +58,56 @@
     "@types/node": "~8.0.57",
     "@types/node-sass": "^3.10.32",
     "codelyzer": "~4.0.1",
+    "cz-conventional-changelog": "^2.1.0",
     "husky": "^0.14.3",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "jquery": "^3.2.1",
+    "jsonlint": "^1.6.2",
     "karma": "~1.7.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "~1.0.1",
     "karma-coverage-istanbul-reporter": "^1.3.0",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "lint-staged": "^6.0.0",
     "node-sass": "^4.5.2",
     "protractor": "~5.2.1",
+    "remark-cli": "^3.0.1",
+    "remark-preset-lint-recommended": "^2.0.0",
+    "stylelint": "^7.10.1",
+    "stylelint-config-standard": "^16.0.0",
     "ts-node": "~3.3.0",
     "tslint": "~5.8.0",
     "typescript": "~2.4.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,html}": [
+      "npm run lint:ng --fix",
+      "git add"
+    ],
+    "*.md": [
+      "remark -o",
+      "git add"
+    ],
+    "*.css": [
+      "stylelint"
+    ],
+    "*.json": [
+      "jsonlint"
+    ]
+  },
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-lint-recommended"
+    ]
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
   }
 }
