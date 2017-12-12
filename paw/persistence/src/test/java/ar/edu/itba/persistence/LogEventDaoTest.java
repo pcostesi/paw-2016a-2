@@ -1,13 +1,13 @@
 package ar.edu.itba.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import ar.edu.itba.interfaces.dao.LogEventDao;
+import ar.edu.itba.interfaces.dao.ProjectDao;
+import ar.edu.itba.interfaces.dao.UserDao;
+import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
+import ar.edu.itba.models.event.LogEvent;
+import ar.edu.itba.models.event.ProjectCreatedEvent;
+import ar.edu.itba.models.event.UserCreatedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,37 +17,29 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import ar.edu.itba.interfaces.dao.LogEventDao;
-import ar.edu.itba.interfaces.dao.ProjectDao;
-import ar.edu.itba.interfaces.dao.UserDao;
-import ar.edu.itba.models.Project;
-import ar.edu.itba.models.User;
-import ar.edu.itba.models.event.LogEvent;
-import ar.edu.itba.models.event.ProjectCreatedEvent;
-import ar.edu.itba.models.event.UserCreatedEvent;
+import javax.sql.DataSource;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class LogEventDaoTest {
 
+    private final String pName = "ProjectLogEvent";
+    private final String pCode = "PLEvent";
     @Autowired
     private ProjectDao projectDao;
-
     @Autowired
     private LogEventDao logEventDao;
-
     @Autowired
     private UserDao userDao;
-
     @Autowired
     private DataSource ds;
-
     private JdbcTemplate jdbcTemplate;
     private Project testProject;
     private User owner;
-
-    private final String pName = "ProjectLogEvent";
-    private final String pCode = "PLEvent";
 
     @Before
     public void setUp() throws Exception {

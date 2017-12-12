@@ -1,60 +1,59 @@
 package ar.edu.itba.webapp.form;
 
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
-
 import ar.edu.itba.webapp.form.constraint.UserMailFree;
 import ar.edu.itba.webapp.form.constraint.UserUsernameFree;
 import ar.edu.itba.webapp.form.constraint.VerifyEquals;
+import org.hibernate.validator.constraints.Email;
 
-@VerifyEquals(first="password", second="verifyPassword")
-public class UserForm {
+import javax.validation.constraints.Size;
 
-	@Size(min=1, max=100)
-	@UserUsernameFree
-	private String user;
+@VerifyEquals(first = "password", second = "verifyPassword")
+class UserForm {
 
-	@Size(min=6, max=100)
-	private String password;
-	
-	@Size(min=6, max=100)
-	private String verifyPassword;
-	
-	@Size(min=1, max=100)
-	@Email
-	@UserMailFree
-	private String mail;
+    @Size(min = 1, max = 100)
+    @UserUsernameFree
+    private String user;
 
-	public String getUser() {
-		return user;
-	}
+    @Size(min = 6, max = 100)
+    private String password;
 
-	public void setUser(String user) {
-		this.user = user;
-	}
+    @Size(min = 6, max = 100)
+    private String verifyPassword;
 
-	public String getPassword() {
-		return password;
-	}
+    @Size(min = 1, max = 100)
+    @Email
+    @UserMailFree
+    private String mail;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getUser() {
+        return user;
+    }
 
-	public String getVerifyPassword() {
-		return verifyPassword;
-	}
+    public void setUser(final String user) {
+        this.user = user;
+    }
 
-	public void setVerifyPassword(String verifyPassword) {
-		this.verifyPassword = verifyPassword;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getMail() {
-		return mail;
-	}
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    public String getVerifyPassword() {
+        return verifyPassword;
+    }
+
+    public void setVerifyPassword(final String verifyPassword) {
+        this.verifyPassword = verifyPassword;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(final String mail) {
+        this.mail = mail;
+    }
 }

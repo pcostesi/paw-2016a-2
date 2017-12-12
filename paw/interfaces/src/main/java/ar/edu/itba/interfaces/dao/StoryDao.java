@@ -1,26 +1,26 @@
 package ar.edu.itba.interfaces.dao;
 
-import java.util.List;
-
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Story;
 
+import java.util.List;
+
 public interface StoryDao {
 
-	public List<Story> getStoriesForIteration(final Iteration iteration);
+    List<Story> getStoriesForIteration(final Iteration iteration);
 
-	public boolean storyExists(final Story story);
+    boolean storyExists(final Story story);
 
-	public Story createStory(final Iteration iteration, final String title);
+    Story createStory(final Iteration iteration, final String title);
 
-	public Story getStoryById(final int storyId);
+    Story getStoryById(final int storyId);
 
-	public void updateTitle(final Story story, final String title);
+    void updateTitle(final Story story, final String title);
 
-	public void deleteStory(final Story story);
+    void deleteStory(final Story story);
 
-	public boolean storyExists(final Iteration iteration, final String title);
+    boolean storyExists(final Iteration iteration, final String title);
 
-	public Iteration getParent(final Story story);
+    Iteration getParent(final Story story);
 
 }

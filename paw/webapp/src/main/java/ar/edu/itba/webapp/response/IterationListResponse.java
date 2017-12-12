@@ -15,7 +15,7 @@ public class IterationListResponse {
         return iterations;
     }
 
-    public void setIterations(Iteration[] iterations) {
+    public void setIterations(final Iteration[] iterations) {
         this.iterations = iterations;
     }
 }

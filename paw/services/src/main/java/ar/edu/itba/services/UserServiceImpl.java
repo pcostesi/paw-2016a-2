@@ -1,198 +1,196 @@
 package ar.edu.itba.services;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.UserDao;
 import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserDao userDao;
-	
-	@Autowired
-	private ProjectDao projectDao;
+    @Autowired
+    private UserDao userDao;
 
-	private MailValidator mailValidator = new MailValidator();
+    @Autowired
+    private ProjectDao projectDao;
 
-	@Override
-	@Transactional
-	public User create(String name, String password, String mail) {
-		if (name == null) {
-			throw new IllegalArgumentException("User name can't be null");
-		}
+    private final MailValidator mailValidator = new MailValidator();
 
-		if (name.length() == 0) {
-			throw new IllegalArgumentException("User name can't be empty");
-		}
+    @Override
+    @Transactional
+    public User create(final String name, final String password, final String mail) {
+        if (name == null) {
+            throw new IllegalArgumentException("User name can't be null");
+        }
 
-		if (name.length() > 100) {
-			throw new IllegalArgumentException("User name can't be longer than 100 characters");
-		}
+        if (name.length() == 0) {
+            throw new IllegalArgumentException("User name can't be empty");
+        }
 
-		if (password == null) {
-			throw new IllegalArgumentException("User password can't be null");
-		}
+        if (name.length() > 100) {
+            throw new IllegalArgumentException("User name can't be longer than 100 characters");
+        }
 
-		if (password.length() == 0) {
-			throw new IllegalArgumentException("User password can't be empty");
-		}
+        if (password == null) {
+            throw new IllegalArgumentException("User password can't be null");
+        }
 
-		if (password.length() > 100) {
-			throw new IllegalArgumentException("User password can't have more than 100 characters");
-		}
+        if (password.length() == 0) {
+            throw new IllegalArgumentException("User password can't be empty");
+        }
 
-		if (mail == null) {
-			throw new IllegalArgumentException("User mail can't be null");
-		}
+        if (password.length() > 100) {
+            throw new IllegalArgumentException("User password can't have more than 100 characters");
+        }
 
-		if (mail.length() == 0) {
-			throw new IllegalArgumentException("User mail can't be empty");
-		}
+        if (mail == null) {
+            throw new IllegalArgumentException("User mail can't be null");
+        }
 
-		if (mail.length() > 100) {
-			throw new IllegalArgumentException("User mail can't be longer than 100 characters");
-		}
+        if (mail.length() == 0) {
+            throw new IllegalArgumentException("User mail can't be empty");
+        }
 
-		if (!mailValidator.validate(mail)) {
-			throw new IllegalArgumentException("User mail isn't valid");
-		}
+        if (mail.length() > 100) {
+            throw new IllegalArgumentException("User mail can't be longer than 100 characters");
+        }
 
-		if (userDao.userNameExists(name)) {
-			throw new IllegalStateException("This username has been used already");
-		}
+        if (!mailValidator.validate(mail)) {
+            throw new IllegalArgumentException("User mail isn't valid");
+        }
 
-		if (userDao.userMailExists(mail)) {
-			throw new IllegalStateException("This mail has been used already");
-		}
+        if (userDao.userNameExists(name)) {
+            throw new IllegalStateException("This username has been used already");
+        }
 
-		return userDao.createUser(name, password, mail);
-	}
+        if (userDao.userMailExists(mail)) {
+            throw new IllegalStateException("This mail has been used already");
+        }
 
-	@Override
-	@Transactional
-	public User getByUsername(final String username) {
-		if (username == null) {
-			throw new IllegalArgumentException("User name can't be null");
-		}
+        return userDao.createUser(name, password, mail);
+    }
 
-		User user = userDao.getByUsername(username);
+    @Override
+    @Transactional
+    public User getByUsername(final String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("User name can't be null");
+        }
 
-		if (user == null) {
-			throw new IllegalStateException("User doesn't exist");
-		} else {
-			return user;
-		}
-	}
+        final User user = userDao.getByUsername(username);
 
-	@Override
-	@Transactional
-	public List<String> getUsernames() {
-		return userDao.getAllUsernames();
-	}
+        if (user == null) {
+            throw new IllegalStateException("User doesn't exist");
+        } else {
+            return user;
+        }
+    }
 
-	@Override
-	@Transactional
-	public boolean usernameExists(String username){
-		if(username == null){
-			throw new IllegalArgumentException("Username can't be null");
-		}
-		return userDao.userNameExists(username);
-	}
+    @Override
+    @Transactional
+    public List<String> getUsernames() {
+        return userDao.getAllUsernames();
+    }
 
-	@Override
-	@Transactional
-	public boolean emailExists(String email){
-		if(email == null){
-			throw new IllegalArgumentException("Email can't be null");
-		}
-		return userDao.userMailExists(email);
-	}
+    @Override
+    @Transactional
+    public boolean usernameExists(final String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username can't be null");
+        }
+        return userDao.userNameExists(username);
+    }
 
-	private class MailValidator {
+    @Override
+    @Transactional
+    public boolean emailExists(final String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Email can't be null");
+        }
+        return userDao.userMailExists(email);
+    }
 
-		private Pattern pattern;
-		private Matcher matcher;
+    @Override
+    public User editPassword(final User user, final String newPassword) {
+        if (user == null) {
+            throw new IllegalArgumentException("Username cannot be null");
+        }
 
-		private static final String EMAIL_PATTERN = 
-				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        if (newPassword == null) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
 
-		public MailValidator() {
-			pattern = Pattern.compile(EMAIL_PATTERN);
-		}
+        userDao.setPassword(user, newPassword);
+        return userDao.getByUsername(user.username());
+    }
 
-		public boolean validate(final String hex) {
-			matcher = pattern.matcher(hex);
-			return matcher.matches();
-		}
+    @Override
+    public List<String> getUsernamesExcept(final User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User to be excluded can't be null");
+        }
 
-	}
+        return userDao.getAllUsernamesExcept(user);
 
-	@Override
-	public User editPassword(User user, String newPassword) {
-		if(user == null){
-			throw new IllegalArgumentException("Username cannot be null");
-		}
+    }
 
-		if(newPassword == null){
-			throw new IllegalArgumentException("Password cannot be null");
-		}
+    @Override
+    public List<String> getUsernamesForProject(final Project project) {
+        if (project == null) {
+            throw new IllegalArgumentException("Project can't be null");
+        }
 
-		userDao.setPassword(user, newPassword);
-		return userDao.getByUsername(user.username());
-	}
+        if (!projectDao.projectExists(project)) {
+            throw new IllegalStateException("Project doesn't exist");
+        }
 
-	@Override
-	public List<String> getUsernamesExcept(User user) {
-		if (user == null) {
-			throw new IllegalArgumentException("User to be excluded can't be null");
-		}
+        return userDao.getAllUsernamesOfProject(project);
+    }
 
-		return userDao.getAllUsernamesExcept(user);
+    @Override
+    public List<String> getAvailableUsers(final Project project) {
+        if (project == null) {
+            throw new IllegalArgumentException("Project can't be null");
+        }
 
-	}
+        if (!projectDao.projectExists(project)) {
+            throw new IllegalStateException("Project doesn't exist");
+        }
 
-	@Override
-	public List<String> getUsernamesForProject(Project project) {
-		if (project == null) {
-			throw new IllegalArgumentException("Project can't be null");
-		}
+        return userDao.getAvailableUsers(project);
+    }
 
-		if (!projectDao.projectExists(project)) {
-			throw new IllegalStateException("Project doesn't exist");
-		}
-		
-		return userDao.getAllUsernamesOfProject(project);
-	}
+    @Override
+    public User getByApiKey(final String username) {
+        //lazy af lol
+        return getByUsername(username);
+    }
 
-	@Override
-	public List<String> getAvailableUsers(Project project) {
-		if (project == null) {
-			throw new IllegalArgumentException("Project can't be null");
-		}
+    private class MailValidator {
 
-		if (!projectDao.projectExists(project)) {
-			throw new IllegalStateException("Project doesn't exist");
-		}
-		
-		return userDao.getAvailableUsers(project);
-	}
+        private static final String EMAIL_PATTERN =
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        private final Pattern pattern;
+        private Matcher matcher;
 
-	@Override
-	public User getByApiKey(String username) {
-		//lazy af lol
-		return getByUsername(username);
-	}
+        public MailValidator() {
+            pattern = Pattern.compile(EMAIL_PATTERN);
+        }
+
+        public boolean validate(final String hex) {
+            matcher = pattern.matcher(hex);
+            return matcher.matches();
+        }
+
+    }
 
 }

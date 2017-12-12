@@ -15,6 +15,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ErrorExceptionHandler implements ExceptionMapper<IllegalStateException> {
     private final static Logger logger = LoggerFactory.getLogger(ErrorExceptionHandler.class);
 
+    @Override
+    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response toResponse(final IllegalStateException exception) {
+        logger.error("Error occurred", exception);
+        final ErrorMessage msg = new ErrorMessage();
+        msg.message = exception.getMessage();
+        msg.status = Response.Status.INTERNAL_SERVER_ERROR.name();
+        return Response.serverError().entity(msg).build();
+    }
+
     @XmlRootElement
     private static class ErrorMessage {
         @XmlElement
@@ -22,15 +32,5 @@ public class ErrorExceptionHandler implements ExceptionMapper<IllegalStateExcept
 
         @XmlElement
         public String status;
-    }
-
-    @Override
-    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response toResponse(IllegalStateException exception) {
-        logger.error("Error occurred", exception);
-        ErrorMessage msg = new ErrorMessage();
-        msg.message = exception.getMessage();
-        msg.status = Response.Status.INTERNAL_SERVER_ERROR.name();
-        return Response.serverError().entity(msg).build();
     }
 }

@@ -1,18 +1,17 @@
 package ar.edu.itba.webapp.i18n;
 
-import java.text.ParseException;
-import java.util.Locale;
-
+import ar.edu.itba.models.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.Formatter;
 
-import ar.edu.itba.models.Priority;
+import java.text.ParseException;
+import java.util.Locale;
 
 public class PriorityEnumFormatter implements Formatter<Priority> {
 
     @Autowired
-    public MessageSource messageSource;
+    private final MessageSource messageSource;
 
     public PriorityEnumFormatter(final MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -29,8 +28,8 @@ public class PriorityEnumFormatter implements Formatter<Priority> {
 
     @Override
     public Priority parse(final String text, final Locale locale) throws ParseException {
-        for(final Priority test : Priority.values()) {
-            if(test.name().equalsIgnoreCase(text)) {
+        for (final Priority test : Priority.values()) {
+            if (test.name().equalsIgnoreCase(text)) {
                 return test;
             }
         }

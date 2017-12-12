@@ -1,9 +1,9 @@
 package ar.edu.itba.models.event;
 
+import ar.edu.itba.models.Story;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
-import ar.edu.itba.models.Story;
 
 @Entity
 public class StoryCreatedEvent extends LogEvent {

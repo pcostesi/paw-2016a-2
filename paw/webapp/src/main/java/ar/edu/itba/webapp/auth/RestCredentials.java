@@ -3,10 +3,10 @@ package ar.edu.itba.webapp.auth;
 import ar.edu.itba.webapp.auth.hmac.ScrumlrHMACRequestData;
 
 public class RestCredentials {
-    private ScrumlrHMACRequestData requestData;
-    private String signature;
+    private final ScrumlrHMACRequestData requestData;
+    private final String signature;
 
-    public RestCredentials(ScrumlrHMACRequestData requestData, String signature) {
+    public RestCredentials(final ScrumlrHMACRequestData requestData, final String signature) {
         this.requestData = requestData;
         this.signature = signature;
     }

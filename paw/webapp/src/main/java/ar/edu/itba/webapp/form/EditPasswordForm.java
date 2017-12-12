@@ -1,32 +1,32 @@
 package ar.edu.itba.webapp.form;
 
-import javax.validation.constraints.Size;
-
 import ar.edu.itba.webapp.form.constraint.VerifyEquals;
 
-@VerifyEquals(first="password", second="verifyPassword")
-public class EditPasswordForm {
+import javax.validation.constraints.Size;
+
+@VerifyEquals(first = "password", second = "verifyPassword")
+class EditPasswordForm {
 
 
-	@Size(min=6, max=100)
-	private String password;
-	
-	@Size(min=6, max=100)
-	private String verifyPassword;
+    @Size(min = 6, max = 100)
+    private String password;
 
-	public String getPassword() {
-		return password;
-	}
+    @Size(min = 6, max = 100)
+    private String verifyPassword;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getVerifyPassword() {
-		return verifyPassword;
-	}
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 
-	public void setVerifyPassword(String verifyPassword) {
-		this.verifyPassword = verifyPassword;
-	}
+    public String getVerifyPassword() {
+        return verifyPassword;
+    }
+
+    public void setVerifyPassword(final String verifyPassword) {
+        this.verifyPassword = verifyPassword;
+    }
 }

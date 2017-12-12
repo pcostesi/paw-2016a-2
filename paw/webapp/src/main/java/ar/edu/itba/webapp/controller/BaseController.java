@@ -14,48 +14,48 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 public abstract class BaseController {
-	final static Logger logger = LoggerFactory.getLogger(BaseController.class);
+    private final static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-	@Autowired
-	private UserService us;
+    @Autowired
+    private UserService us;
 
-	public User getLoggedUser() {
-		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		final String username;
-		if (auth == null || !auth.isAuthenticated()) {
-			return null;
-		}
-		final Object principal = auth.getPrincipal();
-		if (principal instanceof ScrumlrUserDetails) {
-			return ((ScrumlrUserDetails) principal).getUser();
-		} else if (principal instanceof UserDetails) {
-			username = ((UserDetails)principal).getUsername();
-		} else {
-			username = principal.toString();
-		}
-		try {
-			return us.getByUsername(username);
+    User getLoggedUser() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final String username;
+        if (auth == null || !auth.isAuthenticated()) {
+            return null;
+        }
+        final Object principal = auth.getPrincipal();
+        if (principal instanceof ScrumlrUserDetails) {
+            return ((ScrumlrUserDetails) principal).getUser();
+        } else if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        try {
+            return us.getByUsername(username);
 
-		} catch (final IllegalStateException e) {
-			logger.debug("No username {}.", username, e);
-			return null;
-		}
-	}
+        } catch (final IllegalStateException e) {
+            logger.debug("No username {}.", username, e);
+            return null;
+        }
+    }
 
-	@XmlRootElement
-	protected static class ErrorMessage {
-		@XmlElement
-		public String message;
+    @XmlRootElement
+    protected static class ErrorMessage {
+        @XmlElement
+        public String message;
 
-		@XmlElement
-		public String status;
+        @XmlElement
+        public String status;
 
 
-		public static ErrorMessage asError(String status, String desc){
-			ErrorMessage message = new ErrorMessage();
-			message.status = status;
-			message.message = desc;
-			return message;
-		}
-	}
+        public static ErrorMessage asError(final String status, final String desc) {
+            final ErrorMessage message = new ErrorMessage();
+            message.status = status;
+            message.message = desc;
+            return message;
+        }
+    }
 }

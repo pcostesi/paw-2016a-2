@@ -1,89 +1,87 @@
 package ar.edu.itba.webapp.form;
 
-import java.time.LocalDate;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import ar.edu.itba.webapp.form.constraint.DateRange;
 import ar.edu.itba.webapp.form.constraint.DateRangeFree;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@DateRange(start="beginDate", end="endDate")
-@DateRangeFree(start="beginDate", end="endDate")
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+
+@DateRange(start = "beginDate", end = "endDate")
+@DateRangeFree(start = "beginDate", end = "endDate")
 public class IterationForm {
-	
-	@NotNull
-	@DateTimeFormat(pattern = "dd/MM/yyyy")	
-	private LocalDate beginDate;
-	
-	private String duration;
 
-	@NotNull
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private LocalDate endDate;
-	
-	private boolean inheritIteration;
-	
-	private int iterationNumberToInherit;
-	
-	private int projectId;
-	private int iterationId;
+    @NotNull
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate beginDate;
 
-	public int getIterationId() {
-		return iterationId;
-	}
+    private String duration;
 
-	public void setIterationId(int iterationId) {
-		this.iterationId = iterationId;
-	}
+    @NotNull
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate endDate;
 
-	public String getDuration() {
-		return duration;
-	}
+    private boolean inheritIteration;
 
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-	
-	public int getProjectId() {
-		return projectId;
-	}
+    private int iterationNumberToInherit;
 
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
+    private int projectId;
+    private int iterationId;
 
-	public LocalDate getBeginDate() {
-		return beginDate;
-	}
+    public int getIterationId() {
+        return iterationId;
+    }
 
-	public void setBeginDate(LocalDate beginDate) {
-		this.beginDate = beginDate;
-	}
+    public void setIterationId(final int iterationId) {
+        this.iterationId = iterationId;
+    }
 
-	public LocalDate getEndDate() {
-		return endDate;
-	}
+    public String getDuration() {
+        return duration;
+    }
 
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
+    public void setDuration(final String duration) {
+        this.duration = duration;
+    }
 
-	public boolean getInheritIteration() {
-		return inheritIteration;
-	}
+    public int getProjectId() {
+        return projectId;
+    }
 
-	public void setInheritIteration(boolean inheritIteration) {
-		this.inheritIteration = inheritIteration;
-	}
+    public void setProjectId(final int projectId) {
+        this.projectId = projectId;
+    }
 
-	public int getIterationNumberToInherit() {
-		return iterationNumberToInherit;
-	}
+    public LocalDate getBeginDate() {
+        return beginDate;
+    }
 
-	public void setIterationNumberToInherit(int iterationNumberToInherit) {
-		this.iterationNumberToInherit = iterationNumberToInherit;
-	}
+    public void setBeginDate(final LocalDate beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(final LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean getInheritIteration() {
+        return inheritIteration;
+    }
+
+    public void setInheritIteration(final boolean inheritIteration) {
+        this.inheritIteration = inheritIteration;
+    }
+
+    public int getIterationNumberToInherit() {
+        return iterationNumberToInherit;
+    }
+
+    public void setIterationNumberToInherit(final int iterationNumberToInherit) {
+        this.iterationNumberToInherit = iterationNumberToInherit;
+    }
 
 }

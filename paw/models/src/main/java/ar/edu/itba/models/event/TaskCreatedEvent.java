@@ -1,9 +1,9 @@
 package ar.edu.itba.models.event;
 
+import ar.edu.itba.models.Task;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
-import ar.edu.itba.models.Task;
 
 @Entity
 public class TaskCreatedEvent extends LogEvent {

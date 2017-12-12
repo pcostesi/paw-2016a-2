@@ -16,6 +16,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundException> {
     private final static Logger logger = LoggerFactory.getLogger(NotFoundExceptionHandler.class);
 
+    @Override
+    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response toResponse(final NotFoundException exception) {
+        logger.error("Error occurred", exception);
+        final ErrorMessage msg = new ErrorMessage();
+        msg.message = exception.getMessage();
+        msg.status = Response.Status.NOT_FOUND.name();
+        return Response.serverError().entity(msg).build();
+    }
+
     @XmlRootElement
     private static class ErrorMessage {
         @XmlElement
@@ -23,15 +33,5 @@ public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundExcepti
 
         @XmlElement
         public String status;
-    }
-
-    @Override
-    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response toResponse(NotFoundException exception) {
-        logger.error("Error occurred", exception);
-        ErrorMessage msg = new ErrorMessage();
-        msg.message = exception.getMessage();
-        msg.status = Response.Status.NOT_FOUND.name();
-        return Response.serverError().entity(msg).build();
     }
 }

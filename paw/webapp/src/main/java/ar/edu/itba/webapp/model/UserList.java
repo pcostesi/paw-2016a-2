@@ -1,17 +1,17 @@
 package ar.edu.itba.webapp.model;
 
-import java.util.List;
-
 import ar.edu.itba.models.User;
 
-public class UserList {
-	private List<User> elements;
+import java.util.List;
 
-	public List<User> getElements() {
-		return elements;
-	}
+class UserList {
+    private final List<User> elements;
 
-	public UserList(List<User> elements) {
-		this.elements = elements;
-	}
+    public UserList(final List<User> elements) {
+        this.elements = elements;
+    }
+
+    public List<User> getElements() {
+        return elements;
+    }
 }

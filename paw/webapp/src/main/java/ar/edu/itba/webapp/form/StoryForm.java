@@ -1,41 +1,41 @@
 package ar.edu.itba.webapp.form;
 
-import javax.validation.constraints.Size;
-
 import ar.edu.itba.webapp.form.constraint.StoryNameFree;
 
-@StoryNameFree(markedField="title")
+import javax.validation.constraints.Size;
+
+@StoryNameFree(markedField = "title")
 public class StoryForm {
-	
-	@Size(min=1, max=100)
-	private String title;
-	
-	private int iterationId;
-	
-	private String oldTitle;
 
-	public int getIterationId() {
-		return iterationId;
-	}
+    @Size(min = 1, max = 100)
+    private String title;
 
-	public void setIterationId(int iterationId) {
-		this.iterationId = iterationId;
-	}
+    private int iterationId;
 
-	public String getTitle() {
-		return title;
-	}
+    private String oldTitle;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public int getIterationId() {
+        return iterationId;
+    }
 
-	public String getOldTitle() {
-		return oldTitle;
-	}
+    public void setIterationId(final int iterationId) {
+        this.iterationId = iterationId;
+    }
 
-	public void setOldTitle(String oldTitle) {
-		this.oldTitle = oldTitle;
-	}
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    public String getOldTitle() {
+        return oldTitle;
+    }
+
+    public void setOldTitle(final String oldTitle) {
+        this.oldTitle = oldTitle;
+    }
 
 }

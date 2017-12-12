@@ -1,44 +1,39 @@
 package ar.edu.itba.interfaces.dao;
 
-import java.util.List;
+import ar.edu.itba.models.*;
 
-import ar.edu.itba.models.Priority;
-import ar.edu.itba.models.Score;
-import ar.edu.itba.models.Status;
-import ar.edu.itba.models.Story;
-import ar.edu.itba.models.Task;
-import ar.edu.itba.models.User;
+import java.util.List;
 
 public interface TaskDao {
 
-	public List<Task> getTasksForStory(final Story story);
+    List<Task> getTasksForStory(final Story story);
 
-	public boolean taskExists(final Task task);
-	
-	public boolean taskExists(final Story story, final String title);
+    boolean taskExists(final Task task);
 
-	public void updateStatus(final Task task, final Status status);
+    boolean taskExists(final Story story, final String title);
 
-	public void updateOwner(final Task task, final User user);
+    void updateStatus(final Task task, final Status status);
 
-	public void deleteTask(final Task task);
+    void updateOwner(final Task task, final User user);
 
-	public Task getTaskById(final int taskId);
+    void deleteTask(final Task task);
 
-	public Task createTask(final Story story, final String name, final String description, final Status status, final User user, final Score score, final Priority priority);
+    Task getTaskById(final int taskId);
 
-	public void updatePriority(final Task task, final Priority priority);
+    Task createTask(final Story story, final String name, final String description, final Status status, final User user, final Score score, final Priority priority);
 
-	public void updateScore(final Task task, final Score score);
+    void updatePriority(final Task task, final Priority priority);
 
-	public Story getParent(final Task task);
+    void updateScore(final Task task, final Score score);
 
-	public void updateTitle(final Task task, final String title);
+    Story getParent(final Task task);
 
-	public void updateDescription(final Task task, final String description);
+    void updateTitle(final Task task, final String title);
 
-	public List<Task> getUnfinishedTasks(final Story oldStory);
+    void updateDescription(final Task task, final String description);
 
-	public void cloneTaskToStory(final Task task, final Story story);
-	
+    List<Task> getUnfinishedTasks(final Story oldStory);
+
+    void cloneTaskToStory(final Task task, final Story story);
+
 }

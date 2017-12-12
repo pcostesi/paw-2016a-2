@@ -1,180 +1,174 @@
 package ar.edu.itba.models;
 
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 @XmlRootElement
 @Entity
 @Table(name = "backlog", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "title"}))
-public class BacklogItem{
+public final class BacklogItem {
 
-	@XmlElement
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "backlog_item_id_seq")
-	@SequenceGenerator(sequenceName = "backlog_item_id_seq", name = "backlog_item_id_seq", allocationSize = 1)
-	@Column(name = "item_id", nullable = false)	
-	private int backlogItemId;
+    @XmlElement
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "backlog_item_id_seq")
+    @SequenceGenerator(sequenceName = "backlog_item_id_seq", name = "backlog_item_id_seq", allocationSize = 1)
+    @Column(name = "item_id", nullable = false)
+    private int backlogItemId;
 
-	@XmlElement
-	@Column(length = 100, nullable = false)
-	private String title;
+    @XmlElement
+    @Column(length = 100, nullable = false)
+    private String title;
 
-	@XmlElement
-	@Column(length = 500, nullable = true)
-	private String description;
+    @XmlElement
+    @Column(length = 500)
+    private String description;
 
-	@ManyToOne
-	@JoinColumn(name = "project_id", nullable = false)
-	private Project project;
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
-	private BacklogItem() {
-		// Just for Hibernate
-	}
+    private BacklogItem() {
+        // Just for Hibernate
+    }
 
-	private BacklogItem(int backlogItemId, String title, String description, Project project) {
-		this.backlogItemId = backlogItemId;
-		this.title = title;
-		this.description = description;
-		this.project = project;
-	}
+    private BacklogItem(final int backlogItemId, final String title, final String description, final Project project) {
+        this.backlogItemId = backlogItemId;
+        this.title = title;
+        this.description = description;
+        this.project = project;
+    }
 
-	public int backlogItemId() {
-		return backlogItemId;
-	}
+    public static BacklogItem.Builder builder() {
+        return new BacklogItem.Builder();
+    }
 
-	public String title() {
-		return title;
-	}
+    public int backlogItemId() {
+        return backlogItemId;
+    }
 
-	public Optional<String> description() {
-		return Optional.ofNullable(description);
-	}
-	
-	public Project project() {
-		return project;
-	}
-	
-	public boolean equals(Object another) {
-		if (this == another) {
-			return true;
-		}
-		return another instanceof BacklogItem && equalTo((BacklogItem) another);
-	}
+    public String title() {
+        return title;
+    }
 
-	private boolean equalTo(BacklogItem another) {
-		return backlogItemId == another.backlogItemId
-				&& title.equals(another.title)
-				&& Objects.equals(description, another.description);
-	}
+    public Optional<String> description() {
+        return Optional.ofNullable(description);
+    }
 
-	public int hashCode() {
-		int h = 31;
-		h = h * 17 + backlogItemId;
-		h = h * 17 + title.hashCode();
-		h = h * 17 + Objects.hashCode(description);
-		return h;
-	}
+    public Project project() {
+        return project;
+    }
 
-	public String toString() {
-		StringBuilder builder = new StringBuilder("BacklogItem{");
-		builder.append("backlogItemId=").append(backlogItemId);
-		builder.append(", ");
-		builder.append("title=").append(title);
-		if (description != null) {
-			builder.append(", ");
-			builder.append("description=").append(description);
-		}
-		return builder.append("}").toString();
-	}
+    public boolean equals(final Object another) {
+        if (this == another) {
+            return true;
+        }
+        return another instanceof BacklogItem && equalTo((BacklogItem) another);
+    }
 
-	public static BacklogItem.Builder builder() {
-		return new BacklogItem.Builder();
-	}
+    private boolean equalTo(final BacklogItem another) {
+        return backlogItemId == another.backlogItemId
+                && title.equals(another.title)
+                && Objects.equals(description, another.description);
+    }
 
-	public static final class Builder {
-		private static final long INIT_BIT_TITLE = 0x1L;
-		private static final long INIT_BIT_PROJECT= 0x2L;
-		private long initBits = 0x3;
+    public int hashCode() {
+        int h = 31;
+        h = h * 17 + backlogItemId;
+        h = h * 17 + title.hashCode();
+        h = h * 17 + Objects.hashCode(description);
+        return h;
+    }
 
-		private int backlogItemId;
-		private String title;
-		private String description;
-		private Project project;
+    public String toString() {
+        final StringBuilder builder = new StringBuilder("BacklogItem{");
+        builder.append("backlogItemId=").append(backlogItemId);
+        builder.append(", ");
+        builder.append("title=").append(title);
+        if (description != null) {
+            builder.append(", ");
+            builder.append("description=").append(description);
+        }
+        return builder.append("}").toString();
+    }
 
-		private Builder() {
-		}
+    public static final class Builder {
+        private static final long INIT_BIT_TITLE = 0x1L;
+        private static final long INIT_BIT_PROJECT = 0x2L;
+        private long initBits = 0x3;
 
-		public final Builder from(BacklogItem instance) {
-			Objects.requireNonNull(instance, "instance");
-			backlogItemId(instance.backlogItemId());
-			title(instance.title());
-			Optional<String> descriptionOptional = instance.description();
-			if (descriptionOptional.isPresent()) {
-				description(descriptionOptional);
-			}
-			project(instance.project());
-			return this;
-		}
+        private int backlogItemId;
+        private String title;
+        private String description;
+        private Project project;
 
-		public final Builder backlogItemId(Integer backlogItemId) {
-			this.backlogItemId = Objects.requireNonNull(backlogItemId, "backlogItemId");
-			return this;
-		}
-		
-		public final Builder backlogItemId(Optional<Integer> backlogItemId) {
-			this.backlogItemId = backlogItemId.orElse(null);
-			return this;
-		}
+        private Builder() {
+        }
 
-		public final Builder title(String title) {
-			this.title = Objects.requireNonNull(title, "title");
-			initBits &= ~INIT_BIT_TITLE;
-			return this;
-		}
-		
-		public final Builder project(Project project) {
-			this.project = project;
-			initBits &= ~INIT_BIT_PROJECT;
-			return this;
-		}
+        public final Builder from(final BacklogItem instance) {
+            Objects.requireNonNull(instance, "instance");
+            backlogItemId(instance.backlogItemId());
+            title(instance.title());
+            final Optional<String> descriptionOptional = instance.description();
+            if (descriptionOptional.isPresent()) {
+                description(descriptionOptional);
+            }
+            project(instance.project());
+            return this;
+        }
 
-		public final Builder description(String description) {
-			this.description = Objects.requireNonNull(description, "description");
-			return this;
-		}
+        public final Builder backlogItemId(final Integer backlogItemId) {
+            this.backlogItemId = Objects.requireNonNull(backlogItemId, "backlogItemId");
+            return this;
+        }
 
-		public final Builder description(Optional<String> description) {
-			this.description = description.orElse(null);
-			return this;
-		}
+        public final Builder backlogItemId(final Optional<Integer> backlogItemId) {
+            this.backlogItemId = backlogItemId.orElse(null);
+            return this;
+        }
 
-		public BacklogItem build() {
-			if (initBits != 0) {
-				throw new IllegalStateException(formatRequiredAttributesMessage());
-			}
-			return new BacklogItem(backlogItemId, title, description, project);
-		}
+        public final Builder title(final String title) {
+            this.title = Objects.requireNonNull(title, "title");
+            initBits &= ~INIT_BIT_TITLE;
+            return this;
+        }
 
-		private String formatRequiredAttributesMessage() {
-			List<String> attributes = new ArrayList<String>();
-			if ((initBits & INIT_BIT_TITLE) != 0) attributes.add("title");
-			if ((initBits & INIT_BIT_PROJECT) != 0) attributes.add("project");
-			return "Cannot build BacklogItem, some of required attributes are not set " + attributes;
-		}
-	}
+        public final Builder project(final Project project) {
+            this.project = project;
+            initBits &= ~INIT_BIT_PROJECT;
+            return this;
+        }
+
+        public final Builder description(final String description) {
+            this.description = Objects.requireNonNull(description, "description");
+            return this;
+        }
+
+        public final Builder description(final Optional<String> description) {
+            this.description = description.orElse(null);
+            return this;
+        }
+
+        public BacklogItem build() {
+            if (initBits != 0) {
+                throw new IllegalStateException(formatRequiredAttributesMessage());
+            }
+            return new BacklogItem(backlogItemId, title, description, project);
+        }
+
+        private String formatRequiredAttributesMessage() {
+            final List<String> attributes = new ArrayList<String>();
+            if ((initBits & INIT_BIT_TITLE) != 0) {
+                attributes.add("title");
+            }
+            if ((initBits & INIT_BIT_PROJECT) != 0) {
+                attributes.add("project");
+            }
+            return "Cannot build BacklogItem, some of required attributes are not set " + attributes;
+        }
+    }
 }

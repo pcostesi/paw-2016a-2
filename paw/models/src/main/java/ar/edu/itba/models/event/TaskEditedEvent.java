@@ -1,15 +1,11 @@
 package ar.edu.itba.models.event;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-
 import ar.edu.itba.models.Priority;
 import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Task;
+
+import javax.persistence.*;
 
 @Entity
 public class TaskEditedEvent extends LogEvent {
@@ -20,14 +16,14 @@ public class TaskEditedEvent extends LogEvent {
     private Task task;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = true)
+    @Column()
     private Status status;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = true)
+    @Column()
     private Score score;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = true)
+    @Column()
     private Priority priority;
 }

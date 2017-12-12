@@ -11,7 +11,7 @@
     "start": "node ./node_modules/.bin/ng serve",
     "build": "node ./node_modules/.bin/ng build",
     "test": "node ./node_modules/.bin/ng test",
-    "lint": "node ./node_modules/.bin/ng lint",
+    "lint": "node ./node_modules/.bin/ng lint --fix",
     "e2e": "node ./node_modules/.bin/ng e2e",
     "maven": "mkdir -p dist/en; mkdir -p dist/es; npm run build-i18n",
     "build-i18n:es": "node ./node_modules/.bin/ng build --output-path=dist/es -prod --i18n-file=src/locale/messages.es.xlf --i18n-format=xlf --locale=es -bh /grupo2/",

@@ -1,28 +1,28 @@
 package ar.edu.itba.interfaces.dao;
 
-import java.util.List;
-
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 
+import java.util.List;
+
 public interface UserDao {
-    
-    public User getByUsername(final String username);
 
-	public boolean userNameExists(final String name);
+    User getByUsername(final String username);
 
-	public boolean userMailExists(final String mail);
+    boolean userNameExists(final String name);
 
-	public User createUser(final String name, final String password, final String mail);
+    boolean userMailExists(final String mail);
 
-	public List<String> getAllUsernames();
+    User createUser(final String name, final String password, final String mail);
 
-	public List<String> getAllUsernamesExcept(final User user);
+    List<String> getAllUsernames();
 
-	void setPassword(final User user, final String newPassword);
+    List<String> getAllUsernamesExcept(final User user);
 
-	public List<String> getAllUsernamesOfProject(final Project project);
+    void setPassword(final User user, final String newPassword);
 
-	public List<String> getAvailableUsers(final Project project);
-    
+    List<String> getAllUsernamesOfProject(final Project project);
+
+    List<String> getAvailableUsers(final Project project);
+
 }

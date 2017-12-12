@@ -1,12 +1,11 @@
 package ar.edu.itba.webapp.config;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.Properties;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
+import ar.edu.itba.models.Priority;
+import ar.edu.itba.models.Score;
+import ar.edu.itba.models.Status;
+import ar.edu.itba.webapp.i18n.PriorityEnumFormatter;
+import ar.edu.itba.webapp.i18n.ScoreEnumFormatter;
+import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -41,16 +39,15 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import ar.edu.itba.models.Priority;
-import ar.edu.itba.models.Score;
-import ar.edu.itba.models.Status;
-import ar.edu.itba.webapp.i18n.PriorityEnumFormatter;
-import ar.edu.itba.webapp.i18n.ScoreEnumFormatter;
-import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.Properties;
 
 
 @EnableWebMvc
-@ComponentScan({ "ar.edu.itba.webapp.config", "ar.edu.itba.webapp.config.auth", "ar.edu.itba.webapp.config.auth.hmac", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence", "ar.edu.itba.webapp.i18n" })
+@ComponentScan( {"ar.edu.itba.webapp.config", "ar.edu.itba.webapp.config.auth", "ar.edu.itba.webapp.config.auth.hmac", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence", "ar.edu.itba.webapp.i18n"})
 @Configuration
 @EnableAsync
 @EnableScheduling
@@ -76,14 +73,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     @Autowired
-    public DataSource dataSource(final Environment env) {
+    private DataSource dataSource(final Environment env) {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
 
         ds.setUrl(env.getProperty("configuration.postgresUrl", "jdbc:postgresql://10.16.1.110/grupo2"));
         ds.setUsername(env.getProperty("configuration.postgresUser", "grupo2"));
         ds.setPassword(env.getProperty("configuration.postgresPass", "shiufi7T"));
-        
+
         logger.info("Connecting to database at {} with user {}", ds.getUrl(), ds.getUsername());
         return ds;
     }
@@ -106,7 +103,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public MessageSource messageSource() {
+    private MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/i18n/messages");
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());

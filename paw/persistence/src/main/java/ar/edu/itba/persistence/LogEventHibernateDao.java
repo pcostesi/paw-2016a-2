@@ -1,23 +1,21 @@
 package ar.edu.itba.persistence;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
+import ar.edu.itba.interfaces.dao.LogEventDao;
+import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
+import ar.edu.itba.models.event.LogEvent;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import ar.edu.itba.interfaces.dao.LogEventDao;
-import ar.edu.itba.models.Project;
-import ar.edu.itba.models.User;
-import ar.edu.itba.models.event.LogEvent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Primary
 @Repository

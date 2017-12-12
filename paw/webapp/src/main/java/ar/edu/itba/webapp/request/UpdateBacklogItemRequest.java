@@ -15,7 +15,7 @@ public class UpdateBacklogItemRequest {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -24,7 +24,7 @@ public class UpdateBacklogItemRequest {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 }

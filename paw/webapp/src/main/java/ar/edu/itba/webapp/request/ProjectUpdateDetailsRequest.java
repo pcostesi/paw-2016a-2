@@ -6,12 +6,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ProjectUpdateDetailsRequest {
 
+    private String name;
+    private String description;
+    private String code;
+
     @XmlElement
     public String getName() {
         return name;
     }
 
-    public void setName(String username) {
+    public void setName(final String username) {
         this.name = username;
     }
 
@@ -20,7 +24,7 @@ public class ProjectUpdateDetailsRequest {
         return description;
     }
 
-    public void setDescription(String password) {
+    public void setDescription(final String password) {
         this.description = password;
     }
 
@@ -29,11 +33,7 @@ public class ProjectUpdateDetailsRequest {
         return code;
     }
 
-    public void setCode(String mail) {
+    public void setCode(final String mail) {
         this.code = mail;
     }
-
-    private String name;
-    private String description;
-    private String code;
 }

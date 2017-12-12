@@ -1,14 +1,13 @@
 package ar.edu.itba.webapp.form.constraint;
 
-import java.time.LocalDate;
+import org.apache.commons.beanutils.PropertyUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.time.LocalDate;
 
-import org.apache.commons.beanutils.PropertyUtils;
+class DateRangeValidator implements ConstraintValidator<DateRange, Object> {
 
-public class DateRangeValidator implements ConstraintValidator<DateRange, Object> {
-	
     private String firstFieldName;
     private String secondFieldName;
 
@@ -23,17 +22,16 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Object
         try {
             final LocalDate firstDate = (LocalDate) PropertyUtils.getProperty(value, firstFieldName);
             final LocalDate secondDate = (LocalDate) PropertyUtils.getProperty(value, secondFieldName);
-            
+
             if (secondDate.compareTo(firstDate) < 0) {
-            	context.disableDefaultConstraintViolation();
-            	context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(secondFieldName).addConstraintViolation();
-            	return false;
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode(secondFieldName).addConstraintViolation();
+                return false;
             } else {
-            	return true;
+                return true;
             }
+        } catch (final Exception e) {
+            return true;
         }
-        catch (final Exception e) {
-        	return true;
-        }        
     }
 }

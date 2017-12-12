@@ -6,12 +6,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class CreateTaskRequest {
 
+    private String title;
+    private String description;
+    private String stat;
+    private String username;
+    private String scoreN;
+    private String priorityN;
+
     @XmlElement
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -20,7 +27,7 @@ public class CreateTaskRequest {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -29,7 +36,7 @@ public class CreateTaskRequest {
         return stat;
     }
 
-    public void setStat(String stat) {
+    public void setStat(final String stat) {
         this.stat = stat;
     }
 
@@ -38,7 +45,7 @@ public class CreateTaskRequest {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -47,7 +54,7 @@ public class CreateTaskRequest {
         return scoreN;
     }
 
-    public void setScoreN(String scoreN) {
+    public void setScoreN(final String scoreN) {
         this.scoreN = scoreN;
     }
 
@@ -56,14 +63,7 @@ public class CreateTaskRequest {
         return priorityN;
     }
 
-    public void setPriorityN(String priorityN) {
+    public void setPriorityN(final String priorityN) {
         this.priorityN = priorityN;
     }
-
-    private String title;
-    private String description;
-    private String stat;
-    private String username;
-    private String scoreN;
-    private String priorityN;
 }

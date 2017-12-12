@@ -1,8 +1,4 @@
 package ar.edu.itba.persistence;
-import java.util.Properties;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 
 import org.hsqldb.jdbc.JDBCDriver;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +11,10 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @ComponentScan({"ar.edu.itba.persistence"})
 @EnableTransactionManagement
@@ -30,12 +30,12 @@ public class TestConfig {
         ds.setPassword("");
         return ds;
     }
-    
+
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
-         return new JpaTransactionManager(emf);
+        return new JpaTransactionManager(emf);
     }
-	
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();

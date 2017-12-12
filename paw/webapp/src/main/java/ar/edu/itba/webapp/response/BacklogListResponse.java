@@ -8,14 +8,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class BacklogListResponse {
+    @XmlElement
+    private BacklogItem[] backlog;
+
     public BacklogItem[] getBacklog() {
         return backlog;
     }
 
-    public void setBacklog(BacklogItem[] backlog) {
+    public void setBacklog(final BacklogItem[] backlog) {
         this.backlog = backlog;
     }
-
-    @XmlElement
-    private BacklogItem[] backlog;
 }

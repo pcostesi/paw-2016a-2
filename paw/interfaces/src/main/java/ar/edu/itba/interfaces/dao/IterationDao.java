@@ -1,35 +1,35 @@
 package ar.edu.itba.interfaces.dao;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface IterationDao {
 
-	public Iteration createIteration(final Project project, final int iterationNumber, final LocalDate startDate, final LocalDate endDate);
+    Iteration createIteration(final Project project, final int iterationNumber, final LocalDate startDate, final LocalDate endDate);
 
-	public void deleteIteration(final Iteration iteration);
+    void deleteIteration(final Iteration iteration);
 
-	public Iteration getIteration(final Project project, final int iterationNumber);
+    Iteration getIteration(final Project project, final int iterationNumber);
 
-	public Iteration getIterationById(final int iterationId);
+    Iteration getIterationById(final int iterationId);
 
-	public boolean iterationExists(final Iteration iteration);
+    boolean iterationExists(final Iteration iteration);
 
-	public void updateStartDate(final Iteration iteration, final LocalDate startDate);
+    void updateStartDate(final Iteration iteration, final LocalDate startDate);
 
-	public void updateEndDate(final Iteration iteration, final LocalDate endDate);
+    void updateEndDate(final Iteration iteration, final LocalDate endDate);
 
-	public List<Iteration> getIterationsForProject(final Project project);
+    List<Iteration> getIterationsForProject(final Project project);
 
-	public void increaseNumberOfIterationNumbered(final Project project, final int number);
-	
-	public void decreaseNumberOfIterationNumbered(final Project project, final int number);
+    void increaseNumberOfIterationNumbered(final Project project, final int number);
 
-	public Project getParent(final Iteration iteration);
+    void decreaseNumberOfIterationNumbered(final Project project, final int number);
 
-	public int getMaxNumber(final Project project);
+    Project getParent(final Iteration iteration);
+
+    int getMaxNumber(final Project project);
 
 }

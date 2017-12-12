@@ -1,24 +1,23 @@
 package ar.edu.itba.webapp.form.constraint;
 
+import ar.edu.itba.interfaces.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
+class UserMailFreeValidator implements ConstraintValidator<UserMailFree, String> {
 
-import ar.edu.itba.interfaces.service.UserService;
-
-public class UserMailFreeValidator implements ConstraintValidator<UserMailFree, String> {
-	
-	@Autowired
+    @Autowired
     private UserService us;
-	
+
     @Override
     public void initialize(final UserMailFree constraintAnnotation) {
     }
 
     @Override
     public boolean isValid(final String mail, final ConstraintValidatorContext context) {
-  		return !us.emailExists(mail);
+        return !us.emailExists(mail);
     }
 
 }

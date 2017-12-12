@@ -1,18 +1,17 @@
 package ar.edu.itba.webapp.i18n;
 
-import java.text.ParseException;
-import java.util.Locale;
-
+import ar.edu.itba.models.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.Formatter;
 
-import ar.edu.itba.models.Status;
+import java.text.ParseException;
+import java.util.Locale;
 
 public class StatusEnumFormatter implements Formatter<Status> {
 
     @Autowired
-    public MessageSource messageSource;
+    private final MessageSource messageSource;
 
     public StatusEnumFormatter(final MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -29,8 +28,8 @@ public class StatusEnumFormatter implements Formatter<Status> {
 
     @Override
     public Status parse(final String text, final Locale locale) throws ParseException {
-        for(final Status test : Status.values()) {
-            if(test.name().equalsIgnoreCase(text)) {
+        for (final Status test : Status.values()) {
+            if (test.name().equalsIgnoreCase(text)) {
                 return test;
             }
         }

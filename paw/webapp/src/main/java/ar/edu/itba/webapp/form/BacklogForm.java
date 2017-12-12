@@ -1,42 +1,42 @@
 package ar.edu.itba.webapp.form;
 
-import javax.validation.constraints.Size;
-
 import ar.edu.itba.webapp.form.constraint.ItemTitleFree;
 
-@ItemTitleFree(markedField="title")
+import javax.validation.constraints.Size;
+
+@ItemTitleFree(markedField = "title")
 public class BacklogForm {
 
-	@Size(min=1, max=100)
-	private String title;
-	
-	@Size(max=500)
-	private String description;
-	
-	private int projectId;
+    @Size(min = 1, max = 100)
+    private String title;
 
-	public String getTitle() {
-		return title;
-	}
+    @Size(max = 500)
+    private String description;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    private int projectId;
 
-	public String getDescription() {
-		return description;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setTitle(final String title) {
+        this.title = title;
+    }
 
-	public int getProjectId() {
-		return projectId;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
-	
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(final int projectId) {
+        this.projectId = projectId;
+    }
+
 }
