@@ -1,11 +1,5 @@
 package ar.edu.itba.webapp.config;
 
-import ar.edu.itba.models.Priority;
-import ar.edu.itba.models.Score;
-import ar.edu.itba.models.Status;
-import ar.edu.itba.webapp.i18n.PriorityEnumFormatter;
-import ar.edu.itba.webapp.i18n.ScoreEnumFormatter;
-import ar.edu.itba.webapp.i18n.StatusEnumFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -47,7 +40,7 @@ import java.util.Properties;
 
 
 @EnableWebMvc
-@ComponentScan( {"ar.edu.itba.webapp.config", "ar.edu.itba.webapp.config.auth", "ar.edu.itba.webapp.config.auth.hmac", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence", "ar.edu.itba.webapp.i18n"})
+@ComponentScan( {"ar.edu.itba.webapp.config", "ar.edu.itba.webapp.config.auth", "ar.edu.itba.webapp.config.auth.hmac", "ar.edu.itba.webapp.controller", "ar.edu.itba.services", "ar.edu.itba.persistence"})
 @Configuration
 @EnableAsync
 @EnableScheduling
@@ -73,7 +66,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     @Autowired
-    private DataSource dataSource(final Environment env) {
+    public DataSource dataSource(final Environment env) {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
 
@@ -88,18 +81,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
-    }
-
-    @Override
-    public void addFormatters(final FormatterRegistry formatterRegistry) {
-        super.addFormatters(formatterRegistry);
-        final MessageSource messageSource = messageSource();
-        final PriorityEnumFormatter priority = new PriorityEnumFormatter(messageSource);
-        final ScoreEnumFormatter score = new ScoreEnumFormatter(messageSource);
-        final StatusEnumFormatter status = new StatusEnumFormatter(messageSource);
-        formatterRegistry.addFormatterForFieldType(Priority.class, priority);
-        formatterRegistry.addFormatterForFieldType(Score.class, score);
-        formatterRegistry.addFormatterForFieldType(Status.class, status);
     }
 
     @Bean
