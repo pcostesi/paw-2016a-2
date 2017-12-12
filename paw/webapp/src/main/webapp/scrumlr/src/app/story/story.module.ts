@@ -6,6 +6,9 @@ import { StoryListComponent } from './story-list/story-list.component';
 import { StoryService } from './story.service';
 import { StoryDetailComponent } from './story-detail/story-detail.component';
 import { TaskModule } from '../task/task.module';
+import { StoryEditComponent } from './story-edit/story-edit.component';
+import { StoryCreateComponent } from './story-create/story-create.component';
+import { StoryDeleteComponent } from './story-delete/story-delete.component';
 
 @NgModule({
   imports: [
@@ -14,7 +17,7 @@ import { TaskModule } from '../task/task.module';
     TaskModule
   ],
   providers: [StoryService],
-  declarations: [StoryListComponent, StoryDetailComponent],
+  declarations: [StoryListComponent, StoryDetailComponent, StoryEditComponent, StoryCreateComponent, StoryDeleteComponent],
   exports: [StoryListComponent]
 })
 export class StoryModule { }
