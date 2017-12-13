@@ -1,0 +1,1 @@
+mvn clean package -DskipTests; docker build . -t paw -f Dockerfile.app; echo "done building now running..."; docker rm paw; docker run -p 8080:8080 --name=paw -e DB_URL="jdbc:postgresql://10.0.0.151:5432/grupo2" -e DB_USER="grupo2" -e DB_PASS="grupo2" paw

@@ -4,6 +4,7 @@
 
 - [**SCRUMLR**](#scrumlr)
     - [Developer Tools](#developer-tools)
+        - [Database](#database)
         - [Javascript / Typescript Toolchain](#javascript--typescript-toolchain)
         - [Using the Toolchain](#using-the-toolchain)
     - [Developing the project](#developing-the-project)
@@ -11,6 +12,8 @@
         - [Back-End](#back-end)
     - [Building the project](#building-the-project)
     - [Installation](#installation)
+        - [Docker](#docker)
+            - [Differential builds](#differential-builds)
     - [Migrating from older versions](#migrating-from-older-versions)
 
 <!-- /TOC -->
@@ -27,7 +30,7 @@ Just in case you can't read:
 
 1. deploy.sh docker
 2. deploy.sh dump
-2. deploy.sh load 
+2. deploy.sh load
 
 ### Javascript / Typescript Toolchain
 
@@ -92,6 +95,40 @@ Running this command will run the tests and create the war file:
 ```
 mvn clean install
 ```
+
+### Docker
+
+We have created a Docker image (in fact, several) for your comfort and safety. You only need a single command in order to build the container; we're using multi-stage images
+that provide all the tooling for you at no cost! Aren't we sweet? You just have to run
+the following to get a runnable image:
+
+```bash
+docker build -t scrumlr paw
+```
+
+And running it is easy! Just drop it to a K8s cluster after pushing it to your own private registry and wiring up the services and ingress... Or run it with Docker like this:
+
+```bash
+docker run \
+    -e DB_URL="jdbc:postgresql://pawdb:5432/grupo2" \
+    -e DB_USER="grupo2" \
+    -e DB_PASS="grupo2" \
+    scrumlr
+```
+
+If you're a lazy bum, try the following from inside `paw`:
+
+```bash
+docker build . -t scrumlr -f Dockerfile; echo "done building now running..."; docker rm scrumlr; docker run -p 8080:8080 --name=paw -e DB_URL="jdbc:postgresql://10.0.0.151:5432/grupo2" -e DB_USER="grupo2" -e DB_PASS="grupo2" scrumlr
+```
+
+#### Differential builds
+
+We have two other Docker files: `Dockerfile.builder` and `Dockerfile.app`.
+
+1. Run the first one if you want to build the `webapp.war` (then save it).
+2. Run the second one if you already have the `webapp.war` at `paw/webapp/target/webapp.war`.
+    It will run the app using Jetty at http://localhost:8080/grupo2/
 
 ## Migrating from older versions
 

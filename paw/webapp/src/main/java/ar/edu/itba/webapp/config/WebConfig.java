@@ -47,6 +47,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource(value = "file:application.properties", ignoreResourceNotFound = true)
 @PropertySource(value = "file:${user.home}/.scrumlr.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "file:/scrumlr.properties", ignoreResourceNotFound = true)
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 public class WebConfig extends WebMvcConfigurerAdapter {
     private final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
@@ -55,24 +56,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private Resource schemaSql;
 
     @Bean
-    public ViewResolver viewResolver() {
-        final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/jsp/");
-        viewResolver.setSuffix(".jsp");
-
-        return viewResolver;
-    }
-
-    @Bean
     @Autowired
     public DataSource dataSource(final Environment env) {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
+        String dbUrl = System.getenv("DB_URL");
+        String dbUser = System.getenv("DB_USER");
+        String dbPass = System.getenv("DB_PASS");
 
-        ds.setUrl(env.getProperty("configuration.postgresUrl", "jdbc:postgresql://10.16.1.110/grupo2"));
-        ds.setUsername(env.getProperty("configuration.postgresUser", "grupo2"));
-        ds.setPassword(env.getProperty("configuration.postgresPass", "shiufi7T"));
+        ds.setUrl(env.getProperty("configuration.postgresUrl", dbUrl != null ? dbUrl : "jdbc:postgresql://10.16.1.110/grupo2"));
+        ds.setUsername(env.getProperty("configuration.postgresUser",  dbUser != null ? dbUser : "grupo2"));
+        ds.setPassword(env.getProperty("configuration.postgresPass",  dbPass != null ? dbPass : "shiufi7T"));
 
         logger.info("Connecting to database at {} with user {}", ds.getUrl(), ds.getUsername());
         return ds;
@@ -81,14 +75,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
-    }
-
-    @Bean
-    public MessageSource messageSource() {
-        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/i18n/messages");
-        messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
-        return messageSource;
     }
 
     @Bean

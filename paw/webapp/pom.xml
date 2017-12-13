@@ -10,7 +10,7 @@
     </parent>
     <artifactId>webapp</artifactId>
     <packaging>war</packaging>
-    <name>webapp Maven Webapp</name>
+    <name>webapp</name>
     <url>http://maven.apache.org</url>
     <properties>
         <frontend.plugin>1.4</frontend.plugin>
