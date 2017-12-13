@@ -99,6 +99,9 @@
     "*.css": [
       "stylelint"
     ],
+    "*.scss": [
+      "stylelint --syntax scss"
+    ],
     "*.json": [
       "jsonlint"
     ]

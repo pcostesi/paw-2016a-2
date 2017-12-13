@@ -45,4 +45,22 @@ export class ProjectService {
     });
   }
 
+  public addUserToProject(code: string, username: string) {
+    return this.api.put(`/project/${code}/user`, { username }).map(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return null;
+    });
+  }
+
+  public deleteUserFromProject(code: string, username: string) {
+    return this.api.delete(`/project/${code}/user/${username}`).map(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return null;
+    });
+  }
+
 }
