@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api';
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
 
 import { BacklogService } from '../backlog/backlog.service';
-import { BacklogItem } from '../backlog/backlog-item';
 
 import { IterationService } from '../iteration/iteration.service';
+import {Project} from './project';
 
 @Injectable()
 export class ProjectService {
 
   constructor(private api: ApiService,
-    private backlogService: BacklogService,
     private iterationService: IterationService) { }
 
   public getProjects() {
@@ -45,19 +43,10 @@ export class ProjectService {
     });
   }
 
-  public addUserToProject(code: string, username: string) {
-    return this.api.put(`/project/${code}/user`, { username }).map(response => {
+  public updateProject(project: Project): Observable<Project | null> {
+    return this.api.put(`/project/${project.code}`, { project }).map(response => {
       if (response.ok) {
-        return response.json();
-      }
-      return null;
-    });
-  }
-
-  public deleteUserFromProject(code: string, username: string) {
-    return this.api.delete(`/project/${code}/user/${username}`).map(response => {
-      if (response.ok) {
-        return response.json();
+        return <Project>response.json();
       }
       return null;
     });

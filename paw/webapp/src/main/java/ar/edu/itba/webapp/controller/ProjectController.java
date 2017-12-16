@@ -12,13 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
@@ -85,14 +79,13 @@ public class ProjectController extends BaseController {
 	}
 
 	@PUT
-	@Path("/{codename}/user/{username}")
+	@Path("/{codename}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateProject(UpdateProjectRequest request,
-								  @PathParam("codename") final String codename,
-								  @PathParam("username") final String username){
+								  @PathParam("codename") final String codename){
 		try{
 			final Project project = ps.getProjectByCode(codename);
-			final User user = us.getByUsername(username);
+			final User user = getLoggedUser();
 			List<String> userList = us.getUsernamesForProject(project);
 			List<String> updatedUser = java.util.Arrays.asList(request.getUsers());
 			ps.setCode(user, project, request.getProjectCode());
@@ -116,38 +109,19 @@ public class ProjectController extends BaseController {
 					.build();
 		}
 	}
-	/*@PUT
-	@Path("/{codename}/user")
+
+	@DELETE
+	@Path("/{codename}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addUserToProject(UpdateProjectRequest request,
-									 @PathParam("codename") final String codename){
-		try {
-			final User userToAdd = us.getByUsername(request.getProjectName());
+	public Response updateProject(@PathParam("codename") final String codename) {
+		try{
 			final Project project = ps.getProjectByCode(codename);
-			ps.addUserToProject(getLoggedUser(), project, userToAdd);
-			return Response.ok(project)
-					.build();
-		} catch(IllegalArgumentException | IllegalStateException e) {
+			final User user = getLoggedUser();
+			ps.deleteProject(user, project);
+			return Response.ok().build();
+		}catch(Exception e) {
 			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
 					.build();
 		}
 	}
-
-	@DELETE
-	@Path("/{codename}/user/{username}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteUserFromProject(@PathParam("codename") final String codename,
-										  @PathParam("username") final String username){
-		try {
-			final User userToDelete = us.getByUsername(username);
-			final Project project = ps.getProjectByCode(codename);
-			ps.deleteUserFromProject(getLoggedUser(), project, userToDelete);
-			return Response.ok(project)
-					.build();
-		} catch(IllegalArgumentException | IllegalStateException e) {
-			return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
-					.build();
-		}
-	}*/
-
 }
