@@ -5,19 +5,14 @@ import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.webapp.request.CreateIterationRequest;
+import ar.edu.itba.webapp.request.UpdateIterationRequest;
 import ar.edu.itba.webapp.response.IterationListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
@@ -98,4 +93,22 @@ public class IterationController extends BaseController {
         return Response.ok()
          .build();
     }
+
+    @PUT
+    @Path("/{index}")
+    public Response updateIteration(UpdateIterationRequest request,
+                                    @PathParam("project") final String project,
+                                    @PathParam("index") final int index){
+        try {
+            final Project proj = ps.getProjectByCode(project);
+            final Iteration iteration = is.getIteration(proj, index);
+            is.setDates(iteration, request.getBegindate(), request.getEnddate());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
+                    .build();
+        }
+        return Response.ok()
+                .build();
+    }
+
 }
