@@ -11,13 +11,25 @@
     <app-compact *ngFor="let item of backlog" [project]="project" [item]="item" class="list-group-item list-group-item-action"></app-compact>
 </div>
 
-<div *ngIf="!backlog?.length" class="">
+<div *ngIf="backlog?.length === 0" class="">
     <div class="card mb-3">
         <div class="card-block">
             <h3 class="card-title text-muted" i18n="@@MissingBacklogTitle">Hey! Nothing else left to do...</h3>
 
             <p class="card-text" i18n="@@MissingBacklog">
                 <strong>Hey!</strong> Congrats, looks you're all set!</p>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="backlog === undefined" class="">
+    <div class="card mb-3">
+        <div class="card-block">
+            <h3 class="card-title text-muted" i18n="@@LoadingBacklog">Loading Backog</h3>
+
+            <p class="card-text" i18n="@@ContemplateTheNetworkRequests">
+                <strong>Hey!</strong> You can contemplate the network requests.</p>
         </div>
     </div>
 </div>

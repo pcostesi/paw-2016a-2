@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ProjectService } from '../project.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-detail',
@@ -9,25 +10,20 @@ import { ProjectService } from '../project.service';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
-  public project: any;
-  public backlog: any[];
-  public iterations: any[];
-  private code: string;
+  public project: Observable<any>;
+  public iterations: Observable<any[]>;
+  public codename: Observable<string>;
 
   constructor(private route: ActivatedRoute,
-    private projectService: ProjectService) { }
+    private projectService: ProjectService) {
+    const projectSummary = this.route.params.flatMap((params) =>
+      this.projectService.getSummary(params['proj']));
 
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.code = params['proj'];
-      this.fetchProject(this.code);
-    });
+    this.codename = this.route.params.map(params => params['proj']);
+    this.project = projectSummary.map(result => result.project);
+    this.iterations = projectSummary.map(result => result.iterations);
   }
 
-  fetchProject(code: string) {
-    this.projectService.getSummary(code).subscribe(result => {
-      this.project = result.project;
-      this.iterations = result.iterations;
-    });
+  ngOnInit() {
   }
 }
