@@ -102,13 +102,14 @@ public class IterationController extends BaseController {
         try {
             final Project proj = ps.getProjectByCode(project);
             final Iteration iteration = is.getIteration(proj, index);
-            is.setDates(iteration, request.getBegindate(), request.getEnddate());
+            is.setDates(iteration, request.getBeginDate(), request.getEndDate());
+            return Response.ok(is.getIteration(proj, index))
+                    .build();
         } catch (IllegalArgumentException | IllegalStateException e) {
             return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
                     .build();
         }
-        return Response.ok()
-                .build();
+
     }
 
 }

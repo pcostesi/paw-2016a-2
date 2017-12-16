@@ -1,7 +1,5 @@
 package ar.edu.itba.webapp.request;
 
-import org.springframework.cglib.core.Local;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
@@ -9,24 +7,24 @@ import java.time.LocalDate;
 @XmlRootElement
 public class UpdateIterationRequest {
 
-    private String begindate;
-    private String enddate;
+    private String beginDate;
+    private String endDate;
 
     @XmlElement
-    public LocalDate getBegindate() {
-        return LocalDate.parse(begindate);
+    public LocalDate getBeginDate() {
+        return LocalDate.parse(beginDate);
     }
 
-    public void setBegindate(String begindate) {
-        this.begindate = begindate;
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
     }
 
     @XmlElement
-    public LocalDate getEnddate() {
-        return LocalDate.parse(enddate);
+    public LocalDate getEndDate() {
+        return LocalDate.parse(endDate);
     }
 
-    public void setEnddate(String enddate) {
-        this.enddate = enddate;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 }

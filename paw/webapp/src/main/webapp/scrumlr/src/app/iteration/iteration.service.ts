@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../api';
+import {Iteration} from './iteration';
 
 @Injectable()
 export class IterationService {
@@ -25,6 +26,15 @@ export class IterationService {
     return this.api.get(`/project/${project}/iteration/${iteration}`).map(response => {
       if (response.ok) {
         return response.json();
+      }
+      return null;
+    });
+  }
+
+  public updateIteration(project: string, iteration: Iteration): Observable<Iteration | null> {
+    return this.api.put(`/project/${project}/iteration/${iteration.number}`, { iteration }).map(response => {
+      if (response.ok) {
+        return <Iteration>response.json();
       }
       return null;
     });
