@@ -1,3 +1,19 @@
 <div class="row d-flex align-items-stretch">
-  <app-task-detail class="col-md-4 my-1" [task]="task" *ngFor="let task of tasks"></app-task-detail>
+  <app-task-detail class="col-md-6 my-1" [task]="task" *ngFor="let task of tasks"></app-task-detail>
+  <div class="col-md-6 my-1">
+    <div class="card h-100">
+      <div class="card-block">
+
+        <div class="card-body">
+          <h5 class="card-title" i18n="@@AddNewTask">Add a new task</h5>
+          <hr>
+          <p class="text-muted" i18n="@@UseCardToAddTask">Use this card to create a new task.</p>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" i18n="@@AddNewTaskBtn">New Task</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,14 @@
+<div [ngClass]="{
+  'text-danger': task.priority == 'CRITICAL' || task.priority == 'URGENT',
+  'text-success': task.priority == 'LOW' || task.priority == 'NORMAL',
+  'text-warning': task.priority == 'HIGH'}">
+  <ng-container i18n="@@Priority">Priority:</ng-container>
+
+  <strong>
+    <ng-container *ngIf="task.priority == 'CRITICAL'" i18n="@@PriorityCritical">Critical</ng-container>
+    <ng-container *ngIf="task.priority == 'URGENT'" i18n="@@PriorityUrgent">Urgent</ng-container>
+    <ng-container *ngIf="task.priority == 'HIGH'" i18n="@@PriorityHigh">High</ng-container>
+    <ng-container *ngIf="task.priority == 'NORMAL'" i18n="@@PriorityNormal">Normal</ng-container>
+    <ng-container *ngIf="task.priority == 'LOW'" i18n="@@PriorityLow">Low</ng-container>
+  </strong>
+</div>

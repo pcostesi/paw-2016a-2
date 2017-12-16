@@ -1,0 +1,10 @@
+<div class="w-100 badge badge-default" [ngClass]="{
+  'badge-danger': task.status == 'NOT_STARTED',
+  'badge-success': task.status == 'COMPLETED',
+  'badge-warning': task.status == 'STARTED' }">
+  <ng-container i18n="@@Status">Status: </ng-container>
+
+  <ng-container *ngIf="task.status == 'NOT_STARTED'" i18n="@@StatusNotStarted">Not started</ng-container>
+  <ng-container *ngIf="task.status == 'STARTED'" i18n="@@StatusStarted">Started</ng-container>
+  <ng-container *ngIf="task.status == 'COMPLETED'" i18n="@@StatusCompleted">Completed</ng-container>
+</div>

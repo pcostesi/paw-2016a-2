@@ -2,14 +2,11 @@
   <div class="card-block">
     <h5 class="card-title">{{task.title}}</h5>
     <hr>
-    <h6 class="card-subtitle mb-2">
-      <span class="badge badge-pill badge-default">{{task.status}}</span> &mdash;
-      <span class="badge badge-pill badge-default">{{task.score}}</span>
-    </h6>
-    <p class="card-text">{{task.description}}</p>
+    <app-task-effort [task]="task"></app-task-effort>
+
+    <p class="card-text" *ngIf="task.description">{{task.description}}</p>
     <p class="card-text text-muted" *ngIf="task.owner">
       <strong>Assigned to {{task.owner.username}}</strong>
     </p>
-
   </div>
 </div>
