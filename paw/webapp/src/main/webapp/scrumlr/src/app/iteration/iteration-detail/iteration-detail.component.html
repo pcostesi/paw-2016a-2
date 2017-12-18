@@ -1,19 +1,15 @@
-<div class="iteration my-4">
+<div class="iteration my-4" *ngIf="iteration">
     <h2 class="d-flex justify-content-between">
-        <span (click)="expand = !expand">Iteration {{iteration.number}}</span>
+        <span i18n="@@IterationTitle">Iteration {{iteration.number}}</span>
         <div class="btn-group">
             <button class="btn btn-outline-secondary btn-sm">Edit</button>
             <button class="btn btn-outline-danger btn-sm">Delete</button>
-            <button (click)="expand = true" *ngIf="!expand" class="btn btn-outline-primary btn-sm"> Show more</button>
-            <button (click)="expand = false" *ngIf="expand" class="btn btn-outline-primary btn-sm"> Show less</button>
         </div>
     </h2>
 
-    <div [ngbCollapse]="!expand" id="iteration-list-{{iteration.number}}">
+    <div id="iteration-list-{{iteration.number}}">
         <h6 class="mb-2 text-muted">{{iteration.startDate | date}} to {{iteration.endDate | date}}</h6>
 
         <app-story-list class="mt-2" [stories]="stories | async"></app-story-list>
     </div>
 </div>
-
-<hr class="my-4">

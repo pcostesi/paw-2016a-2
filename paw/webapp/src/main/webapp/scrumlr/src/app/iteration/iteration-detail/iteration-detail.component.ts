@@ -10,17 +10,27 @@ import { IterationService } from '../iteration.service';
   styleUrls: ['./iteration-detail.component.scss']
 })
 export class IterationDetailComponent implements OnInit {
-  @Input() iteration: any;
-  @Input() expand = true;
+  private _iteration: any;
   public stories: Observable<any[]>;
 
   constructor(private iterationService: IterationService,
     private storyService: StoryService) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  @Input()
+  set iteration(value: any) {
+    if (!value) {
+      return;
+    }
+    this._iteration = value;
     const project = this.iteration.project.code;
     const iteration = this.iteration.number;
     this.stories = this.storyService.getStories(project, iteration);
+  }
+
+  get iteration() {
+    return this._iteration;
   }
 
 }
