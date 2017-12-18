@@ -21,11 +21,15 @@ import { LoginEvent } from './login-event.enum';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'];
 
+const memory_usr = JSON.parse(localStorage.getItem('scrumlr-user') || 'null');
+const memory_pwd = JSON.parse(localStorage.getItem('scrumlr-pass') || 'null');
+
+
 @Injectable()
 export class ApiService extends Http {
-  private username: string;
-  private password: string;
-  private hasCredentials = false;
+  private username: string = memory_usr;
+  private password: string = memory_pwd;
+  private hasCredentials = memory_usr && memory_pwd;
   private loginStatus: Subject<LoginEvent> = new Subject<LoginEvent>();
 
   private static fqdnApiUri(endpoint: string) {
@@ -139,6 +143,8 @@ export class ApiService extends Http {
   public setCredentials(username: string, password: string) {
     this.username = username;
     this.password = password;
+    localStorage.setItem('scrumlr-user', JSON.stringify(username));
+    localStorage.setItem('scrumlr-pass', JSON.stringify(password));
     this.hasCredentials = true;
     this.loginStatus.next(LoginEvent.SET_CREDENTIALS);
     return this;
@@ -148,6 +154,8 @@ export class ApiService extends Http {
     this.username = '';
     this.password = '';
     this.hasCredentials = false;
+    localStorage.setItem('scrumlr-user', JSON.stringify(null));
+    localStorage.setItem('scrumlr-pass', JSON.stringify(null));
     this.loginStatus.next(LoginEvent.CLEARED_CREDENTIALS);
     return this;
   }
