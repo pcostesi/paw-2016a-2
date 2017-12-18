@@ -1,17 +1,16 @@
-<div class="row">
-    <div class="col-md-8 push-md-2">
-        <h1 i18n="@@EditProject">Edit {{ project?.name }}</h1>
-    </div>
-</div>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-8">
 
-<div class="row">
-    <div class="col-md-8 push-md-2">
+        <h1 i18n="@@EditProject">Edit {{ project?.name }}</h1>
+
+
         <form [formGroup]="projectForm" (ngSubmit)="onSubmit(projectForm.value)">
 
             <div class="form-group" [class.has-danger]="!projectForm.controls['title'].valid">
                 <label for="title" i18n="@@ProjectTitle">Project title</label>
 
-                <input type="text" class="form-control" [class.form-control-danger]="!projectForm.controls['title'].valid" id="title" [formControl]="projectForm.controls['title']" aria-describedby="titleHelp" i18n-placeholder="@@EnterUsername" placeholder="Choose a title">
+                <input type="text" class="form-control" [class.form-control-danger]="!projectForm.controls['title'].valid" id="title" [formControl]="projectForm.controls['title']"
+                    aria-describedby="titleHelp" i18n-placeholder="@@EnterUsername" placeholder="Choose a title">
 
                 <div *ngIf="projectForm.controls['title'].hasError('required')" class="form-control-feedback" i18n="@@UsernameRequired">Sorry, that title's invalid. Try another?</div>
             </div>
@@ -20,7 +19,8 @@
             <div class="form-group" [class.has-danger]="!projectForm.controls['description'].valid">
                 <label for="description" i18n="@@Description">Description</label>
 
-                <textarea type="text" class="form-control" [class.form-control-danger]="!projectForm.controls['description'].valid" id="description" [formControl]="projectForm.controls['description']" placeholder="Password"></textarea>
+                <textarea type="text" class="form-control" [class.form-control-danger]="!projectForm.controls['description'].valid" id="description"
+                    [formControl]="projectForm.controls['description']" placeholder="Password"></textarea>
 
                 <div *ngIf="projectForm.controls['description'].hasError('required')" class="form-control-feedback" i18n="@@PasswordInvalid">Sorry, that description is invalid. Try another?</div>
             </div>
@@ -37,10 +37,12 @@
 
                 <div class="input-group">
                     <label for="username-{{index}}" class="input-group-addon" i18n="@@Username">Username</label>
-                    <input type="text" class="form-control" [class.form-control-danger]="!getUserControls()[i].valid" id="username-{{i}}" [formControl]="getUserControls()[i]" placeholder="username" [ngbTypeahead]="getUsers.bind(this)">
+                    <input type="text" class="form-control" [class.form-control-danger]="!getUserControls()[i].valid" id="username-{{i}}" [formControl]="getUserControls()[i]"
+                        placeholder="username" [ngbTypeahead]="getUsers.bind(this)">
 
 
-                    <button *ngIf="getUserControls().length > 1" class="btn btn-sm btn-outline-danger input-group-addon" (click)="removeMember(i)" i18n="@@Remove">Remove</button>
+                    <button *ngIf="getUserControls().length > 1" class="btn btn-sm btn-outline-danger input-group-addon" (click)="removeMember(i)"
+                        i18n="@@Remove">Remove</button>
                 </div>
 
                 <div *ngIf="getUserControls()[i].hasError('required')" class="form-control-feedback" i18n="@@UsernameInvalid">Sorry, that username is invalid. Try another?</div>

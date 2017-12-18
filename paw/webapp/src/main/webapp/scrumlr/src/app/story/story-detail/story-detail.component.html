@@ -2,7 +2,7 @@
   <div class="card-header">
     <span class="card-title" (click)="isOpen = !isOpen">{{story.title}}</span>
   </div>
-  <div class="card-block" [hidden]="!isOpen">
+  <div class="card-body" [hidden]="!isOpen">
     <app-task-list [story]="story"></app-task-list>
   </div>
 </div>

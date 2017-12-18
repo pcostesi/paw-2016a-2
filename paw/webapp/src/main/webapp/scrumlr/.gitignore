@@ -7,6 +7,8 @@
 
 # dependencies
 /node_modules
+# we shouldn't remove it but the team hates it :)
+package-lock.json
 
 # IDEs and editors
 /.idea

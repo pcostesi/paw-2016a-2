@@ -1,5 +1,5 @@
 <div class="card mt-3 mb-3">
-    <div class="card-block">
+    <div class="card-body">
         <p class="card-text" i18n="@@MissingBacklog">
             <button (click)="createItem()" class="btn btn-primary" i18n="@@CreateNewBacklogItem">New item</button>
         </p>
@@ -13,7 +13,7 @@
 
 <div *ngIf="backlog?.length === 0" class="">
     <div class="card mb-3">
-        <div class="card-block">
+        <div class="card-body">
             <h3 class="card-title text-muted" i18n="@@MissingBacklogTitle">Hey! Nothing else left to do...</h3>
 
             <p class="card-text" i18n="@@MissingBacklog">
@@ -25,7 +25,7 @@
 
 <div *ngIf="backlog === undefined" class="">
     <div class="card mb-3">
-        <div class="card-block">
+        <div class="card-body">
             <h3 class="card-title text-muted" i18n="@@LoadingBacklog">Loading Backog</h3>
 
             <p class="card-text" i18n="@@ContemplateTheNetworkRequests">

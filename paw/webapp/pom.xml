@@ -139,7 +139,7 @@
                     <workingDirectory>src/main/webapp/scrumlr</workingDirectory>
                     <installDirectory>target</installDirectory>
                     <environmentVariables>
-                        <NODE_ENV>development</NODE_ENV>
+                        <NODE_ENV>production</NODE_ENV>
                     </environmentVariables>
                 </configuration>
                 <executions>

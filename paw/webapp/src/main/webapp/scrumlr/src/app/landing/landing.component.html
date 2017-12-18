@@ -1,8 +1,11 @@
-<div class="jumbotron landing-banner">
+<div class="jumbotron landing-banner" #landingBanner>
   <div class="container">
-    <h1 class="display-3" i18n="Landing Title@@LandingTitle">Project Management Made Easy</h1>
-    <p class="lead" i18n="Sales Pitch@@LandingSalesPitch">With Scrumlr, tracking every project will feel like a walk in
-      the park. At night.</p>
+    <h1 class="display-3" i18n="Landing Title@@LandingTitle">
+      Project Management
+      <span class="alt-meaning">,</span> Made Easy
+      <span class="alt-meaning">?</span>
+    </h1>
+    <p class="lead" i18n="Sales Pitch@@LandingSalesPitch">With Scrumlr, tracking every project will feel like a walk in the park. At night.</p>
   </div>
   <div *ngIf="!user">
     <hr class="my-4">
@@ -24,7 +27,7 @@
   <div class="row">
     <div class="col-md-4 my-1">
       <div class="card h-100">
-        <div class="card-block">
+        <div class="card-body">
           <h4 class="card-title" i18n="free tier@@FreeTierName">Free</h4>
           <p class="card-text" i18n="About free tier@@FreeTierDetails">Just the basics for $0.</p>
         </div>
@@ -32,7 +35,7 @@
     </div>
     <div class="col-md-4 my-1">
       <div class="card h-100">
-        <div class="card-block">
+        <div class="card-body">
           <h4 class="card-title" i18n="startup tier@@StartupTierName">Startup</h4>
           <p class="card-text" i18n="About startup tier@@StartupTierDetails">The same, but we charge $99.</p>
         </div>
@@ -40,7 +43,7 @@
     </div>
     <div class="col-md-4 my-1">
       <div class="card h-100">
-        <div class="card-block">
+        <div class="card-body">
           <h4 class="card-title" i18n="corporate tier@@CorporateTierName">Corporate</h4>
           <p class="card-text" i18n="About corporate tier@@StartupTierDetails">No support for $999.</p>
         </div>
@@ -61,7 +64,7 @@
     <div class="col-md-4 my-1">
       <div class="card h-100">
         <img class="card-img-top card-img-top-square" src="assets/seba.jpg" alt="Seba As Seen On Night Vision">
-        <div class="card-block">
+        <div class="card-body">
           <h4 class="card-title">Sebastián Andrés Maio</h4>
           <p class="card-text" i18n="About Seba@@BioSeba">I sailed to Japan and hunt whales.</p>
         </div>
@@ -70,7 +73,7 @@
     <div class="col-md-4 my-1">
       <div class="card h-100">
         <img class="card-img-top card-img-top-square" src="assets/braulio.jpg" alt="Braulio Gazing at the Abyss">
-        <div class="card-block">
+        <div class="card-body">
           <h4 class="card-title">Braulio Sespede</h4>
           <p class="card-text" i18n="About Braulio@@BioBraulio">Heading to Europe next semester.</p>
         </div>
@@ -79,7 +82,7 @@
     <div class="col-md-4 my-1">
       <div class="card h-100">
         <img class="card-img-top card-img-top-square" src="assets/pablo.jpg" alt="Pablo Looking Sharp">
-        <div class="card-block">
+        <div class="card-body">
           <h4 class="card-title">Pablo Alejandro Costesich</h4>
           <p class="card-text" i18n="About Pablo@@BioPablo">I jumped from a plane once. On purpose.</p>
         </div>
