@@ -2,8 +2,8 @@
     <h2 class="d-flex justify-content-between">
         <span i18n="@@IterationTitle">Iteration {{iteration.number}}</span>
         <div class="btn-group">
-            <button class="btn btn-outline-secondary btn-sm">Edit</button>
-            <button class="btn btn-outline-danger btn-sm">Delete</button>
+            <button class="btn btn-outline-secondary btn-sm" (click)="editIteration(iteration)">Edit</button>
+            <button class="btn btn-outline-danger btn-sm" (click)="deleteIteration(iteration)">Delete</button>
         </div>
     </h2>
 

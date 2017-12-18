@@ -1,3 +1,15 @@
-<p>
-  iteration-delete works!
-</p>
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" i18n="@@DeleteIterationTitle">Delete Iteration</h5>
+    <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p i18n="@@ConfirmDeleteIteration">Are you sure you want to delete Iteration #{{iteration?.number}}? This can't be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" (click)="deleteIteration(iteration)" class="btn btn-primary" i18n="@@Yes">Yes</button>
+    <button type="button" (click)="modal.dismiss()" class="btn btn-secondary" i18n="@@Cancel">Cancel</button>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,9 +16,11 @@ import { IterationDeleteComponent } from './iteration-delete/iteration-delete.co
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     IterationRoutingModule,
     NgbModule,
-    StoryModule
+    StoryModule,
   ],
   declarations: [
     IterationListComponent,
@@ -26,6 +29,7 @@ import { IterationDeleteComponent } from './iteration-delete/iteration-delete.co
     IterationEditComponent,
     IterationDeleteComponent
   ],
+  entryComponents: [IterationEditComponent, IterationDeleteComponent],
   providers: [IterationService],
   exports: [IterationListComponent]
 })

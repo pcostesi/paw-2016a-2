@@ -1,8 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { StoryService } from '../../story/story.service';
 import { IterationService } from '../iteration.service';
+
+import { IterationEditComponent } from '../iteration-edit/iteration-edit.component';
+import { IterationDeleteComponent } from '../iteration-delete/iteration-delete.component';
 
 @Component({
   selector: 'app-iteration-detail',
@@ -14,6 +19,7 @@ export class IterationDetailComponent implements OnInit {
   public stories: Observable<any[]>;
 
   constructor(private iterationService: IterationService,
+    private modalService: NgbModal,
     private storyService: StoryService) { }
 
   ngOnInit() { }
@@ -31,6 +37,16 @@ export class IterationDetailComponent implements OnInit {
 
   get iteration() {
     return this._iteration;
+  }
+
+  editIteration(iteration: any) {
+    const ref = this.modalService.open(IterationEditComponent);
+    ref.componentInstance.iteration = iteration;
+  }
+
+  deleteIteration(iteration: any) {
+    const ref = this.modalService.open(IterationDeleteComponent);
+    ref.componentInstance.iteration = this.iteration;
   }
 
 }
