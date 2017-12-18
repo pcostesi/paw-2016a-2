@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-story-delete',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./story-delete.component.scss']
 })
 export class StoryDeleteComponent implements OnInit {
+  @Input() story: any;
 
-  constructor() { }
+  constructor(public modal: NgbActiveModal) { }
 
   ngOnInit() {
   }
 
+  deleteItem() {
+    this.modal.close(this.story);
+  }
 }
+

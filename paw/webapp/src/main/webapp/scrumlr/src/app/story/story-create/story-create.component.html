@@ -1,3 +1,28 @@
-<p>
-  story-create works!
-</p>
+<div class="modal-content">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+
+    <div class="modal-header">
+      <h5 class="modal-title" i18n="@@CreateStoryTitle">Create a new story</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" [class.has-danger]="!form.controls['title'].valid">
+        <label for="title" i18n="@@Title">Title</label>
+
+        <input type="text" class="form-control" [class.form-control-danger]="!form.controls['title'].valid" id="title" [formControl]="form.controls['title']"
+          aria-describedby="titleHelp" i18n-placeholder="@@EnterTitle" placeholder="Enter title">
+
+        <div *ngIf="form.controls['title'].hasError('required')" class="form-control-feedback" i18n="@@TitleEmpty">Sorry, the title field can't be empty. Try typing something?</div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary" i18n="@@Submit">Submit</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" i18n="@@Cancel">Cancel</button>
+    </div>
+
+  </form>
+</div>
