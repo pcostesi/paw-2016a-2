@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-task-delete',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-delete.component.scss']
 })
 export class TaskDeleteComponent implements OnInit {
+  @Input() task: any;
 
-  constructor() { }
+  constructor(public modal: NgbActiveModal) { }
 
   ngOnInit() {
   }
 
+  deleteItem() {
+    this.modal.close(this.task);
+  }
 }
+

@@ -22,6 +22,7 @@ import { StoryDeleteComponent } from './story-delete/story-delete.component';
     TaskModule,
     NgbModule,
   ],
+  entryComponents: [StoryEditComponent, StoryCreateComponent, StoryDeleteComponent],
   providers: [StoryService],
   declarations: [StoryListComponent, StoryDetailComponent, StoryEditComponent, StoryCreateComponent, StoryDeleteComponent],
   exports: [StoryListComponent]

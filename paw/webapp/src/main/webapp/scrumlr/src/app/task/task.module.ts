@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { TaskService } from './task.service';
 import { TaskRoutingModule } from './task-routing.module';
@@ -16,9 +19,15 @@ import { TaskPriorityComponent } from './task-priority/task-priority.component';
 @NgModule({
   imports: [
     CommonModule,
-    TaskRoutingModule
+    FormsModule,
+    ReactiveFormsModule,
+    TaskRoutingModule,
+    NgbModule,
   ],
   providers: [TaskService],
+  entryComponents: [
+    TaskCreateComponent, TaskEditComponent, TaskDeleteComponent
+  ],
   declarations: [TaskListComponent, TaskDetailComponent,
     TaskEditComponent, TaskCreateComponent, TaskDeleteComponent,
     TaskEffortComponent, TaskStatusComponent, TaskScoreComponent,
