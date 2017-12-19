@@ -30,4 +30,14 @@ export class StoryService {
       return null;
     });
   }
+
+  updateStory(project: string, iteration: number | string, story: number | string, title: string): Observable<any | null> {
+    const url = `/project/${project}/iteration/${iteration}/story/${story}`;
+    return this.api.put(url, { title } ).map(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return null;
+    });
+  }
 }
