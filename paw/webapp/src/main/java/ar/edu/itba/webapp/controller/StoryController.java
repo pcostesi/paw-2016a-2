@@ -104,17 +104,17 @@ public class StoryController extends BaseController {
         return Response.ok().build();
     }
 
-
     @PUT
     @Path("/{index}")
     public Response updateStory(UpdateStoryRequest request,
                                 @PathParam("index") final int index){
         try {
-            ss.setName(ss.getById(index), request.getTitle());
-        } catch( IllegalArgumentException | IllegalStateException e ){
+            final Story story = ss.getById(index);
+            ss.setName(story, request.getTitle());
+            return Response.ok(ss.getById(index)).build();
+        } catch (IllegalArgumentException | IllegalStateException e) {
             return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
                     .build();
         }
-        return null;
     }
 }

@@ -17,4 +17,5 @@ public class UpdateStoryRequest {
 
 
     private String title;
+
 }
