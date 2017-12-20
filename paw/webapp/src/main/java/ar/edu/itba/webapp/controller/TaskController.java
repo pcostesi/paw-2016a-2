@@ -12,19 +12,14 @@ import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.User;
 import ar.edu.itba.webapp.request.CreateTaskRequest;
+import ar.edu.itba.webapp.request.UpdateTaskRequest;
 import ar.edu.itba.webapp.response.TaskListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -110,5 +105,28 @@ public class TaskController extends BaseController {
         }
         return Response.ok(tasksList)
          .build();
+    }
+
+    @PUT
+    @Path("/{index}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response postCreateTask(final UpdateTaskRequest request,
+                                   @PathParam("index") final int index) {
+        final String title = request.getTitle();
+        try {
+            final Task task = ts.getTaskById(index);
+            final User owner = us.getByUsername(request.getUsername());
+            ts.changeDescription(task, request.getDescription());
+            ts.changeOwnership(task, owner);
+            ts.changeStatus(task, Status.valueOf(request.getStat()));
+            ts.changeScore(task, Score.getByValue(request.getScore()));
+            ts.changePriority(task, Priority.valueOf(request.getPriority()));
+            ts.changeTitle(task, request.getTitle());
+            return Response.ok(ts.getTaskById(index))
+                    .build();
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
+                    .build();
+        }
     }
 }

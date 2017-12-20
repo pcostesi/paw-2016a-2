@@ -106,6 +106,7 @@ public class StoryController extends BaseController {
 
     @PUT
     @Path("/{index}")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response updateStory(UpdateStoryRequest request,
                                 @PathParam("index") final int index){
         try {

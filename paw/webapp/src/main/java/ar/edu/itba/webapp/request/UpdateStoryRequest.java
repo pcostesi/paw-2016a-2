@@ -6,8 +6,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UpdateStoryRequest {
 
-    private String title;
-
     @XmlElement
     public String getTitle() {
         return title;
@@ -16,4 +14,8 @@ public class UpdateStoryRequest {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
+    private String title;
+
 }

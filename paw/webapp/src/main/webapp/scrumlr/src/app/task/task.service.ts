@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../api';
+import { Task } from './task';
 
 
 @Injectable()
@@ -24,6 +25,17 @@ export class TaskService {
   getTask(project: string, iteration: number | string, story: number | string, task: number | string): Observable<any | null> {
     const url = `/project/${project}/iteration/${iteration}/story/${story}/task/${task}`;
     return this.api.get(url).map(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return null;
+    });
+  }
+
+  updateTask(project: string, iteration: number | string, story: number | string,
+             index: number | string, task: Task ): Observable<any | null> {
+    const url = `/project/${project}/iteration/${iteration}/story/${story}/task/${index}`;
+    return this.api.put(url, { task }).map(response => {
       if (response.ok) {
         return response.json();
       }
