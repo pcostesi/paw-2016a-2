@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TaskService } from '../task.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TaskCreateComponent } from 'app/task/task-create/task-create.component';
 
 @Component({
   selector: 'app-task-list',
@@ -10,7 +12,8 @@ export class TaskListComponent implements OnInit {
   @Input() story: any;
   public tasks: any[];
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     const storyId = this.story.storyId;
@@ -20,6 +23,11 @@ export class TaskListComponent implements OnInit {
       .subscribe(result => {
         this.tasks = result;
       });
+  }
+
+  addTask() {
+    const modal = this.modalService.open(TaskCreateComponent);
+    modal.componentInstance.story = this.story;
   }
 
 }

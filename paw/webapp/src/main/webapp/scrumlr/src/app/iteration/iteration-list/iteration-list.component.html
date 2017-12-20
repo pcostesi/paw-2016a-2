@@ -1,8 +1,12 @@
-<div class="card mt-3 mb-3">
-    <div class="card-body d-flex justify-content-between">
-        <button class="btn btn-primary btn-sm" i18n="@@CreateNewIteration">New iteration</button>
+<div class="row mt-2">
+    <div class="col-sm-8">
         <ngb-pagination [collectionSize]="iterations?.length || 0" [pageSize]="1" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
             [boundaryLinks]="true"></ngb-pagination>
+    </div>
+    <div class="col-sm-4">
+        <div class="w-100 d-flex justify-content-end">
+            <button class="btn btn-sm btn-primary" i18n="@@CreateNewIteration">New iteration</button>
+        </div>
     </div>
 </div>
 
@@ -10,7 +14,7 @@
     <app-iteration-detail [iteration]="iterations[iterations.length - page]"></app-iteration-detail>
 </ng-container>
 <ng-template #noIterations>
-    <div class="alert alert-info" role="alert" i18n="@@NoIterations">
+    <div class="alert alert-info my-2" role="alert" i18n="@@NoIterations">
         <strong>Hey listen!</strong> You can add a new iteration using the "add new iteration" button.
     </div>
 </ng-template>

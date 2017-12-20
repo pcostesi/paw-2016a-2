@@ -7,8 +7,8 @@ import { BadgeComponent, AccountService } from '../api';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  public isLoggedIn: boolean;
+  public isCollapsed = true;
+  public isLoggedIn = false;
   constructor(private acctsrv: AccountService) { }
 
   ngOnInit() {
