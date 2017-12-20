@@ -7,6 +7,15 @@
         <ngb-tabset>
             <ngb-tab>
                 <ng-template ngbTabTitle>
+                    <span i18n="@@Feed">Feed</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <app-feed-list></app-feed-list>
+                </ng-template>
+            </ngb-tab>
+
+            <ngb-tab>
+                <ng-template ngbTabTitle>
                     <span i18n="@@Iterations">Iterations</span>
                 </ng-template>
                 <ng-template ngbTabContent>

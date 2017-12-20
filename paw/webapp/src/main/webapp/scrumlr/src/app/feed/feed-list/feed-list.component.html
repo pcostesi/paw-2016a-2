@@ -1,0 +1,8 @@
+<div class="my-3">
+  <h1 i18n="@@ProjectFeed">Project Feed</h1>
+  <hr class="my-3">
+  <app-feed-detail *ngFor="let event of feed" [event]="event"></app-feed-detail>
+  <div *ngIf="!(feed?.length)" class="alert alert-info my-2" role="alert" i18n="@@NoFeed">
+    <strong>Looks empty...</strong> Probably this shouldn't be empty.
+  </div>
+</div>

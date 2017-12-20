@@ -14,6 +14,7 @@ import { ProjectService } from './project.service';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { EditProjectComponent } from './edit-project/edit-project.component';
 import { ProjectDossierComponent } from './project-dossier/project-dossier.component';
+import { FeedModule } from 'app/feed/feed.module';
 
 @NgModule({
   imports: [
@@ -24,8 +25,9 @@ import { ProjectDossierComponent } from './project-dossier/project-dossier.compo
     NgbModule,
     BacklogModule,
     IterationModule,
+    FeedModule,
   ],
   declarations: [MainComponent, DetailComponent, SummaryComponent, CreateProjectComponent, EditProjectComponent, ProjectDossierComponent],
-  providers: [ ProjectService ],
+  providers: [ProjectService],
 })
 export class ProjectModule { }
