@@ -97,7 +97,7 @@ public final class Project implements Serializable {
         return startDate.format(formatter);
     }
 
-    private LocalDate startDate() {
+    public LocalDate startDate() {
         return startDate;
     }
 

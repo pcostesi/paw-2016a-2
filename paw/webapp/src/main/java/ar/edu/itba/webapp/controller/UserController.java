@@ -1,7 +1,10 @@
 package ar.edu.itba.webapp.controller;
 
+import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.interfaces.service.UserService;
+import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import ar.edu.itba.webapp.request.GetProjectsForUserRequest;
 import ar.edu.itba.webapp.request.UserUpdateDetailsRequest;
 import ar.edu.itba.webapp.response.UserListResponse;
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -29,6 +33,8 @@ public class UserController extends BaseController {
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService us;
+    @Autowired
+    private ProjectService ps;
 
     @GET
     @Path("/{username}")
@@ -120,5 +126,23 @@ public class UserController extends BaseController {
         return Response.ok(user)
          .link(userLink, "self")
          .build();
+    }
+
+    @GET
+    @Path("/{username}/projects")
+    public Response getProjects(GetProjectsForUserRequest request,
+                                @PathParam("username") final String username){
+        try {
+            final User user = us.getByUsername(username);
+            List<Project> projects = ps.getProjectsForUser(user);
+            Project[] result = projects.stream()
+                                        .sorted(Comparator.comparing(Project::startDate))
+                                        .limit(request.getAmount())
+                                        .toArray(Project[]::new);
+            return Response.ok(result)
+                    .build();
+        } catch(IllegalArgumentException | IllegalStateException e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 }
