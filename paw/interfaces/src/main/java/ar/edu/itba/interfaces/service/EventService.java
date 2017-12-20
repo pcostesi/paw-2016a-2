@@ -4,13 +4,15 @@ import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 import ar.edu.itba.models.event.LogEvent;
 
+import java.util.List;
+
 public interface EventService {
 
     void emit(LogEvent e);
 
-    LogEvent getEventsForUser(User user);
+    List<? extends LogEvent> getEventsForUser(User user);
 
-    LogEvent getEventsForActor(User user);
+    List<? extends LogEvent> getEventsForActor(User user);
 
-    LogEvent getEventsForProject(Project project);
+    List<? extends LogEvent> getEventsForProject(Project project);
 }

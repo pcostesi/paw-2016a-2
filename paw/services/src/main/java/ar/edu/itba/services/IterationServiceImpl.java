@@ -4,13 +4,19 @@ import ar.edu.itba.interfaces.dao.IterationDao;
 import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.StoryDao;
 import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.service.EventService;
 import ar.edu.itba.interfaces.service.IterationService;
 import ar.edu.itba.models.*;
+import ar.edu.itba.models.event.IterationCreatedEvent;
+import ar.edu.itba.models.event.IterationCreatedEventBuilder;
+import ar.edu.itba.models.event.LogEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IterationServiceImpl implements IterationService {
@@ -26,6 +32,9 @@ public class IterationServiceImpl implements IterationService {
 
     @Autowired
     private TaskDao taskDao;
+
+    @Autowired
+    private  EventService eventService;
 
     @Override
     public Iteration createIteration(final Project project, final LocalDate startDate, final LocalDate endDate) {
@@ -68,7 +77,15 @@ public class IterationServiceImpl implements IterationService {
             maxNumber--;
         }
 
-        return iterationDao.createIteration(project, iterationNumber, startDate, endDate);
+        Iteration iteration = iterationDao.createIteration(project, iterationNumber, startDate, endDate);
+        LogEvent event = new IterationCreatedEventBuilder()
+            .actor(Optional.empty())
+            .project(project)
+            .time(LocalDateTime.now())
+            .iteration(iteration)
+            .build();
+        eventService.emit(event);
+        return iteration;
     }
 
     @Override

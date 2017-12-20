@@ -3,17 +3,22 @@ package ar.edu.itba.services;
 import ar.edu.itba.interfaces.dao.IterationDao;
 import ar.edu.itba.interfaces.dao.StoryDao;
 import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.service.EventService;
 import ar.edu.itba.interfaces.service.StoryService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
+import ar.edu.itba.models.event.LogEvent;
+import ar.edu.itba.models.event.StoryCreatedEventBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class StoryServiceImpl implements StoryService {
@@ -31,10 +36,15 @@ public class StoryServiceImpl implements StoryService {
     TaskDao taskDao;
 
     @Autowired
-    StoryServiceImpl(final StoryDao storyDao, final IterationDao iterationDao, final TaskDao taskDao) {
+    private final
+    EventService eventService;
+
+    @Autowired
+    StoryServiceImpl(final StoryDao storyDao, final IterationDao iterationDao, final TaskDao taskDao, final EventService eventService) {
         this.storyDao = storyDao;
         this.iterationDao = iterationDao;
         this.taskDao = taskDao;
+        this.eventService = eventService;
     }
 
     @Override
@@ -67,7 +77,15 @@ public class StoryServiceImpl implements StoryService {
             throw new IllegalStateException("Can't add stories to a closed iteration");
         }
 
-        return storyDao.createStory(iteration, title);
+        Story story = storyDao.createStory(iteration, title);
+        LogEvent event = new StoryCreatedEventBuilder()
+         .actor(Optional.empty())
+         .project(story.iteration().project())
+         .time(LocalDateTime.now())
+         .story(story)
+         .build();
+        eventService.emit(event);
+        return story;
     }
 
     @Override

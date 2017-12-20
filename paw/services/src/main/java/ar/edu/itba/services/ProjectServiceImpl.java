@@ -1,13 +1,18 @@
 package ar.edu.itba.services;
 
 import ar.edu.itba.interfaces.dao.ProjectDao;
+import ar.edu.itba.interfaces.service.EventService;
 import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import ar.edu.itba.models.event.LogEvent;
+import ar.edu.itba.models.event.ProjectCreatedEventBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +22,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectDao projectDao;
+
+    @Autowired
+    private EventService eventService;
 
     private final CodeValidator codeValidator = new CodeValidator();
 
@@ -85,7 +93,14 @@ public class ProjectServiceImpl implements ProjectService {
             projectDao.addProjectMember(project, user);
         }
 
-        return projectDao.getProjectById(project.projectId());
+        Project result = projectDao.getProjectById(project.projectId());
+        LogEvent event = new ProjectCreatedEventBuilder()
+         .actor(Optional.empty())
+         .project(result)
+         .time(LocalDateTime.now())
+         .build();
+        eventService.emit(event);
+        return result;
     }
 
     @Override

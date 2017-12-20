@@ -5,14 +5,21 @@ import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.StoryDao;
 import ar.edu.itba.interfaces.dao.TaskDao;
 import ar.edu.itba.interfaces.service.BacklogService;
+import ar.edu.itba.interfaces.service.EventService;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.Task;
+import ar.edu.itba.models.event.BacklogItemCreatedEvent;
+import ar.edu.itba.models.event.BacklogItemCreatedEventBuilder;
+import ar.edu.itba.models.event.LogEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BacklogServiceImpl implements BacklogService {
@@ -32,6 +39,10 @@ public class BacklogServiceImpl implements BacklogService {
     @Autowired
     private
     StoryDao storyDao;
+
+    @Autowired
+    private
+    EventService eventService;
 
     @Override
     public BacklogItem createBacklogItem(final Project project, final String title, final String description) {
@@ -59,7 +70,15 @@ public class BacklogServiceImpl implements BacklogService {
             throw new IllegalStateException("There is another backlog item with this title in the project");
         }
 
-        return backlogDao.createBacklogItem(title, description, project);
+        BacklogItem item = backlogDao.createBacklogItem(title, description, project);
+        LogEvent event = new BacklogItemCreatedEventBuilder()
+            .actor(Optional.empty())
+            .item(item)
+            .project(item.project())
+            .time(LocalDateTime.now())
+            .build();
+        eventService.emit(event);
+        return item;
     }
 
     @Override

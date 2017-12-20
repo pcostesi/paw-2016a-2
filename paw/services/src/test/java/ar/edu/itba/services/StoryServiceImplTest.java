@@ -1,8 +1,10 @@
 package ar.edu.itba.services;
 
 import ar.edu.itba.interfaces.dao.IterationDao;
+import ar.edu.itba.interfaces.dao.LogEventDao;
 import ar.edu.itba.interfaces.dao.StoryDao;
 import ar.edu.itba.interfaces.dao.TaskDao;
+import ar.edu.itba.interfaces.service.EventService;
 import ar.edu.itba.interfaces.service.StoryService;
 import ar.edu.itba.models.Iteration;
 import ar.edu.itba.models.Status;
@@ -41,11 +43,13 @@ public class StoryServiceImplTest {
     private IterationDao iterationDao;
     @Mock
     private Iteration testIteration;
+    @Mock
+    private EventService eventService;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ss = new StoryServiceImpl(storyDao, iterationDao, taskDao);
+        ss = new StoryServiceImpl(storyDao, iterationDao, taskDao, eventService);
     }
 
     @Test

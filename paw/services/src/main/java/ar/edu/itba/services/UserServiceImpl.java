@@ -2,14 +2,21 @@ package ar.edu.itba.services;
 
 import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.UserDao;
+import ar.edu.itba.interfaces.service.EventService;
 import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import ar.edu.itba.models.event.LogEvent;
+import ar.edu.itba.models.event.UserCreatedEvent;
+import ar.edu.itba.models.event.UserCreatedEventBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ProjectDao projectDao;
+
+    @Autowired
+    private EventService eventService;
 
     private final MailValidator mailValidator = new MailValidator();
 
@@ -75,7 +85,15 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("This mail has been used already");
         }
 
-        return userDao.createUser(name, password, mail);
+        User user = userDao.createUser(name, password, mail);
+        LogEvent event = new UserCreatedEventBuilder()
+            .actor(Optional.empty())
+            .created(user)
+            .project(Optional.empty())
+            .time(LocalDateTime.now())
+            .build();
+        eventService.emit(event);
+        return user;
     }
 
     @Override
