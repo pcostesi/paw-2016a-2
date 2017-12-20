@@ -122,7 +122,7 @@ public class TaskController extends BaseController {
             ts.changeScore(task, Score.getByValue(request.getScore()));
             ts.changePriority(task, Priority.valueOf(request.getPriority()));
             ts.changeTitle(task, request.getTitle());
-            return Response.ok(task)
+            return Response.ok(ts.getTaskById(index))
                     .build();
         } catch (IllegalArgumentException | IllegalStateException e) {
             return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
