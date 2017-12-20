@@ -15,7 +15,7 @@ export class TaskService {
     return this.api.get(url).map(response => {
       if (response.ok) {
         const json = response.json();
-        return json.tasks;
+        return <Task[]>json.tasks;
       }
       return [];
     });
@@ -26,18 +26,18 @@ export class TaskService {
     const url = `/project/${project}/iteration/${iteration}/story/${story}/task/${task}`;
     return this.api.get(url).map(response => {
       if (response.ok) {
-        return response.json();
+        return <Task>response.json();
       }
       return null;
     });
   }
 
   updateTask(project: string, iteration: number | string, story: number | string,
-             index: number | string, task: Task ): Observable<any | null> {
+    index: number | string, task: Task): Observable<any | null> {
     const url = `/project/${project}/iteration/${iteration}/story/${story}/task/${index}`;
     return this.api.put(url, { task }).map(response => {
       if (response.ok) {
-        return response.json();
+        return <Task>response.json();
       }
       return null;
     });

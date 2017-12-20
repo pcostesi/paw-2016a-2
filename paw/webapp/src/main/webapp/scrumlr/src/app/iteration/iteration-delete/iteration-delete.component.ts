@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Iteration } from 'app/iteration/iteration';
 
 @Component({
   selector: 'app-iteration-delete',
@@ -7,14 +8,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./iteration-delete.component.scss']
 })
 export class IterationDeleteComponent implements OnInit {
-  @Input() iteration: any;
+  @Input() iteration: Iteration;
 
   constructor(public modal: NgbActiveModal) { }
 
   ngOnInit() {
   }
 
-  deleteIteration(iteration: any) {
+  deleteIteration(iteration: Iteration) {
     this.modal.close(iteration)
   }
 }

@@ -8,6 +8,8 @@ import { IterationService } from '../iteration.service';
 
 import { IterationEditComponent } from '../iteration-edit/iteration-edit.component';
 import { IterationDeleteComponent } from '../iteration-delete/iteration-delete.component';
+import { Story } from 'app/story/story';
+import { Iteration } from 'app/iteration/iteration';
 
 @Component({
   selector: 'app-iteration-detail',
@@ -15,8 +17,8 @@ import { IterationDeleteComponent } from '../iteration-delete/iteration-delete.c
   styleUrls: ['./iteration-detail.component.scss']
 })
 export class IterationDetailComponent implements OnInit {
-  private _iteration: any;
-  public stories: Observable<any[]>;
+  private _iteration: Iteration;
+  public stories: Observable<Story[]>;
 
   constructor(private iterationService: IterationService,
     private modalService: NgbModal,
@@ -25,7 +27,7 @@ export class IterationDetailComponent implements OnInit {
   ngOnInit() { }
 
   @Input()
-  set iteration(value: any) {
+  set iteration(value: Iteration) {
     if (!value) {
       return;
     }

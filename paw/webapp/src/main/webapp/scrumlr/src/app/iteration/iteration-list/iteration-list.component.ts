@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { Iteration } from 'app/iteration/iteration';
 
 @Component({
   selector: 'app-iteration-list',
@@ -9,7 +10,7 @@ import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class IterationListComponent implements OnInit {
   public page = 0;
-  private _iterations: any[];
+  private _iterations: Iteration[];
 
   constructor() { }
 
@@ -20,7 +21,7 @@ export class IterationListComponent implements OnInit {
   }
 
   @Input()
-  set iterations(value: any[]) {
+  set iterations(value: Iteration[]) {
     if (!value) {
       this.page = 0;
       this._iterations = [];

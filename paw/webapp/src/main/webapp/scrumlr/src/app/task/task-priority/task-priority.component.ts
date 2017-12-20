@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Task } from 'app/task/task';
+import { TaskPriority } from 'app/task/task-priority.enum';
 
 @Component({
   selector: 'app-task-priority',
@@ -6,7 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./task-priority.component.scss']
 })
 export class TaskPriorityComponent implements OnInit {
-  @Input() task: any;
+  @Input() task: Task;
+  public priority = TaskPriority;
 
   constructor() { }
 

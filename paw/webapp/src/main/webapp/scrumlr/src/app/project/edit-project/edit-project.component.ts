@@ -12,6 +12,7 @@ import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 
 import { AccountService, UserProfile } from '../../api';
 import { ProjectService } from '../project.service';
+import { Project } from 'app/project/project';
 
 @Component({
   selector: 'app-edit-project',
@@ -21,7 +22,7 @@ import { ProjectService } from '../project.service';
 
 export class EditProjectComponent implements OnInit {
   public projectForm: FormGroup;
-  public project: any;
+  public project: Project;
   public users: string[];
 
   constructor(private formBuilder: FormBuilder,

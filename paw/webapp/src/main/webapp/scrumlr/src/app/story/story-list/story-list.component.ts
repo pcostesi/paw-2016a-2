@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Story } from 'app/story/story';
 
 @Component({
   selector: 'app-story-list',
@@ -6,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./story-list.component.scss']
 })
 export class StoryListComponent implements OnInit {
-  @Input() stories: any[];
+  @Input() stories: Story[];
 
   constructor() { }
 

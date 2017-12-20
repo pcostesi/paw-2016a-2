@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Task } from 'app/task/task';
 
 @Component({
   selector: 'app-task-delete',
@@ -7,7 +8,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./task-delete.component.scss']
 })
 export class TaskDeleteComponent implements OnInit {
-  @Input() task: any;
+  @Input() task: Task;
 
   constructor(public modal: NgbActiveModal) { }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Task } from 'app/task/task';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TaskEditComponent implements OnInit {
   public form: FormGroup;
-  @Input() story: any;
+  @Input() task: Task;
 
   constructor(private formBuilder: FormBuilder,
     public modal: NgbActiveModal) {

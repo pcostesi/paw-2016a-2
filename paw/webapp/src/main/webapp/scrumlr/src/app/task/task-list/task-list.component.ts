@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TaskService } from '../task.service';
+import { Story } from 'app/story/story';
+import { Task } from 'app/task/task';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaskCreateComponent } from 'app/task/task-create/task-create.component';
 
@@ -9,8 +11,8 @@ import { TaskCreateComponent } from 'app/task/task-create/task-create.component'
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
-  @Input() story: any;
-  public tasks: any[];
+  @Input() story: Story;
+  public tasks: Task[];
 
   constructor(private taskService: TaskService,
     private modalService: NgbModal) { }

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ProjectService } from '../project.service';
 import { Observable } from 'rxjs/Observable';
+import { Project } from 'app/project/project';
+import { Iteration } from 'app/iteration/iteration';
 
 @Component({
   selector: 'app-detail',
@@ -10,8 +12,8 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
-  public project: Observable<any>;
-  public iterations: Observable<any[]>;
+  public project: Observable<Project>;
+  public iterations: Observable<Iteration[]>;
   public codename: Observable<string>;
 
   constructor(private route: ActivatedRoute,

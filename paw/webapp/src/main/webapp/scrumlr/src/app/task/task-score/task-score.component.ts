@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Task } from 'app/task/task';
+import { TaskScore } from 'app/task/task-score.enum';
 
 @Component({
   selector: 'app-task-score',
@@ -6,7 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./task-score.component.scss']
 })
 export class TaskScoreComponent implements OnInit {
-  @Input() task: any;
+  @Input() task: Task;
+  public score = TaskScore;
 
   constructor() { }
 
