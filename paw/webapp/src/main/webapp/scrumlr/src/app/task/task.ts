@@ -6,8 +6,8 @@ export interface Task {
 
   stat: string;
 
-  scoreN: string;
+  score: number;
 
-  priorityN: string;
+  priority: number;
 
 }

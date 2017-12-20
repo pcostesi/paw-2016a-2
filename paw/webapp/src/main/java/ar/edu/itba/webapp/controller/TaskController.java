@@ -119,8 +119,8 @@ public class TaskController extends BaseController {
             ts.changeDescription(task, request.getDescription());
             ts.changeOwnership(task, owner);
             ts.changeStatus(task, Status.valueOf(request.getStat()));
-            ts.changeScore(task, Score.valueOf(request.getScoreN()));
-            ts.changePriority(task, Priority.valueOf(request.getPriorityN()));
+            ts.changeScore(task, Score.getByValue(request.getScore()));
+            ts.changePriority(task, Priority.valueOf(request.getPriority()));
             ts.changeTitle(task, request.getTitle());
             return Response.ok(task)
                     .build();
