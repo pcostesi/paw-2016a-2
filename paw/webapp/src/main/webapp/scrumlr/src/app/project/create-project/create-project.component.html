@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-md-8 push-md-2">
-        <form [formGroup]="projectForm" (ngSubmit)="onSubmit(projectForm.value)">
+        <form [formGroup]="projectForm" (ngSubmit)="onSubmit(projectForm)">
 
             <div class="form-group" [class.has-danger]="!projectForm.controls['codename'].valid">
                 <label for="codename" i18n="@@Codename">Codename</label>
@@ -38,7 +38,7 @@
             <h2 class="d-flex justify-content-between">
                 <span i18n="@@Members">Members</span>
                 <div class="btn-group">
-                    <button class="btn btn-sm btn-primary" (click)="addMember()" i18n="@@Add">Add</button>
+                    <button type="button" class="btn btn-sm btn-primary" (click)="addMember()" i18n="@@Add">Add</button>
                 </div>
             </h2>
 

@@ -1,6 +1,6 @@
 import { UserProfile } from '../api';
 
-export interface Project {
+export class Project {
 
   name: string ;
 

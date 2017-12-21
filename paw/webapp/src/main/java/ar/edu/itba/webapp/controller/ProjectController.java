@@ -54,6 +54,9 @@ public class ProjectController extends BaseController {
 		final User admin = getLoggedUser();
 		final Set<User> members = new HashSet<>();
 		try {
+			for (String username: request.getMembers()){
+				members.add(us.getByUsername(username));
+			}
 			final Project project = ps.createProject(admin, members, name, description, code);
 			return Response.ok(project)
 					.build();

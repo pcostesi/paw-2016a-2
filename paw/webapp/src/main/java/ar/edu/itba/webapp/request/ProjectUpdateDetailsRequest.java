@@ -11,6 +11,17 @@ public class ProjectUpdateDetailsRequest {
     private String code;
 
     @XmlElement
+    public String[] getMembers() {
+        return members;
+    }
+
+    public void setMembers(String[] members) {
+        this.members = members;
+    }
+
+    private String[] members;
+
+    @XmlElement
     public String getName() {
         return name;
     }

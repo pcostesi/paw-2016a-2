@@ -11,6 +11,10 @@ import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 
 import { AccountService } from '../../api';
 
+import { ProjectService } from '../project.service'
+import { Project } from '../project';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
@@ -21,7 +25,9 @@ export class CreateProjectComponent implements OnInit {
   public users: string[];
 
   constructor(private formBuilder: FormBuilder,
-    private accountService: AccountService) {
+              private accountService: AccountService,
+              private router: Router,
+              private projectService: ProjectService) {
     this.projectForm = this.buildProjectForm();
   }
 
@@ -64,8 +70,21 @@ export class CreateProjectComponent implements OnInit {
     return usersControl.controls;
   }
 
-  onSubmit(form: any) {
-
+  onSubmit(projectForm: FormGroup) {
+    console.log(projectForm);
+    if (projectForm.valid) {
+      const project = new Project();
+      project.code = projectForm.controls.codename.value;
+      project.description = projectForm.controls.description.value;
+      project.name = projectForm.controls.title.value;
+      project.members = projectForm.controls.users.value;
+      this.projectService.createProject(project)
+        .subscribe(ok => {
+          if (ok) {
+            this.router.navigate(['/project', project.code])
+          }
+        });
+    }
   }
 
   ngOnInit() {

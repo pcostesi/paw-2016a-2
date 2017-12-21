@@ -52,4 +52,12 @@ export class ProjectService {
     });
   }
 
+  public createProject(project: Project): Observable<Project | null> {
+    return this.api.post(`/project`, project).map(response => {
+      if (response.ok) {
+        return <Project>response.json();
+      }
+      return null;
+    });
+  }
 }
