@@ -5,9 +5,9 @@ import ar.edu.itba.models.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -28,17 +29,19 @@ import java.util.Optional;
 * BEWARE CODER: Add your subclass here or it won't get serialized.
 * */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "event")
 @DiscriminatorColumn(name = "type")
 @DiscriminatorValue("BaseEvent")
-@XmlSeeAlso({BacklogItemCreatedEvent.class,
-    IterationCreatedEvent.class,
-    ProjectCreatedEvent.class,
-    StoryCreatedEvent.class,
-    TaskCreatedEvent.class,
-    TaskEditedEvent.class,
-    UserCreatedEvent.class})
+@XmlSeeAlso( {
+ BacklogItemCreatedEvent.class,
+ IterationCreatedEvent.class,
+ ProjectCreatedEvent.class,
+ StoryCreatedEvent.class,
+ TaskCreatedEvent.class,
+ TaskEditedEvent.class,
+ UserCreatedEvent.class
+})
 public class LogEvent implements Serializable {
 
     private static final long serialVersionUID = -1185577548660797492L;
@@ -55,6 +58,7 @@ public class LogEvent implements Serializable {
     @XmlElement
     @Id
     @GeneratedValue
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "event_id", nullable = false, unique = true)
     private int eventId;
 

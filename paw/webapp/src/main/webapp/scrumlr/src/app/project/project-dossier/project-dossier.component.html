@@ -26,7 +26,7 @@
 
   <div class="btn-group w-100 d-flex justify-items-stretch mb-4">
     <button class="btn btn-primary w-100" [routerLink]="['edit']" i18n="@@Edit">Edit</button>
-    <button class="btn btn-danger w-100" i18n="@@Delete">Delete</button>
+    <button (click)="deleteProject()" class="btn btn-danger w-100" i18n="@@Delete">Delete</button>
   </div>
 </ng-container>
 <ng-container *ngIf="!project" i18n="@LoadingProject">

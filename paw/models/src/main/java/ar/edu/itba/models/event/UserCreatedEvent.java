@@ -24,7 +24,7 @@ public class UserCreatedEvent extends LogEvent {
     private static final long serialVersionUID = 7752221278042305087L;
 
     @XmlElement
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User created;
 

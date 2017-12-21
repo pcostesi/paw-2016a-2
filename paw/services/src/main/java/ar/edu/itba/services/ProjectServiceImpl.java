@@ -120,7 +120,6 @@ public class ProjectServiceImpl implements ProjectService {
         if (!project.admin().equals(user)) {
             throw new IllegalStateException("This user doesnt isn't the project admin");
         }
-
         projectDao.deleteProject(project);
     }
 

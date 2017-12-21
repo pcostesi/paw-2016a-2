@@ -22,7 +22,7 @@ public class BacklogItemCreatedEvent extends LogEvent {
 
     private static final long serialVersionUID = -2512725377464637574L;
     @XmlElement
-    @ManyToOne(optional = false)
+    @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
     private BacklogItem item;
 

@@ -21,7 +21,7 @@ public class IterationCreatedEvent extends LogEvent {
 
     private static final long serialVersionUID = -2688266605827834699L;
 
-    @ManyToOne(optional = false)
+    @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Iteration iteration;
 

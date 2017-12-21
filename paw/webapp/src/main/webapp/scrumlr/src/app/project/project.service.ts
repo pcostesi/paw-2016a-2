@@ -52,12 +52,23 @@ export class ProjectService {
     });
   }
 
+
+  public deleteProject(project: Project): Observable<boolean> {
+    return this.api.delete(`/project/${project.code}`).map(response => {
+      if (response.ok) {
+        return response.ok;
+      }
+      return response.ok;
+    });
+  }
+
   public createProject(project: Project): Observable<Project | null> {
     return this.api.post(`/project`, project).map(response => {
       if (response.ok) {
         return <Project>response.json();
       }
       return null;
+
     });
   }
 }
