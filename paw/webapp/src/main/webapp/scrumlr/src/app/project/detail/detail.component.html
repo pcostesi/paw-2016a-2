@@ -7,15 +7,6 @@
         <ngb-tabset>
             <ngb-tab>
                 <ng-template ngbTabTitle>
-                    <span i18n="@@Feed">Feed</span>
-                </ng-template>
-                <ng-template ngbTabContent>
-                    <app-feed-list></app-feed-list>
-                </ng-template>
-            </ngb-tab>
-
-            <ngb-tab>
-                <ng-template ngbTabTitle>
                     <span i18n="@@Iterations">Iterations</span>
                 </ng-template>
                 <ng-template ngbTabContent>
@@ -29,6 +20,15 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <app-backlog [code]="codename | async"></app-backlog>
+                </ng-template>
+            </ngb-tab>
+
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <span i18n="@@Feed">Feed</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <app-feed-list [project]="project | async"></app-feed-list>
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>
