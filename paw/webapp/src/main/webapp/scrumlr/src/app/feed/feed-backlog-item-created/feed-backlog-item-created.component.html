@@ -1,3 +1,15 @@
-<p>
-  feed-backlog-item-created works!
-</p>
+<div class="card my-2">
+  <div class="card-body">
+    <h4 class="card-title" i18n="@@BacklogItemCreatedEventTitle">New backlog item</h4>
+    <h6 class="card-subtitle mb-2 text-muted" i18n="@@Time">{{ event.time | date }}</h6>
+    <ng-container *ngIf="event.item; else oopsie">
+      <p class="card-text" i18n="@@BacklogItemCreatedEventDescription">A new backlog item was added to the project:</p>
+      <p class="card-text">{{ event.item.title }}</p>
+      <p class="card-text text-muted">{{ event.item.description }}</p>
+    </ng-container>
+    <ng-template #oopsie>
+      <p class="card-text" i18n="@@BacklogItemCreatedEventDescriptionMissing">Looks like we had something here but it's gone now.</p>
+
+    </ng-template>
+  </div>
+</div>

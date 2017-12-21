@@ -2,6 +2,8 @@ package ar.edu.itba.models.event;
 
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.immutables.builder.Builder;
 
 import javax.persistence.DiscriminatorValue;
@@ -23,6 +25,7 @@ public class UserCreatedEvent extends LogEvent {
 
     @XmlElement
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User created;
 
     public UserCreatedEvent() {

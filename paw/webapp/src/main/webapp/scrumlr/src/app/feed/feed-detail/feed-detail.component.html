@@ -1,9 +1,9 @@
 <ng-container [ngSwitch]="event.type">
   <div *ngSwitchDefault i18n="@@SomethingHappened">SOMETHING HAPPENED</div>
-  <app-feed-user-created [event]="event" *ngSwitchCase="'userCreatedEvent'"></app-feed-user-created>
-  <app-feed-project-created [event]="event" *ngSwitchCase="'projectCreatedEvent'"></app-feed-project-created>
-  <app-feed-iteration-created [event]="event" *ngSwitchCase="'iterationCreatedEvent'"></app-feed-iteration-created>
-  <app-feed-story-created [event]="event" *ngSwitchCase="'storyCreatedEvent'"></app-feed-story-created>
-  <app-feed-task-created [event]="event" *ngSwitchCase="'taskCreatedEvent'"></app-feed-task-created>
-  <app-feed-backlog-item-created [event]="event" *ngSwitchCase="'backlogItemCreatedEvent'"></app-feed-backlog-item-created>
+  <app-feed-user-created [event]="event" *ngSwitchCase="'UserCreated'"></app-feed-user-created>
+  <app-feed-project-created [event]="event" *ngSwitchCase="'ProjectCreated'"></app-feed-project-created>
+  <app-feed-iteration-created [event]="event" *ngSwitchCase="'IterationCreated'"></app-feed-iteration-created>
+  <app-feed-story-created [event]="event" *ngSwitchCase="'StoryCreated'"></app-feed-story-created>
+  <app-feed-task-created [event]="event" *ngSwitchCase="'TaskCreated'"></app-feed-task-created>
+  <app-feed-backlog-item-created [event]="event" *ngSwitchCase="'BacklogItemCreated'"></app-feed-backlog-item-created>
 </ng-container>

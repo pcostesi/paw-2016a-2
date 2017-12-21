@@ -3,6 +3,8 @@ package ar.edu.itba.models.event;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.immutables.builder.Builder;
 
 import javax.persistence.DiscriminatorValue;
@@ -21,7 +23,8 @@ public class TaskCreatedEvent extends LogEvent {
 
     private static final long serialVersionUID = -2512725377464637574L;
     @XmlElement
-    @ManyToOne(optional = false)
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Task task;
 
     public TaskCreatedEvent() {

@@ -44,7 +44,7 @@ public class LogEventHibernateDao implements LogEventDao {
     @Override
     public List<? extends LogEvent> getEventsForProject(final Project project) {
         final TypedQuery<LogEvent> query = em.createQuery(
-                "from LogEvent event where event.project = :project order by event.time", LogEvent.class);
+                "from LogEvent event where event.project = :project order by event.time desc", LogEvent.class);
         query.setParameter("project", project);
         return query.getResultList();
 
@@ -53,7 +53,7 @@ public class LogEventHibernateDao implements LogEventDao {
     @Override
     public List<? extends LogEvent> getEventsForActor(final User user) {
         final TypedQuery<LogEvent> query = em.createQuery(
-                "from LogEvent event where event.actor = :actor order by event.time", LogEvent.class);
+                "from LogEvent event where event.actor = :actor order by event.time desc", LogEvent.class);
         query.setParameter("actor", user);
         return query.getResultList();
 
@@ -62,7 +62,7 @@ public class LogEventHibernateDao implements LogEventDao {
     @Override
     public List<? extends LogEvent> getEventsForRange(final LocalDate start, final LocalDate end) {
         final TypedQuery<LogEvent> query = em.createQuery(
-                "from LogEvent event where event.time < :endDate and event.time >= startDate order by event.time",
+                "from LogEvent event where event.time < :endDate and event.time >= startDate order by event.time desc",
                 LogEvent.class);
         final LocalTime zero = LocalTime.of(0, 0);
         query.setParameter("startDate", LocalDateTime.of(start, zero));

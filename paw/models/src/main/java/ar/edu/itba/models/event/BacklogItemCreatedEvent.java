@@ -3,6 +3,8 @@ package ar.edu.itba.models.event;
 import ar.edu.itba.models.BacklogItem;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.immutables.builder.Builder;
 
 import javax.persistence.DiscriminatorValue;
@@ -21,6 +23,7 @@ public class BacklogItemCreatedEvent extends LogEvent {
     private static final long serialVersionUID = -2512725377464637574L;
     @XmlElement
     @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private BacklogItem item;
 
     public BacklogItemCreatedEvent() {

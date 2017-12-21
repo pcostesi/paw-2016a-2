@@ -2,6 +2,8 @@ package ar.edu.itba.models.event;
 
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -28,6 +30,7 @@ import java.util.Optional;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "event")
+@DiscriminatorColumn(name = "type")
 @DiscriminatorValue("BaseEvent")
 @XmlSeeAlso({BacklogItemCreatedEvent.class,
     IterationCreatedEvent.class,
@@ -36,12 +39,17 @@ import java.util.Optional;
     TaskCreatedEvent.class,
     TaskEditedEvent.class,
     UserCreatedEvent.class})
-public abstract class LogEvent implements Serializable {
+public class LogEvent implements Serializable {
 
     private static final long serialVersionUID = -1185577548660797492L;
 
     @XmlElement
+    @Column(updatable = false, insertable = false)
+    private String type;
+
+    @XmlElement
     @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User actor;
 
     @XmlElement
@@ -52,6 +60,7 @@ public abstract class LogEvent implements Serializable {
 
     @XmlElement
     @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
 
     @XmlElement

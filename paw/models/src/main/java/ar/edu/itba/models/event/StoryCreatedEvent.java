@@ -3,6 +3,8 @@ package ar.edu.itba.models.event;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.Story;
 import ar.edu.itba.models.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.immutables.builder.Builder;
 
 import javax.persistence.DiscriminatorValue;
@@ -22,7 +24,8 @@ public class StoryCreatedEvent extends LogEvent {
     private static final long serialVersionUID = 6319711219335349022L;
     @XmlElement
 
-    @ManyToOne(optional = false)
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Story story;
 
     public StoryCreatedEvent() {

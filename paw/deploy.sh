@@ -16,7 +16,7 @@ function build_app() {
 }
 
 function build_docker_db() {
-    docker run --name pawdb -e POSTGRES_PASSWORD="${GROUP}" -e POSTGRES_USER="${GROUP}" -e POSTGRES_DB="${GROUP}" -d postgres:9.3
+    docker run --name pawdb -p 5432:5432 -e POSTGRES_PASSWORD="${GROUP}" -e POSTGRES_USER="${GROUP}" -e POSTGRES_DB="${GROUP}" -d postgres:9.3
 }
 
 function restore_to_docker_db() {
