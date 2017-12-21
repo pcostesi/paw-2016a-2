@@ -29,7 +29,7 @@ import { IterationDeleteComponent } from './iteration-delete/iteration-delete.co
     IterationEditComponent,
     IterationDeleteComponent
   ],
-  entryComponents: [IterationEditComponent, IterationDeleteComponent],
+  entryComponents: [IterationEditComponent, IterationDeleteComponent, IterationCreateComponent],
   providers: [IterationService],
   exports: [IterationListComponent]
 })

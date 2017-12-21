@@ -10,7 +10,7 @@
                     <span i18n="@@Iterations">Iterations</span>
                 </ng-template>
                 <ng-template ngbTabContent>
-                    <app-iteration-list [iterations]="iterations | async"></app-iteration-list>
+                    <app-iteration-list [project]="project | async" [iterations]="iterations | async"></app-iteration-list>
                 </ng-template>
             </ngb-tab>
 

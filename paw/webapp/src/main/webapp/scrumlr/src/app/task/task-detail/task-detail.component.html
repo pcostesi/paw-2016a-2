@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="card-footer">
-    <button class="btn btn-sm btn-outline-primary" i18n="@@EditTask">Edit task</button>
-    <button class="btn btn-sm btn-outline-danger" i18n="@@DeleteTask">Delete task</button>
+    <button class="btn btn-sm btn-outline-primary" (click)="editTask(task)" i18n="@@EditTask">Edit task</button>
+    <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task)" i18n="@@DeleteTask">Delete task</button>
   </div>
 </div>

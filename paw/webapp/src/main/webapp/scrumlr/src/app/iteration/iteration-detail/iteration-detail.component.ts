@@ -10,6 +10,7 @@ import { IterationEditComponent } from '../iteration-edit/iteration-edit.compone
 import { IterationDeleteComponent } from '../iteration-delete/iteration-delete.component';
 import { Story } from 'app/story/story';
 import { Iteration } from 'app/iteration/iteration';
+import { StoryCreateComponent } from 'app/story/story-create/story-create.component';
 
 @Component({
   selector: 'app-iteration-detail',
@@ -41,13 +42,18 @@ export class IterationDetailComponent implements OnInit {
     return this._iteration;
   }
 
-  editIteration(iteration: any) {
+  editIteration(iteration: Iteration) {
     const ref = this.modalService.open(IterationEditComponent);
     ref.componentInstance.iteration = iteration;
   }
 
-  deleteIteration(iteration: any) {
+  deleteIteration(iteration: Iteration) {
     const ref = this.modalService.open(IterationDeleteComponent);
+    ref.componentInstance.iteration = this.iteration;
+  }
+
+  newStory(iteration: Iteration) {
+    const ref = this.modalService.open(StoryCreateComponent);
     ref.componentInstance.iteration = this.iteration;
   }
 

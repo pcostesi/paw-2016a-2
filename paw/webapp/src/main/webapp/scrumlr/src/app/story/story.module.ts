@@ -25,6 +25,6 @@ import { StoryDeleteComponent } from './story-delete/story-delete.component';
   entryComponents: [StoryEditComponent, StoryCreateComponent, StoryDeleteComponent],
   providers: [StoryService],
   declarations: [StoryListComponent, StoryDetailComponent, StoryEditComponent, StoryCreateComponent, StoryDeleteComponent],
-  exports: [StoryListComponent]
+  exports: [StoryListComponent, StoryCreateComponent]
 })
 export class StoryModule { }

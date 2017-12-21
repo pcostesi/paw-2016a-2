@@ -15,7 +15,7 @@ export class ProjectDeleteComponent implements OnInit {
   @Input() project: Project;
 
   constructor(public projectService: ProjectService,
-              public modal: NgbActiveModal) { }
+    public modal: NgbActiveModal) { }
 
   ngOnInit() {
   }

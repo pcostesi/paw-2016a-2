@@ -24,7 +24,7 @@ export class ProjectDossierComponent implements OnInit {
     ref.componentInstance.project = this.project;
     ref.result.then(result => {
       this.router.navigate(['project']);
-    })
+    }).catch((e) => { });
   }
 
 }
