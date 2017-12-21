@@ -3,7 +3,7 @@ import {
   FormBuilder, FormGroup, Validators,
   FormControl, FormArray, AbstractControl
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operator/map';
@@ -13,6 +13,7 @@ import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { AccountService, UserProfile } from '../../api';
 import { ProjectService } from '../project.service';
 import { Project } from 'app/project/project';
+
 
 @Component({
   selector: 'app-edit-project',
@@ -28,6 +29,7 @@ export class EditProjectComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private router: ActivatedRoute,
     private projectService: ProjectService,
+    private navRouter: Router,
     private accountService: AccountService) {
     this.projectForm = this.buildProjectForm();
   }
@@ -75,8 +77,20 @@ export class EditProjectComponent implements OnInit {
     return usersControl.controls;
   }
 
-  onSubmit(form: any) {
-
+  onSubmit(projectForm: FormGroup) {
+    if (projectForm.valid) {
+      const project = new Project();
+      project.code = this.project.code;
+      project.description = projectForm.controls.description.value;
+      project.name = projectForm.controls.title.value;
+      project.members = projectForm.controls.users.value;
+      this.projectService.updateProject(project)
+        .subscribe(ok => {
+          if (ok) {
+            this.navRouter.navigate(['/project', project.code])
+          }
+        });
+    }
   }
 
   updateProjectDetails(code: string) {

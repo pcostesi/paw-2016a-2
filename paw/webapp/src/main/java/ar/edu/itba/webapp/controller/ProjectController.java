@@ -90,12 +90,11 @@ public class ProjectController extends BaseController {
 			final Project project = ps.getProjectByCode(codename);
 			final User user = getLoggedUser();
 			List<String> userList = us.getUsernamesForProject(project);
-			List<String> updatedUser = java.util.Arrays.asList(request.getUsers());
-			ps.setCode(user, project, request.getProjectCode());
+			List<String> updatedUser = new LinkedList<>(Arrays.asList(request.getMembers()));
 			ps.setDescription(user, project, request.getDescription());
-			ps.setName(user, project, request.getProjectName());
+			ps.setName(user, project, request.getName());
 
-			List<String> inter = java.util.Arrays.asList(request.getUsers().clone());
+			List<String> inter = new LinkedList<>(Arrays.asList(request.getMembers().clone()));
 			inter.retainAll(userList);
 			userList.removeAll(inter);
 			for (String name: userList) {

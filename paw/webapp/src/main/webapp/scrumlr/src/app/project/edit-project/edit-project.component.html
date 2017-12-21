@@ -4,7 +4,7 @@
         <h1 i18n="@@EditProject">Edit {{ project?.name }}</h1>
 
 
-        <form [formGroup]="projectForm" (ngSubmit)="onSubmit(projectForm.value)">
+        <form [formGroup]="projectForm" (ngSubmit)="onSubmit(projectForm)">
 
             <div class="form-group" [class.has-danger]="!projectForm.controls['title'].valid">
                 <label for="title" i18n="@@ProjectTitle">Project title</label>
@@ -28,7 +28,7 @@
             <h2 class="d-flex justify-content-between">
                 <span i18n="@@Members">Members</span>
                 <div class="btn-group">
-                    <button class="btn btn-sm btn-primary" (click)="addMember()" i18n="@@Add">Add</button>
+                    <button type="button" class="btn btn-sm btn-primary" (click)="addMember()" i18n="@@Add">Add</button>
                 </div>
             </h2>
 

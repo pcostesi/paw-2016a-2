@@ -44,7 +44,7 @@ export class ProjectService {
   }
 
   public updateProject(project: Project): Observable<Project | null> {
-    return this.api.put(`/project/${project.code}`, { project }).map(response => {
+    return this.api.put(`/project/${project.code}`,  project).map(response => {
       if (response.ok) {
         return <Project>response.json();
       }

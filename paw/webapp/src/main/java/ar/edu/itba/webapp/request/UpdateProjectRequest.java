@@ -7,26 +7,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UpdateProjectRequest {
 
     @XmlElement
-    public String getProjectName() {
-        return projectName;
+    public String getName() {
+        return name;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    private String projectName;
-
-    @XmlElement
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    private String projectCode;
+    private String name;
 
     @XmlElement
     public String getDescription() {
@@ -40,13 +29,13 @@ public class UpdateProjectRequest {
     private String description;
 
     @XmlElement
-    public String[] getUsers() {
-        return users;
+    public String[] getMembers() {
+        return members;
     }
 
-    public void setUsers(String[] users) {
-        this.users = users;
+    public void setMembers(String[] members) {
+        this.members = members;
     }
 
-    private String[] users;
+    private String[] members;
 }
