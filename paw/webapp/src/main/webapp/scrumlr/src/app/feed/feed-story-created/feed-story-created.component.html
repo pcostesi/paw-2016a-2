@@ -1,3 +1,15 @@
-<p>
-  feed-story-created works!
-</p>
+<div class="card my-2">
+  <div class="card-body">
+    <h4 class="card-title" i18n="@@StoryCreatedEventTitle">New story</h4>
+    <h6 class="card-subtitle mb-2 text-muted" i18n="@@Time">{{ event.time | date }}</h6>
+    <ng-container *ngIf="event.story; else oopsie">
+      <p class="card-text" i18n="@@StoryCreatedEventDescription">
+        A new story titled {{ event.story.title }} was started on
+        <span class="card-text text-muted">{{ event.project.name }}</span>.
+      </p>
+    </ng-container>
+    <ng-template #oopsie>
+      <p class="card-text" i18n="@@StoryCreatedEventDescriptionMissing">Looks like we had something here but it's gone now.</p>
+    </ng-template>
+  </div>
+</div>

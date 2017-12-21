@@ -1,3 +1,14 @@
-<p>
-  feed-user-created works!
-</p>
+<div class="card my-2">
+  <div class="card-body">
+    <h4 class="card-title" i18n="@@UserCreatedEventTitle">New user</h4>
+    <h6 class="card-subtitle mb-2 text-muted" i18n="@@Time">{{ event.time | date }}</h6>
+    <ng-container *ngIf="event.created; else oopsie">
+      <p class="card-text" i18n="@@CreatedCreatedEventDescription">
+        A new user named {{ event.created.username }} was created.
+      </p>
+    </ng-container>
+    <ng-template #oopsie>
+      <p class="card-text" i18n="@@UserCreatedEventDescriptionMissing">Looks like we had something here but it's gone now.</p>
+    </ng-template>
+  </div>
+</div>

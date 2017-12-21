@@ -1,3 +1,15 @@
-<p>
-  feed-task-created works!
-</p>
+<div class="card my-2">
+  <div class="card-body">
+    <h4 class="card-title" i18n="@@TaskCreatedEventTitle">New task</h4>
+    <h6 class="card-subtitle mb-2 text-muted" i18n="@@Time">{{ event.time | date }}</h6>
+    <ng-container *ngIf="event.task; else oopsie">
+      <p class="card-text" i18n="@@TaskCreatedEventDescription">
+        A new task titled {{ event.task.title }} was started on
+        <span class="card-text text-muted">{{ event.project.name }}</span>.
+      </p>
+    </ng-container>
+    <ng-template #oopsie>
+      <p class="card-text" i18n="@@TaskCreatedEventDescriptionMissing">Looks like we had something here but it's gone now.</p>
+    </ng-template>
+  </div>
+</div>

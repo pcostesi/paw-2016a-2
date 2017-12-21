@@ -1,3 +1,16 @@
-<p>
-  feed-project-created works!
-</p>
+<div class="card my-2">
+  <div class="card-body">
+    <h4 class="card-title" i18n="@@ProjectCreatedEventTitle">New project</h4>
+    <h6 class="card-subtitle mb-2 text-muted" i18n="@@Time">{{ event.time | date }}</h6>
+    <ng-container *ngIf="event.project; else oopsie">
+      <p class="card-text" i18n="@@ProjectCreatedEventDescription">
+        A new project titled {{ event.project.name }} was started on
+        <span class="card-text text-muted">{{ event.project.startDate | date }}</span> by
+        <span class="card-text text-muted">{{ event.project.admin.username }}</span>.
+      </p>
+    </ng-container>
+    <ng-template #oopsie>
+      <p class="card-text" i18n="@@ProjectCreatedEventDescriptionMissing">Looks like we had something here but it's gone now.</p>
+    </ng-template>
+  </div>
+</div>

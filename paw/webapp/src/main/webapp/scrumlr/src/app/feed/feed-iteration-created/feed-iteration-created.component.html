@@ -1,3 +1,18 @@
-<p>
-  feed-iteration-created works!
-</p>
+<div class="card my-2">
+  <div class="card-body">
+    <h4 class="card-title" i18n="@@IterationCreatedEventTitle">New iteration</h4>
+    <h6 class="card-subtitle mb-2 text-muted" i18n="@@Time">{{ event.time | date }}</h6>
+    <ng-container *ngIf="event.iteration; else oopsie">
+      <p class="card-text" i18n="@@IterationCreatedEventDescription">
+        A new iteration was added to the project {{ event.project.title }} with iteration number {{ event.iteration.number }}, spanning
+        <span class="card-text text-muted">{{ event.iteration.startDate | date }}</span>
+        to
+        <span class="card-text text-muted">{{ event.iteration.endDate | date }}</span>.
+      </p>
+    </ng-container>
+    <ng-template #oopsie>
+      <p class="card-text" i18n="@@IterationCreatedEventDescriptionMissing">Looks like we had something here but it's gone now.</p>
+
+    </ng-template>
+  </div>
+</div>
