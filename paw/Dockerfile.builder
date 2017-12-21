@@ -11,4 +11,4 @@ COPY models models
 COPY services services
 COPY persistence persistence
 
-RUN mvn clean package -DskipTests
+RUN mvn clean package

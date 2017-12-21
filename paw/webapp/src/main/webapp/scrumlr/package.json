@@ -6,7 +6,7 @@
     "precommit": "lint-staged",
     "cz": "git-cz",
     "prepush": "npm run test:mvn",
-    "test:mvn": "cd ../../../../.. && mvn package -DskipTests",
+    "test:mvn": "cd ../../../../.. && mvn clean package",
     "ng": "node ./node_modules/.bin/ng",
     "i18n": "node ./node_modules/.bin/ng xi18n -l en-us",
     "start": "npm run start:hmr",

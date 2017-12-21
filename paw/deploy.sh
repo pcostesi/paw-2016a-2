@@ -10,7 +10,7 @@ APPWAR="app.war"
 
 function build_app() {
     mkdir -p deploy
-    mvn clean package -Dmaven.test.skip=true
+    mvn clean package
     cp webapp/target/webapp.war "deploy/${APPWAR}"
     chmod +rwx "deploy/${APPWAR}"
 }
