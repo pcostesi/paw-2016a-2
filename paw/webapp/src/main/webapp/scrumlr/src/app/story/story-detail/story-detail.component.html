@@ -1,8 +1,12 @@
 <div class="card story my-2">
-  <div class="card-header">
+  <div class="card-header d-flex justify-content-between align-self-stretch">
     <span class="card-title" (click)="isOpen = !isOpen">{{story.title}}</span>
+    <div class="btn-group">
+      <button class="btn btn-sm btn-outline-primary" i18n="@@EditStory">Edit</button>
+      <button class="btn btn-sm btn-outline-danger" i18n="@@DeleteStory">Delete</button>
+    </div>
   </div>
-  <div class="card-body" [hidden]="!isOpen">
+  <div class="card-body" *ngIf="isOpen">
     <app-task-list [story]="story"></app-task-list>
   </div>
 </div>
