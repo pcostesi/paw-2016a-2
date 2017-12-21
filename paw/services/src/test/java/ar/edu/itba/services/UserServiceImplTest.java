@@ -4,6 +4,8 @@ import ar.edu.itba.interfaces.service.ProjectService;
 import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,17 @@ public class UserServiceImplTest {
     private static final String empty = "";
     private static final String longString = "thisisalongstringthisisalongstringthisisalongstringthisisalongstringthisisalongstring"
             + "thisisalongstringthisisalongstringthisisalongstringthisisalongstringthisisalongstringthisisalongstringthisisalongstring";
-    private User user;
+    
+    private static final String memberName = "Member";
+    private static final String memberMail = "Member@tester.com";
+    private static final String memberPassword = "password";
+    
+    private static final String projectName = "Project name";
+    private static final String projectDescr = "Project descr";
+    private static final String projectCode = "CODE9123";
+    
+    private User user, member;
+    private Project project;
 
     @Autowired
     private UserService us;
@@ -37,11 +49,18 @@ public class UserServiceImplTest {
 
     @Before
     public void setup() {
-        if (!us.usernameExists(name)) {
-            user = us.create(name, password, mail);
-        } else {
-            user = us.getByUsername(name);
-        }
+        user = us.create(name, password, mail);
+        member = us.create(memberName, memberPassword, memberMail);
+        project = ps.createProject(user, new HashSet<>(), projectName, projectDescr, projectCode);
+    }
+    
+    @After
+    public void tearDown() {
+    	if (ps.projectCodeExists(projectCode)) {
+    		ps.deleteProject(user, project);
+    	}
+    	us.deleteUser(user);
+    	us.deleteUser(member);
     }
 
     @Test
@@ -158,16 +177,14 @@ public class UserServiceImplTest {
 
     @Test(expected = IllegalStateException.class)
     public void getAvailableUsersForInexistentProject() {
-        Project testProject = ps.createProject(user, new HashSet<User>(), "Test Project2", "Test description", "Coderino");
-        ps.deleteProject(user, testProject);
-        us.getAvailableUsers(testProject);
+    	ps.deleteProject(user, project);
+        us.getAvailableUsers(project);
     }
 
     @Test
     public void getAvailableUsersSuccesfully() {
-        User testUser = us.create("Testerino3", "passwordio", "mail@abs2.com");
-        Project testProject = ps.createProject(user, new HashSet<User>(), "projectino", "laralala", "codienso");
-        assertTrue(us.getAvailableUsers(testProject).contains(testUser.username()));
+        final User testUser = us.create("Testerino69", "passwordio", "mail@abs2.com");
+        assertTrue(us.getAvailableUsers(project).contains(testUser.username()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -177,15 +194,14 @@ public class UserServiceImplTest {
 
     @Test(expected = IllegalStateException.class)
     public void getUsernamesForInexistentProject() {
-        Project testProject = ps.createProject(user, new HashSet<User>(), "Test Project2", "Test description", "Coderino");
-        ps.deleteProject(user, testProject);
-        us.getUsernamesForProject(testProject);
+        ps.deleteProject(user, project);
+        us.getUsernamesForProject(project);
     }
 
     @Test
     public void getUserNamesForProjectSuccesfully() {
-        Project testProject = ps.createProject(user, new HashSet<User>(), "Test Project", "Test description", "Coderino");
-        assertTrue(us.getUsernamesForProject(testProject).contains(user.username()));
+    	ps.addUserToProject(user, project, member);
+        assertTrue(us.getUsernamesForProject(project).contains(member.username()));
     }
 
     @Test(expected = IllegalArgumentException.class)

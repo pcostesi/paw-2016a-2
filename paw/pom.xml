@@ -33,7 +33,7 @@
         <logback.version>1.1.7</logback.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
-        <mockito.version>1.10.19</mockito.version>
+        <mockito.version>2.10.0</mockito.version>
         <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
         <org.hibernate.version>5.1.0.Final</org.hibernate.version>
         <org.hsqldb.version>2.3.1</org.hsqldb.version>
@@ -197,7 +197,7 @@
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
+                <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -393,4 +393,5 @@
             </plugin>
         </plugins>
     </reporting>
+    <description>																																																																																																																																																																																			</description>
 </project>

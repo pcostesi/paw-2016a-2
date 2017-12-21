@@ -64,6 +64,10 @@ public final class User implements Serializable {
     public String mail() {
         return mail;
     }
+    
+	public Set<Project> getProjects() {
+		return projects;
+	}
 
     public boolean equals(final Object another) {
         if (this == another) {

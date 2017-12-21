@@ -70,6 +70,7 @@ public final class Project implements Serializable {
         this.description = description;
         this.startDate = startDate;
         this.admin = admin;
+        this.members = new HashSet<User>();
     }
 
     public static Project.Builder builder() {

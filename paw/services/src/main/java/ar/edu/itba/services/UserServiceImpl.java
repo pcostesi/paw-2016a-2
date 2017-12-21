@@ -1,5 +1,16 @@
 package ar.edu.itba.services;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import ar.edu.itba.interfaces.dao.ProjectDao;
 import ar.edu.itba.interfaces.dao.UserDao;
 import ar.edu.itba.interfaces.service.EventService;
@@ -7,18 +18,7 @@ import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Project;
 import ar.edu.itba.models.User;
 import ar.edu.itba.models.event.LogEvent;
-import ar.edu.itba.models.event.UserCreatedEvent;
 import ar.edu.itba.models.event.UserCreatedEventBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -210,5 +210,23 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+	@Override
+	public boolean deleteUser(final User user) {
+		if (user == null) {
+            throw new IllegalArgumentException("User can't be null");
+        }
+		if (!userDao.userNameExists(user.username())) {
+			throw new IllegalArgumentException("User doesn't exist");
+		}
+		
+		final Set<Project> projects = user.getProjects();
+		if (projects != null) {
+			for (Project project: user.getProjects()) {
+				projectDao.deleteProjectMember(project, user);
+			}
+		}
+		return userDao.deleteUserByUsername(user.username());
+	}
 
 }

@@ -91,7 +91,7 @@ public class UserDaoTest {
     @Test
     public void getAllUsernamesOfProject() {
         final Project project = pd.createProject(user, "name", "description", "code");
-        pd.addProjectMember(project, ud.createUser("project user", password, "project@mail.com"));
+        pd.addProjectMember(project, ud.createUser("Juan", password, "project@mail.com"));
         final List<String> list = ud.getAllUsernamesOfProject(project);
         assertEquals(list.size(), 1);
     }

@@ -1,17 +1,20 @@
 package ar.edu.itba.persistence;
 
-import ar.edu.itba.interfaces.dao.UserDao;
-import ar.edu.itba.models.Project;
-import ar.edu.itba.models.User;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import ar.edu.itba.interfaces.dao.UserDao;
+import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
 
 @Primary
 @Repository
@@ -117,7 +120,7 @@ public class UserHibernateDao implements UserDao {
     @Transactional
     public List<String> getAllUsernamesOfProject(final Project project) {
         try {
-            final TypedQuery<String> query = em.createQuery("select pj.user.username from ProjectUser pj where project = :project ", String.class);
+        	final TypedQuery<String> query = em.createQuery("select u.username from User u where :project in elements(u.projects)", String.class);
             query.setParameter("project", project);
             return query.getResultList();
         } catch (final Exception exception) {
@@ -128,9 +131,21 @@ public class UserHibernateDao implements UserDao {
     @Override
     @Transactional
     public List<String> getAvailableUsers(final Project project) {
-        final TypedQuery<String> query = em.createQuery("select user.username from User user where user not in (select pu.user from ProjectUser pu where pu.project = :project)", String.class);
+        final TypedQuery<String> query = em.createQuery("select u.username from User u where :project not in elements(u.projects)", String.class);
         query.setParameter("project", project);
         return query.getResultList();
     }
+
+	@Override
+	@Transactional
+	public boolean deleteUserByUsername(final String username) {
+		try {
+            final Query query = em.createQuery("delete from User u where u.username = :username");
+            query.setParameter("username", username);
+            return query.executeUpdate() > 0;
+        } catch (final Exception exception) {
+            throw new IllegalStateException("Database failed to delete user by username");
+        }
+	}
 
 }

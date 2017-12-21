@@ -87,5 +87,13 @@ public interface UserService {
      * @return List of usernames.
      */
     List<String> getAvailableUsers(final Project project);
+    
+    /**
+     * Delete a certain user from every project and then delete user.
+     *
+     * @param username Username of the user to delete.
+     * @return true if the user was deleted
+     */
+    boolean deleteUser(final User user);
 
 }

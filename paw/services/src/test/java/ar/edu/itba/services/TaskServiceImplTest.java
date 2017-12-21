@@ -24,12 +24,12 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = TestConfig.class)
 public class TaskServiceImplTest {
 
-    private final Status status = Status.NOT_STARTED;
-    private final Score score = Score.EASY;
-    private final Priority priority = Priority.NORMAL;
-    private final String name = "Epic tests";
-    private final String description = "The life of a tester is hard";
-    private final String veryLongString = "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
+    private final static Status status = Status.NOT_STARTED;
+    private final static Score score = Score.EASY;
+    private final static Priority priority = Priority.NORMAL;
+    private final static String name = "Epic tests";
+    private final static String description = "The life of a tester is hard";
+    private final static String veryLongString = "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
             + "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
             + "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
             + "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
@@ -42,17 +42,24 @@ public class TaskServiceImplTest {
             + "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
             + "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 "
             + "jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 jsdjdfklsjdflksjdfklsdjf,mxc bsiG O3 gO8723G OGBo*gB8g o8&g 82G 284 g64 ";
+    
     private TaskService ts;
+    
     @Mock
     private Task testTask;
+    
     @Mock
     private StoryDao storyDao;
+    
     @Mock
     private TaskDao taskDao;
+    
     @Mock
     private Story testStory;
+    
     @Mock
     private User testUser;
+    
     @Mock
     private Iteration testIteration;
 

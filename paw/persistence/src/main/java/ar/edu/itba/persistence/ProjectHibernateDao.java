@@ -179,11 +179,12 @@ public class ProjectHibernateDao implements ProjectDao {
     @Transactional
     public void addProjectMember(final Project project, final User user) {
         try {
-            project.getMembers().add(user);
-            em.persist(project);
+        	final Project persistedProject = getProjectByCode(project.code());
+        	persistedProject.getMembers().add(user);
+            em.persist(persistedProject);
             em.flush();
         } catch (final Exception exception) {
-            throw new IllegalStateException("Database failed to add project member");
+        	throw new IllegalStateException("Database failed to add project member");
         }
     }
 
@@ -203,8 +204,9 @@ public class ProjectHibernateDao implements ProjectDao {
     @Transactional
     public void deleteProjectMember(final Project project, final User userToDelete) {
         try {
-            project.getMembers().remove(userToDelete);
-            em.persist(project);
+        	final Project persistedProject = getProjectByCode(project.code());
+        	persistedProject.getMembers().remove(userToDelete);
+            em.persist(persistedProject);
             em.flush();
         } catch (final Exception exception) {
             throw new IllegalStateException("Database failed to delete user from project");

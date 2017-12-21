@@ -121,7 +121,6 @@ public class ProjectServiceImpl implements ProjectService {
             throw new IllegalStateException("This user doesnt isn't the project admin");
         }
 
-        projectDao.deleteProjectUser(project);
         projectDao.deleteProject(project);
     }
 

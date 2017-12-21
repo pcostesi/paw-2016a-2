@@ -24,5 +24,7 @@ public interface UserDao {
     List<String> getAllUsernamesOfProject(final Project project);
 
     List<String> getAvailableUsers(final Project project);
+    
+    boolean deleteUserByUsername(final String username);
 
 }
