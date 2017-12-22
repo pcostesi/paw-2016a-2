@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class CreateIterationRequest {
 
-    private String beginDate;
+    private String startDate;
     private String endDate;
 
     @XmlElement
-    public String getBeginDate() {
-        return beginDate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setBeginDate(final String beginDate) {
-        this.beginDate = beginDate;
+    public void setStartDate(final String startDate) {
+        this.startDate = startDate;
     }
 
     @XmlElement

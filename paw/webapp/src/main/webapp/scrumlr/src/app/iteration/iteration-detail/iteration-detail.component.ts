@@ -19,7 +19,7 @@ import { StoryCreateComponent } from 'app/story/story-create/story-create.compon
 })
 export class IterationDetailComponent implements OnInit {
   private _iteration: Iteration;
-  public stories: Observable<Story[]>;
+  public stories: Story[];
 
   constructor(private iterationService: IterationService,
     private modalService: NgbModal,
@@ -35,7 +35,11 @@ export class IterationDetailComponent implements OnInit {
     this._iteration = value;
     const project = this.iteration.project.code;
     const iteration = this.iteration.number;
-    this.stories = this.storyService.getStories(project, iteration);
+    this.storyService.getStories(project, iteration)
+      .subscribe(stories => this.stories = stories);
+    this.storyService.eventFeed.flatMap(event => {
+      return this.storyService.getStories(project, iteration);
+    }).subscribe(stories => this.stories = stories);
   }
 
   get iteration() {
@@ -44,7 +48,6 @@ export class IterationDetailComponent implements OnInit {
 
   editIteration(iteration: Iteration) {
     const ref = this.modalService.open(IterationEditComponent);
-    console.log(iteration)
     ref.componentInstance.iteration = iteration;
   }
 

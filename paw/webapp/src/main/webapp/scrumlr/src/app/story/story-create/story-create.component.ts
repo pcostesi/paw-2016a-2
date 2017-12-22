@@ -37,7 +37,7 @@ export class StoryCreateComponent implements OnInit {
       this.storyService.createStory(this.iteration.project.code, this.iteration.number, story)
         .subscribe(ok => {
           if (ok) {
-            this.router.navigate(['/project', this.iteration.project.code, '/iteration', this.iteration.code])
+            this.modal.close(ok);
           }
         });
       this.modal.close(form.value);

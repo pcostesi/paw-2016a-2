@@ -47,7 +47,7 @@ public class IterationController extends BaseController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postCreateIteration(final CreateIterationRequest request,
                                         @PathParam("project") final String code) {
-        final String start = request.getBeginDate();
+        final String start = request.getStartDate();
         final String end = request.getEndDate();
         final Iteration iteration;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -105,7 +105,7 @@ public class IterationController extends BaseController {
         try {
             final Project proj = ps.getProjectByCode(project);
             final Iteration iteration = is.getIteration(proj, index);
-            final LocalDate startDate = LocalDate.parse(request.getBeginDate(), formatter);
+            final LocalDate startDate = LocalDate.parse(request.getStartDate(), formatter);
             final LocalDate endDate = LocalDate.parse(request.getEndDate(), formatter);
             is.setDates(iteration, startDate, endDate);
             return Response.ok(is.getIteration(proj, index))

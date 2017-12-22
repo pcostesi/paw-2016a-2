@@ -25,6 +25,12 @@ export class TaskListComponent implements OnInit {
       .subscribe(result => {
         this.tasks = result;
       });
+    this.taskService.eventFeed.flatMap(event => {
+      return this.taskService.getTasks(project.code, iteration.number, storyId);
+    }).subscribe(result => {
+      this.tasks = result;
+    });
+
   }
 
   addTask() {

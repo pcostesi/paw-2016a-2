@@ -149,12 +149,12 @@ public class IterationServiceImpl implements IterationService {
     }
 
     @Override
-    public Iteration setDates(final Iteration iteration, final LocalDate beginDate, final LocalDate endDate) {
+    public Iteration setDates(final Iteration iteration, final LocalDate startDate, final LocalDate endDate) {
         if (iteration == null) {
             throw new IllegalArgumentException("Iteration can't be null");
         }
 
-        if (beginDate == null) {
+        if (startDate == null) {
             throw new IllegalArgumentException("Begin date can't be null");
         }
 
@@ -162,7 +162,7 @@ public class IterationServiceImpl implements IterationService {
             throw new IllegalArgumentException("End date can't be null");
         }
 
-        if (endDate.compareTo(beginDate) < 0) {
+        if (endDate.compareTo(startDate) < 0) {
             throw new IllegalArgumentException("Iteration can't begin after it's ending date");
         }
 
@@ -170,14 +170,14 @@ public class IterationServiceImpl implements IterationService {
             throw new IllegalStateException("Iteration doesn't exist");
         }
 
-        if (iteration.startDate().equals(beginDate) && iteration.endDate().equals(endDate)) {
+        if (iteration.startDate().equals(startDate) && iteration.endDate().equals(endDate)) {
             return iteration;
         }
 
         final Project project = iterationDao.getParent(iteration);
 
-        if (isValidDateRangeInProject(project, iteration, beginDate, endDate)) {
-            iterationDao.updateStartDate(iteration, beginDate);
+        if (isValidDateRangeInProject(project, iteration, startDate, endDate)) {
+            iterationDao.updateStartDate(iteration, startDate);
             iterationDao.updateEndDate(iteration, endDate);
             return iterationDao.getIterationById(iteration.iterationId());
         } else {

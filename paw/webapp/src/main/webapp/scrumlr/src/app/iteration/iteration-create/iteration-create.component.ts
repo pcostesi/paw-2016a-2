@@ -4,9 +4,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Project } from 'app/project/project';
 import { NgbDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker';
-import {Iteration} from '../iteration';
-import {IterationService} from '../iteration.service';
-import {Router} from '@angular/router';
+import { Iteration } from '../iteration';
+import { IterationService } from '../iteration.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-iteration-create',
@@ -44,15 +44,15 @@ export class IterationCreateComponent implements OnInit {
 
   onSubmit(form: FormGroup) {
     if (form.valid) {
-      const iteration = new Iteration();
+      const iteration = <Iteration>{};
       const begin = form.controls.startDate.value;
-      iteration.beginDate = begin.day + '/' + begin.month + '/' + begin.year;
+      iteration.startDate = begin.day + '/' + begin.month + '/' + begin.year;
       const end = form.controls.endDate.value;
       iteration.endDate = end.day + '/' + end.month + '/' + end.year;
       this.iterationService.createIteration(this.project.code, iteration)
         .subscribe(ok => {
           if (ok) {
-            this.router.navigate(['/project', this.project.code])
+            this.modal.close(ok);
           }
         });
       this.modal.close(form.value);

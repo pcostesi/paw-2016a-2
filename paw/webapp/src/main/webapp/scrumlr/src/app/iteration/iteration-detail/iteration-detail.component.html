@@ -11,6 +11,6 @@
     <div id="iteration-list-{{iteration.number}}">
         <h6 class="mb-2 text-muted">{{iteration.startDate | date}} to {{iteration.endDate | date}}</h6>
 
-        <app-story-list class="mt-2" [stories]="stories | async"></app-story-list>
+        <app-story-list class="mt-2" *ngIf="stories" [stories]="stories"></app-story-list>
     </div>
 </div>

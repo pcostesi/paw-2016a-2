@@ -7,16 +7,16 @@ import java.time.LocalDate;
 @XmlRootElement
 public class UpdateIterationRequest {
 
-    private String beginDate;
+    private String startDate;
     private String endDate;
 
     @XmlElement
-    public String getBeginDate() {
-        return beginDate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setBeginDate(String beginDate) {
-        this.beginDate = beginDate;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
     @XmlElement

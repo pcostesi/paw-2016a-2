@@ -41,7 +41,7 @@ public class IterationServiceImplTest {
     private String pName = "IterationTest";
     private String pDesc = "Project for testing Iteration service";
     private String pCode = "ITP";
-    private LocalDate beginDate;
+    private LocalDate startDate;
     private LocalDate endDate;
     private Iteration iter;
 
@@ -57,8 +57,8 @@ public class IterationServiceImplTest {
         }
         project = ps.createProject(admin, members, pName, pDesc, pCode);
         endDate = LocalDate.now();
-        beginDate = endDate.minusDays(15);
-        iter = is.createIteration(project, beginDate, endDate);
+        startDate = endDate.minusDays(15);
+        iter = is.createIteration(project, startDate, endDate);
     }
 
     @After
@@ -75,14 +75,14 @@ public class IterationServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void createIterationWithNullProject() {
-        is.createIteration(null, beginDate, endDate);
+        is.createIteration(null, startDate, endDate);
         fail("Exception not thrown when project was null");
     }
 
     @Test(expected = IllegalStateException.class)
     public void createIterationWithNonExistingProject() {
         ps.deleteProject(admin, project);
-        is.createIteration(project, beginDate, endDate);
+        is.createIteration(project, startDate, endDate);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -93,7 +93,7 @@ public class IterationServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void createIterationWithNullEndDate() {
-        is.createIteration(project, beginDate, null);
+        is.createIteration(project, startDate, null);
         fail("Exception not thrown when Date was null");
     }
 
@@ -215,31 +215,31 @@ public class IterationServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void createIterationOnNullEndDateOnInherit() {
-        is.createIteration(project, beginDate, null, 1);
+        is.createIteration(project, startDate, null, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createIterationOnNullProjectOnInherit() {
-        is.createIteration(null, beginDate, endDate, 1);
+        is.createIteration(null, startDate, endDate, 1);
     }
 
     @Test(expected = IllegalStateException.class)
     public void createIterationOnInexistentProjectOnInherit() {
         ps.deleteProject(admin, project);
-        is.createIteration(project, beginDate, endDate, 1);
+        is.createIteration(project, startDate, endDate, 1);
     }
 
     @Test(expected = IllegalStateException.class)
     public void inheritTasksFromInexistentIteration() {
         is.deleteIteration(iter);
-        is.createIteration(project, beginDate, endDate, 1);
+        is.createIteration(project, startDate, endDate, 1);
     }
 
     @Test
     public void inheritTasksSuccesfully() {
         Story testStory = ss.create(iter, "Test story");
         ts.createTask(testStory, "Test task", null, Status.NOT_STARTED, admin, Score.NORMAL, Priority.NORMAL);
-        Iteration inheritedIt = is.createIteration(project, beginDate.plusDays(20), endDate.plusDays(20), 1);
+        Iteration inheritedIt = is.createIteration(project, startDate.plusDays(20), endDate.plusDays(20), 1);
         Map<Story, List<Task>> inherTasks = ss.getStoriesWithTasksForIteration(inheritedIt);
         for (Story story : inherTasks.keySet()) {
             assertTrue(ts.taskNameExists(story, "Test task"));
@@ -264,7 +264,7 @@ public class IterationServiceImplTest {
 
     @Test
     public void getLastFinishedIterationNumberSuccesfully() {
-        is.createIteration(project, beginDate.minusDays(50), endDate.minusDays(50));
+        is.createIteration(project, startDate.minusDays(50), endDate.minusDays(50));
         assertEquals(1, (int) is.getLastFinishedIterationNumber(project));
     }
 

@@ -7,8 +7,8 @@ import { TaskPriority } from 'app/task/task-priority.enum';
 import { TaskScore } from 'app/task/task-score.enum';
 import { UserProfile } from 'app/api/account.service';
 import { Observable } from 'rxjs/Observable';
-import {TaskService} from '../task.service';
-import {Router} from '@angular/router';
+import { TaskService } from '../task.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -42,14 +42,14 @@ export class TaskEditComponent implements OnInit {
     editedTask.description = form.controls.description.value;
     editedTask.priority = form.controls.priority.value;
     editedTask.score = form.controls.score.value;
-    editedTask.owner = form.controls.owner.value.username;
+    editedTask.owner = form.controls.owner.value ? form.controls.owner.value.username : undefined;
     editedTask.status = form.controls.status.value;
     this.taskService.updateTask(this.task.story.iteration.project.code,
       this.task.story.iteration.number, this.task.story.storyId, this.task.taskId, editedTask).subscribe(ok => {
-      if (ok) {
-        this.router.navigate(['/project', this.task.story.iteration.project.code])
-      }
-    });
+        if (ok) {
+          this.modal.close(ok);
+        }
+      });
     this.modal.close(form);
   }
 

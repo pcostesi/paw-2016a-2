@@ -27,7 +27,7 @@ export class IterationEditComponent implements OnInit {
 
   setDate(iteration: Iteration) {
 
-    const iterationStart = new Date(iteration.beginDate);
+    const iterationStart = new Date(iteration.startDate);
     const iterationEnd = new Date(iteration.endDate);
 
     if (!this.form) { return; }
@@ -47,7 +47,7 @@ export class IterationEditComponent implements OnInit {
     if (form.valid) {
       const iteration = new Iteration();
       const begin = form.controls.startDate.value;
-      iteration.beginDate = begin.day + '/' + begin.month + '/' + begin.year;
+      iteration.startDate = begin.day + '/' + begin.month + '/' + begin.year;
       const end = form.controls.endDate.value;
       iteration.endDate = end.day + '/' + end.month + '/' + end.year;
       this.iterationService.updateIteration(this.iteration.project.code, iteration)

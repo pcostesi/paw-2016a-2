@@ -25,9 +25,9 @@ export class CreateProjectComponent implements OnInit {
   public users: string[];
 
   constructor(private formBuilder: FormBuilder,
-              private accountService: AccountService,
-              private router: Router,
-              private projectService: ProjectService) {
+    private accountService: AccountService,
+    private router: Router,
+    private projectService: ProjectService) {
     this.projectForm = this.buildProjectForm();
   }
 

@@ -56,9 +56,9 @@ public class TaskJdbcDaoTests {
         }
         jdbcTemplate = new JdbcTemplate(ds);
         testProject = projectDao.createProject(owner, pName, "Best Project EVAR", pCode);
-        LocalDate beginDate = LocalDate.now();
+        LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now().plusDays(15);
-        testIteration = iterDao.createIteration(testProject, 1, beginDate, endDate);
+        testIteration = iterDao.createIteration(testProject, 1, startDate, endDate);
         testStory = storyDao.createStory(testIteration,
                 "A sad story about extreme unhappyness while testing");
     }

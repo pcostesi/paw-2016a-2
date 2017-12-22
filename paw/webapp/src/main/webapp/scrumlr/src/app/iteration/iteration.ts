@@ -4,6 +4,6 @@ export class Iteration {
   number: number;
   code: string;
   project: Project;
-  beginDate: string;
+  startDate: string;
   endDate: string;
 }

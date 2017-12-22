@@ -56,9 +56,9 @@ public class StoryDaoTest {
         }
         jdbcTemplate = new JdbcTemplate(ds);
         project = pd.createProject(owner, pName, "Best Project EVAR", pCode);
-        final LocalDate beginDate = LocalDate.now();
+        final LocalDate startDate = LocalDate.now();
         final LocalDate endDate = LocalDate.now().plusDays(15);
-        iteration = id.createIteration(project, number, beginDate, endDate);
+        iteration = id.createIteration(project, number, startDate, endDate);
 
     }
 

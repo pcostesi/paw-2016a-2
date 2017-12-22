@@ -3,10 +3,16 @@ import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../api';
 import { Story } from './story'
+import { Subject } from 'rxjs/Subject';
 
 
 @Injectable()
 export class StoryService {
+
+  private events = new Subject<string>();
+  public eventFeed = this.events.asObservable();
+
+
 
   constructor(private api: ApiService) { }
 
@@ -35,8 +41,9 @@ export class StoryService {
   updateStory(project: string, iteration: number | string, story: number | string, title: string): Observable<any | null> {
     console.log(project);
     const url = `/project/${project}/iteration/${iteration}/story/${story}`;
-    return this.api.put(url, { title } ).map(response => {
+    return this.api.put(url, { title }).map(response => {
       if (response.ok) {
+        this.events.next('updated');
         return response.json();
       }
       return null;
@@ -47,6 +54,7 @@ export class StoryService {
     const url = `/project/${project}/iteration/${iteration}/story/`;
     return this.api.post(url, story).map(response => {
       if (response.ok) {
+        this.events.next('created');
         return response.json();
       }
       return null;
@@ -56,6 +64,7 @@ export class StoryService {
   deleteStory(story: Story): Observable<boolean> {
     return this.api.delete(`/project/${story.iteration.project.code}/iteration/${story.iteration.number}/story/${story.storyId}`)
       .map(response => {
+        this.events.next('deleted');
         return response.ok;
       });
   }

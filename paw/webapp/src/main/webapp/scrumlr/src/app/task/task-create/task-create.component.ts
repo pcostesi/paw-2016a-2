@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { UserProfile } from 'app/api';
-import {TaskService} from '../task.service';
-import {Task} from '../task';
-import {Router} from '@angular/router';
+import { TaskService } from '../task.service';
+import { Task } from '../task';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -40,14 +40,14 @@ export class TaskCreateComponent implements OnInit {
     task.description = form.controls.description.value;
     task.priority = form.controls.priority.value;
     task.score = form.controls.score.value;
-    task.owner = form.controls.owner.value.username;
+    task.owner = form.controls.owner.value ? form.controls.owner.value.username : undefined;
     task.status = form.controls.status.value;
     this.taskService.createTask(this.story.iteration.project.code,
       this.story.iteration.number, this.story.storyId, task).subscribe(ok => {
-      if (ok) {
-        this.router.navigate(['/project', this.story.iteration.project.code])
-      }
-    });
+        if (ok) {
+          this.modal.close(ok);
+        }
+      });
     this.modal.close(form);
   }
 

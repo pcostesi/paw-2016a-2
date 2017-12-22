@@ -34,7 +34,7 @@ export class StoryEditComponent implements OnInit {
       this.storyService.updateStory(this.story.iteration.project.code, this.story.iteration.number, this.story.storyId, newTitle)
         .subscribe(ok => {
           if (ok) {
-            this.router.navigate(['/project', this.story.iteration.project.code, '/iteration', this.story.iteration.code])
+            this.modal.close(ok);
           }
         });
       this.modal.close(form.value);

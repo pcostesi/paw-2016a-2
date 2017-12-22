@@ -12,22 +12,22 @@ public interface IterationService {
      * Create a new iteration instance and persist it.
      *
      * @param project   Project where the iteration will be created.
-     * @param beginDate Date when the iteration starts.
+     * @param startDate Date when the iteration starts.
      * @param endDate   Date when the iteration ends.
      * @return The persisted instance.
      */
-    Iteration createIteration(final Project project, final LocalDate beginDate, final LocalDate endDate);
+    Iteration createIteration(final Project project, final LocalDate startDate, final LocalDate endDate);
 
     /**
      * Create a new iteration inheriting unfinished tasks/stories from another instance and persist it.
      *
      * @param project                Project where the iteration will be created.
-     * @param beginDate              Date when the iteration starts.
+     * @param startDate              Date when the iteration starts.
      * @param endDate                Date when the iteration ends.
      * @param inheritIterationNumber Number of the iteration to inherit from
      * @return The persisted instance.
      */
-    Iteration createIteration(final Project project, final LocalDate beginDate, final LocalDate endDate, final int inheritIterationNumber);
+    Iteration createIteration(final Project project, final LocalDate startDate, final LocalDate endDate, final int inheritIterationNumber);
 
     /**
      * Remove iteration from database.
@@ -92,10 +92,10 @@ public interface IterationService {
      * Set dates to an iteration.
      *
      * @param iteration Iteration to set dates to.
-     * @param beginDate New begin date for the iteration.
+     * @param startDate New begin date for the iteration.
      * @param endDate   New end date for the iteration.
      * @return The modified instance of the iteration.
      */
-    Iteration setDates(final Iteration iteration, final LocalDate beginDate, final LocalDate endDate);
+    Iteration setDates(final Iteration iteration, final LocalDate startDate, final LocalDate endDate);
 
 }
