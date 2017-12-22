@@ -40,6 +40,7 @@ export class StoryCreateComponent implements OnInit {
             this.router.navigate(['/project', this.iteration.project.code, '/iteration', this.iteration.code])
           }
         });
+      this.modal.close(form.value);
     }
   }
 

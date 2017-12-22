@@ -50,6 +50,7 @@ export class TaskEditComponent implements OnInit {
         this.router.navigate(['/project', this.task.story.iteration.project.code])
       }
     });
+    this.modal.close(form);
   }
 
   search = (text$: Observable<string>) => {
