@@ -11,9 +11,9 @@ export class FeedService {
 
   constructor(private api: ApiService) { }
 
-  getFeedForUser() {
-
-    return this.api.get(`/feed`).map(response => {
+  getFeedForUser(user?: UserProfile) {
+    const url = user ? `/feed/user/${user.username}` : '/feed';
+    return this.api.get(url).map(response => {
       if (response.ok) {
         const parsed = response.json()
         return <FeedEvent[]>parsed.events;

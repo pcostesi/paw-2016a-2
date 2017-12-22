@@ -12,6 +12,8 @@ import { FeedIterationCreatedComponent } from './feed-iteration-created/feed-ite
 import { FeedStoryCreatedComponent } from './feed-story-created/feed-story-created.component';
 import { FeedTaskCreatedComponent } from './feed-task-created/feed-task-created.component';
 import { FeedBacklogItemCreatedComponent } from './feed-backlog-item-created/feed-backlog-item-created.component';
+import { FeedUserListComponent } from './feed-user-list/feed-user-list.component';
+import { FeedProjectListComponent } from './feed-project-list/feed-project-list.component';
 
 
 @NgModule({
@@ -22,9 +24,9 @@ import { FeedBacklogItemCreatedComponent } from './feed-backlog-item-created/fee
   declarations: [
     FeedListComponent, FeedDetailComponent, FeedUserCreatedComponent,
     FeedProjectCreatedComponent, FeedIterationCreatedComponent, FeedStoryCreatedComponent,
-    FeedTaskCreatedComponent, FeedBacklogItemCreatedComponent
+    FeedTaskCreatedComponent, FeedBacklogItemCreatedComponent, FeedUserListComponent, FeedProjectListComponent
   ],
-  exports: [FeedListComponent],
+  exports: [FeedListComponent, FeedProjectListComponent],
   providers: [FeedService]
 })
 export class FeedModule { }

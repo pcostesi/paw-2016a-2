@@ -2,7 +2,9 @@ package ar.edu.itba.webapp.controller;
 
 import ar.edu.itba.interfaces.service.EventService;
 import ar.edu.itba.interfaces.service.ProjectService;
+import ar.edu.itba.interfaces.service.UserService;
 import ar.edu.itba.models.Project;
+import ar.edu.itba.models.User;
 import ar.edu.itba.models.event.LogEvent;
 import ar.edu.itba.webapp.response.LogEventListResponse;
 import org.slf4j.Logger;
@@ -31,6 +33,9 @@ public class LogEventController extends BaseController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private UserService userService;
+
 
     @GET
     public Response getByUser() {
@@ -45,6 +50,24 @@ public class LogEventController extends BaseController {
         }
         return Response.ok(response)
             .build();
+    }
+
+
+    @GET
+    @Path("/user/{username}")
+    public Response getByUserProfile(@PathParam("username") final String username) {
+        List<? extends LogEvent> events;
+        LogEventListResponse response = new LogEventListResponse();
+        try {
+            User user = userService.getByUsername(username);
+            events = eventService.getEventsForActor(user);
+            response.setEvents(events);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
+             .build();
+        }
+        return Response.ok(response)
+         .build();
     }
 
     @GET

@@ -2,7 +2,9 @@
 <hr class="my-4">
 <div class="row">
     <div class="col-md-8">
-        <p i18n="@@WeSendEmailsToYourAddress">You told us to send spam to <a href="mailto:{{mail}}">{{mail}}</a> <small class="text-muted">&mdash; Just kidding, we only send messages of utmost importance (no fwds from grandma, promise.)</small>
+        <p i18n="@@WeSendEmailsToYourAddress">You told us to send spam to
+            <a href="mailto:{{mail}}">{{mail}}</a>
+            <small class="text-muted">&mdash; Just kidding, we only send messages of utmost importance (no fwds from grandma, promise.)</small>
         </p>
         <div class="btn-group" role="group" i18-aria-label="@@Actions" aria-label="Actions">
             <button type="button" class="btn btn-secondary" i18n="@@EditPassword" (click)="changePassword()">Change your password</button>
@@ -17,6 +19,7 @@
 <hr class="my-4">
 
 <div class="row">
+
     <div class="col-md-6">
         <h2 i18n="Working projects@@WorkingProjects">Projects where this user works</h2>
         <p *ngIf="!projects" i18n="No active / working projects@@WorkingProjectsEmpty">Oh, look at how empty your life is.</p>
@@ -27,12 +30,10 @@
         </ul>
     </div>
     <div class="col-md-6">
-        <h2 i18n="Active work Items@@ActiveWorkItems">Active work items</h2>
-        <p *ngIf="!workItems" i18n="No active work items@@ActiveWorkItemsEmpty">You're a slacker. Shame 🔔</p>
-        <ul *ngIf="workItems" class="list-group">
-            <li *ngFor="let item of workItems">
-                <app-work-item [work]="{title: 'test', description: 'desc', id: 'fake'}"></app-work-item>
-            </li>
+        <h2 i18n="User Feed@@UserFeed">User feed</h2>
+        <p *ngIf="!userFeed?.length" i18n="No active work items@@UserFeedEmpty">You're a slacker. Shame 🔔</p>
+        <ul *ngIf="userFeed?.length" class="list-group">
+            <app-feed-list [feed]="userFeed"></app-feed-list>
         </ul>
     </div>
 

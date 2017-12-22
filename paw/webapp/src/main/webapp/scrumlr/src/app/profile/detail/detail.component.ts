@@ -4,7 +4,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { ChangeEmailComponent } from '../change-email/change-email.component';
-import { AccountService } from '../../api';
+import { AccountService, MaybeUser } from '../../api';
+import { ActivatedRoute } from '@angular/router';
+import { FeedService } from 'app/feed/feed.service';
+import { FeedEvent } from 'app/feed/feed-event';
 
 @Component({
   selector: 'app-detail',
@@ -17,8 +20,17 @@ export class DetailComponent implements OnInit {
   public projects: string[];
   public workItems: string[];
 
-  constructor(private modalService: NgbModal,
-    private profileService: AccountService) { }
+  public user: MaybeUser;
+  public userFeed: FeedEvent[];
+
+  constructor(private route: ActivatedRoute, private feedService: FeedService, private modalService: NgbModal,
+    private profileService: AccountService) {
+    const user = this.profileService.getLoggedAccount();
+
+    const userFeedObservable = this.feedService.getFeedForUser();
+
+    userFeedObservable.subscribe(feed => this.userFeed = feed);
+  }
 
   ngOnInit() {
     const user = this.profileService.getLoggedAccount();

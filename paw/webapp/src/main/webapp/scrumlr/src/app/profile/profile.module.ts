@@ -14,6 +14,7 @@ import { ProjectSummaryComponent } from './project-summary/project-summary.compo
 import { WorkItemComponent } from './work-item/work-item.component';
 import { ChangeEmailComponent } from './change-email/change-email.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FeedModule } from 'app/feed/feed.module';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    IterationModule
+    IterationModule,
+    FeedModule
   ],
   entryComponents: [ChangeEmailComponent, ChangePasswordComponent],
   declarations: [
