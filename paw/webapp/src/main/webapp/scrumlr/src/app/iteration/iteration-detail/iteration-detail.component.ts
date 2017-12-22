@@ -44,17 +44,18 @@ export class IterationDetailComponent implements OnInit {
 
   editIteration(iteration: Iteration) {
     const ref = this.modalService.open(IterationEditComponent);
+    console.log(iteration)
     ref.componentInstance.iteration = iteration;
   }
 
   deleteIteration(iteration: Iteration) {
     const ref = this.modalService.open(IterationDeleteComponent);
-    ref.componentInstance.iteration = this.iteration;
+    ref.componentInstance.iteration = iteration;
   }
 
   newStory(iteration: Iteration) {
     const ref = this.modalService.open(StoryCreateComponent);
-    ref.componentInstance.iteration = this.iteration;
+    ref.componentInstance.iteration = iteration;
   }
 
 }

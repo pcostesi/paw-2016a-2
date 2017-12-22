@@ -6,30 +6,30 @@
         <div class="modal-header">
             <h5 class="modal-title" i18n="@@EditEmail">Change your email</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
 
 
 
 
         <div class="modal-body">
-            <div class="form-group" [class.has-danger]="!changeEmailForm.controls['email'].valid">
+            <div class="form-group" [class.is-invalid]="!changeEmailForm.controls['email'].valid">
                 <label for="email" i18n="@@Email">E-mail</label>
 
-                <input type="email" class="form-control" [class.form-control-danger]="!changeEmailForm.controls['email'].valid" id="email" [formControl]="changeEmailForm.controls['email']">
+                <input type="email" class="form-control" [class.is-invalid]="!changeEmailForm.controls['email'].valid" id="email" [formControl]="changeEmailForm.controls['email']">
 
-                <div *ngIf="changeEmailForm.controls['email'].hasError('required')" class="form-control-feedback" i18n="@@MissingField">Can't leave this field empty!</div>
+                <div *ngIf="changeEmailForm.controls['email'].hasError('required')" class="invalid-feedback" i18n="@@MissingField">Can't leave this field empty!</div>
             </div>
 
 
 
-            <div class="form-group" [class.has-danger]="!changeEmailForm.controls['email2'].valid">
+            <div class="form-group" [class.is-invalid]="!changeEmailForm.controls['email2'].valid">
                 <label for="email2" i18n="@@EmailAgain">E-mail (again)</label>
 
-                <input type="email" class="form-control" [class.form-control-danger]="!changeEmailForm.controls['email2'].valid" id="email2" [formControl]="changeEmailForm.controls['email2']">
+                <input type="email" class="form-control" [class.is-invalid]="!changeEmailForm.controls['email2'].valid" id="email2" [formControl]="changeEmailForm.controls['email2']">
 
-                <div *ngIf="changeEmailForm.controls['email2'].hasError('required')" class="form-control-feedback" i18n="@@MissingField">Can't leave this field empty!</div>
+                <div *ngIf="changeEmailForm.controls['email2'].hasError('required')" class="invalid-feedback" i18n="@@MissingField">Can't leave this field empty!</div>
             </div>
         </div>
 

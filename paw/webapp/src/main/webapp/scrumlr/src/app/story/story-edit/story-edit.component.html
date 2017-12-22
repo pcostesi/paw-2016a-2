@@ -8,13 +8,13 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="form-group" [class.has-danger]="!form.controls['title'].valid">
-        <label for="title" i18n="@@Title">Title</label>
+      <div class="form-group" [class.is-invalid]="!form.controls['title'].valid">
+        <label for="title" i18n="@@StoryTitle">Title</label>
 
-        <input type="text" class="form-control" [class.form-control-danger]="!form.controls['title'].valid" id="title" [formControl]="form.controls['title']"
-          aria-describedby="titleHelp" i18n-placeholder="@@EnterTitle" placeholder="Enter title">
+        <input type="text" class="form-control" [class.is-invalid]="!form.controls['title'].valid" id="title" [formControl]="form.controls['title']"
+          aria-describedby="titleHelp" i18n-placeholder="@@StoryEnterTitle" placeholder="Enter title">
 
-        <div *ngIf="form.controls['title'].hasError('required')" class="form-control-feedback" i18n="@@TitleEmpty">Sorry, the title field can't be empty. Try typing something?</div>
+        <div *ngIf="form.controls['title'].hasError('required')" class="invalid-feedback" i18n="@@StoryTitleEmpty">Sorry, the title field can't be empty. Try typing something?</div>
       </div>
 
 

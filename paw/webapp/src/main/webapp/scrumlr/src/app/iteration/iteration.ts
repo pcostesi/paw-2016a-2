@@ -4,6 +4,6 @@ export interface Iteration {
   number: number;
   code: string;
   project: Project;
-  beginDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 }

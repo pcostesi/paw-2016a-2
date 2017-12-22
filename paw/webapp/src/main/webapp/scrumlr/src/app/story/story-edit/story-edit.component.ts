@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Story } from 'app/story/story';
 import { StoryService } from '../story.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-story-edit',
@@ -20,17 +20,18 @@ export class StoryEditComponent implements OnInit {
     private storyService: StoryService,
     private router: Router) {
     this.form = formBuilder.group({
-      title: ['', Validators.required],
+      title: [undefined, Validators.required],
     });
   }
 
   ngOnInit() {
+    this.form.controls.title.setValue(this.story.title);
   }
 
   onSubmit(form: FormGroup) {
     if (form.valid) {
       const newTitle = form.controls.title.value;
-      this.storyService.updateStory(this.story.iteration.project.code, this.story.iteration.number, this.story.storyId, newTitle )
+      this.storyService.updateStory(this.story.iteration.project.code, this.story.iteration.number, this.story.storyId, newTitle)
         .subscribe(ok => {
           if (ok) {
             this.router.navigate(['/project', this.story.iteration.project.code, '/iteration', this.story.iteration.code])
