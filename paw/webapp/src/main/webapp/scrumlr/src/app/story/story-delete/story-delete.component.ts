@@ -23,7 +23,6 @@ export class StoryDeleteComponent implements OnInit {
     this.storyService.deleteStory(this.story)
       .subscribe(ok => {
       if (ok) {
-        this.router.navigate(['project', this.story.iteration.project.code, '/iteration', this.story.iteration.number]);
         this.modal.close(ok);
       }
     });

@@ -37,6 +37,7 @@ export class StoryEditComponent implements OnInit {
             this.router.navigate(['/project', this.story.iteration.project.code, '/iteration', this.story.iteration.code])
           }
         });
+      this.modal.close(form.value);
     }
   }
 

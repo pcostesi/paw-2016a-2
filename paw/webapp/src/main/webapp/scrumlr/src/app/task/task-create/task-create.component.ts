@@ -48,6 +48,7 @@ export class TaskCreateComponent implements OnInit {
         this.router.navigate(['/project', this.story.iteration.project.code])
       }
     });
+    this.modal.close(form);
   }
 
   search = (text$: Observable<string>) => {

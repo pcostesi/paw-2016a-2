@@ -5,7 +5,7 @@ import { UserProfile } from 'app/api/account.service';
 import { Story } from 'app/story/story';
 
 export class Task {
-  id: number;
+  taskId: number;
   title: string;
   description: string;
   status: TaskStatus;
