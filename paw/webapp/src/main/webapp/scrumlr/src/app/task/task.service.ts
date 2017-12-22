@@ -42,4 +42,20 @@ export class TaskService {
       return null;
     });
   }
+
+  deleteTask(project: string, iteration: number, story: number, task: number): Observable<boolean> {
+    return this.api.delete(`/project/${project}/iteration/${iteration}/story/${story}/task/${task}`).map(response => {
+      return response.ok;
+    });
+  }
+
+  createTask(project: string, iteration: number, story: number, task: Task): Observable<Task | null> {
+    const url = `/project/${project}/iteration/${iteration}/story/${story}/task`;
+    return this.api.post(url, task).map(response => {
+      if (response.ok) {
+        return <Task>response.json();
+      }
+      return null;
+    });
+  }
 }

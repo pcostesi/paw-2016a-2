@@ -10,8 +10,8 @@ public class CreateTaskRequest {
     private String description;
     private String stat;
     private String username;
-    private String scoreN;
-    private String priorityN;
+    private String score;
+    private String priority;
 
     @XmlElement
     public String getTitle() {
@@ -50,20 +50,20 @@ public class CreateTaskRequest {
     }
 
     @XmlElement
-    public String getScoreN() {
-        return scoreN;
+    public String getScore() {
+        return score;
     }
 
-    public void setScoreN(final String scoreN) {
-        this.scoreN = scoreN;
+    public void setScore(final String score) {
+        this.score = score;
     }
 
     @XmlElement
-    public String getPriorityN() {
-        return priorityN;
+    public String getPriority() {
+        return priority;
     }
 
-    public void setPriorityN(final String priorityN) {
-        this.priorityN = priorityN;
+    public void setPriority(final String priority) {
+        this.priority = priority;
     }
 }

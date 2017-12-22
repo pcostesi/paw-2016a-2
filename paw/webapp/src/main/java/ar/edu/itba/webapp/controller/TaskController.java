@@ -80,8 +80,8 @@ public class TaskController extends BaseController {
             final Story story = ss.getById(storyN);
             final Status status = Status.valueOf(request.getStat());
             final User owner = us.getByUsername(request.getUsername());
-            final Score score = Score.valueOf(request.getScoreN());
-            final Priority priority = Priority.valueOf(request.getPriorityN());
+            final Score score = Score.valueOf(request.getScore());
+            final Priority priority = Priority.valueOf(request.getPriority());
             task = ts.createTask(story, title, description, status, owner, score, priority);
         } catch (IllegalArgumentException | IllegalStateException e) {
             return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))

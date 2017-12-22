@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Task } from 'app/task/task';
+import { TaskService } from '../task.service';
 
 @Component({
   selector: 'app-task-delete',
@@ -10,13 +11,20 @@ import { Task } from 'app/task/task';
 export class TaskDeleteComponent implements OnInit {
   @Input() task: Task;
 
-  constructor(public modal: NgbActiveModal) { }
+  constructor(public modal: NgbActiveModal,
+              private taskService: TaskService) { }
 
   ngOnInit() {
   }
 
   deleteItem() {
-    this.modal.close(this.task);
+    this.taskService.deleteTask(this.task.story.iteration.project.code,
+      this.task.story.iteration.number, this.task.story.storyId, this.task.id)
+      .subscribe(ok => {
+        if (ok) {
+          this.modal.close(ok);
+        }
+      });
   }
 }
 
