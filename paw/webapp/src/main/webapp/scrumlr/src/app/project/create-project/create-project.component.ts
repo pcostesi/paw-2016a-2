@@ -71,7 +71,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
   onSubmit(projectForm: FormGroup) {
-    console.log(projectForm);
     if (projectForm.valid) {
       const project = new Project();
       project.code = projectForm.controls.codename.value;

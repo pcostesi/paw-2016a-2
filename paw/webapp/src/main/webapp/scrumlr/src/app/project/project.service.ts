@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { BacklogService } from '../backlog/backlog.service';
 
 import { IterationService } from '../iteration/iteration.service';
-import {Project} from './project';
+import { Project } from './project';
 
 @Injectable()
 export class ProjectService {

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Story } from 'app/story/story';
+import { StoryService } from '../story.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-story-delete',
@@ -10,13 +12,21 @@ import { Story } from 'app/story/story';
 export class StoryDeleteComponent implements OnInit {
   @Input() story: Story;
 
-  constructor(public modal: NgbActiveModal) { }
+  constructor(public modal: NgbActiveModal,
+              private storyService: StoryService,
+              private router: Router) { }
 
   ngOnInit() {
   }
 
-  deleteItem() {
-    this.modal.close(this.story);
+  deleteStory() {
+    this.storyService.deleteStory(this.story)
+      .subscribe(ok => {
+      if (ok) {
+        this.router.navigate(['project', this.story.iteration.project.code, '/iteration', this.story.iteration.number]);
+        this.modal.close(ok);
+      }
+    });
   }
 }
 
