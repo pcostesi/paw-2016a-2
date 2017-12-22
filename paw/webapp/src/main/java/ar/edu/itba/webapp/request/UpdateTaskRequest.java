@@ -9,9 +9,9 @@ public class UpdateTaskRequest {
 
     private String title;
     private String description;
-    private String stat;
-    private String username;
-    private int score;
+    private String status;
+    private String owner;
+    private String score;
     private String priority;
 
     @XmlElement
@@ -33,29 +33,29 @@ public class UpdateTaskRequest {
     }
 
     @XmlElement
-    public String getStat() {
-        return stat;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStat(final String stat) {
-        this.stat = stat;
-    }
-
-    @XmlElement
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(final String username) {
-        this.username = username;
+    public void setStatus(final String status) {
+        this.status = status;
     }
 
     @XmlElement
-    public int getScore() {
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final String owner) {
+        this.owner = owner;
+    }
+
+    @XmlElement
+    public String getScore() {
         return score;
     }
 
-    public void setScore(final int score) {
+    public void setScore(final String score) {
         this.score = score;
     }
 

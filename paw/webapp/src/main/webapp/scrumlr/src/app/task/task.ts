@@ -4,13 +4,13 @@ import { TaskScore } from 'app/task/task-score.enum';
 import { UserProfile } from 'app/api/account.service';
 import { Story } from 'app/story/story';
 
-export interface Task {
+export class Task {
   id: number;
   title: string;
   description: string;
   status: TaskStatus;
   priority: TaskPriority;
   score: TaskScore;
-  owner: UserProfile;
+  owner: string;
   story: Story;
 }

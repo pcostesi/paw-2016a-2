@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { UserProfile } from 'app/api';
+import {TaskService} from '../task.service';
+import {Task} from '../task';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -15,7 +18,9 @@ export class TaskCreateComponent implements OnInit {
   @Input() story: any;
 
   constructor(private formBuilder: FormBuilder,
-    public modal: NgbActiveModal) { }
+    public modal: NgbActiveModal,
+    private taskService: TaskService,
+    private router: Router) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -29,7 +34,20 @@ export class TaskCreateComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup) {
-    console.log(form)
+    console.log(form);
+    const task = new Task();
+    task.title = form.controls.title.value;
+    task.description = form.controls.description.value;
+    task.priority = form.controls.priority.value;
+    task.score = form.controls.score.value;
+    task.owner = form.controls.owner.value.username;
+    task.status = form.controls.status.value;
+    this.taskService.createTask(this.story.iteration.project.code,
+      this.story.iteration.number, this.story.storyId, task).subscribe(ok => {
+      if (ok) {
+        this.router.navigate(['/project', this.story.iteration.project.code])
+      }
+    });
   }
 
   search = (text$: Observable<string>) => {

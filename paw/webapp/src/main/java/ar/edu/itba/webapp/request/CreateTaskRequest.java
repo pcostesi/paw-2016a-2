@@ -8,8 +8,8 @@ public class CreateTaskRequest {
 
     private String title;
     private String description;
-    private String stat;
-    private String username;
+    private String status;
+    private String owner;
     private String score;
     private String priority;
 
@@ -32,21 +32,21 @@ public class CreateTaskRequest {
     }
 
     @XmlElement
-    public String getStat() {
-        return stat;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStat(final String stat) {
-        this.stat = stat;
+    public void setStatus(final String status) {
+        this.status = status;
     }
 
     @XmlElement
-    public String getUsername() {
-        return username;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setUsername(final String username) {
-        this.username = username;
+    public void setOwner(final String owner) {
+        this.owner = owner;
     }
 
     @XmlElement
