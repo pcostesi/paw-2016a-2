@@ -45,7 +45,7 @@ export class TaskEditComponent implements OnInit {
     editedTask.owner = form.controls.owner.value.username;
     editedTask.status = form.controls.status.value;
     this.taskService.updateTask(this.task.story.iteration.project.code,
-      this.task.story.iteration.number, this.task.story.storyId, this.task.id, editedTask).subscribe(ok => {
+      this.task.story.iteration.number, this.task.story.storyId, this.task.taskId, editedTask).subscribe(ok => {
       if (ok) {
         this.router.navigate(['/project', this.task.story.iteration.project.code])
       }

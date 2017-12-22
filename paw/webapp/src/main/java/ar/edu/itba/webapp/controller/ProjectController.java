@@ -86,14 +86,15 @@ public class ProjectController extends BaseController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateProject(UpdateProjectRequest request,
 								  @PathParam("codename") final String codename){
+		final User user = getLoggedUser();
+		Project project = null;
+		List<String> userList = null;
 		try{
-			final Project project = ps.getProjectByCode(codename);
-			final User user = getLoggedUser();
-			List<String> userList = us.getUsernamesForProject(project);
+			project = ps.getProjectByCode(codename);
+			userList = us.getUsernamesForProject(project);
 			List<String> updatedUser = new LinkedList<>(Arrays.asList(request.getMembers()));
 			ps.setDescription(user, project, request.getDescription());
 			ps.setName(user, project, request.getName());
-
 			List<String> inter = new LinkedList<>(Arrays.asList(request.getMembers().clone()));
 			inter.retainAll(userList);
 			userList.removeAll(inter);

@@ -79,7 +79,10 @@ public class TaskController extends BaseController {
         try {
             final Story story = ss.getById(storyN);
             final Status status = Status.valueOf(request.getStatus());
-            final User owner = us.getByUsername(request.getOwner());
+            User owner = null;
+            if(request.getOwner() != null ){
+                owner = us.getByUsername(request.getOwner());
+            }
             final Score score = Score.valueOf(request.getScore());
             final Priority priority = Priority.valueOf(request.getPriority());
             task = ts.createTask(story, title, description, status, owner, score, priority);
@@ -115,7 +118,10 @@ public class TaskController extends BaseController {
         final String title = request.getTitle();
         try {
             final Task task = ts.getTaskById(index);
-            final User owner = us.getByUsername(request.getOwner());
+            User owner = null;
+            if(request.getOwner() != null ){
+                owner = us.getByUsername(request.getOwner());
+            }
             ts.changeDescription(task, request.getDescription());
             ts.changeOwnership(task, owner);
             ts.changeStatus(task, Status.valueOf(request.getStatus()));

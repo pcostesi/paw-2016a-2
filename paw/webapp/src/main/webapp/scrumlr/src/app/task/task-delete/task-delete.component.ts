@@ -19,7 +19,7 @@ export class TaskDeleteComponent implements OnInit {
 
   deleteItem() {
     this.taskService.deleteTask(this.task.story.iteration.project.code,
-      this.task.story.iteration.number, this.task.story.storyId, this.task.id)
+      this.task.story.iteration.number, this.task.story.storyId, this.task.taskId)
       .subscribe(ok => {
         if (ok) {
           this.modal.close(ok);
