@@ -6,6 +6,8 @@ import ar.edu.itba.models.Score;
 import ar.edu.itba.models.Status;
 import ar.edu.itba.models.Task;
 import ar.edu.itba.models.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.immutables.builder.Builder;
 
 import javax.persistence.Column;
@@ -29,6 +31,7 @@ public class TaskEditedEvent extends LogEvent {
 
     @XmlElement
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Task task;
 
     @XmlElement
