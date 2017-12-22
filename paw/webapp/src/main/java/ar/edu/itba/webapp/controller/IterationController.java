@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
@@ -46,13 +47,14 @@ public class IterationController extends BaseController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postCreateIteration(final CreateIterationRequest request,
                                         @PathParam("project") final String code) {
-        final String start = request.getStart();
-        final String end = request.getEnd();
+        final String start = request.getBeginDate();
+        final String end = request.getEndDate();
         final Iteration iteration;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         try {
             final Project proj = ps.getProjectByCode(code);
-            final LocalDate startDate = LocalDate.parse(start);
-            final LocalDate endDate = LocalDate.parse(end);
+            final LocalDate startDate = LocalDate.parse(start, formatter);
+            final LocalDate endDate = LocalDate.parse(end, formatter);
             iteration = is.createIteration(proj, startDate, endDate);
         } catch (IllegalArgumentException | IllegalStateException e) {
             return Response.serverError().entity(ErrorMessage.asError("400", e.getMessage()))
@@ -99,10 +101,13 @@ public class IterationController extends BaseController {
     public Response updateIteration(UpdateIterationRequest request,
                                     @PathParam("project") final String project,
                                     @PathParam("index") final int index){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         try {
             final Project proj = ps.getProjectByCode(project);
             final Iteration iteration = is.getIteration(proj, index);
-            is.setDates(iteration, request.getBeginDate(), request.getEndDate());
+            final LocalDate startDate = LocalDate.parse(request.getBeginDate(), formatter);
+            final LocalDate endDate = LocalDate.parse(request.getEndDate(), formatter);
+            is.setDates(iteration, startDate, endDate);
             return Response.ok(is.getIteration(proj, index))
                     .build();
         } catch (IllegalArgumentException | IllegalStateException e) {

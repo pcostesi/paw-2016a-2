@@ -1,9 +1,9 @@
 import { Project } from '../project/project';
 
-export interface Iteration {
+export class Iteration {
   number: number;
   code: string;
   project: Project;
-  startDate: string;
+  beginDate: string;
   endDate: string;
 }

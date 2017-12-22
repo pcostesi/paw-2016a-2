@@ -4,6 +4,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Project } from 'app/project/project';
 import { NgbDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker';
+import {Iteration} from '../iteration';
+import {IterationService} from '../iteration.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-iteration-create',
@@ -15,7 +18,9 @@ export class IterationCreateComponent implements OnInit {
   public form: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-    public modal: NgbActiveModal) {
+    public modal: NgbActiveModal,
+    private iterationService: IterationService,
+    private router: Router) {
     this.form = formBuilder.group({
       startDate: [undefined, Validators.required],
       endDate: [undefined, Validators.required],
@@ -39,9 +44,17 @@ export class IterationCreateComponent implements OnInit {
 
   onSubmit(form: FormGroup) {
     if (form.valid) {
-      const startDate = form.controls.startDate.value;
-      const endDate = form.controls.endDate.value;
-      console.log(startDate, endDate)
+      const iteration = new Iteration();
+      const begin = form.controls.startDate.value;
+      iteration.beginDate = begin.day + '/' + begin.month + '/' + begin.year;
+      const end = form.controls.endDate.value;
+      iteration.endDate = end.day + '/' + end.month + '/' + end.year;
+      this.iterationService.createIteration(this.project.code, iteration)
+        .subscribe(ok => {
+          if (ok) {
+            this.router.navigate(['/project', this.project.code])
+          }
+        });
       this.modal.close(form.value);
     }
   }

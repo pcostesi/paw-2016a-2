@@ -11,8 +11,8 @@ public class UpdateIterationRequest {
     private String endDate;
 
     @XmlElement
-    public LocalDate getBeginDate() {
-        return LocalDate.parse(beginDate);
+    public String getBeginDate() {
+        return beginDate;
     }
 
     public void setBeginDate(String beginDate) {
@@ -20,8 +20,8 @@ public class UpdateIterationRequest {
     }
 
     @XmlElement
-    public LocalDate getEndDate() {
-        return LocalDate.parse(endDate);
+    public String getEndDate() {
+        return endDate;
     }
 
     public void setEndDate(String endDate) {

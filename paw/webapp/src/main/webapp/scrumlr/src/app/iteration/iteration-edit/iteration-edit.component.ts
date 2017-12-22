@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Iteration } from 'app/iteration/iteration';
+import {IterationService} from '../iteration.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-iteration-edit',
@@ -14,7 +16,9 @@ export class IterationEditComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-    public modal: NgbActiveModal) {
+    public modal: NgbActiveModal,
+    private iterationService: IterationService,
+    private router: Router) {
     this.form = formBuilder.group({
       startDate: [undefined, Validators.required],
       endDate: [undefined, Validators.required],
@@ -23,7 +27,7 @@ export class IterationEditComponent implements OnInit {
 
   setDate(iteration: Iteration) {
 
-    const iterationStart = new Date(iteration.startDate);
+    const iterationStart = new Date(iteration.beginDate);
     const iterationEnd = new Date(iteration.endDate);
 
     if (!this.form) { return; }
@@ -41,9 +45,17 @@ export class IterationEditComponent implements OnInit {
 
   onSubmit(form: FormGroup) {
     if (form.valid) {
-      const startDate = form.controls.startDate.value;
-      const endDate = form.controls.endDate.value;
-      console.log(startDate, endDate)
+      const iteration = new Iteration();
+      const begin = form.controls.startDate.value;
+      iteration.beginDate = begin.day + '/' + begin.month + '/' + begin.year;
+      const end = form.controls.endDate.value;
+      iteration.endDate = end.day + '/' + end.month + '/' + end.year;
+      this.iterationService.updateIteration(this.iteration.project.code, iteration)
+        .subscribe(ok => {
+        if (ok) {
+          this.router.navigate(['/project', this.iteration.project.code])
+        }
+      });
       this.modal.close(form.value);
     }
   }
