@@ -2,7 +2,9 @@
   <span class="nav-item nav-link" id="locale-selector" ngbDropdownToggle>{{ lang }}</span>
   <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="locale-selector">
     <button class="dropdown-item" (click)="selectLocale('en')" i18n="@@English">English</button>
+    <!--
     <button class="dropdown-item" (click)="selectLocale('es')" i18n="@@Spanish">Spanish</button>
+    -->
     <button class="dropdown-item" (click)="unselectLocale()" i18n="@@NoLanguage">Default language</button>
   </div>
 </div>
